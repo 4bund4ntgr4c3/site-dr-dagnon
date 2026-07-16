@@ -1,0 +1,159 @@
+import { motion } from 'framer-motion';
+import { Linkedin, Youtube, ArrowDown, MapPin, Award, BookOpen } from 'lucide-react';
+import { AfricaMap } from '@/components/AfricaMap';
+import { LINKS } from '@/data/content';
+
+const fadeUp = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0 },
+};
+
+export function Hero() {
+  return (
+    <section id="accueil" className="relative min-h-screen overflow-hidden bg-pine-950">
+      {/* layered background */}
+      <div className="absolute inset-0 texture-net" />
+      <div className="absolute -top-40 -right-40 h-[560px] w-[560px] rounded-full bg-pine-600/25 blur-[130px]" />
+      <div className="absolute bottom-0 -left-40 h-[460px] w-[460px] rounded-full bg-gold-600/12 blur-[120px]" />
+
+      <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-5 pb-24 pt-32 lg:px-8 lg:pt-36">
+        <div className="grid items-center gap-14 lg:grid-cols-[1.25fr_1fr]">
+          {/* Left : text */}
+          <div>
+            <motion.div {...fadeUp} transition={{ duration: 0.7, ease: 'easeOut' }}>
+              <span className="inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-300">
+                <span className="h-1.5 w-1.5 rounded-full bg-gold-400" />
+                Santé publique · Paludisme · Afrique francophone
+              </span>
+            </motion.div>
+
+            <motion.h1
+              {...fadeUp}
+              transition={{ duration: 0.7, delay: 0.12, ease: 'easeOut' }}
+              className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-ivory sm:text-6xl lg:text-[4.4rem]"
+            >
+              Dr. Seynudé
+              <br />
+              Jean-Fortuné <span className="text-gold-400 italic">Dagnon</span>
+            </motion.h1>
+
+            <motion.p
+              {...fadeUp}
+              transition={{ duration: 0.7, delay: 0.22, ease: 'easeOut' }}
+              className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl"
+            >
+              MD, MPH — Ph.D. en économie de la santé (en cours)
+            </motion.p>
+
+            <motion.p
+              {...fadeUp}
+              transition={{ duration: 0.7, delay: 0.32, ease: 'easeOut' }}
+              className="mt-6 max-w-xl text-[15px] leading-relaxed text-pine-100/75 sm:text-base"
+            >
+              Leader des programmes de santé publique et de lutte contre le paludisme.
+              Senior Program Officer — Paludisme / Afrique francophone à la{' '}
+              <span className="text-ivory font-medium">Fondation Gates</span>, il œuvre depuis
+              plus de 17 ans pour des systèmes de santé africains pilotés par la donnée.
+            </motion.p>
+
+            <motion.div
+              {...fadeUp}
+              transition={{ duration: 0.7, delay: 0.42, ease: 'easeOut' }}
+              className="mt-9 flex flex-wrap items-center gap-4"
+            >
+              <a
+                href={LINKS.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="group inline-flex items-center gap-2.5 rounded-full bg-gold-500 px-7 py-3.5 text-sm font-semibold text-pine-950 shadow-lg shadow-gold-600/25 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
+              >
+                <Linkedin size={17} className="transition-transform group-hover:scale-110" />
+                Me suivre sur LinkedIn
+              </a>
+              <a
+                href={LINKS.youtube}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
+              >
+                <Youtube size={17} />
+                Chaîne YouTube
+              </a>
+            </motion.div>
+
+            <motion.div
+              {...fadeUp}
+              transition={{ duration: 0.7, delay: 0.52, ease: 'easeOut' }}
+              className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-[13px] text-pine-100/60"
+            >
+              <span className="inline-flex items-center gap-2">
+                <MapPin size={14} className="text-gold-400" /> Basé en Afrique
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <Award size={14} className="text-gold-400" /> PMI FSN Employee of the Year 2020
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <BookOpen size={14} className="text-gold-400" /> 17 publications scientifiques
+              </span>
+            </motion.div>
+          </div>
+
+          {/* Right : visual composition */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="relative mx-auto w-full max-w-[400px]"
+          >
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-b from-pine-800/80 to-pine-900/90 p-8 shadow-2xl shadow-black/40 backdrop-blur">
+              <div className="absolute inset-0 texture-dots" />
+              <div className="relative">
+                <AfricaMap className="mx-auto w-full max-w-[270px]" />
+                <div className="mt-6 text-center">
+                  <p className="font-display text-5xl font-semibold tracking-tight text-ivory">
+                    <span className="text-gold-400">S</span>·<span className="text-gold-400">D</span>
+                  </p>
+                  <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-pine-200/70">
+                    Cotonou — le monde
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* floating badges */}
+            <motion.div
+              animate={{ y: [0, -9, 0] }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute -left-6 top-8 rounded-2xl border border-white/10 bg-pine-950/90 px-5 py-3.5 shadow-xl backdrop-blur"
+            >
+              <p className="font-display text-2xl font-semibold text-gold-400">17+</p>
+              <p className="text-[10px] uppercase tracking-widest text-pine-100/70">ans d’expérience</p>
+            </motion.div>
+            <motion.div
+              animate={{ y: [0, 9, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+              className="absolute -top-5 -right-4 rounded-2xl border border-white/10 bg-pine-950/90 px-5 py-3.5 shadow-xl backdrop-blur"
+            >
+              <p className="font-display text-2xl font-semibold text-gold-400">27</p>
+              <p className="text-[10px] uppercase tracking-widest text-pine-100/70">pays PMI distingués</p>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* scroll cue */}
+        <motion.a
+          href="#apropos"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-pine-100/50 transition-colors hover:text-gold-400 md:flex"
+        >
+          <span className="text-[10px] uppercase tracking-[0.3em]">Découvrir</span>
+          <motion.span animate={{ y: [0, 6, 0] }} transition={{ duration: 1.8, repeat: Infinity }}>
+            <ArrowDown size={16} />
+          </motion.span>
+        </motion.a>
+      </div>
+    </section>
+  );
+}
