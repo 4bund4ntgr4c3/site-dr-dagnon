@@ -28,7 +28,7 @@ export function Navbar() {
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gold-500 font-display text-sm font-semibold text-pine-950 transition-transform group-hover:scale-105">
             SD
           </span>
-          <span className="hidden sm:block leading-tight">
+          <span className="leading-tight">
             <span className="block font-display text-[15px] font-medium text-ivory">Dr. Seynudé Dagnon</span>
             <span className="block text-[10px] uppercase tracking-[0.22em] text-gold-400">MD · MPH · Paludisme</span>
           </span>
