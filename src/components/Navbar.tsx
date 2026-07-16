@@ -19,11 +19,17 @@ export function Navbar() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         solid
-          ? 'bg-pine-950/90 backdrop-blur-md shadow-lg shadow-pine-950/30 border-b border-white/5'
+          ? 'bg-pine-950/90 backdrop-blur-md shadow-lg shadow-pine-950/30'
           : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto flex h-16 lg:h-[72px] max-w-7xl items-center justify-between px-5 lg:px-8">
+      <div
+        className={`mx-auto flex h-16 lg:h-[72px] max-w-7xl items-center justify-between px-5 lg:px-8 transition-all duration-500 ${
+          solid
+            ? 'mt-2 lg:mt-3 rounded-2xl border border-white/10 bg-pine-950/90 backdrop-blur-md shadow-lg shadow-pine-950/30 lg:mx-4'
+            : ''
+        }`}
+      >
         <a href="#accueil" className="flex items-center gap-3 group">
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gold-500 font-display text-sm font-semibold text-pine-950 transition-transform group-hover:scale-105">
             SD
@@ -67,7 +73,8 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-white/5 bg-pine-950/95 backdrop-blur-md px-5 pb-6 pt-3">
+        <div className="lg:hidden px-3 pb-3">
+          <div className="rounded-2xl border border-white/10 bg-pine-950/95 backdrop-blur-md px-5 pb-6 pt-3 shadow-lg shadow-pine-950/30">
           <nav className="flex flex-col gap-1">
             {NAV.map((item) => (
               <a
@@ -97,6 +104,7 @@ export function Navbar() {
             >
               <Youtube size={15} /> YouTube
             </a>
+          </div>
           </div>
         </div>
       )}
