@@ -20,8 +20,8 @@ export function Navbar() {
       <div
         className={`mx-auto flex h-16 lg:h-[72px] max-w-7xl items-center justify-between gap-4 px-4 lg:px-6 transition-all duration-500 ${
           solid
-            ? 'mt-2 lg:mt-3 rounded-3xl border border-white/10 bg-pine-950/90 backdrop-blur-md shadow-lg shadow-pine-950/30 lg:mx-4'
-            : 'mt-2 lg:mt-3 rounded-3xl border border-transparent bg-pine-950/40 lg:mx-4 backdrop-blur-sm'
+            ? 'mt-2 lg:mt-3 mx-3 lg:mx-4 rounded-3xl border border-white/10 bg-pine-950/90 backdrop-blur-md shadow-lg shadow-pine-950/30'
+            : 'mt-2 lg:mt-3 mx-3 lg:mx-4 rounded-3xl border border-transparent bg-pine-950/40 backdrop-blur-sm'
         }`}
       >
         <a href="#accueil" className="flex items-center gap-3 group">
