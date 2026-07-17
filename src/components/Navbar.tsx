@@ -53,7 +53,7 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <LanguageSwitcher className="hidden sm:inline-flex" />
+          <LanguageSwitcher className="inline-flex" />
 
           <a
             href={LINKS.linkedin}
@@ -89,8 +89,7 @@ export function Navbar() {
               </a>
             ))}
           </nav>
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <LanguageSwitcher />
+          <div className="mt-4 flex items-center gap-3">
             <div className="flex flex-1 gap-3">
               <a
                 href={LINKS.linkedin}
