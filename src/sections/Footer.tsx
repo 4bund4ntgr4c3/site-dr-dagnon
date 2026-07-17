@@ -60,7 +60,7 @@ export function Footer() {
               SD
             </span>
             <div className="leading-tight">
-              <p className="font-display text-sm font-medium text-ivory">Dr. Seynudé Jean-Fortuné Dagnon</p>
+              <p className="font-display text-sm font-medium text-ivory">{t['name.full']}</p>
               <p className="text-[10.5px] uppercase tracking-[0.2em] text-pine-100/50">{t['footer.tagline']}</p>
             </div>
           </div>

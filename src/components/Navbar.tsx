@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Menu, X, Linkedin } from 'lucide-react';
 import { LINKS } from '@/data/content';
-import { NAV } from '@/i18n/translations';
+import { NAV, UI } from '@/i18n/translations';
 import { useLang } from '@/i18n/LanguageContext';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
@@ -9,6 +9,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { lang } = useLang();
+  const t = UI[lang];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -33,7 +34,7 @@ export function Navbar() {
             SD
           </span>
           <span className="leading-tight">
-            <span className="block font-display text-[15px] font-medium text-ivory">Dr. Seynudé Dagnon</span>
+            <span className="block font-display text-[15px] font-medium text-ivory">{t['name.short']}</span>
             <span className="block text-[10px] uppercase tracking-[0.22em] text-gold-400">MD · MPH · Paludisme</span>
           </span>
         </a>
