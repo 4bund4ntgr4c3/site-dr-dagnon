@@ -9,6 +9,7 @@ import { Education } from '@/sections/Education';
 import { Publications } from '@/sections/Publications';
 import { Media } from '@/sections/Media';
 import { Footer } from '@/sections/Footer';
+import { ScrollToTop } from '@/components/ScrollToTop';
 import { LanguageProvider } from '@/i18n/LanguageContext';
 
 export default function Home() {
@@ -26,6 +27,7 @@ export default function Home() {
         <Publications />
         <Media />
         <Footer />
+        <ScrollToTop />
       </main>
     </LanguageProvider>
   );
