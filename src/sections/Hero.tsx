@@ -38,13 +38,19 @@ export function Hero() {
             >
               {(() => {
                 const parts = t['hero.name'].split(' ');
-                const last = parts[parts.length - 1];
-                const rest = parts.slice(0, -1).join(' ');
+                const idx = parts.findIndex((w) => w.startsWith('Dagnon'));
                 return (
                   <>
-                    {rest}
-                    <br />
-                    <span className="text-gold-400 italic">{last}</span>
+                    {parts.map((w, i) =>
+                      i === idx ? (
+                        <span key={i} className="text-gold-400 italic">
+                          {w}
+                          {i === parts.length - 1 ? '' : ' '}
+                        </span>
+                      ) : (
+                        <span key={i}>{w}{i === parts.length - 1 ? '' : ' '}</span>
+                      ),
+                    )}
                   </>
                 );
               })()}
