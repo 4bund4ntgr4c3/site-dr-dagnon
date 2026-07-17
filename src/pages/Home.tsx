@@ -10,11 +10,13 @@ import { Publications } from '@/sections/Publications';
 import { Media } from '@/sections/Media';
 import { Footer } from '@/sections/Footer';
 import { ScrollToTop } from '@/components/ScrollToTop';
+import { Seo } from '@/components/Seo';
 import { LanguageProvider } from '@/i18n/LanguageContext';
 
 export default function Home() {
   return (
     <LanguageProvider>
+      <Seo />
       <main className="min-h-screen bg-ivory">
         <Navbar />
         <Hero />
