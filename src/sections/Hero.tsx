@@ -111,13 +111,14 @@ export function Hero() {
               <div className="absolute inset-0 texture-dots" />
               <div className="relative">
                 <AfricaMap className="mx-auto w-full max-w-[270px]" />
-                <div className="mt-6 text-center">
-                  <p className="font-display text-5xl font-semibold tracking-tight text-ivory">
-                    <span className="text-gold-400">S</span>·<span className="text-gold-400">D</span>
-                  </p>
-                  <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-pine-200/70">
-                    Cotonou — le monde
-                  </p>
+                <div className="mt-6 flex justify-center">
+                  <img
+                    src="/dr-seynude-dagnon.png"
+                    alt="Dr. Seynudé Jean-Fortuné Dagnon"
+                    width={120}
+                    height={120}
+                    className="h-28 w-28 rounded-full border-2 border-gold-400/70 object-cover shadow-lg shadow-gold-600/20"
+                  />
                 </div>
               </div>
             </div>
