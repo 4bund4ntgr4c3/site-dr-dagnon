@@ -36,9 +36,18 @@ export function Hero() {
               transition={{ duration: 0.7, delay: 0.12, ease: 'easeOut' }}
               className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-ivory sm:text-6xl lg:text-[4.4rem]"
             >
-              Dr. Seynudé
-              <br />
-              Jean-Fortuné <span className="text-gold-400 italic">Dagnon</span>
+              {(() => {
+                const parts = t['hero.name'].split(' ');
+                const last = parts[parts.length - 1];
+                const rest = parts.slice(0, -1).join(' ');
+                return (
+                  <>
+                    {rest}
+                    <br />
+                    <span className="text-gold-400 italic">{last}</span>
+                  </>
+                );
+              })()}
             </motion.h1>
 
             <motion.p
