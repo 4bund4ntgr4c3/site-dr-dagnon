@@ -38,7 +38,7 @@ export function Hero() {
             >
               {(() => {
                 const parts = t['hero.name'].split(' ');
-                const idx = parts.findIndex((w) => w.startsWith('Dagnon'));
+                const idx = parts.findIndex((w) => w.toUpperCase().startsWith('DAGNON'));
                 return (
                   <>
                     {parts.map((w, i) =>

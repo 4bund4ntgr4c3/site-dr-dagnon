@@ -19,7 +19,7 @@ const SEO: Record<Lang, { title: string; description: string; ogLocale: string }
 };
 
 function personJsonLd(lang: Lang) {
-  const name = 'Dr. Seynudé Jean-Fortuné Dagnon';
+  const name = lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, PhD';
   const jobTitle =
     lang === 'fr'
       ? 'Senior Program Officer — Paludisme / Afrique francophone, Fondation Gates'
