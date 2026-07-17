@@ -1,4 +1,4 @@
-import type { Lang } from './LanguageContext';
+import type { Lang } from './lang';
 
 type Dict = Record<string, string>;
 

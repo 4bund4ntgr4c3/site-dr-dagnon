@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import type { Lang } from './lang';
 
-export type Lang = 'fr' | 'en';
-
-const SUPPORTED: Lang[] = ['fr', 'en'];
 const STORAGE_KEY = 'site-lang';
 
 function detectLang(): Lang {
@@ -44,5 +42,3 @@ export function useLang() {
   if (!ctx) throw new Error('useLang must be used within LanguageProvider');
   return ctx;
 }
-
-export { SUPPORTED };

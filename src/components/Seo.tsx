@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { useLang, type Lang } from '@/i18n/LanguageContext';
+import { useLang } from '@/i18n/LanguageContext';
+import type { Lang } from '@/i18n/lang';
 
 const SITE_URL = 'https://site-dr-dagnon.vercel.app';
 
