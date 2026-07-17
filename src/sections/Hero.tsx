@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { Linkedin, Youtube, ArrowDown, MapPin, Award, BookOpen } from 'lucide-react';
 import { AfricaMap } from '@/components/AfricaMap';
 import { LINKS } from '@/data/content';
+import { useLang } from '@/i18n/LanguageContext';
+import { UI } from '@/i18n/translations';
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -9,6 +11,9 @@ const fadeUp = {
 };
 
 export function Hero() {
+  const { lang } = useLang();
+  const t = UI[lang];
+
   return (
     <section id="accueil" className="relative min-h-screen overflow-hidden bg-pine-950">
       {/* layered background */}
@@ -23,7 +28,7 @@ export function Hero() {
             <motion.div {...fadeUp} transition={{ duration: 0.7, ease: 'easeOut' }}>
               <span className="inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-300">
                 <span className="h-1.5 w-1.5 rounded-full bg-gold-400" />
-                Santé publique · Paludisme · Afrique francophone
+                {t['hero.badge']}
               </span>
             </motion.div>
 
@@ -42,7 +47,7 @@ export function Hero() {
               transition={{ duration: 0.7, delay: 0.22, ease: 'easeOut' }}
               className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl"
             >
-              MD, MPH — Ph.D. en économie de la santé (en cours)
+              {t['hero.subtitle']}
             </motion.p>
 
             <motion.p
@@ -50,10 +55,7 @@ export function Hero() {
               transition={{ duration: 0.7, delay: 0.32, ease: 'easeOut' }}
               className="mt-6 max-w-xl text-[15px] leading-relaxed text-pine-100/75 sm:text-base"
             >
-              Leader des programmes de santé publique et de lutte contre le paludisme.
-              Senior Program Officer — Paludisme / Afrique francophone à la{' '}
-              <span className="text-ivory font-medium">Fondation Gates</span>, il œuvre depuis
-              plus de 17 ans pour des systèmes de santé africains pilotés par la donnée.
+              {t['hero.intro']}
             </motion.p>
 
             <motion.div
@@ -68,7 +70,7 @@ export function Hero() {
                 className="group inline-flex items-center gap-2.5 rounded-full bg-gold-500 px-7 py-3.5 text-sm font-semibold text-pine-950 shadow-lg shadow-gold-600/25 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
               >
                 <Linkedin size={17} className="transition-transform group-hover:scale-110" />
-                Me suivre sur LinkedIn
+                {t['hero.linkedin']}
               </a>
               <a
                 href={LINKS.youtube}
@@ -77,7 +79,7 @@ export function Hero() {
                 className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
               >
                 <Youtube size={17} />
-                Chaîne YouTube
+                {t['hero.youtube']}
               </a>
             </motion.div>
 
@@ -87,13 +89,13 @@ export function Hero() {
               className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-[13px] text-pine-100/60"
             >
               <span className="inline-flex items-center gap-2">
-                <MapPin size={14} className="text-gold-400" /> Basé en Afrique
+                <MapPin size={14} className="text-gold-400" /> {t['hero.based']}
               </span>
               <span className="inline-flex items-center gap-2">
-                <Award size={14} className="text-gold-400" /> PMI FSN Employee of the Year 2020
+                <Award size={14} className="text-gold-400" /> {t['hero.award']}
               </span>
               <span className="inline-flex items-center gap-2">
-                <BookOpen size={14} className="text-gold-400" /> 17 publications scientifiques
+                <BookOpen size={14} className="text-gold-400" /> {t['hero.pubs']}
               </span>
             </motion.div>
           </div>
@@ -127,7 +129,7 @@ export function Hero() {
               className="absolute -left-6 top-8 rounded-2xl border border-white/10 bg-pine-950/90 px-5 py-3.5 shadow-xl backdrop-blur"
             >
               <p className="font-display text-2xl font-semibold text-gold-400">17+</p>
-              <p className="text-[10px] uppercase tracking-widest text-pine-100/70">ans d’expérience</p>
+              <p className="text-[10px] uppercase tracking-widest text-pine-100/70">{t['hero.exp']}</p>
             </motion.div>
             <motion.div
               animate={{ y: [0, 9, 0] }}
@@ -135,7 +137,7 @@ export function Hero() {
               className="absolute -top-5 -right-4 rounded-2xl border border-white/10 bg-pine-950/90 px-5 py-3.5 shadow-xl backdrop-blur"
             >
               <p className="font-display text-2xl font-semibold text-gold-400">27</p>
-              <p className="text-[10px] uppercase tracking-widest text-pine-100/70">pays PMI distingués</p>
+              <p className="text-[10px] uppercase tracking-widest text-pine-100/70">{t['hero.pmi']}</p>
             </motion.div>
           </motion.div>
         </div>
@@ -148,7 +150,7 @@ export function Hero() {
           transition={{ delay: 1.2, duration: 0.8 }}
           className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-pine-100/50 transition-colors hover:text-gold-400 md:flex"
         >
-          <span className="text-[10px] uppercase tracking-[0.3em]">Découvrir</span>
+          <span className="text-[10px] uppercase tracking-[0.3em]">{t['hero.discover']}</span>
           <motion.span animate={{ y: [0, 6, 0] }} transition={{ duration: 1.8, repeat: Infinity }}>
             <ArrowDown size={16} />
           </motion.span>

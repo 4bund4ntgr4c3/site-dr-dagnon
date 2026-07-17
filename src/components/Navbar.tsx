@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Menu, X, Linkedin, Youtube } from 'lucide-react';
-import { NAV, LINKS } from '@/data/content';
+import { Menu, X, Linkedin } from 'lucide-react';
+import { LINKS } from '@/data/content';
+import { NAV } from '@/i18n/translations';
+import { useLang } from '@/i18n/LanguageContext';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { lang } = useLang();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -35,7 +39,7 @@ export function Navbar() {
         </a>
 
         <nav className="hidden lg:flex items-center gap-1 rounded-full border border-white/10 bg-white/5 py-1.5 px-1.5 backdrop-blur-sm">
-          {NAV.map((item, i) => (
+          {NAV[lang].map((item, i) => (
             <a
               key={item.id}
               href={`#${item.id}`}
@@ -48,29 +52,33 @@ export function Navbar() {
           ))}
         </nav>
 
-        <a
-          href={LINKS.linkedin}
-          target="_blank"
-          rel="noreferrer"
-          className="hidden lg:flex items-center gap-2 rounded-full border border-gold-500/50 px-4 py-2 text-[13px] font-semibold text-gold-300 transition-all hover:bg-gold-500 hover:text-pine-950"
-        >
-          <Linkedin size={15} /> LinkedIn
-        </a>
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher className="hidden sm:inline-flex" />
 
-        <button
-          className="lg:hidden text-ivory p-2"
-          onClick={() => setOpen(!open)}
-          aria-label="Menu"
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
+          <a
+            href={LINKS.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="hidden lg:flex items-center gap-2 rounded-full border border-gold-500/50 px-4 py-2 text-[13px] font-semibold text-gold-300 transition-all hover:bg-gold-500 hover:text-pine-950"
+          >
+            <Linkedin size={15} /> LinkedIn
+          </a>
+
+          <button
+            className="lg:hidden text-ivory p-2"
+            onClick={() => setOpen(!open)}
+            aria-label="Menu"
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
 
       {open && (
         <div className="lg:hidden px-3 pb-3">
           <div className="rounded-3xl border border-white/10 bg-pine-950/95 backdrop-blur-md px-5 pb-6 pt-3 shadow-lg shadow-pine-950/30">
           <nav className="flex flex-col gap-1">
-            {NAV.map((item) => (
+            {NAV[lang].map((item) => (
               <a
                 key={item.id}
                 href={`#${item.id}`}
@@ -81,23 +89,26 @@ export function Navbar() {
               </a>
             ))}
           </nav>
-          <div className="mt-4 flex gap-3">
-            <a
-              href={LINKS.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              className="flex flex-1 items-center justify-center gap-2 rounded-full bg-gold-500 px-4 py-2.5 text-sm font-semibold text-pine-950"
-            >
-              <Linkedin size={15} /> LinkedIn
-            </a>
-            <a
-              href={LINKS.youtube}
-              target="_blank"
-              rel="noreferrer"
-              className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-ivory"
-            >
-              <Youtube size={15} /> YouTube
-            </a>
+          <div className="mt-4 flex items-center justify-between gap-3">
+            <LanguageSwitcher />
+            <div className="flex flex-1 gap-3">
+              <a
+                href={LINKS.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="flex flex-1 items-center justify-center gap-2 rounded-full bg-gold-500 px-4 py-2.5 text-sm font-semibold text-pine-950"
+              >
+                <Linkedin size={15} /> LinkedIn
+              </a>
+              <a
+                href={LINKS.youtube}
+                target="_blank"
+                rel="noreferrer"
+                className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-ivory"
+              >
+                YouTube
+              </a>
+            </div>
           </div>
           </div>
         </div>

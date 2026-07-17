@@ -1,7 +1,8 @@
 import { ShieldCheck, Database, Layers, LineChart, Handshake } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
-import { EXPERTISE } from '@/data/content';
+import { useLang } from '@/i18n/LanguageContext';
+import { EXPERTISE, UI } from '@/i18n/translations';
 
 const ICONS: Record<string, typeof ShieldCheck> = {
   shield: ShieldCheck,
@@ -12,6 +13,9 @@ const ICONS: Record<string, typeof ShieldCheck> = {
 };
 
 export function Expertise() {
+  const { lang } = useLang();
+  const t = UI[lang];
+
   return (
     <section id="expertise" className="relative overflow-hidden bg-pine-950 py-24 lg:py-32">
       <div className="absolute inset-0 texture-dots opacity-60" />
@@ -20,13 +24,13 @@ export function Expertise() {
         <SectionHeading
           dark
           align="center"
-          eyebrow="Domaines d’expertise"
-          title="Cinq leviers pour vaincre le paludisme"
-          intro="De la recherche opérationnelle au financement des programmes, une expertise complète de la chaîne de valeur de la lutte antipaludique."
+          eyebrow={t['expertise.eyebrow']}
+          title={t['expertise.title']}
+          intro={t['expertise.intro']}
         />
 
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {EXPERTISE.map((item, i) => {
+          {EXPERTISE[lang].map((item, i) => {
             const Icon = ICONS[item.icon];
             const wide = i === 4;
             return (
@@ -57,10 +61,10 @@ export function Expertise() {
               className="group flex h-full min-h-[220px] flex-col justify-between rounded-2xl bg-gradient-to-br from-gold-500 to-gold-600 p-7 text-pine-950 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-gold-600/30"
             >
               <p className="font-display text-2xl font-semibold leading-snug">
-                Une collaboration, une conférence, un partenariat ?
+                {t['expertise.ctaTitle']}
               </p>
               <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest">
-                Échanger
+                {t['expertise.ctaBtn']}
                 <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
               </span>
             </a>

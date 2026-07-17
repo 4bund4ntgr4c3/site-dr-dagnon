@@ -2,18 +2,25 @@ import { useMemo, useState } from 'react';
 import { Search, ExternalLink, FileText, Star } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
-import { PUBLICATIONS } from '@/data/content';
-
-const YEARS = ['Toutes', ...Array.from(new Set(PUBLICATIONS.map((p) => String(p.year)))).sort().reverse()];
+import { useLang } from '@/i18n/LanguageContext';
+import { PUBLICATIONS, UI, publicationsCount } from '@/i18n/translations';
 
 export function Publications() {
+  const { lang } = useLang();
+  const t = UI[lang];
+
+  const YEARS = useMemo(
+    () => [t['publications.all'], ...Array.from(new Set(PUBLICATIONS[lang].map((p) => String(p.year)))).sort().reverse()],
+    [lang, t],
+  );
+
   const [query, setQuery] = useState('');
-  const [year, setYear] = useState('Toutes');
+  const [year, setYear] = useState(t['publications.all']);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return PUBLICATIONS.filter((p) => {
-      const matchYear = year === 'Toutes' || String(p.year) === year;
+    return PUBLICATIONS[lang].filter((p) => {
+      const matchYear = year === t['publications.all'] || String(p.year) === year;
       const matchQuery =
         !q ||
         p.title.toLowerCase().includes(q) ||
@@ -21,15 +28,15 @@ export function Publications() {
         p.authors.toLowerCase().includes(q);
       return matchYear && matchQuery;
     });
-  }, [query, year]);
+  }, [query, year, lang, t]);
 
   return (
     <section id="publications" className="bg-white py-24 lg:py-32">
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
         <SectionHeading
-          eyebrow="Travaux scientifiques"
-          title="Publications & articles"
-          intro="Des travaux publiés dans Malaria Journal, Parasites & Vectors, Frontiers in Tropical Diseases et d’autres revues — de l’entomologie de terrain aux politiques d’élimination."
+          eyebrow={t['publications.eyebrow']}
+          title={t['publications.title']}
+          intro={t['publications.intro']}
         />
 
         {/* filters */}
@@ -40,7 +47,7 @@ export function Publications() {
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Rechercher un titre, un auteur, une revue…"
+                placeholder={t['publications.search']}
                 className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/35 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
               />
             </div>
@@ -63,7 +70,7 @@ export function Publications() {
         </Reveal>
 
         <p className="mt-5 text-[12.5px] font-medium uppercase tracking-widest text-ink/45">
-          {filtered.length} publication{filtered.length > 1 ? 's' : ''} affichée{filtered.length > 1 ? 's' : ''}
+          {publicationsCount(lang, filtered.length)}
         </p>
 
         {/* list */}
@@ -90,7 +97,7 @@ export function Publications() {
                     </span>
                     {p.featured && (
                       <span className="rounded-full bg-gold-500 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-pine-950">
-                        Tribune
+                        {t['publications.tribune']}
                       </span>
                     )}
                   </div>
@@ -107,7 +114,7 @@ export function Publications() {
                     target="_blank"
                     rel="noreferrer"
                     className="hidden sm:flex h-10 w-10 shrink-0 self-center items-center justify-center rounded-full border border-pine-900/15 text-pine-800 transition-all hover:border-gold-500 hover:bg-gold-500 hover:text-pine-950"
-                    aria-label="Ouvrir la publication"
+                    aria-label={t['publications.open']}
                   >
                     <ExternalLink size={16} />
                   </a>
@@ -119,7 +126,7 @@ export function Publications() {
                     rel="noreferrer"
                     className="mt-2 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-700 sm:hidden"
                   >
-                    Lire <ExternalLink size={13} />
+                    {t['publications.read']} <ExternalLink size={13} />
                   </a>
                 )}
               </article>
@@ -128,7 +135,7 @@ export function Publications() {
 
           {filtered.length === 0 && (
             <div className="rounded-2xl border border-dashed border-pine-900/20 p-12 text-center text-sm text-ink/50">
-              Aucune publication ne correspond à votre recherche.
+              {t['publications.empty']}
             </div>
           )}
         </div>

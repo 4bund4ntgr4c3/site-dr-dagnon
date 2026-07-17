@@ -1,9 +1,14 @@
 import { Linkedin, Youtube, ArrowUpRight } from 'lucide-react';
 import { AfricaMap } from '@/components/AfricaMap';
 import { Reveal } from '@/components/Reveal';
-import { NAV, LINKS } from '@/data/content';
+import { LINKS } from '@/data/content';
+import { useLang } from '@/i18n/LanguageContext';
+import { NAV, UI } from '@/i18n/translations';
 
 export function Footer() {
+  const { lang } = useLang();
+  const t = UI[lang];
+
   return (
     <footer id="contact" className="relative overflow-hidden bg-[#051512]">
       <div className="absolute inset-0 texture-net opacity-70" />
@@ -12,16 +17,14 @@ export function Footer() {
         <Reveal>
           <div className="grid items-center gap-10 border-b border-white/8 pb-16 lg:grid-cols-[1.4fr_1fr]">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold-400">Contact</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold-400">{t['footer.eyebrow']}</p>
               <h2 className="mt-4 font-display text-3xl font-medium leading-tight text-ivory sm:text-4xl lg:text-[3rem]">
-                Ensemble, accélérons
+                {t['footer.title1']}
                 <br />
-                l’<span className="italic text-gold-400">élimination du paludisme</span>.
+                <span className="italic text-gold-400">{t['footer.title2']}</span>.
               </h2>
               <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-pine-100/65">
-                Partenariats de programmes, conférences, conseil technique ou échanges sur les
-                systèmes de santé en Afrique francophone — le Dr. Dagnon est joignable via ses
-                réseaux professionnels.
+                {t['footer.text']}
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <a
@@ -30,7 +33,7 @@ export function Footer() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2.5 rounded-full bg-gold-500 px-7 py-3.5 text-sm font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
                 >
-                  <Linkedin size={17} /> LinkedIn
+                  <Linkedin size={17} /> {t['footer.linkedin']}
                   <ArrowUpRight size={15} />
                 </a>
                 <a
@@ -39,7 +42,7 @@ export function Footer() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
                 >
-                  <Youtube size={17} /> YouTube
+                  <Youtube size={17} /> {t['footer.youtube']}
                   <ArrowUpRight size={15} />
                 </a>
               </div>
@@ -58,12 +61,12 @@ export function Footer() {
             </span>
             <div className="leading-tight">
               <p className="font-display text-sm font-medium text-ivory">Dr. Seynudé Jean-Fortuné Dagnon</p>
-              <p className="text-[10.5px] uppercase tracking-[0.2em] text-pine-100/50">MD · MPH · Santé publique</p>
+              <p className="text-[10.5px] uppercase tracking-[0.2em] text-pine-100/50">{t['footer.tagline']}</p>
             </div>
           </div>
 
           <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            {NAV.map((item) => (
+            {NAV[lang].map((item) => (
               <a
                 key={item.id}
                 href={`#${item.id}`}
@@ -75,7 +78,7 @@ export function Footer() {
           </nav>
 
           <p className="text-[12px] text-pine-100/40">
-            © {new Date().getFullYear()} — Tous droits réservés
+            {t['footer.rights']}
           </p>
         </div>
       </div>

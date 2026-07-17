@@ -1,9 +1,13 @@
 import { Play, FileDown, Newspaper, ArrowUpRight } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
-import { MEDIA } from '@/data/content';
+import { useLang } from '@/i18n/LanguageContext';
+import { MEDIA, UI } from '@/i18n/translations';
 
 export function Media() {
+  const { lang } = useLang();
+  const t = UI[lang];
+
   return (
     <section id="medias" className="relative overflow-hidden bg-pine-950 py-24 lg:py-32">
       <div className="absolute inset-0 texture-dots opacity-50" />
@@ -11,9 +15,9 @@ export function Media() {
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHeading
           dark
-          eyebrow="Prises de parole"
-          title="Sur scène et dans les médias"
-          intro="Conférences internationales, keynotes et tribunes pour porter la voix de l’Afrique francophone dans la lutte contre le paludisme."
+          eyebrow={t['media.eyebrow']}
+          title={t['media.title']}
+          intro={t['media.intro']}
         />
 
         {/* featured op-ed banner */}
@@ -29,24 +33,24 @@ export function Media() {
             </span>
             <div className="flex-1">
               <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-400">
-                Tribune · Africa Health Watch · mai 2026
+                {t['media.oped']}
               </p>
               <h3 className="mt-2 font-display text-2xl font-semibold leading-snug text-ivory lg:text-[1.7rem]">
                 « From Malaria Control to Elimination: The Turn We Need to Make »
               </h3>
               <p className="mt-2 text-sm text-pine-100/60">
-                Co-signée avec la Pr. Rose Leke — un appel à opérer le virage du contrôle vers l’élimination du paludisme.
+                {t['media.opedText']}
               </p>
             </div>
             <span className="inline-flex items-center gap-2 self-start rounded-full border border-gold-500/50 px-5 py-2.5 text-sm font-semibold text-gold-300 transition-all group-hover:bg-gold-500 group-hover:text-pine-950 lg:self-center">
-              Lire la tribune <ArrowUpRight size={16} />
+              {t['media.opedBtn']} <ArrowUpRight size={16} />
             </span>
           </a>
         </Reveal>
 
         {/* videos grid */}
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {MEDIA.map((m, i) => (
+          {MEDIA[lang].map((m, i) => (
             <Reveal key={m.title} delay={0.15 + i * 0.08}>
               <a
                 href={m.url}
@@ -81,7 +85,7 @@ export function Media() {
                     {m.title}
                   </h3>
                   <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-pine-100/60 transition-colors group-hover:text-gold-300">
-                    {m.kind === 'video' ? 'Regarder' : 'Télécharger le PDF'}
+                    {m.kind === 'video' ? t['media.watch'] : t['media.download']}
                     <ArrowUpRight size={13} />
                   </span>
                 </div>

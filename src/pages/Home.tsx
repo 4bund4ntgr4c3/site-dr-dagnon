@@ -9,21 +9,24 @@ import { Education } from '@/sections/Education';
 import { Publications } from '@/sections/Publications';
 import { Media } from '@/sections/Media';
 import { Footer } from '@/sections/Footer';
+import { LanguageProvider } from '@/i18n/LanguageContext';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-ivory">
-      <Navbar />
-      <Hero />
-      <Stats />
-      <About />
-      <Expertise />
-      <Experience />
-      <Achievements />
-      <Education />
-      <Publications />
-      <Media />
-      <Footer />
-    </main>
+    <LanguageProvider>
+      <main className="min-h-screen bg-ivory">
+        <Navbar />
+        <Hero />
+        <Stats />
+        <About />
+        <Expertise />
+        <Experience />
+        <Achievements />
+        <Education />
+        <Publications />
+        <Media />
+        <Footer />
+      </main>
+    </LanguageProvider>
   );
 }

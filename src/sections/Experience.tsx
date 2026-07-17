@@ -1,14 +1,18 @@
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
-import { EXPERIENCE } from '@/data/content';
+import { useLang } from '@/i18n/LanguageContext';
+import { EXPERIENCE, UI } from '@/i18n/translations';
 
 export function Experience() {
+  const { lang } = useLang();
+  const t = UI[lang];
+
   return (
     <section id="parcours" className="bg-ivory py-24 lg:py-32">
       <div className="mx-auto max-w-5xl px-5 lg:px-8">
         <SectionHeading
-          eyebrow="Parcours professionnel"
-          title="Dix-sept ans, du terrain clinique aux stratégies mondiales"
+          eyebrow={t['experience.eyebrow']}
+          title={t['experience.title']}
         />
 
         <div className="relative mt-16">
@@ -16,7 +20,7 @@ export function Experience() {
           <div className="absolute bottom-2 left-[15px] top-2 w-px bg-gradient-to-b from-gold-500 via-pine-300 to-pine-200 md:left-1/2" />
 
           <div className="space-y-10">
-            {EXPERIENCE.map((job, i) => {
+            {EXPERIENCE[lang].map((job, i) => {
               const left = i % 2 === 0;
               return (
                 <Reveal key={job.role} delay={0.05}>
@@ -46,7 +50,7 @@ export function Experience() {
                         </span>
                         {job.current && (
                           <span className="rounded-full bg-pine-900 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-gold-400">
-                            Poste actuel
+                            {t['experience.current']}
                           </span>
                         )}
                       </div>
