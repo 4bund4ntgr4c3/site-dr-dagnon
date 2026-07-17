@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { Linkedin, Youtube, ArrowDown, MapPin, Award, BookOpen } from 'lucide-react';
-import { AfricaMap } from '@/components/AfricaMap';
 import { LINKS } from '@/data/content';
 import { useLang } from '@/i18n/LanguageContext';
 import { UI } from '@/i18n/translations';
@@ -107,20 +106,13 @@ export function Hero() {
             transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="relative mx-auto w-full max-w-[400px]"
           >
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-b from-pine-800/80 to-pine-900/90 p-8 shadow-2xl shadow-black/40 backdrop-blur">
-              <div className="absolute inset-0 texture-dots" />
-              <div className="relative">
-                <AfricaMap className="mx-auto w-full max-w-[270px]" />
-                <div className="mt-6 flex justify-center">
-                  <img
-                    src="/dr-seynude-dagnon.png"
-                    alt="Dr. Seynudé Jean-Fortuné Dagnon"
-                    width={120}
-                    height={120}
-                    className="h-28 w-28 rounded-full border-2 border-gold-400/70 object-cover shadow-lg shadow-gold-600/20"
-                  />
-                </div>
-              </div>
+            <div className="relative overflow-hidden rounded-[2rem] border-2 border-gold-400/70 shadow-2xl shadow-black/40">
+              <img
+                src="/dr-seynude-dagnon.png"
+                alt="Dr. Seynudé Jean-Fortuné Dagnon"
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-pine-950/70 via-pine-950/10 to-transparent" />
             </div>
 
             {/* floating badges */}
