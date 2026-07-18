@@ -132,20 +132,20 @@ export function Hero() {
 
             {/* floating badges */}
             <motion.div
-              animate={{ y: [0, -9, 0] }}
+              animate={{ y: [0, -8, 0] }}
               transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -left-6 top-8 rounded-2xl border border-white/10 bg-pine-950/90 px-5 py-3.5 shadow-xl backdrop-blur"
+              className="absolute left-2 top-3 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md"
             >
-              <p className="font-display text-2xl font-semibold text-gold-400">17+</p>
-              <p className="text-[10px] uppercase tracking-widest text-pine-100/70">{t['hero.exp']}</p>
+              <p className="font-display text-xl font-semibold text-gold-400">17+</p>
+              <p className="text-[9px] uppercase tracking-widest text-pine-100/70">{t['hero.exp']}</p>
             </motion.div>
             <motion.div
-              animate={{ y: [0, 9, 0] }}
+              animate={{ y: [0, 8, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-              className="absolute -top-5 -right-4 rounded-2xl border border-white/10 bg-pine-950/90 px-5 py-3.5 shadow-xl backdrop-blur"
+              className="absolute right-2 top-3 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md"
             >
-              <p className="font-display text-2xl font-semibold text-gold-400">27</p>
-              <p className="text-[10px] uppercase tracking-widest text-pine-100/70">{t['hero.pmi']}</p>
+              <p className="font-display text-xl font-semibold text-gold-400">27</p>
+              <p className="text-[9px] uppercase tracking-widest text-pine-100/70">{t['hero.pmi']}</p>
             </motion.div>
           </motion.div>
         </div>
