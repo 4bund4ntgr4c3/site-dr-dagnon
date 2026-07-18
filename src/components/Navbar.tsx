@@ -29,12 +29,12 @@ export function Navbar() {
             : 'mt-2 lg:mt-3 mx-3 lg:mx-4 rounded-3xl border border-transparent bg-pine-950/40 backdrop-blur-sm'
         }`}
       >
-        <a href="#accueil" className="flex items-center gap-3 group">
+        <a href="#accueil" className="flex min-w-0 items-center gap-3 group">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gold-500 font-display text-sm font-semibold text-pine-950 transition-transform group-hover:scale-105">
             SD
           </span>
-          <span className="leading-tight">
-            <span className="block font-display text-[15px] font-medium text-ivory">{t['name.short']}</span>
+          <span className="leading-tight min-w-0">
+            <span className="block truncate font-display text-[15px] font-medium text-ivory">{t['name.short']}</span>
             <span className="block text-[10px] uppercase tracking-[0.22em] text-gold-400">MD · MPH · Paludisme</span>
           </span>
         </a>
