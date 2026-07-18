@@ -134,7 +134,7 @@ export function Hero() {
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute left-2 top-3 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md"
+              className="absolute -left-4 top-6 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md"
             >
               <p className="font-display text-xl font-semibold text-gold-400">17+</p>
               <p className="text-[9px] uppercase tracking-widest text-pine-100/70">{t['hero.exp']}</p>
@@ -142,7 +142,7 @@ export function Hero() {
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-              className="absolute right-2 top-3 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md"
+              className="absolute -bottom-5 -right-4 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md"
             >
               <p className="font-display text-xl font-semibold text-gold-400">27</p>
               <p className="text-[9px] uppercase tracking-widest text-pine-100/70">{t['hero.pmi']}</p>
