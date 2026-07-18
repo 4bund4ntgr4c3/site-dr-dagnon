@@ -34,8 +34,8 @@ export function Navbar() {
             SD
           </span>
           <span className="leading-tight min-w-0">
-            <span className="block truncate font-display text-[15px] font-medium text-ivory">{t['name.short']}</span>
-            <span className="block text-[10px] uppercase tracking-[0.22em] text-gold-400">MD · MPH · Paludisme</span>
+            <span className="block font-display text-[15px] font-medium text-ivory">{t['name.short']}</span>
+            <span className="block truncate text-[10px] uppercase tracking-[0.22em] text-gold-400">MD · MPH · Paludisme</span>
           </span>
         </a>
 
