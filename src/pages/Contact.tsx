@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Mail, Phone, MapPin, Linkedin, Youtube, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Youtube, Send, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -17,6 +17,7 @@ export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>('idle');
+  const revealed = status === 'success';
 
   const update = (k: keyof typeof form, v: string) => {
     setForm((f) => ({ ...f, [k]: v }));
@@ -72,46 +73,67 @@ export default function Contact() {
           {/* contact info */}
           <Reveal delay={0.1}>
             <div className="rounded-3xl border border-white/10 bg-pine-900/40 p-8 backdrop-blur">
-              <h2 className="font-display text-xl font-semibold text-ivory">{t['contact.infoTitle']}</h2>
-              <ul className="mt-6 space-y-5">
-                <li className="flex items-center gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/30">
-                    <Mail size={18} />
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="font-display text-xl font-semibold text-ivory">{t['contact.infoTitle']}</h2>
+                {!revealed && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-pine-100/55">
+                    <Lock size={12} /> {t['contact.locked']}
                   </span>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-100/50">
-                      {t['contact.emailLabel']}
-                    </p>
-                    <a href={`mailto:${t['contact.email']}`} className="text-sm font-medium text-ivory transition-colors hover:text-gold-300">
-                      {t['contact.email']}
-                    </a>
-                  </div>
-                </li>
-                <li className="flex items-center gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/30">
-                    <Phone size={18} />
+                )}
+              </div>
+
+              {revealed ? (
+                <ul className="mt-6 space-y-5">
+                  <li className="flex items-center gap-4">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/30">
+                      <Mail size={18} />
+                    </span>
+                    <div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-100/50">
+                        {t['contact.emailLabel']}
+                      </p>
+                      <a href={`mailto:${t['contact.email']}`} className="text-sm font-medium text-ivory transition-colors hover:text-gold-300">
+                        {t['contact.email']}
+                      </a>
+                    </div>
+                  </li>
+                  {t['contact.phone'].split(/\s-\s/).map((p, i) => (
+                    <li key={i} className="flex items-center gap-4">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/30">
+                        <Phone size={18} />
+                      </span>
+                      <div>
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-100/50">
+                          {t['contact.phoneLabel']}
+                        </p>
+                        <a href={`tel:${p.replace(/\s/g, '')}`} className="text-sm font-medium text-ivory transition-colors hover:text-gold-300">
+                          {p}
+                        </a>
+                      </div>
+                    </li>
+                  ))}
+                  {t['contact.location'].split(/\s-\s/).map((l, i) => (
+                    <li key={i} className="flex items-center gap-4">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/30">
+                        <MapPin size={18} />
+                      </span>
+                      <div>
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-100/50">
+                          {t['contact.locationLabel']}
+                        </p>
+                        <p className="text-sm font-medium text-ivory">{l}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="mt-6 flex flex-col items-center gap-3 py-10 text-center">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/5 text-pine-100/50 ring-1 ring-white/10">
+                    <Lock size={22} />
                   </span>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-100/50">
-                      {t['contact.phoneLabel']}
-                    </p>
-                    <a href={`tel:${t['contact.phone'].replace(/\s/g, '')}`} className="text-sm font-medium text-ivory transition-colors hover:text-gold-300">
-                      {t['contact.phone']}
-                    </a>
-                  </div>
-                </li>
-                <li className="flex items-center gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/30">
-                    <MapPin size={18} />
-                  </span>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-100/50">
-                      {t['contact.locationLabel']}
-                    </p>
-                    <p className="text-sm font-medium text-ivory">{t['contact.location']}</p>
-                  </div>
-                </li>
-              </ul>
+                  <p className="max-w-xs text-sm text-pine-100/55">{t['contact.revealHint']}</p>
+                </div>
+              )}
 
               <div className="mt-8 flex gap-3">
                 <a
