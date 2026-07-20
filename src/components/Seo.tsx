@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
+import { useLocation } from 'react-router';
 import { useLang } from '@/i18n/useLang';
+import { UI } from '@/i18n/translations';
 import type { Lang } from '@/i18n/lang';
 
 const SITE_URL = 'https://seynudedagnon.com';
@@ -19,7 +21,18 @@ const SEO: Record<Lang, { title: string; description: string; ogLocale: string }
   },
 };
 
-function personJsonLd(lang: Lang) {
+const CONTACT_SEO: Record<Lang, { title: string; description: string }> = {
+  fr: {
+    title: UI.fr['contact.seoTitle'],
+    description: UI.fr['contact.seoDescription'],
+  },
+  en: {
+    title: UI.en['contact.seoTitle'],
+    description: UI.en['contact.seoDescription'],
+  },
+};
+
+function personJsonLd(lang: Lang, url: string) {
   const name = lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, PhD';
   const jobTitle =
     lang === 'fr'
@@ -32,7 +45,7 @@ function personJsonLd(lang: Lang) {
     name,
     jobTitle,
     description: desc,
-    url: SITE_URL,
+    url,
     image: `${SITE_URL}/og-image.jpg`,
     alumniOf: [
       { '@type': 'CollegeOrUniversity', name: 'University of Conakry' },
@@ -50,9 +63,12 @@ function personJsonLd(lang: Lang) {
 
 export function Seo() {
   const { lang } = useLang();
+  const { pathname } = useLocation();
+  const isContact = pathname.startsWith('/contact');
 
   useEffect(() => {
-    const data = SEO[lang];
+    const data = isContact ? CONTACT_SEO[lang] : SEO[lang];
+    const url = SITE_URL + (isContact ? '/contact' : '');
     document.title = data.title;
     document.documentElement.lang = lang;
 
@@ -72,9 +88,19 @@ export function Seo() {
     setMeta('meta[name="description"]', 'content', data.description);
     setMeta('meta[property="og:title"]', 'content', data.title);
     setMeta('meta[property="og:description"]', 'content', data.description);
-    setMeta('meta[property="og:locale"]', 'content', data.ogLocale);
+    setMeta('meta[property="og:url"]', 'content', url);
+    setMeta('meta[property="og:locale"]', 'content', SEO[lang].ogLocale);
     setMeta('meta[name="twitter:title"]', 'content', data.title);
     setMeta('meta[name="twitter:description"]', 'content', data.description);
+    setMeta('meta[name="twitter:url"]', 'content', url);
+
+    let link = document.head.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!link) {
+      link = document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      document.head.appendChild(link);
+    }
+    link.setAttribute('href', url);
 
     let ld = document.getElementById('person-jsonld');
     if (!ld) {
@@ -83,8 +109,8 @@ export function Seo() {
       ld.setAttribute('type', 'application/ld+json');
       document.head.appendChild(ld);
     }
-    ld.textContent = JSON.stringify(personJsonLd(lang));
-  }, [lang]);
+    ld.textContent = JSON.stringify(personJsonLd(lang, url));
+  }, [lang, isContact]);
 
   return null;
 }
