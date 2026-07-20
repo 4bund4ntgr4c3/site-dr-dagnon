@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Menu, X, Linkedin } from 'lucide-react';
 import { LINKS } from '@/data/content';
 import { NAV, UI } from '@/i18n/translations';
-import { useLang } from '@/i18n/LanguageContext';
+import { useLang } from '@/i18n/useLang';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { track } from '@/lib/analytics';
 

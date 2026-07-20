@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Linkedin, Youtube, ArrowDown, MapPin, Award, BookOpen } from 'lucide-react';
 import { LINKS } from '@/data/content';
-import { useLang } from '@/i18n/LanguageContext';
+import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 
 const fadeUp = {

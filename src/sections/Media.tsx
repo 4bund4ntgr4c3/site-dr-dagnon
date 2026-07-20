@@ -1,7 +1,7 @@
 import { Play, FileDown, Newspaper, ArrowUpRight } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
-import { useLang } from '@/i18n/LanguageContext';
+import { useLang } from '@/i18n/useLang';
 import { MEDIA, UI } from '@/i18n/translations';
 
 export function Media() {

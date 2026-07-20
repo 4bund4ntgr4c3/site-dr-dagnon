@@ -2,7 +2,7 @@ import { Linkedin, Youtube, ArrowUpRight } from 'lucide-react';
 import { AfricaMap } from '@/components/AfricaMap';
 import { Reveal } from '@/components/Reveal';
 import { LINKS } from '@/data/content';
-import { useLang } from '@/i18n/LanguageContext';
+import { useLang } from '@/i18n/useLang';
 import { NAV, UI } from '@/i18n/translations';
 
 export function Footer() {
