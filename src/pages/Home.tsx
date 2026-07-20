@@ -12,8 +12,10 @@ import { Footer } from '@/sections/Footer';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import { Seo } from '@/components/Seo';
 import { LanguageProvider } from '@/i18n/LanguageContext';
+import { useSectionTracking } from '@/hooks/useSectionTracking';
 
 export default function Home() {
+  useSectionTracking();
   return (
     <LanguageProvider>
       <Seo />
