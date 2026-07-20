@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const CHROME = 'C:\\Users\\Studio26\\AppData\\Local\\ms-playwright\\chromium-1208\\chrome-win64\\chrome.exe';
-const photo = path.join(root, 'public', 'dr-seynude-dagnon.png');
+const photo = path.join(root, 'public', 'dr-seynude-dagnon.jpeg');
 const out = path.join(root, 'public', 'og-image.jpg');
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>

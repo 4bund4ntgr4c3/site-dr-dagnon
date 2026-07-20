@@ -123,7 +123,7 @@ export function Hero() {
           >
             <div className="relative overflow-hidden rounded-[2rem] border-2 border-gold-400/70 shadow-2xl shadow-black/40">
               <img
-                src="/dr-seynude-dagnon.png"
+                src="/dr-seynude-dagnon.jpeg"
                 alt="Dr. Seynudé Jean-Fortuné Dagnon"
                 className="h-full w-full object-cover"
               />
