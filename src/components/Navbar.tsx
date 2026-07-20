@@ -45,7 +45,7 @@ export function Navbar() {
           {NAV[lang].map((item, i) => (
             <a
               key={item.id}
-              href={`#${item.id}`}
+              href={navHref(item.id)}
               className={`rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
                 i === 0 ? 'text-ivory' : 'text-pine-100/85'
               }`}
