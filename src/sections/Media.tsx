@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Play, FileDown, Newspaper, ArrowUpRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Play, FileDown, Newspaper, ArrowUpRight, X } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
@@ -12,22 +12,13 @@ function youtubeId(url: string): string {
   return m ? m[1] : '';
 }
 
-function MediaCard({ m, watchLabel }: { m: MediaItem; watchLabel: string }) {
-  const [playing, setPlaying] = useState(false);
+function MediaCard({ m, watchLabel, onPlay }: { m: MediaItem; watchLabel: string; onPlay: () => void }) {
   const isVideo = m.kind === 'video';
 
   return (
     <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-pine-900/60 backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-500/40">
       <div className="relative aspect-video overflow-hidden">
-        {isVideo && playing ? (
-          <iframe
-            className="absolute inset-0 h-full w-full"
-            src={`https://www.youtube-nocookie.com/embed/${youtubeId(m.url)}?autoplay=1&rel=0&modestbranding=1`}
-            title={m.title}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          />
-        ) : isVideo ? (
+        {isVideo ? (
           <>
             <img
               src={m.thumb}
@@ -38,7 +29,7 @@ function MediaCard({ m, watchLabel }: { m: MediaItem; watchLabel: string }) {
             <div className="absolute inset-0 bg-pine-950/40 transition-colors group-hover:bg-pine-950/20" />
             <button
               type="button"
-              onClick={() => setPlaying(true)}
+              onClick={onPlay}
               aria-label={watchLabel}
               className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gold-500 text-pine-950 shadow-xl transition-transform duration-300 hover:scale-110"
             >
@@ -76,6 +67,20 @@ function MediaCard({ m, watchLabel }: { m: MediaItem; watchLabel: string }) {
 export function Media() {
   const { lang } = useLang();
   const t = UI[lang];
+  const [active, setActive] = useState<MediaItem | null>(null);
+
+  useEffect(() => {
+    if (!active) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setActive(null);
+    };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [active]);
 
   return (
     <section id="medias" className="relative overflow-hidden bg-pine-950 py-24 lg:py-32">
@@ -121,11 +126,49 @@ export function Media() {
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {MEDIA[lang].map((m, i) => (
             <Reveal key={m.title} delay={0.15 + i * 0.08}>
-              <MediaCard m={m} watchLabel={t['media.watch']} />
+              <MediaCard
+                m={m}
+                watchLabel={t['media.watch']}
+                onPlay={() => setActive(m)}
+              />
             </Reveal>
           ))}
         </div>
       </div>
+
+      {/* video modal */}
+      {active && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-pine-950/90 p-4 backdrop-blur-sm"
+          onClick={() => setActive(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={active.title}
+        >
+          <div
+            className="relative w-full max-w-4xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setActive(null)}
+              aria-label={t['media.close'] ?? 'Close'}
+              className="absolute -top-12 right-0 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-ivory transition-colors hover:bg-white/10"
+            >
+              <X size={20} />
+            </button>
+            <div className="aspect-video w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+              <iframe
+                className="h-full w-full"
+                src={`https://www.youtube-nocookie.com/embed/${youtubeId(active.url)}?autoplay=1&rel=0&modestbranding=1`}
+                title={active.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
