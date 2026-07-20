@@ -1,8 +1,77 @@
+import { useState } from 'react';
 import { Play, FileDown, Newspaper, ArrowUpRight } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { MEDIA, UI } from '@/i18n/translations';
+
+type MediaItem = (typeof MEDIA)[keyof typeof MEDIA][number];
+
+function youtubeId(url: string): string {
+  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+  return m ? m[1] : '';
+}
+
+function MediaCard({ m, watchLabel }: { m: MediaItem; watchLabel: string }) {
+  const [playing, setPlaying] = useState(false);
+  const isVideo = m.kind === 'video';
+
+  return (
+    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-pine-900/60 backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-500/40">
+      <div className="relative aspect-video overflow-hidden">
+        {isVideo && playing ? (
+          <iframe
+            className="absolute inset-0 h-full w-full"
+            src={`https://www.youtube-nocookie.com/embed/${youtubeId(m.url)}?autoplay=1&rel=0&modestbranding=1`}
+            title={m.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        ) : isVideo ? (
+          <>
+            <img
+              src={m.thumb}
+              alt={m.title}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-pine-950/40 transition-colors group-hover:bg-pine-950/20" />
+            <button
+              type="button"
+              onClick={() => setPlaying(true)}
+              aria-label={watchLabel}
+              className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gold-500 text-pine-950 shadow-xl transition-transform duration-300 hover:scale-110"
+            >
+              <Play size={22} className="ml-0.5" fill="currentColor" />
+            </button>
+          </>
+        ) : (
+          <div className="relative flex aspect-video items-center justify-center bg-gradient-to-br from-pine-800 to-pine-950">
+            <div className="absolute inset-0 texture-dots" />
+            <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/40 transition-transform duration-300 group-hover:scale-110">
+              <FileDown size={24} />
+            </span>
+          </div>
+        )}
+      </div>
+      <div className="flex flex-1 flex-col p-5">
+        <p className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-gold-400">{m.event}</p>
+        <h3 className="mt-2 flex-1 font-display text-[15.5px] font-semibold leading-snug text-ivory">
+          {m.title}
+        </h3>
+        <a
+          href={m.url}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-pine-100/60 transition-colors hover:text-gold-300"
+        >
+          {isVideo ? watchLabel : 'Download'}
+          <ArrowUpRight size={13} />
+        </a>
+      </div>
+    </div>
+  );
+}
 
 export function Media() {
   const { lang } = useLang();
@@ -52,44 +121,7 @@ export function Media() {
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {MEDIA[lang].map((m, i) => (
             <Reveal key={m.title} delay={0.15 + i * 0.08}>
-              <a
-                href={m.url}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-pine-900/60 backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-500/40"
-              >
-                {m.kind === 'video' ? (
-                  <div className="relative aspect-video overflow-hidden">
-                    <img
-                      src={m.thumb}
-                      alt={m.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-pine-950/40 transition-colors group-hover:bg-pine-950/20" />
-                    <span className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gold-500 text-pine-950 shadow-xl transition-transform duration-300 group-hover:scale-110">
-                      <Play size={22} className="ml-0.5" fill="currentColor" />
-                    </span>
-                  </div>
-                ) : (
-                  <div className="relative flex aspect-video items-center justify-center bg-gradient-to-br from-pine-800 to-pine-950">
-                    <div className="absolute inset-0 texture-dots" />
-                    <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/40 transition-transform duration-300 group-hover:scale-110">
-                      <FileDown size={24} />
-                    </span>
-                  </div>
-                )}
-                <div className="flex flex-1 flex-col p-5">
-                  <p className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-gold-400">{m.event}</p>
-                  <h3 className="mt-2 flex-1 font-display text-[15.5px] font-semibold leading-snug text-ivory">
-                    {m.title}
-                  </h3>
-                  <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-pine-100/60 transition-colors group-hover:text-gold-300">
-                    {m.kind === 'video' ? t['media.watch'] : t['media.download']}
-                    <ArrowUpRight size={13} />
-                  </span>
-                </div>
-              </a>
+              <MediaCard m={m} watchLabel={t['media.watch']} />
             </Reveal>
           ))}
         </div>
