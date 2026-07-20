@@ -9,6 +9,12 @@ export function Footer() {
   const { lang } = useLang();
   const t = UI[lang];
 
+  const navHref = (id: string) => {
+    if (id === 'contact') return '/contact';
+    if (id === 'medias') return '/media';
+    return `/#${id}`;
+  };
+
   return (
     <footer id="contact" className="relative overflow-hidden bg-[#051512]">
       <div className="absolute inset-0 texture-net opacity-70" />
@@ -69,7 +75,7 @@ export function Footer() {
             {NAV[lang].map((item) => (
               <a
                 key={item.id}
-                 href={`/#${item.id}`}
+                 href={navHref(item.id)}
                 className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
               >
                 {item.label}

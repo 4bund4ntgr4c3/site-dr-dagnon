@@ -32,6 +32,17 @@ const CONTACT_SEO: Record<Lang, { title: string; description: string }> = {
   },
 };
 
+const MEDIA_SEO: Record<Lang, { title: string; description: string }> = {
+  fr: {
+    title: UI.fr['mediaPage.seoTitle'],
+    description: UI.fr['mediaPage.seoDescription'],
+  },
+  en: {
+    title: UI.en['mediaPage.seoTitle'],
+    description: UI.en['mediaPage.seoDescription'],
+  },
+};
+
 function personJsonLd(lang: Lang, url: string) {
   const name = lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, PhD';
   const jobTitle =
@@ -65,10 +76,11 @@ export function Seo() {
   const { lang } = useLang();
   const { pathname } = useLocation();
   const isContact = pathname.startsWith('/contact');
+  const isMedia = pathname.startsWith('/media');
 
   useEffect(() => {
-    const data = isContact ? CONTACT_SEO[lang] : SEO[lang];
-    const url = SITE_URL + (isContact ? '/contact' : '');
+    const data = isMedia ? MEDIA_SEO[lang] : isContact ? CONTACT_SEO[lang] : SEO[lang];
+    const url = SITE_URL + (isMedia ? '/media' : isContact ? '/contact' : '');
     document.title = data.title;
     document.documentElement.lang = lang;
 
@@ -110,7 +122,7 @@ export function Seo() {
       document.head.appendChild(ld);
     }
     ld.textContent = JSON.stringify(personJsonLd(lang, url));
-  }, [lang, isContact]);
+  }, [lang, isContact, isMedia]);
 
   return null;
 }

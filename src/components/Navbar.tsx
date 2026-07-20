@@ -20,7 +20,11 @@ export function Navbar() {
   }, []);
 
   const solid = scrolled || open;
-  const navHref = (id: string) => (id === 'contact' ? '/contact' : `/#${id}`);
+  const navHref = (id: string) => {
+    if (id === 'contact') return '/contact';
+    if (id === 'medias') return '/media';
+    return `/#${id}`;
+  };
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 transition-all duration-500">
