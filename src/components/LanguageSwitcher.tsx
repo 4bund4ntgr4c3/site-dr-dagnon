@@ -1,9 +1,15 @@
 import { useLang } from '@/i18n/LanguageContext';
 import { SUPPORTED, type Lang } from '@/i18n/lang';
 import { UI } from '@/i18n/translations';
+import { track } from '@/lib/analytics';
 
 export function LanguageSwitcher({ className = '' }: { className?: string }) {
   const { lang, setLang } = useLang();
+
+  const handle = (l: Lang) => {
+    setLang(l);
+    track('language_change', { event_category: 'engagement', event_label: l });
+  };
 
   return (
     <div
@@ -14,7 +20,7 @@ export function LanguageSwitcher({ className = '' }: { className?: string }) {
       {SUPPORTED.map((l: Lang) => (
         <button
           key={l}
-          onClick={() => setLang(l)}
+          onClick={() => handle(l)}
           aria-pressed={lang === l}
           className={`rounded-full px-3 py-1.5 text-[12px] font-semibold transition-colors ${
             lang === l

@@ -4,6 +4,7 @@ import { LINKS } from '@/data/content';
 import { NAV, UI } from '@/i18n/translations';
 import { useLang } from '@/i18n/LanguageContext';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { track } from '@/lib/analytics';
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -60,6 +61,7 @@ export function Navbar() {
             href={LINKS.linkedin}
             target="_blank"
             rel="noreferrer"
+            onClick={() => track('click', { event_category: 'outbound', event_label: 'linkedin' })}
             className="hidden lg:flex items-center gap-2 rounded-full border border-gold-500/50 px-4 py-2 text-[13px] font-semibold text-gold-300 transition-all hover:bg-gold-500 hover:text-pine-950"
           >
             <Linkedin size={15} /> LinkedIn
@@ -96,6 +98,7 @@ export function Navbar() {
                 href={LINKS.linkedin}
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => track('click', { event_category: 'outbound', event_label: 'linkedin' })}
                 className="flex flex-1 items-center justify-center gap-2 rounded-full bg-gold-500 px-4 py-2.5 text-sm font-semibold text-pine-950"
               >
                 <Linkedin size={15} /> LinkedIn
@@ -104,6 +107,7 @@ export function Navbar() {
                 href={LINKS.youtube}
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => track('click', { event_category: 'outbound', event_label: 'youtube' })}
                 className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-ivory"
               >
                 YouTube
