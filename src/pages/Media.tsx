@@ -128,7 +128,7 @@ export default function MediaPage() {
       {/* content — light */}
       <section className="bg-pine-50 py-16 lg:py-20">
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
+          <div className="grid gap-8 lg:grid-cols-[280px_1fr] lg:items-start">
             {/* filters sidebar */}
             <aside className="lg:sticky lg:top-24">
               <div className="rounded-3xl border border-pine-900/10 bg-white p-6 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
