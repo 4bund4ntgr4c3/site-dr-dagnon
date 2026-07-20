@@ -56,15 +56,32 @@ export default function Contact() {
     <main className="min-h-screen bg-pine-950 pt-28 lg:pt-36">
       <div className="absolute inset-x-0 top-0 -z-10 h-[420px] bg-gradient-to-b from-pine-900 to-pine-950" />
       <div className="relative mx-auto max-w-6xl px-5 pb-28 lg:px-8">
-        {/* header */}
+        {/* header — hero style */}
         <Reveal>
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold-400">
-            {t['footer.eyebrow']}
-          </p>
-          <h1 className="mt-4 font-display text-4xl font-medium leading-tight text-ivory sm:text-5xl">
+          <span className="inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-gold-400" />
             {t['contact.title']}
+          </span>
+          <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl lg:text-[4.4rem]">
+            {(() => {
+              const parts = t['hero.name'].split(' ');
+              const idx = parts.findIndex((w) => w.toUpperCase().startsWith('DAGNON'));
+              return parts.map((w, i) =>
+                i === idx ? (
+                  <span key={i} className="text-gold-400 italic">
+                    {w}
+                    {i === parts.length - 1 ? '' : ' '}
+                  </span>
+                ) : (
+                  <span key={i}>
+                    {w}
+                    {i === parts.length - 1 ? '' : ' '}
+                  </span>
+                ),
+              );
+            })()}
           </h1>
-          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-pine-100/65">
+          <p className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
             {t['contact.intro']}
           </p>
         </Reveal>
