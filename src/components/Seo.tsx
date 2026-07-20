@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLang } from '@/i18n/LanguageContext';
 import type { Lang } from '@/i18n/lang';
 
-const SITE_URL = 'https://site-dr-dagnon.vercel.app';
+const SITE_URL = 'https://seynudedagnon.com';
 
 const SEO: Record<Lang, { title: string; description: string; ogLocale: string }> = {
   fr: {

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://site-dr-dagnon.vercel.app/sitemap.xml
+Sitemap: https://seynudedagnon.com/sitemap.xml
