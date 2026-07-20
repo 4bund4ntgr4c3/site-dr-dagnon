@@ -85,16 +85,21 @@ async function run() {
   }
 
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-  await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle' });
+  await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'load' });
   await page.waitForSelector('#root > *', { timeout: 30000 });
-  await page.waitForTimeout(800);
+  try {
+    await page.waitForFunction(() => window.__APP_MOUNTED__ === true, { timeout: 15000 });
+  } catch {
+    console.warn('[prerender] app mount flag not detected — capturing current DOM');
+  }
+  await page.waitForTimeout(300);
 
   const html = await page.content();
   fs.writeFileSync(path.join(dist, 'index.html'), html, 'utf-8');
 
   const inner = await page.$eval('#root', (el) => el.innerHTML);
   const src = fs.readFileSync(sourceIndex, 'utf-8');
-  const next = src.replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${inner}</div>`);
+  const next = src.replace(/<div id="root">[\s\S]*<\/div>/, `<div id="root">${inner}</div>`);
   if (next !== src) fs.writeFileSync(sourceIndex, next, 'utf-8');
 
   const text = await page.evaluate(() => document.body.innerText);

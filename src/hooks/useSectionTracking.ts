@@ -3,11 +3,13 @@ import { useEffect } from 'react';
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
+    __APP_MOUNTED__?: boolean;
   }
 }
 
 export function useSectionTracking() {
   useEffect(() => {
+    window.__APP_MOUNTED__ = true;
     const sections = Array.from(document.querySelectorAll<HTMLElement>('section[id]'));
     if (!sections.length) return;
 
