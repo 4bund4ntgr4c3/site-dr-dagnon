@@ -69,7 +69,7 @@ export function Footer() {
             {NAV[lang].map((item) => (
               <a
                 key={item.id}
-                href={`#${item.id}`}
+                 href={`/#${item.id}`}
                 className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
               >
                 {item.label}

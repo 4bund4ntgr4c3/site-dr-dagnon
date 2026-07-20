@@ -20,6 +20,7 @@ export function Navbar() {
   }, []);
 
   const solid = scrolled || open;
+  const navHref = (id: string) => (id === 'contact' ? '/contact' : `/#${id}`);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 transition-all duration-500">
@@ -30,7 +31,7 @@ export function Navbar() {
             : 'mt-2 lg:mt-3 mx-3 lg:mx-4 rounded-3xl border border-transparent bg-pine-950/40 backdrop-blur-sm'
         }`}
       >
-        <a href="#accueil" className="flex min-w-0 items-center gap-3 group">
+        <a href="/" className="flex min-w-0 items-center gap-3 group">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gold-500 font-display text-sm font-semibold text-pine-950 transition-transform group-hover:scale-105">
             SD
           </span>
@@ -84,7 +85,7 @@ export function Navbar() {
             {NAV[lang].map((item) => (
               <a
                 key={item.id}
-                href={`#${item.id}`}
+              href={navHref(item.id)}
                 onClick={() => setOpen(false)}
                 className="rounded-lg px-3 py-2.5 text-sm font-medium text-pine-100/90 hover:bg-white/5 hover:text-gold-400"
               >
