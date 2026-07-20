@@ -12,7 +12,7 @@ const SEO: Record<Lang, { title: string; description: string; ogLocale: string }
     ogLocale: 'fr_FR',
   },
   en: {
-    title: 'Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Public Health & Malaria',
+    title: 'Seynudé Jean-Fortuné DAGNON, PhD — Public Health & Malaria',
     description:
       'Leader in public health and malaria programs, Senior Program Officer at the Gates Foundation. Francophone Africa, health systems, data for decision-making.',
     ogLocale: 'en_US',
