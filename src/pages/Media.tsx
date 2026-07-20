@@ -128,9 +128,11 @@ export default function MediaPage() {
       {/* content — light */}
       <section className="bg-pine-50 py-16 lg:py-20">
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
-          {/* filters */}
-          <div className="rounded-3xl border border-pine-900/10 bg-white p-6 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
-            <div className="grid gap-6 lg:grid-cols-[1.2fr_1.4fr_auto] lg:items-end">
+          <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
+            {/* filters sidebar */}
+            <aside className="lg:sticky lg:top-24">
+              <div className="rounded-3xl border border-pine-900/10 bg-white p-6 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
+                <div className="space-y-6">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
                   {t['mediaPage.filterType']}
@@ -170,7 +172,7 @@ export default function MediaPage() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="space-y-3">
                 <label className="flex flex-col gap-1">
                   <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
                     {t['mediaPage.filterYear']}
@@ -205,7 +207,9 @@ export default function MediaPage() {
               </div>
             </div>
           </div>
+          </aside>
 
+          <div>
           <p className="mt-6 text-[13px] font-medium text-pine-900/55">
             {t['mediaPage.results'].replace('{n}', String(filtered.length))}
           </p>
@@ -224,6 +228,8 @@ export default function MediaPage() {
               ))}
             </div>
           )}
+          </div>
+        </div>
         </div>
       </section>
 
