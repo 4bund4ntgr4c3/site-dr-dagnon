@@ -143,11 +143,11 @@ export function Hero() {
                 transition={{ duration: 0.6, ease: 'easeInOut' }}
                 style={{ pointerEvents: showVideo ? 'auto' : 'none' }}
               >
-                <button
-                  onClick={() => setShowVideo(false)}
-                  className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-pine-950/80 text-ivory transition-colors hover:bg-gold-500 hover:text-pine-950"
-                  aria-label="Close video"
-                >
+                    <button
+                      onClick={() => setShowVideo(false)}
+                      className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-pine-950/80 text-ivory transition-colors hover:bg-gold-500 hover:text-pine-950"
+                      aria-label={t['media.close']}
+                    >
                   <X size={16} />
                 </button>
                 <iframe

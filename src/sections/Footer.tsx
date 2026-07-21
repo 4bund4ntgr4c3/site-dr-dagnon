@@ -4,17 +4,11 @@ import { Reveal } from '@/components/Reveal';
 import { LINKS } from '@/data/content';
 import { useLang } from '@/i18n/useLang';
 import { NAV, UI } from '@/i18n/translations';
+import { navHref } from '@/lib/nav';
 
 export function Footer() {
   const { lang } = useLang();
   const t = UI[lang];
-
-  const navHref = (id: string) => {
-    if (id === 'contact') return '/contact';
-    if (id === 'medias') return '/media';
-    if (id === 'publications') return '/publications';
-    return `/#${id}`;
-  };
 
   return (
     <footer id="contact" className="relative overflow-hidden bg-[#051512]">

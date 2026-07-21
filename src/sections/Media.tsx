@@ -24,6 +24,8 @@ function MediaCard({ m, watchLabel, downloadLabel, onPlay }: { m: MediaItem; wat
             <img
               src={m.thumb}
               alt={m.title}
+              width={320}
+              height={180}
               loading="lazy"
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
@@ -102,7 +104,7 @@ export function Media() {
                 {t['media.oped']}
               </p>
               <h3 className="mt-2 font-display text-2xl font-semibold leading-snug text-ivory lg:text-[1.7rem]">
-                « From Malaria Control to Elimination: The Turn We Need to Make »
+                {t['media.opedTitle']}
               </h3>
               <p className="mt-2 text-sm text-pine-100/60">
                 {t['media.opedText']}

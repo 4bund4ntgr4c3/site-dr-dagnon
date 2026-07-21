@@ -5,6 +5,7 @@ import { NAV, UI } from '@/i18n/translations';
 import { useLang } from '@/i18n/useLang';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { track } from '@/lib/analytics';
+import { navHref } from '@/lib/nav';
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -20,12 +21,6 @@ export function Navbar() {
   }, []);
 
   const solid = scrolled || open;
-  const navHref = (id: string) => {
-    if (id === 'contact') return '/contact';
-    if (id === 'medias') return '/media';
-    if (id === 'publications') return '/publications';
-    return `/#${id}`;
-  };
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 transition-all duration-500">

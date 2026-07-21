@@ -278,6 +278,8 @@ export default function MediaPage() {
               <img
                 src={active.src}
                 alt={active.title[lang]}
+                width={640}
+                height={360}
                 className="max-h-[82vh] w-auto rounded-2xl border border-white/10 shadow-2xl"
               />
             )}
@@ -324,6 +326,8 @@ function MediaCard({
           <img
             src={m.type === 'video' ? m.thumb : m.src}
             alt={m.title[lang]}
+            width={320}
+            height={180}
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />

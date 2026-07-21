@@ -137,7 +137,7 @@ export function Seo() {
       ld.setAttribute('type', 'application/ld+json');
       document.head.appendChild(ld);
     }
-    ld.textContent = JSON.stringify(personJsonLd(lang, url));
+    ld.textContent = JSON.stringify(personJsonLd(lang, SITE_URL));
   }, [lang, isContact, isMedia, isPub]);
 
   return null;

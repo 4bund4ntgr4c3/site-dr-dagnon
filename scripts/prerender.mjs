@@ -6,7 +6,6 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const dist = path.join(root, 'dist');
-const sourceIndex = path.join(root, 'index.html');
 
 const PORT = 4319;
 const CHROME = 'C:\\Users\\Studio26\\AppData\\Local\\ms-playwright\\chromium-1208\\chrome-win64\\chrome.exe';
@@ -96,11 +95,6 @@ async function run() {
 
   const html = await page.content();
   fs.writeFileSync(path.join(dist, 'index.html'), html, 'utf-8');
-
-  const inner = await page.$eval('#root', (el) => el.innerHTML);
-  const src = fs.readFileSync(sourceIndex, 'utf-8');
-  const next = src.replace(/<div id="root">[\s\S]*<\/div>/, `<div id="root">${inner}</div>`);
-  if (next !== src) fs.writeFileSync(sourceIndex, next, 'utf-8');
 
   const text = await page.evaluate(() => document.body.innerText);
   console.log(`[prerender] rendered #root chars: ${text.length}`);
