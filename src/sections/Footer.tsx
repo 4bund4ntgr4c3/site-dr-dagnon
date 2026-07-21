@@ -1,4 +1,4 @@
-import { Linkedin, Youtube, ArrowUpRight } from 'lucide-react';
+import { Linkedin, Youtube, Mail, ArrowUpRight } from 'lucide-react';
 import { AfricaMap } from '@/components/AfricaMap';
 import { Reveal } from '@/components/Reveal';
 import { LINKS } from '@/data/content';
@@ -51,6 +51,12 @@ export function Footer() {
                 >
                   <Youtube size={17} /> {t['footer.youtube']}
                   <ArrowUpRight size={15} />
+                </a>
+                <a
+                  href="/contact"
+                  className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
+                >
+                  <Mail size={17} /> {t['footer.contact']}
                 </a>
               </div>
             </div>
