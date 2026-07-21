@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
-import { Linkedin, Youtube, ArrowDown, MapPin, Award, BookOpen } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Linkedin, Youtube, ArrowDown, MapPin, Award, BookOpen, Play, X } from 'lucide-react';
 import { LINKS } from '@/data/content';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -13,6 +14,24 @@ const fadeUp = {
 export function Hero() {
   const { lang } = useLang();
   const t = UI[lang];
+  const [showVideo, setShowVideo] = useState(false);
+  const embedContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (showVideo && embedContainerRef.current) {
+      const container = embedContainerRef.current;
+      container.innerHTML = '';
+      const blockquote = document.createElement('blockquote');
+      blockquote.className = 'instagram-media';
+      blockquote.setAttribute('data-instgrm-permalink', 'https://www.instagram.com/reel/DXq0i04DDts/?utm_source=ig_embed&amp;utm_campaign=loading');
+      blockquote.setAttribute('data-instgrm-version', '14');
+      blockquote.style.cssText = 'background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin:0; max-width:540px; min-width:326px; padding:0; width:100%;';
+      container.appendChild(blockquote);
+      if (window.instgrm) {
+        window.instgrm.Embeds.process();
+      }
+    }
+  }, [showVideo]);
 
   return (
     <section id="accueil" className="relative min-h-screen overflow-hidden bg-pine-950">
@@ -106,15 +125,59 @@ export function Hero() {
             className="relative mx-auto w-full max-w-[400px]"
           >
             <div className="relative overflow-hidden rounded-[2rem] border-2 border-gold-400/70 shadow-2xl shadow-black/40">
-              <img
-                src="/dr-seynude-dagnon.jpeg"
-                alt={lang === 'fr' ? 'Portrait du Dr. Seynudé Jean-Fortuné Dagnon' : 'Portrait of Dr. Seynudé Jean-Fortuné Dagnon'}
-                width={400}
-                height={400}
-                fetchPriority="high"
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-pine-950/70 via-pine-950/10 to-transparent" />
+              <AnimatePresence mode="wait">
+                {!showVideo ? (
+                  <motion.div
+                    key="photo"
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="relative cursor-pointer"
+                    onClick={() => setShowVideo(true)}
+                  >
+                    <img
+                      src="/dr-seynude-dagnon.jpeg"
+                      alt={lang === 'fr' ? 'Portrait du Dr. Seynudé Jean-Fortuné Dagnon' : 'Portrait of Dr. Seynudé Jean-Fortuné Dagnon'}
+                      width={400}
+                      height={400}
+                      fetchPriority="high"
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-pine-950/70 via-pine-950/10 to-transparent" />
+                    {/* play button */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex h-16 w-16 items-center justify-center rounded-full bg-gold-500/90 shadow-lg shadow-gold-600/30 backdrop-blur-sm"
+                      >
+                        <Play size={28} className="ml-1 text-pine-950" fill="currentColor" />
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="video"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="relative bg-pine-950"
+                  >
+                    <button
+                      onClick={() => setShowVideo(false)}
+                      className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-pine-950/80 text-ivory transition-colors hover:bg-gold-500 hover:text-pine-950"
+                      aria-label="Close video"
+                    >
+                      <X size={16} />
+                    </button>
+                    <div
+                      ref={embedContainerRef}
+                      className="flex items-center justify-center p-4"
+                      style={{ minHeight: '400px' }}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* floating badges */}
