@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { FileText, ArrowUpRight, X, Star } from 'lucide-react';
+import { FileText, ArrowUpRight, X, Star, Search } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -18,6 +18,7 @@ export default function PublicationsPage() {
   const [type, setType] = useState<PubType | 'all'>('all');
   const [year, setYear] = useState<string>('all');
   const [sort, setSort] = useState<'desc' | 'asc'>('desc');
+  const [search, setSearch] = useState('');
   const [expanded, setExpanded] = useState<string | null>(null);
 
   const years = useMemo(() => {
@@ -26,15 +27,20 @@ export default function PublicationsPage() {
   }, []);
 
   const filtered = useMemo(() => {
+    const q = search.toLowerCase().trim();
     return PUB_ITEMS.filter((p) => {
       if (type !== 'all' && p.type !== type) return false;
       if (year !== 'all' && String(p.year) !== year) return false;
+      if (q) {
+        const haystack = `${p.title[lang]} ${p.authors[lang]} ${p.journal[lang]}`.toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
       return true;
     }).sort((a, b) => {
       const cmp = a.year - b.year;
       return sort === 'desc' ? -cmp : cmp;
     });
-  }, [type, year, sort]);
+  }, [type, year, sort, search, lang]);
 
   const featured = useMemo(() => filtered.filter((p) => p.featured), [filtered]);
   const regular = useMemo(() => filtered.filter((p) => !p.featured), [filtered]);
@@ -107,6 +113,21 @@ export default function PublicationsPage() {
             <aside className="lg:sticky lg:top-24">
               <div className="rounded-3xl border border-pine-900/10 bg-white p-6 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
                 <div className="space-y-6">
+                  {/* search */}
+                  <div>
+                    <div className="relative">
+                      <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-pine-900/40" />
+                      <input
+                        type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder={t['pubPage.search']}
+                        className="w-full rounded-xl border border-pine-900/15 bg-white py-2.5 pl-9 pr-4 text-sm text-pine-900 placeholder:text-pine-900/40 outline-none transition-colors focus:border-gold-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* type */}
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
                       {t['pubPage.filterType']}
@@ -125,38 +146,53 @@ export default function PublicationsPage() {
                     </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <label className="flex flex-col gap-1">
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
-                        {t['pubPage.filterYear']}
-                      </span>
-                      <select
-                        value={year}
-                        onChange={(e) => setYear(e.target.value)}
-                        className="rounded-xl border border-pine-900/15 bg-white px-3 py-2 text-sm text-pine-900 outline-none transition-colors focus:border-gold-500"
+                  {/* year */}
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
+                      {t['pubPage.filterYear']}
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setYear('all')}
+                        className={chip(year === 'all')}
                       >
-                        <option value="all">{t['pubPage.all']}</option>
-                        {years.map((y) => (
-                          <option key={y} value={y}>
-                            {y}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
+                        {t['pubPage.all']}
+                      </button>
+                      {years.map((y) => (
+                        <button
+                          key={y}
+                          type="button"
+                          onClick={() => setYear(y)}
+                          className={chip(year === y)}
+                        >
+                          {y}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-                    <label className="flex flex-col gap-1">
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
-                        {t['pubPage.filterSort']}
-                      </span>
-                      <select
-                        value={sort}
-                        onChange={(e) => setSort(e.target.value as 'desc' | 'asc')}
-                        className="rounded-xl border border-pine-900/15 bg-white px-3 py-2 text-sm text-pine-900 outline-none transition-colors focus:border-gold-500"
+                  {/* sort */}
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
+                      {t['pubPage.filterSort']}
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setSort('desc')}
+                        className={chip(sort === 'desc')}
                       >
-                        <option value="desc">{t['pubPage.newest']}</option>
-                        <option value="asc">{t['pubPage.oldest']}</option>
-                      </select>
-                    </label>
+                        {t['pubPage.newest']}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSort('asc')}
+                        className={chip(sort === 'asc')}
+                      >
+                        {t['pubPage.oldest']}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
