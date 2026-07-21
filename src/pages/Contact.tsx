@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Mail, Phone, MapPin, Linkedin, Youtube, Send, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Twitter, Send, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
@@ -155,7 +155,7 @@ export default function Contact() {
                   <p className="mt-5 text-[13px] leading-relaxed text-pine-900/60">{t['contact.revealHint']}</p>
                 )}
 
-                <div className="mt-8 flex gap-3">
+                <div className="mt-8 flex flex-wrap gap-3">
                   <a
                     href={LINKS.linkedin}
                     target="_blank"
@@ -173,6 +173,35 @@ export default function Contact() {
                     className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
                   >
                     <Youtube size={18} />
+                  </a>
+                  <a
+                    href={LINKS.facebook}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Facebook"
+                    className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
+                  >
+                    <Facebook size={18} />
+                  </a>
+                  <a
+                    href={LINKS.x}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="X"
+                    className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
+                  >
+                    <Twitter size={18} />
+                  </a>
+                  <a
+                    href={LINKS.tiktok}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="TikTok"
+                    className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1 0-5.78 2.92 2.92 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 3 15.57 6.33 6.33 0 0 0 9.37 22a6.33 6.33 0 0 0 6.38-6.22V9.4a8.16 8.16 0 0 0 3.84.96V7.5a4.85 4.85 0 0 1-2-.81z" />
+                    </svg>
                   </a>
                 </div>
               </div>
