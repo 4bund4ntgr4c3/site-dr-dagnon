@@ -5,7 +5,6 @@ import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
-import { chipClasses } from '@/lib/ui';
 import { PUB_ITEMS, type PubEntry, type PubType } from '@/data/publications';
 
 const TYPE_FILTERS: { value: PubType | 'all'; key: string }[] = [
@@ -82,22 +81,22 @@ export default function PublicationsPage() {
           <div className="grid gap-8 lg:grid-cols-[280px_1fr] lg:items-start">
             {/* filters sidebar */}
             <aside className="lg:sticky lg:top-24">
-              <div className="rounded-3xl border border-pine-900/10 bg-white p-6 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
-                <div className="space-y-6">
+              <div className="rounded-2xl border border-pine-900/10 bg-ivory p-4 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
+                <div className="space-y-4">
                   {/* search */}
                   <div>
                     <label htmlFor="pub-search" className="sr-only">
                       {t['pubPage.search']}
                     </label>
                     <div className="relative">
-                      <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-pine-900/40" />
+                      <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/40" />
                       <input
                         id="pub-search"
                         type="text"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder={t['pubPage.search']}
-                        className="w-full rounded-xl border border-pine-900/15 bg-white py-2.5 pl-9 pr-4 text-sm text-pine-900 placeholder:text-pine-900/40 outline-none transition-colors focus:border-gold-500"
+                        className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/35 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
                       />
                     </div>
                   </div>
@@ -113,7 +112,11 @@ export default function PublicationsPage() {
                           key={f.value}
                           type="button"
                           onClick={() => setType(f.value)}
-                          className={chipClasses(type === f.value)}
+                          className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                            type === f.value
+                              ? 'bg-pine-950 text-gold-400 shadow'
+                              : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                          }`}
                         >
                           {t[f.key]}
                         </button>
@@ -130,7 +133,11 @@ export default function PublicationsPage() {
                       <button
                         type="button"
                         onClick={() => setYear('all')}
-                        className={chipClasses(year === 'all')}
+                        className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                          year === 'all'
+                            ? 'bg-pine-950 text-gold-400 shadow'
+                            : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                        }`}
                       >
                         {t['pubPage.all']}
                       </button>
@@ -139,7 +146,11 @@ export default function PublicationsPage() {
                           key={y}
                           type="button"
                           onClick={() => setYear(y)}
-                          className={chipClasses(year === y)}
+                          className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                            year === y
+                              ? 'bg-pine-950 text-gold-400 shadow'
+                              : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                          }`}
                         >
                           {y}
                         </button>
@@ -156,14 +167,22 @@ export default function PublicationsPage() {
                       <button
                         type="button"
                         onClick={() => setSort('desc')}
-                        className={chipClasses(sort === 'desc')}
+                        className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                          sort === 'desc'
+                            ? 'bg-pine-950 text-gold-400 shadow'
+                            : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                        }`}
                       >
                         {t['pubPage.newest']}
                       </button>
                       <button
                         type="button"
                         onClick={() => setSort('asc')}
-                        className={chipClasses(sort === 'asc')}
+                        className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                          sort === 'asc'
+                            ? 'bg-pine-950 text-gold-400 shadow'
+                            : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                        }`}
                       >
                         {t['pubPage.oldest']}
                       </button>
