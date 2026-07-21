@@ -109,10 +109,10 @@ export function Hero() {
             transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="relative mx-auto w-full max-w-[400px]"
           >
-            <div className="relative aspect-square overflow-hidden rounded-[2rem] border-2 border-gold-400/70 shadow-2xl shadow-black/40">
+            <div className="relative overflow-hidden rounded-[2rem] border-2 border-gold-400/70 shadow-2xl shadow-black/40">
               {/* photo layer */}
               <motion.div
-                className="absolute inset-0 cursor-pointer"
+                className="relative cursor-pointer"
                 animate={{ opacity: showVideo ? 0 : 1 }}
                 transition={{ duration: 0.6, ease: 'easeInOut' }}
                 onClick={() => setShowVideo(true)}
@@ -124,7 +124,7 @@ export function Hero() {
                   width={400}
                   height={400}
                   fetchPriority="high"
-                  className="h-full w-full object-cover"
+                  className="w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-pine-950/70 via-pine-950/10 to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center">
