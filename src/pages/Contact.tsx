@@ -83,16 +83,16 @@ export default function Contact() {
           <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
             {/* contact info */}
             <Reveal delay={0.1}>
-              <div className="rounded-3xl border border-pine-900/10 bg-white p-8 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
+              <div className="rounded-2xl border border-pine-900/10 bg-ivory/60 p-6">
                 <h2 className="font-display text-xl font-semibold text-pine-900">{t['contact.infoTitle']}</h2>
 
-                <ul className="mt-6 space-y-5">
+                <ul className="mt-6 space-y-4">
                   {/* email — always visible */}
-                  <li className="flex items-center gap-4">
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-500/15 text-gold-600 ring-1 ring-gold-500/30">
+                  <li className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lg hover:shadow-pine-900/8">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-gold-400">
                       <Mail size={18} />
                     </span>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/50">
                         {t['contact.emailLabel']}
                       </p>
@@ -105,11 +105,11 @@ export default function Contact() {
                   {/* phone — hidden until the message is sent */}
                   {revealed ? (
                     t['contact.phone'].split(/\s-\s/).map((p, i) => (
-                      <li key={i} className="flex items-center gap-4">
-                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-500/15 text-gold-600 ring-1 ring-gold-500/30">
+                      <li key={i} className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lg hover:shadow-pine-900/8">
+                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-gold-400">
                           <Phone size={18} />
                         </span>
-                        <div>
+                        <div className="min-w-0 flex-1">
                           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/50">
                             {t['contact.phoneLabel']}
                           </p>
@@ -120,11 +120,11 @@ export default function Contact() {
                       </li>
                     ))
                   ) : (
-                    <li className="flex items-center gap-4">
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-500/15 text-gold-600 ring-1 ring-gold-500/30">
+                    <li className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lg hover:shadow-pine-900/8">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-gold-400">
                         <Phone size={18} />
                       </span>
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/50">
                           {t['contact.phoneLabel']}
                         </p>
@@ -137,11 +137,11 @@ export default function Contact() {
 
                   {/* location — always visible */}
                   {t['contact.location'].split(/\s-\s/).map((l, i) => (
-                    <li key={i} className="flex items-center gap-4">
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-500/15 text-gold-600 ring-1 ring-gold-500/30">
+                    <li key={i} className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lg hover:shadow-pine-900/8">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-gold-400">
                         <MapPin size={18} />
                       </span>
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/50">
                           {t['contact.locationLabel']}
                         </p>
@@ -161,7 +161,7 @@ export default function Contact() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label="LinkedIn"
-                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-pine-900/15 text-pine-900/70 transition-colors hover:bg-gold-500 hover:text-white"
+                    className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
                   >
                     <Linkedin size={18} />
                   </a>
@@ -170,7 +170,7 @@ export default function Contact() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label="YouTube"
-                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-pine-900/15 text-pine-900/70 transition-colors hover:bg-gold-500 hover:text-white"
+                    className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
                   >
                     <Youtube size={18} />
                   </a>
