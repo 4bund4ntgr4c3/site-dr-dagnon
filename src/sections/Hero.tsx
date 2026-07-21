@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Linkedin, Youtube, ArrowDown, MapPin, Award, BookOpen, Play, X } from 'lucide-react';
 import { LINKS } from '@/data/content';
@@ -11,27 +11,12 @@ const fadeUp = {
   animate: { opacity: 1, y: 0 },
 };
 
+const YOUTUBE_VIDEO_ID = '2mNE0Bx0A3o';
+
 export function Hero() {
   const { lang } = useLang();
   const t = UI[lang];
   const [showVideo, setShowVideo] = useState(false);
-  const embedContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (showVideo && embedContainerRef.current) {
-      const container = embedContainerRef.current;
-      container.innerHTML = '';
-      const blockquote = document.createElement('blockquote');
-      blockquote.className = 'instagram-media';
-      blockquote.setAttribute('data-instgrm-permalink', 'https://www.instagram.com/reel/DXq0i04DDts/?utm_source=ig_embed&amp;utm_campaign=loading');
-      blockquote.setAttribute('data-instgrm-version', '14');
-      blockquote.style.cssText = 'background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin:0; max-width:540px; min-width:326px; padding:0; width:100%;';
-      container.appendChild(blockquote);
-      if (window.instgrm) {
-        window.instgrm.Embeds.process();
-      }
-    }
-  }, [showVideo]);
 
   return (
     <section id="accueil" className="relative min-h-screen overflow-hidden bg-pine-950">
@@ -170,10 +155,12 @@ export function Hero() {
                     >
                       <X size={16} />
                     </button>
-                    <div
-                      ref={embedContainerRef}
-                      className="flex items-center justify-center p-4"
-                      style={{ minHeight: '400px' }}
+                    <iframe
+                      src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&rel=0`}
+                      title="YouTube video"
+                      className="aspect-square w-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
                     />
                   </motion.div>
                 )}
