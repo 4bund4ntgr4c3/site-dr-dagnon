@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Linkedin, Youtube, ArrowDown, MapPin, Award, BookOpen, Play, X } from 'lucide-react';
+import { Linkedin, Mail, ArrowDown, MapPin, Award, BookOpen, Play, X } from 'lucide-react';
 import { LINKS } from '@/data/content';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -75,13 +75,11 @@ export function Hero() {
                 {t['hero.linkedin']}
               </a>
               <a
-                href={LINKS.youtube}
-                target="_blank"
-                rel="noreferrer"
+                href="/contact"
                 className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
               >
-                <Youtube size={17} />
-                {t['hero.youtube']}
+                <Mail size={17} />
+                {t['hero.contact']}
               </a>
             </motion.div>
 
