@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Linkedin, Youtube, ArrowDown, MapPin, Award, BookOpen, Play, X } from 'lucide-react';
 import { LINKS } from '@/data/content';
 import { useLang } from '@/i18n/useLang';
@@ -109,62 +109,57 @@ export function Hero() {
             transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="relative mx-auto w-full max-w-[400px]"
           >
-            <div className="relative overflow-hidden rounded-[2rem] border-2 border-gold-400/70 shadow-2xl shadow-black/40">
-              <AnimatePresence mode="wait">
-                {!showVideo ? (
+            <div className="relative aspect-square overflow-hidden rounded-[2rem] border-2 border-gold-400/70 shadow-2xl shadow-black/40">
+              {/* photo layer */}
+              <motion.div
+                className="absolute inset-0 cursor-pointer"
+                animate={{ opacity: showVideo ? 0 : 1 }}
+                transition={{ duration: 0.6, ease: 'easeInOut' }}
+                onClick={() => setShowVideo(true)}
+                style={{ pointerEvents: showVideo ? 'none' : 'auto' }}
+              >
+                <img
+                  src="/dr-seynude-dagnon.jpeg"
+                  alt={lang === 'fr' ? 'Portrait du Dr. Seynudé Jean-Fortuné Dagnon' : 'Portrait of Dr. Seynudé Jean-Fortuné Dagnon'}
+                  width={400}
+                  height={400}
+                  fetchPriority="high"
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-pine-950/70 via-pine-950/10 to-transparent" />
+                <div className="absolute inset-0 flex items-center justify-center">
                   <motion.div
-                    key="photo"
-                    initial={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="relative cursor-pointer"
-                    onClick={() => setShowVideo(true)}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex h-16 w-16 items-center justify-center rounded-full bg-gold-500/90 shadow-lg shadow-gold-600/30 backdrop-blur-sm"
                   >
-                    <img
-                      src="/dr-seynude-dagnon.jpeg"
-                      alt={lang === 'fr' ? 'Portrait du Dr. Seynudé Jean-Fortuné Dagnon' : 'Portrait of Dr. Seynudé Jean-Fortuné Dagnon'}
-                      width={400}
-                      height={400}
-                      fetchPriority="high"
-                      className="h-full w-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-pine-950/70 via-pine-950/10 to-transparent" />
-                    {/* play button */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="flex h-16 w-16 items-center justify-center rounded-full bg-gold-500/90 shadow-lg shadow-gold-600/30 backdrop-blur-sm"
-                      >
-                        <Play size={28} className="ml-1 text-pine-950" fill="currentColor" />
-                      </motion.div>
-                    </div>
+                    <Play size={28} className="ml-1 text-pine-950" fill="currentColor" />
                   </motion.div>
-                ) : (
-                  <motion.div
-                    key="video"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="relative bg-pine-950"
-                  >
-                    <button
-                      onClick={() => setShowVideo(false)}
-                      className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-pine-950/80 text-ivory transition-colors hover:bg-gold-500 hover:text-pine-950"
-                      aria-label="Close video"
-                    >
-                      <X size={16} />
-                    </button>
-                    <iframe
-                      src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&rel=0`}
-                      title="YouTube video"
-                      className="aspect-square w-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                </div>
+              </motion.div>
+
+              {/* video layer */}
+              <motion.div
+                className="absolute inset-0"
+                animate={{ opacity: showVideo ? 1 : 0 }}
+                transition={{ duration: 0.6, ease: 'easeInOut' }}
+                style={{ pointerEvents: showVideo ? 'auto' : 'none' }}
+              >
+                <button
+                  onClick={() => setShowVideo(false)}
+                  className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-pine-950/80 text-ivory transition-colors hover:bg-gold-500 hover:text-pine-950"
+                  aria-label="Close video"
+                >
+                  <X size={16} />
+                </button>
+                <iframe
+                  src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&rel=0`}
+                  title="YouTube video"
+                  className="h-full w-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </motion.div>
             </div>
 
             {/* floating badges */}
