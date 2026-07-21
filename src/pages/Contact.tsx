@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Twitter, Send, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Send, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
@@ -190,7 +190,9 @@ export default function Contact() {
                     aria-label="X"
                     className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
                   >
-                    <Twitter size={18} />
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
                   </a>
                   <a
                     href={LINKS.tiktok}
