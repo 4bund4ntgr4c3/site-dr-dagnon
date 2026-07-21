@@ -45,6 +45,7 @@ export function Publications() {
             <div className="relative flex-1 sm:max-w-sm">
               <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/40" />
               <input
+                aria-label={t['publications.search']}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={t['publications.search']}

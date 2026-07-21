@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Mail, Phone, MapPin, Linkedin, Youtube, Send, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
+import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { LINKS } from '@/data/content';
@@ -67,23 +68,7 @@ export default function Contact() {
               {t['contact.title']}
             </span>
             <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl lg:text-[4.4rem]">
-              {(() => {
-                const parts = t['hero.name'].split(' ');
-                const idx = parts.findIndex((w) => w.toUpperCase().startsWith('DAGNON'));
-                return parts.map((w, i) =>
-                  i === idx ? (
-                    <span key={i} className="text-gold-400 italic">
-                      {w}
-                      {i === parts.length - 1 ? '' : ' '}
-                    </span>
-                  ) : (
-                    <span key={i}>
-                      {w}
-                      {i === parts.length - 1 ? '' : ' '}
-                    </span>
-                  ),
-                );
-              })()}
+              <NameHighlight />
             </h1>
             <p className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
               {t['contact.intro']}

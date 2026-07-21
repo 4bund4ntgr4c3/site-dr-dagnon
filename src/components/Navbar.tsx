@@ -70,13 +70,13 @@ export function Navbar() {
             onClick={() => track('click', { event_category: 'outbound', event_label: 'linkedin' })}
             className="hidden lg:flex items-center gap-2 rounded-full border border-gold-500/50 px-4 py-2 text-[13px] font-semibold text-gold-300 transition-all hover:bg-gold-500 hover:text-pine-950"
           >
-            <Linkedin size={15} /> LinkedIn
+            <Linkedin size={15} /> {t['nav.linkedin']}
           </a>
 
           <button
             className="lg:hidden text-ivory p-2"
             onClick={() => setOpen(!open)}
-            aria-label={t['nav.toggle']}
+            aria-label={open ? t['nav.close'] : t['nav.toggle']}
             aria-expanded={open}
           >
             {open ? <X size={22} /> : <Menu size={22} />}
@@ -108,16 +108,16 @@ export function Navbar() {
                 onClick={() => track('click', { event_category: 'outbound', event_label: 'linkedin' })}
                 className="flex flex-1 items-center justify-center gap-2 rounded-full bg-gold-500 px-4 py-2.5 text-sm font-semibold text-pine-950"
               >
-                <Linkedin size={15} /> LinkedIn
+                <Linkedin size={15} /> {t['nav.linkedin']}
               </a>
               <a
                 href={LINKS.youtube}
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => track('click', { event_category: 'outbound', event_label: 'youtube' })}
-                className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-ivory"
+                className="flex-1 items-center justify-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-ivory"
               >
-                YouTube
+                {t['nav.youtube']}
               </a>
             </div>
           </div>

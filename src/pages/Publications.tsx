@@ -1,8 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { FileText, ArrowUpRight, X, Star, Search } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
+import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { chipClasses } from '@/lib/ui';
 import { PUB_ITEMS, type PubEntry, type PubType } from '@/data/publications';
 
 const TYPE_FILTERS: { value: PubType | 'all'; key: string }[] = [
@@ -47,41 +50,7 @@ export default function PublicationsPage() {
   const featured = useMemo(() => filtered.filter((p) => p.featured), [filtered]);
   const regular = useMemo(() => filtered.filter((p) => !p.featured), [filtered]);
 
-  useEffect(() => {
-    if (!expanded) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setExpanded(null);
-      if (e.key === 'Tab' && modalRef.current) {
-        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
-        );
-        if (focusable.length === 0) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    };
-    document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    closeRef.current?.focus();
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
-  }, [expanded]);
-
-  const chip = (activeNow: boolean) =>
-    `rounded-full border px-4 py-1.5 text-[13px] font-medium transition-colors ${
-      activeNow
-        ? 'border-gold-500 bg-gold-500 text-pine-950'
-        : 'border-pine-900/15 text-pine-900/70 hover:border-gold-500/50 hover:text-gold-600'
-    }`;
+  useFocusTrap(modalRef, closeRef, !!expanded, () => setExpanded(null));
 
   return (
     <main id="main-content" className="min-h-screen">
@@ -98,23 +67,7 @@ export default function PublicationsPage() {
               {t['pubPage.badge']}
             </span>
             <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl lg:text-[4.4rem]">
-              {(() => {
-                const parts = t['hero.name'].split(' ');
-                const idx = parts.findIndex((w) => w.toUpperCase().startsWith('DAGNON'));
-                return parts.map((w, i) =>
-                  i === idx ? (
-                    <span key={i} className="text-gold-400 italic">
-                      {w}
-                      {i === parts.length - 1 ? '' : ' '}
-                    </span>
-                  ) : (
-                    <span key={i}>
-                      {w}
-                      {i === parts.length - 1 ? '' : ' '}
-                    </span>
-                  ),
-                );
-              })()}
+              <NameHighlight />
             </h1>
             <p className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
               {t['pubPage.intro']}
@@ -160,7 +113,7 @@ export default function PublicationsPage() {
                           key={f.value}
                           type="button"
                           onClick={() => setType(f.value)}
-                          className={chip(type === f.value)}
+                          className={chipClasses(type === f.value)}
                         >
                           {t[f.key]}
                         </button>
@@ -177,7 +130,7 @@ export default function PublicationsPage() {
                       <button
                         type="button"
                         onClick={() => setYear('all')}
-                        className={chip(year === 'all')}
+                        className={chipClasses(year === 'all')}
                       >
                         {t['pubPage.all']}
                       </button>
@@ -186,7 +139,7 @@ export default function PublicationsPage() {
                           key={y}
                           type="button"
                           onClick={() => setYear(y)}
-                          className={chip(year === y)}
+                          className={chipClasses(year === y)}
                         >
                           {y}
                         </button>
@@ -203,14 +156,14 @@ export default function PublicationsPage() {
                       <button
                         type="button"
                         onClick={() => setSort('desc')}
-                        className={chip(sort === 'desc')}
+                        className={chipClasses(sort === 'desc')}
                       >
                         {t['pubPage.newest']}
                       </button>
                       <button
                         type="button"
                         onClick={() => setSort('asc')}
-                        className={chip(sort === 'asc')}
+                        className={chipClasses(sort === 'asc')}
                       >
                         {t['pubPage.oldest']}
                       </button>
@@ -260,52 +213,48 @@ export default function PublicationsPage() {
       </section>
 
       {/* expanded modal */}
-      {expanded && (
-        <div
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-pine-950/90 p-4 backdrop-blur-sm"
-          onClick={() => setExpanded(null)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <div ref={modalRef} className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-3xl border border-pine-900/10 bg-white p-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <button
-              ref={closeRef}
-              type="button"
-              onClick={() => setExpanded(null)}
-              aria-label={t['media.close']}
-              className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900 transition-colors hover:bg-pine-50"
-            >
-              <X size={20} />
-            </button>
-            {(() => {
-              const p = PUB_ITEMS.find((pp) => pp.id === expanded);
-              if (!p) return null;
-              return (
-                <>
-                  <h2 className="pr-12 font-display text-xl font-semibold text-pine-900">
-                    {p.title[lang]}
-                  </h2>
-                  <p className="mt-3 text-sm text-pine-900/60">{p.authors[lang]}</p>
-                  <p className="mt-1 text-sm font-medium text-gold-600">
-                    {p.journal[lang]} · {p.year}
-                  </p>
-                  {p.url && (
-                    <a
-                      href={p.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-6 inline-flex items-center gap-2 rounded-full bg-gold-500 px-6 py-3 text-sm font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
-                    >
-                      {p.type === 'blog' ? t['pubPage.readPost'] : t['pubPage.readPaper']}
-                      <ArrowUpRight size={15} />
-                    </a>
-                  )}
-                </>
-              );
-            })()}
+      {expanded && (() => {
+        const p = PUB_ITEMS.find((pp) => pp.id === expanded);
+        return p ? (
+          <div
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-pine-950/90 p-4 backdrop-blur-sm"
+            onClick={() => setExpanded(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label={p.title[lang]}
+          >
+            <div ref={modalRef} className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-3xl border border-pine-900/10 bg-white p-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+              <button
+                ref={closeRef}
+                type="button"
+                onClick={() => setExpanded(null)}
+                aria-label={t['media.close']}
+                className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900 transition-colors hover:bg-pine-50"
+              >
+                <X size={20} />
+              </button>
+              <h2 className="pr-12 font-display text-xl font-semibold text-pine-900">
+                {p.title[lang]}
+              </h2>
+              <p className="mt-3 text-sm text-pine-900/60">{p.authors[lang]}</p>
+              <p className="mt-1 text-sm font-medium text-gold-600">
+                {p.journal[lang]} · {p.year}
+              </p>
+              {p.url && (
+                <a
+                  href={p.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-6 inline-flex items-center gap-2 rounded-full bg-gold-500 px-6 py-3 text-sm font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
+                >
+                  {p.type === 'blog' ? t['pubPage.readPost'] : t['pubPage.readPaper']}
+                  <ArrowUpRight size={15} />
+                </a>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        ) : null;
+      })()}
     </main>
   );
 }

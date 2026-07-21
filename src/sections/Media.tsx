@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Play, FileDown, Newspaper, ArrowUpRight, X } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { MEDIA, UI } from '@/i18n/translations';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 type MediaItem = (typeof MEDIA)[keyof typeof MEDIA][number];
 
@@ -71,34 +72,7 @@ export function Media() {
   const modalRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    if (!active) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setActive(null);
-      if (e.key === 'Tab' && modalRef.current) {
-        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])'
-        );
-        if (focusable.length === 0) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    };
-    document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    closeRef.current?.focus();
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
-  }, [active]);
+  useFocusTrap(modalRef, closeRef, !!active, () => setActive(null));
 
   return (
     <section id="medias" className="relative overflow-hidden bg-pine-950 py-24 lg:py-32">

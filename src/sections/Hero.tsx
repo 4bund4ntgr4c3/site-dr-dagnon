@@ -3,6 +3,7 @@ import { Linkedin, Youtube, ArrowDown, MapPin, Award, BookOpen } from 'lucide-re
 import { LINKS } from '@/data/content';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
+import { NameHighlight } from '@/components/NameHighlight';
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -36,24 +37,7 @@ export function Hero() {
               transition={{ duration: 0.7, delay: 0.12, ease: 'easeOut' }}
               className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-ivory sm:text-6xl lg:text-[4.4rem]"
             >
-              {(() => {
-                const parts = t['hero.name'].split(' ');
-                const idx = parts.findIndex((w) => w.toUpperCase().startsWith('DAGNON'));
-                return (
-                  <>
-                    {parts.map((w, i) =>
-                      i === idx ? (
-                        <span key={i} className="text-gold-400 italic">
-                          {w}
-                          {i === parts.length - 1 ? '' : ' '}
-                        </span>
-                      ) : (
-                        <span key={i}>{w}{i === parts.length - 1 ? '' : ' '}</span>
-                      ),
-                    )}
-                  </>
-                );
-              })()}
+              <NameHighlight />
             </motion.h1>
 
             <motion.p
@@ -124,7 +108,7 @@ export function Hero() {
             <div className="relative overflow-hidden rounded-[2rem] border-2 border-gold-400/70 shadow-2xl shadow-black/40">
               <img
                 src="/dr-seynude-dagnon.jpeg"
-                alt={t['name.full']}
+                alt={lang === 'fr' ? 'Portrait du Dr. Seynudé Jean-Fortuné Dagnon' : 'Portrait of Dr. Seynudé Jean-Fortuné Dagnon'}
                 width={400}
                 height={400}
                 fetchPriority="high"

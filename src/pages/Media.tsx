@@ -1,8 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Play, FileText, Image as ImageIcon, X, ArrowUpRight } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
+import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { chipClasses } from '@/lib/ui';
 import {
   MEDIA_ITEMS,
   type MediaEntry,
@@ -67,41 +70,7 @@ export default function MediaPage() {
     });
   }, [type, cat, year, sort]);
 
-  useEffect(() => {
-    if (!active) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setActive(null);
-      if (e.key === 'Tab' && modalRef.current) {
-        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])'
-        );
-        if (focusable.length === 0) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    };
-    document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    closeRef.current?.focus();
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
-  }, [active]);
-
-  const chip = (activeNow: boolean) =>
-    `rounded-full border px-4 py-1.5 text-[13px] font-medium transition-colors ${
-      activeNow
-        ? 'border-gold-500 bg-gold-500 text-pine-950'
-        : 'border-pine-900/15 text-pine-900/70 hover:border-gold-500/50 hover:text-gold-600'
-    }`;
+  useFocusTrap(modalRef, closeRef, !!active, () => setActive(null));
 
   return (
     <main id="main-content" className="min-h-screen">
@@ -118,23 +87,7 @@ export default function MediaPage() {
               {t['mediaPage.badge']}
             </span>
             <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl lg:text-[4.4rem]">
-              {(() => {
-                const parts = t['hero.name'].split(' ');
-                const idx = parts.findIndex((w) => w.toUpperCase().startsWith('DAGNON'));
-                return parts.map((w, i) =>
-                  i === idx ? (
-                    <span key={i} className="text-gold-400 italic">
-                      {w}
-                      {i === parts.length - 1 ? '' : ' '}
-                    </span>
-                  ) : (
-                    <span key={i}>
-                      {w}
-                      {i === parts.length - 1 ? '' : ' '}
-                    </span>
-                  ),
-                );
-              })()}
+              <NameHighlight />
             </h1>
             <p className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
               {t['mediaPage.intro']}
@@ -161,7 +114,7 @@ export default function MediaPage() {
                       key={f.value}
                       type="button"
                       onClick={() => setType(f.value)}
-                      className={chip(type === f.value)}
+                      className={chipClasses(type === f.value)}
                     >
                       {t[f.key]}
                     </button>
@@ -174,7 +127,7 @@ export default function MediaPage() {
                   {t['mediaPage.filterCategory']}
                 </p>
                 <div role="group" aria-label={t['mediaPage.filterCategory']} className="mt-2 flex flex-wrap gap-2">
-                  <button type="button" onClick={() => setCat('all')} className={chip(cat === 'all')}>
+                  <button type="button" onClick={() => setCat('all')} className={chipClasses(cat === 'all')}>
                     {t['mediaPage.all']}
                   </button>
                   {categories.map((c) => (
@@ -182,7 +135,7 @@ export default function MediaPage() {
                       key={c}
                       type="button"
                       onClick={() => setCat(c)}
-                      className={chip(cat === c)}
+                      className={chipClasses(cat === c)}
                     >
                       {t[CATEGORY_KEYS[c]]}
                     </button>

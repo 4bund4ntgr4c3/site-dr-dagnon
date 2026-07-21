@@ -12,11 +12,17 @@ dist
 dist-ssr
 *.local
 
+# Environment files
+.env
+.env.*
+
 # Local logs
 *.log
 preview.log
 install.log
 build.log
+vercel-deploy.log
+lint.log
 
 # Editor directories and files
 .vscode/*

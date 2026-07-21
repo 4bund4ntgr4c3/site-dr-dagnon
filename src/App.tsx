@@ -5,6 +5,8 @@ import { Footer } from '@/sections/Footer'
 import { ScrollToTop } from '@/components/ScrollToTop'
 import { Seo } from '@/components/Seo'
 import { LanguageProvider } from '@/i18n/LanguageContext'
+import { useLang } from '@/i18n/useLang'
+import { UI } from '@/i18n/translations'
 
 const Home = lazy(() => import('./pages/Home'))
 const Contact = lazy(() => import('./pages/Contact'))
@@ -20,15 +22,17 @@ function Loading() {
 }
 
 function NotFound() {
+  const { lang } = useLang();
+  const t = UI[lang];
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-pine-950 px-5 text-center">
+    <main id="main-content" className="flex min-h-screen flex-col items-center justify-center bg-pine-950 px-5 text-center">
       <p className="text-6xl font-display font-semibold text-gold-400">404</p>
-      <p className="mt-4 text-lg text-pine-100/70">Page not found</p>
+      <p className="mt-4 text-lg text-pine-100/70">{t['notFound.title']}</p>
       <a
         href="/"
         className="mt-8 inline-flex rounded-full bg-gold-500 px-6 py-3 text-sm font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
       >
-        Back to home
+        {t['notFound.back']}
       </a>
     </main>
   )
