@@ -5,7 +5,6 @@ import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
-import { chipClasses } from '@/lib/ui';
 import {
   MEDIA_ITEMS,
   type MediaEntry,
@@ -102,8 +101,8 @@ export default function MediaPage() {
           <div className="grid gap-8 lg:grid-cols-[280px_1fr] lg:items-start">
             {/* filters sidebar */}
             <aside className="lg:sticky lg:top-24">
-              <div className="rounded-3xl border border-pine-900/10 bg-white p-6 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
-                <div className="space-y-6">
+              <div className="rounded-2xl border border-pine-900/10 bg-ivory p-4 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
+                <div className="space-y-4">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
                   {t['mediaPage.filterType']}
@@ -114,7 +113,11 @@ export default function MediaPage() {
                       key={f.value}
                       type="button"
                       onClick={() => setType(f.value)}
-                      className={chipClasses(type === f.value)}
+                      className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                        type === f.value
+                          ? 'bg-pine-950 text-gold-400 shadow'
+                          : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                      }`}
                     >
                       {t[f.key]}
                     </button>
@@ -127,7 +130,11 @@ export default function MediaPage() {
                   {t['mediaPage.filterCategory']}
                 </p>
                 <div role="group" aria-label={t['mediaPage.filterCategory']} className="mt-2 flex flex-wrap gap-2">
-                  <button type="button" onClick={() => setCat('all')} className={chipClasses(cat === 'all')}>
+                  <button type="button" onClick={() => setCat('all')} className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                    cat === 'all'
+                      ? 'bg-pine-950 text-gold-400 shadow'
+                      : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                  }`}>
                     {t['mediaPage.all']}
                   </button>
                   {categories.map((c) => (
@@ -135,7 +142,11 @@ export default function MediaPage() {
                       key={c}
                       type="button"
                       onClick={() => setCat(c)}
-                      className={chipClasses(cat === c)}
+                      className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                        cat === c
+                          ? 'bg-pine-950 text-gold-400 shadow'
+                          : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                      }`}
                     >
                       {t[CATEGORY_KEYS[c]]}
                     </button>
@@ -143,38 +154,67 @@ export default function MediaPage() {
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <label className="flex flex-col gap-1">
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
-                    {t['mediaPage.filterYear']}
-                  </span>
-                  <select
-                    value={year}
-                    onChange={(e) => setYear(e.target.value)}
-                    className="rounded-xl border border-pine-900/15 bg-white px-3 py-2 text-sm text-pine-900 outline-none transition-colors focus:border-gold-500"
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
+                  {t['mediaPage.filterYear']}
+                </p>
+                <div role="group" aria-label={t['mediaPage.filterYear']} className="mt-2 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setYear('all')}
+                    className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                      year === 'all'
+                        ? 'bg-pine-950 text-gold-400 shadow'
+                        : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                    }`}
                   >
-                    <option value="all">{t['mediaPage.all']}</option>
-                    {years.map((y) => (
-                      <option key={y} value={y}>
-                        {y}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                    {t['mediaPage.all']}
+                  </button>
+                  {years.map((y) => (
+                    <button
+                      key={y}
+                      type="button"
+                      onClick={() => setYear(y)}
+                      className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                        year === y
+                          ? 'bg-pine-950 text-gold-400 shadow'
+                          : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                      }`}
+                    >
+                      {y}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-                <label className="flex flex-col gap-1">
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
-                    {t['mediaPage.filterSort']}
-                  </span>
-                  <select
-                    value={sort}
-                    onChange={(e) => setSort(e.target.value as 'desc' | 'asc')}
-                    className="rounded-xl border border-pine-900/15 bg-white px-3 py-2 text-sm text-pine-900 outline-none transition-colors focus:border-gold-500"
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
+                  {t['mediaPage.filterSort']}
+                </p>
+                <div role="group" aria-label={t['mediaPage.filterSort']} className="mt-2 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSort('desc')}
+                    className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                      sort === 'desc'
+                        ? 'bg-pine-950 text-gold-400 shadow'
+                        : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                    }`}
                   >
-                    <option value="desc">{t['mediaPage.newest']}</option>
-                    <option value="asc">{t['mediaPage.oldest']}</option>
-                  </select>
-                </label>
+                    {t['mediaPage.newest']}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSort('asc')}
+                    className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                      sort === 'asc'
+                        ? 'bg-pine-950 text-gold-400 shadow'
+                        : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                    }`}
+                  >
+                    {t['mediaPage.oldest']}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
