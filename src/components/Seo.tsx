@@ -114,9 +114,13 @@ export function Seo() {
     setMeta('meta[property="og:description"]', 'content', data.description);
     setMeta('meta[property="og:url"]', 'content', url);
     setMeta('meta[property="og:locale"]', 'content', SEO[lang].ogLocale);
+    setMeta('meta[property="og:image"]', 'content', `${SITE_URL}/og-image.jpg`);
+    setMeta('meta[property="og:image:alt"]', 'content', data.title);
+    setMeta('meta[name="twitter:card"]', 'content', 'summary_large_image');
     setMeta('meta[name="twitter:title"]', 'content', data.title);
     setMeta('meta[name="twitter:description"]', 'content', data.description);
     setMeta('meta[name="twitter:url"]', 'content', url);
+    setMeta('meta[name="twitter:image"]', 'content', `${SITE_URL}/og-image.jpg`);
 
     let link = document.head.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!link) {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { FileText, ArrowUpRight, X, Star, Search } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
@@ -20,6 +20,8 @@ export default function PublicationsPage() {
   const [sort, setSort] = useState<'desc' | 'asc'>('desc');
   const [search, setSearch] = useState('');
   const [expanded, setExpanded] = useState<string | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
 
   const years = useMemo(() => {
     const set = new Set(PUB_ITEMS.map((p) => String(p.year)));
@@ -49,9 +51,25 @@ export default function PublicationsPage() {
     if (!expanded) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setExpanded(null);
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
+    closeRef.current?.focus();
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
@@ -66,7 +84,7 @@ export default function PublicationsPage() {
     }`;
 
   return (
-    <main className="min-h-screen">
+    <main id="main-content" className="min-h-screen">
       {/* header — hero background */}
       <section className="relative overflow-hidden bg-pine-950">
         <div className="absolute inset-0 texture-net" />
@@ -115,9 +133,13 @@ export default function PublicationsPage() {
                 <div className="space-y-6">
                   {/* search */}
                   <div>
+                    <label htmlFor="pub-search" className="sr-only">
+                      {t['pubPage.search']}
+                    </label>
                     <div className="relative">
                       <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-pine-900/40" />
                       <input
+                        id="pub-search"
                         type="text"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
@@ -132,7 +154,7 @@ export default function PublicationsPage() {
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
                       {t['pubPage.filterType']}
                     </p>
-                    <div className="mt-2 flex flex-wrap gap-2">
+                    <div role="group" aria-label={t['pubPage.filterType']} className="mt-2 flex flex-wrap gap-2">
                       {TYPE_FILTERS.map((f) => (
                         <button
                           key={f.value}
@@ -151,7 +173,7 @@ export default function PublicationsPage() {
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
                       {t['pubPage.filterYear']}
                     </p>
-                    <div className="mt-2 flex flex-wrap gap-2">
+                    <div role="group" aria-label={t['pubPage.filterYear']} className="mt-2 flex flex-wrap gap-2">
                       <button
                         type="button"
                         onClick={() => setYear('all')}
@@ -177,7 +199,7 @@ export default function PublicationsPage() {
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
                       {t['pubPage.filterSort']}
                     </p>
-                    <div className="mt-2 flex flex-wrap gap-2">
+                    <div role="group" aria-label={t['pubPage.filterSort']} className="mt-2 flex flex-wrap gap-2">
                       <button
                         type="button"
                         onClick={() => setSort('desc')}
@@ -200,6 +222,7 @@ export default function PublicationsPage() {
 
             {/* main */}
             <div>
+              <h2 className="sr-only">{t['pubPage.badge']}</h2>
               <p className="text-[13px] font-medium text-pine-900/55">
                 {t['pubPage.results'].replace('{n}', String(filtered.length))}
               </p>
@@ -244,11 +267,12 @@ export default function PublicationsPage() {
           role="dialog"
           aria-modal="true"
         >
-          <div className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-3xl border border-pine-900/10 bg-white p-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div ref={modalRef} className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-3xl border border-pine-900/10 bg-white p-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <button
+              ref={closeRef}
               type="button"
               onClick={() => setExpanded(null)}
-              aria-label="Close"
+              aria-label={t['media.close']}
               className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900 transition-colors hover:bg-pine-50"
             >
               <X size={20} />

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Play, FileText, Image as ImageIcon, X, ArrowUpRight } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
@@ -42,6 +42,8 @@ export default function MediaPage() {
   const [year, setYear] = useState<string>('all');
   const [sort, setSort] = useState<'desc' | 'asc'>('desc');
   const [active, setActive] = useState<MediaEntry | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
 
   const years = useMemo(() => {
     const set = new Set(MEDIA_ITEMS.map((m) => m.date.slice(0, 4)));
@@ -69,9 +71,25 @@ export default function MediaPage() {
     if (!active) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setActive(null);
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
+    closeRef.current?.focus();
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
@@ -86,7 +104,7 @@ export default function MediaPage() {
     }`;
 
   return (
-    <main className="min-h-screen">
+    <main id="main-content" className="min-h-screen">
       {/* header — hero background */}
       <section className="relative overflow-hidden bg-pine-950">
         <div className="absolute inset-0 texture-net" />
@@ -137,7 +155,7 @@ export default function MediaPage() {
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
                   {t['mediaPage.filterType']}
                 </p>
-                <div className="mt-2 flex flex-wrap gap-2">
+                <div role="group" aria-label={t['mediaPage.filterType']} className="mt-2 flex flex-wrap gap-2">
                   {TYPE_FILTERS.map((f) => (
                     <button
                       key={f.value}
@@ -155,7 +173,7 @@ export default function MediaPage() {
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
                   {t['mediaPage.filterCategory']}
                 </p>
-                <div className="mt-2 flex flex-wrap gap-2">
+                <div role="group" aria-label={t['mediaPage.filterCategory']} className="mt-2 flex flex-wrap gap-2">
                   <button type="button" onClick={() => setCat('all')} className={chip(cat === 'all')}>
                     {t['mediaPage.all']}
                   </button>
@@ -210,6 +228,7 @@ export default function MediaPage() {
           </aside>
 
           <div>
+          <h2 className="sr-only">{t['mediaPage.badge']}</h2>
           <p className="mt-6 text-[13px] font-medium text-pine-900/55">
             {t['mediaPage.results'].replace('{n}', String(filtered.length))}
           </p>
@@ -242,8 +261,9 @@ export default function MediaPage() {
           aria-modal="true"
           aria-label={active.title[lang]}
         >
-          <div className="relative w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
+          <div ref={modalRef} className="relative w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
             <button
+              ref={closeRef}
               type="button"
               onClick={() => setActive(null)}
               aria-label={t['media.close']}

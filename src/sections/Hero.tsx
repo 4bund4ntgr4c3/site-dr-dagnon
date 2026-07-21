@@ -124,7 +124,10 @@ export function Hero() {
             <div className="relative overflow-hidden rounded-[2rem] border-2 border-gold-400/70 shadow-2xl shadow-black/40">
               <img
                 src="/dr-seynude-dagnon.jpeg"
-                alt="Dr. Seynudé Jean-Fortuné Dagnon"
+                alt={t['name.full']}
+                width={400}
+                height={400}
+                fetchPriority="high"
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-pine-950/70 via-pine-950/10 to-transparent" />

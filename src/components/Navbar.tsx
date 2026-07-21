@@ -42,11 +42,11 @@ export function Navbar() {
           </span>
           <span className="leading-tight min-w-0">
             <span className="block font-display text-[15px] font-medium text-ivory">{t['name.short']}</span>
-            <span className="block truncate text-[10px] uppercase tracking-[0.22em] text-gold-400">MD · MPH · Paludisme</span>
+            <span className="block truncate text-[10px] uppercase tracking-[0.22em] text-gold-400">{t['nav.subtitle']}</span>
           </span>
         </a>
 
-        <nav className="hidden lg:flex items-center gap-1 rounded-full border border-white/10 bg-white/5 py-1.5 px-1.5 backdrop-blur-sm">
+        <nav aria-label={t['nav.ariaLabel']} className="hidden lg:flex items-center gap-1 rounded-full border border-white/10 bg-white/5 py-1.5 px-1.5 backdrop-blur-sm">
           {NAV[lang].map((item, i) => (
             <a
               key={item.id}
@@ -76,7 +76,8 @@ export function Navbar() {
           <button
             className="lg:hidden text-ivory p-2"
             onClick={() => setOpen(!open)}
-            aria-label="Menu"
+            aria-label={t['nav.toggle']}
+            aria-expanded={open}
           >
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -86,7 +87,7 @@ export function Navbar() {
       {open && (
         <div className="lg:hidden px-3 pb-3">
           <div className="rounded-3xl border border-white/10 bg-pine-950/95 backdrop-blur-md px-5 pb-6 pt-3 shadow-lg shadow-pine-950/30">
-          <nav className="flex flex-col gap-1">
+          <nav aria-label={t['nav.ariaLabel']} className="flex flex-col gap-1">
             {NAV[lang].map((item) => (
               <a
                 key={item.id}

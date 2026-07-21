@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Play, FileDown, Newspaper, ArrowUpRight, X } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
@@ -12,7 +12,7 @@ function youtubeId(url: string): string {
   return m ? m[1] : '';
 }
 
-function MediaCard({ m, watchLabel, onPlay }: { m: MediaItem; watchLabel: string; onPlay: () => void }) {
+function MediaCard({ m, watchLabel, downloadLabel, onPlay }: { m: MediaItem; watchLabel: string; downloadLabel: string; onPlay: () => void }) {
   const isVideo = m.kind === 'video';
 
   return (
@@ -56,7 +56,7 @@ function MediaCard({ m, watchLabel, onPlay }: { m: MediaItem; watchLabel: string
           rel="noreferrer"
           className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-pine-100/60 transition-colors hover:text-gold-300"
         >
-          {isVideo ? watchLabel : 'Download'}
+          {isVideo ? watchLabel : downloadLabel}
           <ArrowUpRight size={13} />
         </a>
       </div>
@@ -68,14 +68,32 @@ export function Media() {
   const { lang } = useLang();
   const t = UI[lang];
   const [active, setActive] = useState<MediaItem | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!active) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setActive(null);
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
+    closeRef.current?.focus();
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
@@ -129,6 +147,7 @@ export function Media() {
               <MediaCard
                 m={m}
                 watchLabel={t['media.watch']}
+                downloadLabel={t['media.download']}
                 onPlay={() => setActive(m)}
               />
             </Reveal>
@@ -146,10 +165,12 @@ export function Media() {
           aria-label={active.title}
         >
           <div
+            ref={modalRef}
             className="relative w-full max-w-4xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
+              ref={closeRef}
               type="button"
               onClick={() => setActive(null)}
               aria-label={t['media.close'] ?? 'Close'}

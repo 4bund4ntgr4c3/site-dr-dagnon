@@ -53,7 +53,7 @@ export default function Contact() {
   };
 
   return (
-    <main className="min-h-screen">
+    <main id="main-content" className="min-h-screen">
       {/* header — hero background */}
       <section className="relative overflow-hidden bg-pine-950">
         <div className="absolute inset-0 texture-net" />
@@ -205,38 +205,45 @@ export default function Contact() {
                 ) : (
                   <form onSubmit={onSubmit} noValidate className="space-y-5">
                     <div>
-                      <label className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                      <label htmlFor="contact-name" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
                         {t['contact.name']}
                       </label>
                       <input
+                        id="contact-name"
                         type="text"
                         value={form.name}
                         onChange={(e) => update('name', e.target.value)}
                         className={fieldClass}
                         placeholder={t['contact.name']}
+                        aria-required="true"
+                        aria-invalid={!!errors.name}
                       />
-                      {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
+                      {errors.name && <p role="alert" className="mt-1 text-xs text-red-500">{errors.name}</p>}
                     </div>
 
                     <div>
-                      <label className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                      <label htmlFor="contact-email" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
                         {t['contact.emailField']}
                       </label>
                       <input
+                        id="contact-email"
                         type="email"
                         value={form.email}
                         onChange={(e) => update('email', e.target.value)}
                         className={fieldClass}
                         placeholder="name@email.com"
+                        aria-required="true"
+                        aria-invalid={!!errors.email}
                       />
-                      {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
+                      {errors.email && <p role="alert" className="mt-1 text-xs text-red-500">{errors.email}</p>}
                     </div>
 
                     <div>
-                      <label className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                      <label htmlFor="contact-subject" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
                         {t['contact.subject']}
                       </label>
                       <input
+                        id="contact-subject"
                         type="text"
                         value={form.subject}
                         onChange={(e) => update('subject', e.target.value)}
@@ -246,21 +253,24 @@ export default function Contact() {
                     </div>
 
                     <div>
-                      <label className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                      <label htmlFor="contact-message" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
                         {t['contact.message']}
                       </label>
                       <textarea
+                        id="contact-message"
                         rows={5}
                         value={form.message}
                         onChange={(e) => update('message', e.target.value)}
                         className={`${fieldClass} resize-none`}
                         placeholder={t['contact.message']}
+                        aria-required="true"
+                        aria-invalid={!!errors.message}
                       />
-                      {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message}</p>}
+                      {errors.message && <p role="alert" className="mt-1 text-xs text-red-500">{errors.message}</p>}
                     </div>
 
                     {status === 'error' && (
-                      <div className="flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-600">
+                      <div role="alert" className="flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-600">
                         <AlertCircle size={16} /> {t['contact.errorText']}
                       </div>
                     )}

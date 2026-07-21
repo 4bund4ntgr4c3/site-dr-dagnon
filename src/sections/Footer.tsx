@@ -72,7 +72,7 @@ export function Footer() {
             </div>
           </div>
 
-          <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <nav aria-label={t['footerNav.ariaLabel']} className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {NAV[lang].map((item) => (
               <a
                 key={item.id}

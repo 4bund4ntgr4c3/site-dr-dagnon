@@ -12,7 +12,7 @@ import { useSectionTracking } from '@/hooks/useSectionTracking';
 export default function Home() {
   useSectionTracking();
   return (
-    <main className="min-h-screen bg-ivory">
+    <main id="main-content" className="min-h-screen bg-ivory">
       <Hero />
       <Stats />
       <About />
