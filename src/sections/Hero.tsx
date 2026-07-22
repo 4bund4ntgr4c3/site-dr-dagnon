@@ -11,7 +11,7 @@ const fadeUp = {
   animate: { opacity: 1, y: 0 },
 };
 
-const YOUTUBE_VIDEO_ID = '2mNE0Bx0A3o';
+const YOUTUBE_VIDEO_ID = '0fRIhntULPg';
 
 export function Hero() {
   const { lang } = useLang();
