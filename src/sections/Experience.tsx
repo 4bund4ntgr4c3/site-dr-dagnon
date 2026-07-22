@@ -96,9 +96,10 @@ export function Experience() {
         >
           <div
             ref={modalRef}
-            className="relative max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-pine-900/10 bg-white p-8 shadow-2xl"
+            className="relative max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-pine-900/10 bg-white shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
+            <div className="p-8">
             <button
               ref={closeRef}
               type="button"
@@ -171,6 +172,7 @@ export function Experience() {
                 <p className="mt-2 text-[14px] leading-relaxed text-ink/70">{active.details.achievement}</p>
               </div>
             )}
+            </div>
           </div>
         </div>
       )}
