@@ -24,13 +24,14 @@ export function Navbar() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 transition-all duration-500">
-      <div
-        className={`mx-auto flex h-16 lg:h-[72px] max-w-7xl items-center justify-between gap-4 px-4 lg:px-6 transition-all duration-500 ${
-          solid
-            ? 'mt-2 lg:mt-3 mx-3 lg:mx-4 rounded-3xl border border-white/10 bg-pine-950/90 backdrop-blur-md shadow-lg shadow-pine-950/30'
-            : 'mt-2 lg:mt-3 mx-3 lg:mx-4 rounded-3xl border border-transparent bg-pine-950/40 backdrop-blur-sm'
-        }`}
-      >
+      <div className="mx-auto max-w-7xl px-3 pt-2 lg:px-4 lg:pt-3">
+        <div
+          className={`flex h-16 lg:h-[72px] items-center justify-between gap-4 px-4 lg:px-6 transition-all duration-500 ${
+            solid
+              ? 'rounded-3xl border border-white/10 bg-pine-950/90 backdrop-blur-md shadow-lg shadow-pine-950/30'
+              : 'rounded-3xl border border-transparent bg-pine-950/40 backdrop-blur-sm'
+          }`}
+        >
         <a href="/" className="flex min-w-0 items-center gap-3 group">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gold-500 font-display text-sm font-semibold text-pine-950 transition-transform group-hover:scale-105">
             SD
@@ -119,6 +120,7 @@ export function Navbar() {
           </div>
         </div>
       )}
+      </div>
     </header>
   );
 }
