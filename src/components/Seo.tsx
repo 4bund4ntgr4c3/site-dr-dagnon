@@ -65,21 +65,40 @@ function personJsonLd(lang: Lang, url: string) {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name,
+    alternateName: 'Seynudé Dagnon',
     jobTitle,
     description: desc,
     url,
     image: `${SITE_URL}/og-image.jpg`,
-    alumniOf: [
-      { '@type': 'CollegeOrUniversity', name: 'University of Conakry' },
-      { '@type': 'CollegeOrUniversity', name: 'Institute of Tropical Medicine, Antwerp' },
-      { '@type': 'CollegeOrUniversity', name: 'University of Groningen' },
-    ],
-    worksFor: { '@type': 'Organization', name: lang === 'fr' ? 'Fondation Gates' : 'Gates Foundation' },
-    knowsAbout: ['Malaria', 'Public Health', 'Health Systems', 'Digital Health', 'Epidemiology'],
     sameAs: [
       'https://www.linkedin.com/in/seynud%C3%A9-jean-fortune-dagnon-md-mph-p-h-d-in-progress-093a5a2a/',
       'https://www.youtube.com/@seynudedagnon6233',
+      'https://www.facebook.com/jeanfortune.dagnon/',
+      'https://x.com/SeynudeD',
+      'https://www.tiktok.com/@fortunedagnon',
     ],
+    alumniOf: [
+      { '@type': 'CollegeOrUniversity', name: 'University of Conakry', url: 'https://www.univconakry.edu.gn/' },
+      { '@type': 'CollegeOrUniversity', name: 'Institute of Tropical Medicine, Antwerp', url: 'https://www.itg.be/' },
+      { '@type': 'CollegeOrUniversity', name: 'University of Groningen', url: 'https://www.rug.nl/' },
+    ],
+    worksFor: {
+      '@type': 'Organization',
+      name: lang === 'fr' ? 'Fondation Gates' : 'Gates Foundation',
+      url: 'https://www.gatesfoundation.org/',
+    },
+    knowsAbout: ['Malaria', 'Public Health', 'Health Systems', 'Digital Health', 'Epidemiology', 'SMC', 'PMI', 'USAID'],
+    hasCredential: [
+      { '@type': 'EducationalOccupationalCredential', credentialCategory: 'degree', name: 'MD — Doctor of Medicine' },
+      { '@type': 'EducationalOccupationalCredential', credentialCategory: 'degree', name: 'MPH — Master of Public Health' },
+      { '@type': 'EducationalOccupationalCredential', credentialCategory: 'degree', name: 'PhD — Doctor of Philosophy (in progress)' },
+    ],
+    nationality: { '@type': 'Country', name: lang === 'fr' ? 'Bénin' : 'Benin' },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Cotonou',
+      addressCountry: 'BJ',
+    },
   };
 }
 
@@ -116,7 +135,12 @@ export function Seo() {
     setMeta('meta[property="og:locale"]', 'content', SEO[lang].ogLocale);
     setMeta('meta[property="og:image"]', 'content', `${SITE_URL}/og-image.jpg`);
     setMeta('meta[property="og:image:alt"]', 'content', data.title);
+    setMeta('meta[property="og:image:width"]', 'content', '1200');
+    setMeta('meta[property="og:image:height"]', 'content', '630');
+    setMeta('meta[property="og:image:type"]', 'content', 'image/jpeg');
     setMeta('meta[name="twitter:card"]', 'content', 'summary_large_image');
+    setMeta('meta[name="twitter:site"]', 'content', '@SeynudeD');
+    setMeta('meta[name="twitter:creator"]', 'content', '@SeynudeD');
     setMeta('meta[name="twitter:title"]', 'content', data.title);
     setMeta('meta[name="twitter:description"]', 'content', data.description);
     setMeta('meta[name="twitter:url"]', 'content', url);
