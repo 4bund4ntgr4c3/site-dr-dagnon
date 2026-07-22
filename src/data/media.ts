@@ -246,4 +246,65 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     },
     src: '/og-image.jpg',
   },
+  // ── Press articles ────────────────────────────────────────────────
+  {
+    id: 'lebledparle-2022',
+    type: 'document',
+    category: 'press',
+    date: '2022-03-07',
+    title: {
+      fr: 'Le Cameroun et la fondation Bill & Mélinda Gates s\'accordent sur la lutte contre le paludisme',
+      en: 'Cameroon and the Bill & Melinda Gates Foundation agree on malaria fight',
+    },
+    url: 'https://www.lebledparle.com/le-cameroun-et-la-fondation-bill-melinda-gates-s-accordent-sur-la-lutte-contre-le-paludisme/',
+    fileLabel: { fr: 'Article · Lebledparle', en: 'Article · Lebledparle' },
+  },
+  {
+    id: 'stopblablacam-2022',
+    type: 'document',
+    category: 'press',
+    date: '2022-03-07',
+    title: {
+      fr: 'Lutte contre le paludisme : le gouvernement et la fondation Bill & Melinda Gates s\'accordent',
+      en: 'Malaria fight: government and Bill & Melinda Gates Foundation agree',
+    },
+    url: 'https://www.stopblablacam.com/societe/0703-8389-lutte-contre-le-paludisme-le-gouvernement-et-la-fondation-bill-melinda-gates-s-accordent',
+    fileLabel: { fr: 'Article · StopBlaBlaCam', en: 'Article · StopBlaBlaCam' },
+  },
+  {
+    id: 'minsante-2022',
+    type: 'document',
+    category: 'press',
+    date: '2022-03-23',
+    title: {
+      fr: 'L\'élimination du paludisme au centre des échanges entre le Minsanté et la Fondation Gates',
+      en: 'Malaria elimination at the center of exchanges between Minsante and Gates Foundation',
+    },
+    url: 'https://www.minsante.cm/site/?q=en%2Fnode%2F4224',
+    fileLabel: { fr: 'Article · Minsante', en: 'Article · Minsante' },
+  },
+  {
+    id: 'bluesquare-2026',
+    type: 'document',
+    category: 'press',
+    date: '2026-03-31',
+    title: {
+      fr: 'Structurer l\'utilisation des données dans la lutte contre le paludisme au Burundi',
+      en: 'Structuring data use in the fight against malaria in Burundi',
+    },
+    url: 'https://www.bluesquarehub.com/fr/bluesquare-news-structurer-lutilisation-des-donnees-dans-la-lutte-contre-le-paludisme-au-burundi/',
+    fileLabel: { fr: 'Article · Bluesquare', en: 'Article · Bluesquare' },
+  },
+  {
+    id: 'smc-alliance-2026',
+    type: 'document',
+    category: 'press',
+    date: '2026-02-28',
+    title: {
+      fr: 'Présentations — Réunion annuelle conjointe SMC 2026',
+      en: 'Presentations — Joint SMC Annual Meeting 2026',
+    },
+    url: 'https://www.smc-alliance.org/smc-resources/joint-smc-amp-annual-meetings-2026-presentations',
+    fileLabel: { fr: 'Présentation · SMC Alliance', en: 'Presentation · SMC Alliance' },
+  },
 ];
