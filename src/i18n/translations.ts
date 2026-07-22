@@ -129,7 +129,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
           { name: 'ENVISION (Manager)', scope: 'RTI', budget: '$10 000 000 (7 ans)' },
           { name: 'ACT END NTDs (Manager)', scope: 'FHI 360', budget: '$10 000 000 (5 ans)' },
         ],
-        achievement: 'Négociation d\'un contrat G2G avec le PNLP, économies allant jusqu’à 300 000 $ sur 5 ans pour le gouvernement américain.',
+        achievement: 'Négociation d\'un contrat G2G avec le PNLP, économies allant jusqu’à 3 000 000 $ sur 5 ans pour le gouvernement américain.',
       },
     },
     {
@@ -254,7 +254,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
           { name: 'ENVISION (Manager)', scope: 'RTI', budget: '$10,000,000 (7 yrs)' },
           { name: 'ACT END NTDs (Manager)', scope: 'FHI 360', budget: '$10,000,000 (5 yrs)' },
         ],
-        achievement: 'Negotiated G2G contract with Benin NMCP, generating savings of up to $300,000 over 5 years for the U.S. government.',
+        achievement: 'Negotiated G2G contract with Benin NMCP, generating savings of up to $3,000,000 over 5 years for the U.S. government.',
       },
     },
     {
@@ -327,13 +327,13 @@ export const ACHIEVEMENTS: Record<Lang, { metric: string; title: string; text: s
   fr: [
     { metric: '2020', title: 'PMI FSN Employee of the Year', text: 'Reconnu parmi 27 pays du U.S. President’s Malaria Initiative ; également employé local de l’année 2019 de l’Ambassade des États-Unis au Bénin et multiple lauréat de distinctions USAID / Ambassade.' },
     { metric: '35 % → 94 %', title: 'Complétude des données paludisme', text: 'Comme responsable S&E d’ARM3, hausse de la complétude du système d’information de routine et baisse du taux d’erreur national de 44 % à 5 % sur 1 114 centres de santé.' },
-    { metric: '200 000 $', title: 'Économies pour le Gouvernement américain', text: 'À l’USAID/PMI Bénin, négociation d’un contrat de gouvernement à gouvernement avec le Programme national de lutte contre le paludisme du Bénin, générant des économies allant jusqu’à 300 000 $ sur 5 ans.' },
+    { metric: '200 000 $', title: 'Économies pour le Gouvernement américain', text: 'À l’USAID/PMI Bénin, négociation d’un contrat de gouvernement à gouvernement avec le Programme national de lutte contre le paludisme du Bénin, générant des économies allant jusqu’à 3 000 000 $ sur 5 ans.' },
     { metric: 'PAMCA 8', title: 'Représentation publique', text: 'Représente la Fondation Gates lors d’événements majeurs, dont la cérémonie d’ouverture de la 8e conférence PAMCA et des forums de partenaires du paludisme.' },
   ],
   en: [
     { metric: '2020', title: 'PMI FSN Employee of the Year', text: 'Recognized across 27 countries of the U.S. President’s Malaria Initiative; also U.S. Embassy Benin local employee of the year 2019 and multiple USAID / Embassy awardee.' },
     { metric: '35% → 94%', title: 'Malaria data completeness', text: 'As M&E lead at ARM3, raised routine information system completeness and cut the national error rate from 44% to 5% across 1,114 health facilities.' },
-    { metric: '$200,000', title: 'Savings for the U.S. Government', text: 'At USAID/PMI Benin, negotiated a government-to-government contract with Benin’s National Malaria Control Program, generating savings of up to $300,000 over 5 years.' },
+    { metric: '$200,000', title: 'Savings for the U.S. Government', text: 'At USAID/PMI Benin, negotiated a government-to-government contract with Benin’s National Malaria Control Program, generating savings of up to $3,000,000 over 5 years.' },
     { metric: 'PAMCA 8', title: 'Public representation', text: 'Represents the Gates Foundation at major events, including the opening ceremony of the 8th PAMCA conference and malaria partner forums.' },
   ],
 };
