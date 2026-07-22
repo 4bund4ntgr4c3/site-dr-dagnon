@@ -1,11 +1,21 @@
+import { useRef, useState } from 'react';
+import { X, Briefcase, Target, Award, ChevronRight } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { EXPERIENCE, UI } from '@/i18n/translations';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+
+type ExperienceItem = (typeof EXPERIENCE)['fr'][number];
 
 export function Experience() {
   const { lang } = useLang();
   const t = UI[lang];
+  const [active, setActive] = useState<ExperienceItem | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useFocusTrap(modalRef, closeRef, !!active, () => setActive(null));
 
   return (
     <section id="parcours" className="bg-ivory py-24 lg:py-32">
@@ -34,9 +44,13 @@ export function Experience() {
                       } md:left-auto ${left ? 'md:-right-2' : 'md:-left-2'}`}
                     />
                     <div
-                      className={`ml-10 w-full rounded-2xl border bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-pine-900/10 md:ml-0 ${
-                        job.current ? 'border-gold-500/60 ring-1 ring-gold-500/30' : 'border-pine-900/10'
+                      onClick={() => setActive(job)}
+                      className={`ml-10 w-full cursor-pointer rounded-2xl border bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-pine-900/10 md:ml-0 ${
+                        job.current ? 'border-gold-500/60 ring-1 ring-gold-500/30' : 'border-pine-900/10 hover:border-gold-500/40'
                       }`}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActive(job); }}
                     >
                       <div className="flex flex-wrap items-center gap-2">
                         <span
@@ -59,6 +73,9 @@ export function Experience() {
                       </h3>
                       <p className="mt-1 text-sm font-semibold text-gold-700">{job.org}</p>
                       <p className="mt-3 text-[13.5px] leading-relaxed text-ink/65">{job.text}</p>
+                      <div className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-700 transition-colors hover:text-gold-500">
+                        {t['experience.details']} <ChevronRight size={14} />
+                      </div>
                     </div>
                   </div>
                 </Reveal>
@@ -67,6 +84,96 @@ export function Experience() {
           </div>
         </div>
       </div>
+
+      {/* detail modal */}
+      {active && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-pine-950/80 p-4 backdrop-blur-sm"
+          onClick={() => setActive(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={active.role}
+        >
+          <div
+            ref={modalRef}
+            className="relative max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-pine-900/10 bg-white p-8 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={() => setActive(null)}
+              aria-label={t['media.close']}
+              className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900/60 transition-colors hover:bg-pine-900 hover:text-ivory"
+            >
+              <X size={18} />
+            </button>
+
+            {/* header */}
+            <div className="pr-12">
+              <span className={`inline-block rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${
+                active.current ? 'bg-gold-500 text-pine-950' : 'bg-pine-900/5 text-pine-800'
+              }`}>
+                {active.period}
+              </span>
+              <h2 className="mt-4 font-display text-2xl font-semibold leading-snug text-pine-950 sm:text-[1.7rem]">
+                {active.role}
+              </h2>
+              <p className="mt-1 text-base font-semibold text-gold-700">{active.org}</p>
+            </div>
+
+            {/* responsibilities */}
+            <div className="mt-8">
+              <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-pine-900/50">
+                <Briefcase size={16} className="text-gold-500" />
+                {t['experience.responsibilities']}
+              </div>
+              <ul className="mt-4 space-y-3">
+                {active.details.responsibilities.map((r, i) => (
+                  <li key={i} className="flex gap-3 text-[14px] leading-relaxed text-ink/70">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" />
+                    {r}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* projects */}
+            {active.details.projects && active.details.projects.length > 0 && (
+              <div className="mt-8">
+                <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-pine-900/50">
+                  <Target size={16} className="text-gold-500" />
+                  {t['experience.projects']}
+                </div>
+                <div className="mt-4 space-y-3">
+                  {active.details.projects.map((p, i) => (
+                    <div key={i} className="flex items-start justify-between gap-4 rounded-xl border border-pine-900/10 bg-ivory/60 p-4">
+                      <div>
+                        <p className="text-[13.5px] font-semibold text-pine-900">{p.name}</p>
+                        <p className="text-[12px] text-ink/50">{p.scope}</p>
+                      </div>
+                      <span className="shrink-0 rounded-full bg-pine-900 px-2.5 py-0.5 text-[11px] font-bold text-gold-400">
+                        {p.budget}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* achievement */}
+            {active.details.achievement && (
+              <div className="mt-8 rounded-xl border border-gold-500/30 bg-gold-500/10 p-5">
+                <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gold-700">
+                  <Award size={16} />
+                  {t['experience.achievement']}
+                </div>
+                <p className="mt-2 text-[14px] leading-relaxed text-ink/70">{active.details.achievement}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
