@@ -96,10 +96,15 @@ export function Experience() {
         >
           <div
             ref={modalRef}
-            className="relative max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-pine-900/10 bg-white shadow-2xl"
+            className="modal-scroll relative max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-pine-900/10 bg-white shadow-2xl"
+            style={{
+              scrollbarGutter: 'stable',
+              scrollbarWidth: 'thin',
+              scrollbarColor: 'rgba(201,162,75,0.35) transparent',
+            } as React.CSSProperties}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-8">
+            <div className="p-8 pr-10">
             <button
               ref={closeRef}
               type="button"

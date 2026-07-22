@@ -74,3 +74,9 @@
 ::-webkit-scrollbar-track { background: #0c2e2a; }
 ::-webkit-scrollbar-thumb { background: #27645c; border-radius: 6px; }
 ::-webkit-scrollbar-thumb:hover { background: #c9a24b; }
+
+/* Modal scrollbar — thinner, inset so it sits inside rounded corners */
+.modal-scroll::-webkit-scrollbar { width: 6px; }
+.modal-scroll::-webkit-scrollbar-track { background: transparent; }
+.modal-scroll::-webkit-scrollbar-thumb { background: rgba(201,162,75,0.3); border-radius: 9999px; margin: 8px 0; }
+.modal-scroll::-webkit-scrollbar-thumb:hover { background: rgba(201,162,75,0.5); }
