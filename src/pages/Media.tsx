@@ -41,60 +41,60 @@ const CATEGORIES: {
   {
     key: 'interview',
     icon: Mic,
-    color: 'from-pine-700 to-pine-900',
-    bg: 'bg-pine-800',
-    ring: 'ring-pine-600/40',
-    badge: 'bg-pine-600/20 text-pine-300',
+    color: 'from-pine-600 to-pine-800',
+    bg: 'bg-pine-700',
+    ring: 'ring-pine-500/40',
+    badge: 'bg-pine-100 text-pine-700',
     thumb: 'https://img.youtube.com/vi/5yh0ODmp47s/hqdefault.jpg',
     descKey: 'mediaPage.catDescInterview',
   },
   {
     key: 'conference',
     icon: Presentation,
-    color: 'from-gold-700 to-gold-900',
-    bg: 'bg-gold-800',
-    ring: 'ring-gold-600/40',
-    badge: 'bg-gold-600/20 text-gold-300',
+    color: 'from-gold-600 to-gold-800',
+    bg: 'bg-gold-700',
+    ring: 'ring-gold-500/40',
+    badge: 'bg-gold-100 text-gold-700',
     thumb: 'https://img.youtube.com/vi/D8kTMA4dDyg/hqdefault.jpg',
     descKey: 'mediaPage.catDescConference',
   },
   {
     key: 'research',
     icon: Search,
-    color: 'from-emerald-700 to-emerald-900',
-    bg: 'bg-emerald-800',
-    ring: 'ring-emerald-600/40',
-    badge: 'bg-emerald-600/20 text-emerald-300',
+    color: 'from-emerald-600 to-emerald-800',
+    bg: 'bg-emerald-700',
+    ring: 'ring-emerald-500/40',
+    badge: 'bg-emerald-100 text-emerald-700',
     thumb: 'https://img.youtube.com/vi/7zuqZfH4bzQ/hqdefault.jpg',
     descKey: 'mediaPage.catDescResearch',
   },
   {
     key: 'publication',
     icon: BookOpen,
-    color: 'from-amber-700 to-amber-900',
-    bg: 'bg-amber-800',
-    ring: 'ring-amber-600/40',
-    badge: 'bg-amber-600/20 text-amber-300',
+    color: 'from-amber-600 to-amber-800',
+    bg: 'bg-amber-700',
+    ring: 'ring-amber-500/40',
+    badge: 'bg-amber-100 text-amber-700',
     thumb: '',
     descKey: 'mediaPage.catDescPublication',
   },
   {
     key: 'press',
     icon: Newspaper,
-    color: 'from-rose-700 to-rose-900',
-    bg: 'bg-rose-800',
-    ring: 'ring-rose-600/40',
-    badge: 'bg-rose-600/20 text-rose-300',
+    color: 'from-rose-600 to-rose-800',
+    bg: 'bg-rose-700',
+    ring: 'ring-rose-500/40',
+    badge: 'bg-rose-100 text-rose-700',
     thumb: 'https://img.youtube.com/vi/dxBGiEW41aM/hqdefault.jpg',
     descKey: 'mediaPage.catDescPress',
   },
   {
     key: 'community',
     icon: Heart,
-    color: 'from-purple-700 to-purple-900',
-    bg: 'bg-purple-800',
-    ring: 'ring-purple-600/40',
-    badge: 'bg-purple-600/20 text-purple-300',
+    color: 'from-purple-600 to-purple-800',
+    bg: 'bg-purple-700',
+    ring: 'ring-purple-500/40',
+    badge: 'bg-purple-100 text-purple-700',
     thumb: '',
     descKey: 'mediaPage.catDescCommunity',
   },
@@ -148,7 +148,7 @@ function MediaLanding({
           <Reveal key={cat.key} delay={Math.min(i * 0.08, 0.4)}>
             <a
               href={`/media/${cat.key}`}
-              className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 shadow-[0_24px_60px_-40px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_32px_70px_-30px_rgba(0,0,0,0.6)]"
+              className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)] transition-all duration-300 hover:-translate-y-2 hover:border-gold-500/40 hover:shadow-[0_32px_70px_-30px_rgba(2,36,32,0.5)]"
             >
               {/* Thumbnail */}
               <div className="relative aspect-[16/9] overflow-hidden">
@@ -165,11 +165,11 @@ function MediaLanding({
                   <div
                     className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${cat.color}`}
                   >
-                    <Icon size={48} className="text-white/20" />
+                    <Icon size={48} className="text-white/25" />
                   </div>
                 )}
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-pine-950/90 via-pine-950/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-pine-950/80 via-pine-950/20 to-transparent" />
 
                 {/* Icon badge */}
                 <span
@@ -180,7 +180,7 @@ function MediaLanding({
 
                 {/* Count badge */}
                 <span
-                  className={`absolute right-4 top-4 rounded-full px-3 py-1 text-[11px] font-bold ${cat.badge} ring-1 ring-white/10`}
+                  className={`absolute right-4 top-4 rounded-full px-3 py-1 text-[11px] font-bold ${cat.badge} ring-1 ring-white/40`}
                 >
                   {count} {t['mediaPage.all'] === 'Tout' ? (count > 1 ? 'éléments' : 'élément') : (count > 1 ? 'items' : 'item')}
                 </span>
@@ -192,11 +192,11 @@ function MediaLanding({
               </div>
 
               {/* Description */}
-              <div className="flex flex-1 flex-col bg-gradient-to-b from-pine-900 to-pine-950 p-5">
-                <p className="flex-1 text-[13.5px] leading-relaxed text-pine-200/70">
+              <div className="flex flex-1 flex-col p-5">
+                <p className="flex-1 text-[13.5px] leading-relaxed text-ink/55">
                   {t[cat.descKey as keyof typeof t] || ''}
                 </p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-400 transition-colors group-hover:text-gold-300">
+                <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
                   {t['mediaPage.all'] === 'Tout' ? 'Explorer' : 'Explore'}
                   <ArrowUpRight
                     size={14}
@@ -268,16 +268,16 @@ function CategoryView({
           <CatIcon size={28} />
         </span>
         <div className="flex-1">
-          <h2 className="font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
+          <h2 className="font-display text-2xl font-semibold text-pine-900 sm:text-3xl">
             {t[`mediaPage.cat${category.charAt(0).toUpperCase() + category.slice(1)}` as keyof typeof t] || category}
           </h2>
-          <p className="mt-1 text-[14.5px] text-pine-200/60">
+          <p className="mt-1 text-[14.5px] text-ink/50">
             {t[catMeta.descKey as keyof typeof t] || ''}
           </p>
         </div>
         <a
           href="/media"
-          className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-[13px] font-semibold text-pine-100/80 transition-all hover:bg-white/10 hover:text-white shrink-0"
+          className="inline-flex items-center gap-2 rounded-full border border-pine-900/15 bg-white px-5 py-2.5 text-[13px] font-semibold text-pine-900/70 shadow-sm transition-all hover:text-pine-900 hover:ring-gold-500/50 shrink-0"
         >
           <ArrowLeft size={15} />
           {t['mediaPage.back']}
@@ -287,10 +287,10 @@ function CategoryView({
       <div className="mt-8 grid gap-8 lg:grid-cols-[260px_1fr] lg:items-start">
         {/* sidebar */}
         <aside className="lg:sticky lg:top-24">
-          <div className="rounded-2xl border border-white/10 bg-pine-900/50 p-4 shadow-[0_24px_60px_-40px_rgba(0,0,0,0.45)]">
+          <div className="rounded-2xl border border-pine-900/10 bg-ivory p-4 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
             <div className="space-y-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-200/40">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
                   {t['mediaPage.filterType']}
                 </p>
                 <div
@@ -306,7 +306,7 @@ function CategoryView({
                       className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                         type === f.value
                           ? 'bg-pine-950 text-gold-400 shadow'
-                          : 'bg-white/5 text-pine-200/60 ring-1 ring-white/10 hover:text-white hover:ring-gold-500/50'
+                          : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
                       }`}
                     >
                       {t[f.key]}
@@ -316,7 +316,7 @@ function CategoryView({
               </div>
 
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-200/40">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
                   {t['mediaPage.filterYear']}
                 </p>
                 <div
@@ -330,7 +330,7 @@ function CategoryView({
                     className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                       year === 'all'
                         ? 'bg-pine-950 text-gold-400 shadow'
-                        : 'bg-white/5 text-pine-200/60 ring-1 ring-white/10 hover:text-white hover:ring-gold-500/50'
+                        : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
                     }`}
                   >
                     {t['mediaPage.all']}
@@ -343,7 +343,7 @@ function CategoryView({
                       className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                         year === y
                           ? 'bg-pine-950 text-gold-400 shadow'
-                          : 'bg-white/5 text-pine-200/60 ring-1 ring-white/10 hover:text-white hover:ring-gold-500/50'
+                          : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
                       }`}
                     >
                       {y}
@@ -353,7 +353,7 @@ function CategoryView({
               </div>
 
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-200/40">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
                   {t['mediaPage.filterSort']}
                 </p>
                 <div
@@ -367,7 +367,7 @@ function CategoryView({
                     className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                       sort === 'desc'
                         ? 'bg-pine-950 text-gold-400 shadow'
-                        : 'bg-white/5 text-pine-200/60 ring-1 ring-white/10 hover:text-white hover:ring-gold-500/50'
+                        : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
                     }`}
                   >
                     {t['mediaPage.newest']}
@@ -378,7 +378,7 @@ function CategoryView({
                     className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                       sort === 'asc'
                         ? 'bg-pine-950 text-gold-400 shadow'
-                        : 'bg-white/5 text-pine-200/60 ring-1 ring-white/10 hover:text-white hover:ring-gold-500/50'
+                        : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
                     }`}
                   >
                     {t['mediaPage.oldest']}
@@ -391,12 +391,12 @@ function CategoryView({
 
         {/* items grid */}
         <div>
-          <p className="text-[13px] font-medium text-pine-200/45">
+          <p className="text-[13px] font-medium text-pine-900/50">
             {t['mediaPage.results'].replace('{n}', String(filtered.length))}
           </p>
 
           {filtered.length === 0 ? (
-            <p className="mt-10 rounded-2xl border border-dashed border-white/10 bg-white/5 px-6 py-16 text-center text-sm text-pine-200/50">
+            <p className="mt-10 rounded-2xl border border-dashed border-pine-900/15 bg-white px-6 py-16 text-center text-sm text-pine-900/50">
               {t['mediaPage.empty']}
             </p>
           ) : (
@@ -509,8 +509,8 @@ export default function MediaPage() {
         </div>
       </section>
 
-      {/* content — dark */}
-      <section className="bg-pine-950 py-16 lg:py-20">
+      {/* content — light */}
+      <section className="bg-pine-50 py-16 lg:py-20">
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
           {selectedCategory ? (
             <CategoryView category={selectedCategory} lang={lang} t={t} />
@@ -542,7 +542,7 @@ function MediaCard({
   const meta = `${t[`mediaPage.cat${m.category.charAt(0).toUpperCase() + m.category.slice(1)}` as keyof typeof t] || m.category} · ${formatDate(m.date, lang)}`;
 
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-pine-900/50 shadow-[0_24px_60px_-45px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-500/40">
+    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-[0_24px_60px_-45px_rgba(2,36,32,0.5)] transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-500/40">
       {isDoc ? (
         <a
           href={m.url}
@@ -583,7 +583,7 @@ function MediaCard({
         <p className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-gold-500">
           {meta}
         </p>
-        <h3 className="mt-2 flex-1 font-display text-[15.5px] font-semibold leading-snug text-pine-100">
+        <h3 className="mt-2 flex-1 font-display text-[15.5px] font-semibold leading-snug text-pine-900">
           {m.title[lang]}
         </h3>
         {isDoc && (
@@ -591,7 +591,7 @@ function MediaCard({
             href={m.url}
             target="_blank"
             rel="noreferrer"
-            className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-400 transition-colors hover:text-gold-300"
+            className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-600 transition-colors hover:text-gold-500"
           >
             {t['mediaPage.download']}
             <ArrowUpRight size={13} />
@@ -601,7 +601,7 @@ function MediaCard({
           <button
             type="button"
             onClick={onOpen}
-            className="mt-4 inline-flex items-center gap-1.5 text-left text-[12px] font-semibold text-gold-400 transition-colors hover:text-gold-300"
+            className="mt-4 inline-flex items-center gap-1.5 text-left text-[12px] font-semibold text-gold-600 transition-colors hover:text-gold-500"
           >
             {t['mediaPage.view']}
             <ArrowUpRight size={13} />
