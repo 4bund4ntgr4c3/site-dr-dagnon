@@ -385,4 +385,60 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     },
     src: '/community/philantropie-7.jpeg',
   },
+  // ── Community — Nuit du Paludisme / Icône 360 ─────────────────────
+  {
+    id: 'nuit-paludisme-1',
+    type: 'image',
+    category: 'community',
+    date: '2025-06-01',
+    title: {
+      fr: 'La Nuit du Paludisme — Gala Icône 360, portrait officiel',
+      en: 'Malaria Night — Icône 360 gala, official portrait',
+    },
+    src: '/community/nuit-paludisme-1.jpeg',
+  },
+  {
+    id: 'nuit-paludisme-2',
+    type: 'image',
+    category: 'community',
+    date: '2025-06-01',
+    title: {
+      fr: 'La Nuit du Paludisme — Gala Icône 360, avec invités',
+      en: 'Malaria Night — Icône 360 gala, with guests',
+    },
+    src: '/community/nuit-paludisme-2.jpeg',
+  },
+  {
+    id: 'nuit-paludisme-3',
+    type: 'image',
+    category: 'community',
+    date: '2025-06-01',
+    title: {
+      fr: 'La Nuit du Paludisme — Discours et/animations',
+      en: 'Malaria Night — Speeches and presentations',
+    },
+    src: '/community/nuit-paludisme-3.jpeg',
+  },
+  {
+    id: 'nuit-paludisme-4',
+    type: 'image',
+    category: 'community',
+    date: '2025-06-01',
+    title: {
+      fr: 'La Nuit du Paludisme — Remise de prix Icône 360',
+      en: 'Malaria Night — Icône 360 awards ceremony',
+    },
+    src: '/community/nuit-paludisme-4.jpeg',
+  },
+  {
+    id: 'nuit-paludisme-5',
+    type: 'image',
+    category: 'community',
+    date: '2025-06-01',
+    title: {
+      fr: 'Parrain de la lutte contre le paludisme — Attestation Icône 360 / Expertise France',
+      en: 'Malaria fight godfather — Icône 360 / Expertise France attestation',
+    },
+    src: '/community/nuit-paludisme-5.jpeg',
+  },
 ];
