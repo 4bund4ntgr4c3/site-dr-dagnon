@@ -328,13 +328,43 @@ export const ACHIEVEMENTS: Record<Lang, { metric: string; title: string; text: s
     { metric: '2020', title: 'PMI FSN Employee of the Year', text: 'Reconnu parmi 27 pays du U.S. President’s Malaria Initiative ; également employé local de l’année 2019 de l’Ambassade des États-Unis au Bénin et multiple lauréat de distinctions USAID / Ambassade.' },
     { metric: '35 % → 94 %', title: 'Complétude des données paludisme', text: 'Comme responsable S&E d’ARM3, hausse de la complétude du système d’information de routine et baisse du taux d’erreur national de 44 % à 5 % sur 1 114 centres de santé.' },
     { metric: '$3 000 000', title: 'Économies gouvernementales majeures', text: 'À l’USAID/PMI Bénin, négociation d’un contrat de gouvernement à gouvernement avec le Programme national de lutte contre le paludisme du Bénin, générant des économies allant jusqu’à 3 000 000 $ sur 5 ans.' },
-    { metric: 'PAMCA 8', title: 'Représentation publique', text: 'Représente la Fondation Gates lors d’événements majeurs, dont la cérémonie d’ouverture de la 8e conférence PAMCA et des forums de partenaires du paludisme.' },
+    { metric: '8+', title: 'Distinctions et prix', text: 'Découvrez la liste complète des prix, distinctions et honneurs reçus tout au long de la carrière du Dr. Dagnon.' },
   ],
   en: [
     { metric: '2020', title: 'PMI FSN Employee of the Year', text: 'Recognized across 27 countries of the U.S. President’s Malaria Initiative; also U.S. Embassy Benin local employee of the year 2019 and multiple USAID / Embassy awardee.' },
     { metric: '35% → 94%', title: 'Malaria data completeness', text: 'As M&E lead at ARM3, raised routine information system completeness and cut the national error rate from 44% to 5% across 1,114 health facilities.' },
     { metric: '$3,000,000', title: 'Major government savings', text: 'At USAID/PMI Benin, negotiated a government-to-government contract with Benin’s National Malaria Control Program, generating savings of up to $3,000,000 over 5 years.' },
-    { metric: 'PAMCA 8', title: 'Public representation', text: 'Represents the Gates Foundation at major events, including the opening ceremony of the 8th PAMCA conference and malaria partner forums.' },
+    { metric: '8+', title: 'Awards & Honors', text: 'Discover the full list of awards, honors, and distinctions received throughout Dr. Dagnon\'s career.' },
+  ],
+};
+
+export interface AwardEntry {
+  year: string;
+  title: string;
+  description: string;
+  quote?: string;
+}
+
+export const AWARDS: Record<Lang, AwardEntry[]> = {
+  fr: [
+    { year: '2022', title: 'LOVE Machine Award', description: 'Pour avoir repr\u00e9sent\u00e9 la Fondation Bill & Melinda Gates lors de la s\u00e9ance d\u2019ouverture de la conf\u00e9rence PAMCA 2022 \u00e0 Kigali, Rwanda.', quote: 'Nomm\u00e9 par Peter Berry.' },
+    { year: '2020', title: 'FSN Employee of the Year', description: 'La distinction la plus prestigieuse d\u00e9cern\u00e9e par le U.S. President\u2019s Malaria Initiative \u00e0 son personnel bas\u00e9 dans 27 pays.', quote: '\u00ab Fortune Dagnon est un membre exceptionnellement talentueux de l\u2019\u00e9quipe PMI B\u00e9nin, dot\u00e9 d\u2019excellentes comp\u00e9tences en communication et coordination. Il a jou\u00e9 un r\u00f4le important dans le renforcement des capacit\u00e9s du PNLP gr\u00e2ce \u00e0 sa gestion exceptionnelle de deux accords G2G exigeants avec le PNLP et le CREC. \u00bb' },
+    { year: '2020', title: 'Meritorious Honor Award', description: 'Pour professionnalisme exceptionnel, diplomatie et r\u00e9silience extraordinaire ayant assur\u00e9 la continuit\u00e9 des services essentiels de lutte contre le paludisme durant la pand\u00e9mie de COVID-19.' },
+    { year: '2020', title: 'Eagle Award', description: 'Pour leadership technique et programmatique exceptionnel tout au long du processus de planification op\u00e9rationnelle du paludisme en 2019.' },
+    { year: '2019', title: 'U.S. Government LES of the Year', description: 'La distinction la plus prestigieuse du U.S. Department of State pour les employ\u00e9s locaux, pour performance exceptionnelle dans la supervision et le leadership du programme PMI au B\u00e9nin (2016\u20132018).' },
+    { year: '2017', title: 'On-the-Spot Cash Award', description: 'Pour pr\u00e9paration et coordination de la soumission de 9 r\u00e9sum\u00e9s scientifiques sur le paludisme pour le PMI B\u00e9nin \u00e0 la conf\u00e9rence ASTMH.' },
+    { year: '2017', title: 'Eagle Award \u2014 U.S. Embassy Cotonou', description: 'Pour l\u2019organisation de la visite du directeur adjoint du PMI, Bernard Nahlen.' },
+    { year: '2007', title: 'Laur\u00e9at du concours de pr\u00e9sentations scientifiques', description: 'Universit\u00e9 de Conakry \u2014 Th\u00e8me : d\u00e9terminants de l\u2019ob\u00e9sit\u00e9.' },
+  ],
+  en: [
+    { year: '2022', title: 'LOVE Machine Award', description: 'For representing the Bill & Melinda Gates Foundation at the opening session of the 2022 PAMCA Conference in Kigali, Rwanda.', quote: 'Nominated by Peter Berry.' },
+    { year: '2020', title: 'FSN Employee of the Year', description: 'The most prestigious distinction given by the U.S. President\u2019s Malaria Initiative for its staff based in 27 countries worldwide.', quote: '\u201cFortune Dagnon is an exceptionally talented member of the PMI Benin Team with excellent communication and coordination skills. He has played an important role in building the capacity of the NMCP through his exceptional management of two highly demanding G2G agreements with the NMCP and the Cotonou Entomology Research Centre (CREC).\u201d' },
+    { year: '2020', title: 'Meritorious Honor Award', description: 'For exceptional professionalism, diplomacy, and extraordinary resilience and dedication to service that resulted in the continuity of essential malaria services during extremely difficult conditions of the COVID-19 pandemic.' },
+    { year: '2020', title: 'Eagle Award', description: 'For outstanding technical and programmatic leadership throughout the malaria Operational Planning process in 2019.' },
+    { year: '2019', title: 'U.S. Government LES of the Year', description: 'The most prestigious distinction given by the U.S. Department of State to Foreign Service Nationals working in the U.S. administration, for outstanding sustained performance in overseeing, expanding, and leading the PMI program in Benin (2016\u20132018).' },
+    { year: '2017', title: 'On-the-Spot Cash Award', description: 'For preparing and coordinating the submission of 9 scientific abstracts on malaria for PMI Benin for the ASTMH conference.' },
+    { year: '2017', title: 'Eagle Award \u2014 U.S. Embassy Cotonou', description: 'For organizing the visit of PMI Deputy Director Bernard Nahlen.' },
+    { year: '2007', title: 'Laureate of Annual Scientific Presentation Competition', description: 'University of Conakry \u2014 Topic: determinants of obesity.' },
   ],
 };
 
