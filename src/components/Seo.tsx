@@ -43,6 +43,15 @@ const MEDIA_SEO: Record<Lang, { title: string; description: string }> = {
   },
 };
 
+const CAT_NAMES: Record<string, { fr: string; en: string }> = {
+  interview: { fr: 'Interviews', en: 'Interviews' },
+  conference: { fr: 'Conférences', en: 'Conferences' },
+  research: { fr: 'Recherche', en: 'Research' },
+  publication: { fr: 'Publications', en: 'Publications' },
+  press: { fr: 'Presse', en: 'Press' },
+  community: { fr: 'Engagement communautaire', en: 'Community Engagement' },
+};
+
 const PUB_SEO: Record<Lang, { title: string; description: string }> = {
   fr: {
     title: UI.fr['pubPage.seoTitle'],
@@ -107,11 +116,23 @@ export function Seo() {
   const { pathname } = useLocation();
   const isContact = pathname.startsWith('/contact');
   const isMedia = pathname.startsWith('/media');
+  const isMediaLanding = pathname === '/media' || pathname === '/media/';
+  const mediaCategory = isMedia && !isMediaLanding ? pathname.split('/media/')[1]?.split('/')[0] : null;
   const isPub = pathname.startsWith('/publications');
 
   useEffect(() => {
-    const data = isPub ? PUB_SEO[lang] : isMedia ? MEDIA_SEO[lang] : isContact ? CONTACT_SEO[lang] : SEO[lang];
-    const url = SITE_URL + (isPub ? '/publications' : isMedia ? '/media' : isContact ? '/contact' : '');
+    const catName = mediaCategory ? CAT_NAMES[mediaCategory] : null;
+    const catDescKey = mediaCategory ? `mediaPage.catDesc${mediaCategory.charAt(0).toUpperCase() + mediaCategory.slice(1)}` as keyof typeof UI[typeof lang] : null;
+    const data = isPub
+      ? PUB_SEO[lang]
+      : isMedia && catName
+        ? { title: `${catName[lang]} — ${UI[lang]['mediaPage.badge']}`, description: (catDescKey ? UI[lang][catDescKey] : null) || MEDIA_SEO[lang].description }
+        : isMedia
+          ? MEDIA_SEO[lang]
+          : isContact
+            ? CONTACT_SEO[lang]
+            : SEO[lang];
+    const url = SITE_URL + (isPub ? '/publications' : isMedia ? pathname : isContact ? '/contact' : '');
     document.title = data.title;
     document.documentElement.lang = lang;
 
@@ -162,7 +183,7 @@ export function Seo() {
       document.head.appendChild(ld);
     }
     ld.textContent = JSON.stringify(personJsonLd(lang, SITE_URL));
-  }, [lang, isContact, isMedia, isPub]);
+  }, [lang, isContact, isMedia, isPub, mediaCategory, pathname]);
 
   return null;
 }

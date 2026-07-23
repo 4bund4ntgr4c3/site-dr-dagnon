@@ -1,7 +1,7 @@
 import type { Lang } from '@/i18n/lang';
 
 export type MediaType = 'video' | 'image' | 'document';
-export type MediaCategory = 'interview' | 'conference' | 'research' | 'publication' | 'press';
+export type MediaCategory = 'interview' | 'conference' | 'research' | 'publication' | 'press' | 'community';
 
 export interface MediaEntry {
   id: string;

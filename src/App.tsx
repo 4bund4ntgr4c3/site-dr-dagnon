@@ -48,6 +48,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/media" element={<MediaPage />} />
+          <Route path="/media/:category" element={<MediaPage />} />
           <Route path="/publications" element={<PublicationsPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
