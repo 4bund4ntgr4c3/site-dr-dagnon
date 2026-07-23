@@ -32,8 +32,10 @@ export function Achievements() {
             return (
               <Reveal key={a.title} delay={i * 0.09}>
                 <div
-                  className={`group flex h-full flex-col rounded-2xl border border-white/10 bg-pine-950/60 p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-500/40 ${
-                    isAwards ? 'cursor-pointer' : ''
+                  className={`group flex h-full flex-col rounded-2xl p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1.5 ${
+                    isAwards
+                      ? 'border border-pine-900/10 bg-white hover:border-gold-500/40 hover:shadow-lg hover:shadow-gold-500/10'
+                      : 'border border-white/10 bg-pine-950/60 hover:border-gold-500/40'
                   }`}
                   onClick={isAwards ? () => setShowAwards(true) : undefined}
                   onKeyDown={isAwards ? (e) => { if (e.key === 'Enter' || e.key === ' ') setShowAwards(true); } : undefined}
@@ -41,21 +43,21 @@ export function Achievements() {
                   tabIndex={isAwards ? 0 : undefined}
                 >
                   <div className="flex items-center gap-3">
-                    <p className="font-display text-[1.9rem] font-semibold leading-none text-gold-400">
+                    <p className={`font-display text-[1.9rem] font-semibold leading-none ${isAwards ? 'text-gold-600' : 'text-gold-400'}`}>
                       {a.metric}
                     </p>
                     {isAwards && (
-                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold-500/15 text-gold-400 transition-transform duration-300 group-hover:scale-110">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold-500/15 text-gold-600 transition-transform duration-300 group-hover:scale-110">
                         <Award size={16} />
                       </span>
                     )}
                   </div>
-                  <h3 className="mt-4 flex items-start gap-2 font-display text-lg font-semibold leading-snug text-ivory">
+                  <h3 className={`mt-4 flex items-start gap-2 font-display text-lg font-semibold leading-snug ${isAwards ? 'text-pine-900' : 'text-ivory'}`}>
                     {a.title}
                   </h3>
-                  <p className="mt-3 flex-1 text-[13px] leading-relaxed text-pine-100/60">{a.text}</p>
+                  <p className={`mt-3 flex-1 text-[13px] leading-relaxed ${isAwards ? 'text-ink/65' : 'text-pine-100/60'}`}>{a.text}</p>
                   {isAwards && (
-                    <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-400 transition-colors group-hover:text-gold-300">
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
                       {lang === 'fr' ? 'Voir la liste complète' : 'View full list'} →
                     </span>
                   )}
