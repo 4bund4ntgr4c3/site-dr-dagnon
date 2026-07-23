@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { Play, FileText, Image as ImageIcon, X, ArrowUpRight } from 'lucide-react';
+import { Play, FileText, Image as ImageIcon, X, ArrowUpRight, Mic, Presentation, Search, BookOpen, Newspaper } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
@@ -25,6 +25,14 @@ const CATEGORY_KEYS: Record<MediaCategory, string> = {
   research: 'mediaPage.catResearch',
   publication: 'mediaPage.catPublication',
   press: 'mediaPage.catPress',
+};
+
+const CATEGORY_ICONS: Record<MediaCategory, typeof Mic> = {
+  interview: Mic,
+  conference: Presentation,
+  research: Search,
+  publication: BookOpen,
+  press: Newspaper,
 };
 
 function formatDate(iso: string, lang: 'fr' | 'en') {
@@ -55,6 +63,14 @@ export default function MediaPage() {
   const categories = useMemo(() => {
     const set = new Set(MEDIA_ITEMS.map((m) => m.category));
     return Array.from(set) as MediaCategory[];
+  }, []);
+
+  const catCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: MEDIA_ITEMS.length };
+    MEDIA_ITEMS.forEach((m) => {
+      counts[m.category] = (counts[m.category] || 0) + 1;
+    });
+    return counts;
   }, []);
 
   const filtered = useMemo(() => {
@@ -225,6 +241,58 @@ export default function MediaPage() {
           <p className="mt-6 text-[13px] font-medium text-pine-900/55">
             {t['mediaPage.results'].replace('{n}', String(filtered.length))}
           </p>
+
+          {/* category miniature bar */}
+          <div className="mt-5 flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+            <button
+              type="button"
+              onClick={() => setCat('all')}
+              className={`flex shrink-0 items-center gap-2 rounded-xl border px-4 py-2.5 text-[12.5px] font-semibold transition-all ${
+                cat === 'all'
+                  ? 'border-gold-500/50 bg-gold-500/10 text-gold-700 shadow-sm'
+                  : 'border-pine-900/10 bg-white text-ink/55 hover:border-gold-500/30 hover:text-pine-900'
+              }`}
+            >
+              <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${
+                cat === 'all' ? 'bg-gold-500/20 text-gold-600' : 'bg-pine-900/5 text-pine-900/40'
+              }`}>
+                <Search size={14} />
+              </span>
+              <span>{t['mediaPage.all']}</span>
+              <span className={`ml-0.5 rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+                cat === 'all' ? 'bg-gold-500/20 text-gold-600' : 'bg-pine-900/5 text-pine-900/40'
+              }`}>
+                {catCounts.all}
+              </span>
+            </button>
+            {categories.map((c) => {
+              const Icon = CATEGORY_ICONS[c];
+              return (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setCat(c)}
+                  className={`flex shrink-0 items-center gap-2 rounded-xl border px-4 py-2.5 text-[12.5px] font-semibold transition-all ${
+                    cat === c
+                      ? 'border-gold-500/50 bg-gold-500/10 text-gold-700 shadow-sm'
+                      : 'border-pine-900/10 bg-white text-ink/55 hover:border-gold-500/30 hover:text-pine-900'
+                  }`}
+                >
+                  <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${
+                    cat === c ? 'bg-gold-500/20 text-gold-600' : 'bg-pine-900/5 text-pine-900/40'
+                  }`}>
+                    <Icon size={14} />
+                  </span>
+                  <span>{t[CATEGORY_KEYS[c]]}</span>
+                  <span className={`ml-0.5 rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+                    cat === c ? 'bg-gold-500/20 text-gold-600' : 'bg-pine-900/5 text-pine-900/40'
+                  }`}>
+                    {catCounts[c] || 0}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
           {/* grid */}
           {filtered.length === 0 ? (
