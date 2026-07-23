@@ -345,10 +345,13 @@ export interface AwardEntry {
   quote?: string;
   video?: string;
   videoLabel?: string;
+  image?: string;
+  imageAlt?: string;
 }
 
 export const AWARDS: Record<Lang, AwardEntry[]> = {
   fr: [
+    { year: '2025', title: 'Prix spécial — Engagement dans l’élimination du paludisme en Afrique', description: 'L’ONG Icône 360 et ses partenaires, en collaboration avec Expertise France, ont remis au Dr. Dagnon un prix spécial en reconnaissance de son engagement et de son combat dans la lutte contre le paludisme au Bénin et à travers l’Afrique.', image: '/2025-special-award.jpg', imageAlt: 'Dr. Dagnon recevant le prix spécial Icône 360 / Expertise France pour l’élimination du paludisme' },
     { year: '2022', title: 'LOVE Machine Award', description: 'Pour avoir repr\u00e9sent\u00e9 la Fondation Bill & Melinda Gates lors de la s\u00e9ance d\u2019ouverture de la conf\u00e9rence PAMCA 2022 \u00e0 Kigali, Rwanda.', quote: 'Nomm\u00e9 par Peter Berry.' },
     { year: '2020', title: 'FSN Employee of the Year', description: 'La distinction la plus prestigieuse d\u00e9cern\u00e9e par le U.S. President\u2019s Malaria Initiative \u00e0 son personnel bas\u00e9 dans 27 pays.', quote: '\u00ab Fortune Dagnon est un membre exceptionnellement talentueux de l\u2019\u00e9quipe PMI B\u00e9nin, dot\u00e9 d\u2019excellentes comp\u00e9tences en communication et coordination. Il a jou\u00e9 un r\u00f4le important dans le renforcement des capacit\u00e9s du PNLP gr\u00e2ce \u00e0 sa gestion exceptionnelle de deux accords G2G exigeants avec le PNLP et le CREC. \u00bb' },
     { year: '2020', title: 'Meritorious Honor Award', description: 'Pour professionnalisme exceptionnel, diplomatie et r\u00e9silience extraordinaire ayant assur\u00e9 la continuit\u00e9 des services essentiels de lutte contre le paludisme durant la pand\u00e9mie de COVID-19.' },
@@ -359,6 +362,7 @@ export const AWARDS: Record<Lang, AwardEntry[]> = {
     { year: '2007', title: 'Laur\u00e9at du concours de pr\u00e9sentations scientifiques', description: 'Universit\u00e9 de Conakry \u2014 Th\u00e8me : d\u00e9terminants de l\u2019ob\u00e9sit\u00e9.' },
   ],
   en: [
+    { year: '2025', title: 'Special Award — Commitment to Malaria Elimination in Africa', description: 'Icône 360 NGO and its partners, in collaboration with Expertise France, presented Dr. Dagnon with a special award in recognition of his commitment and work in the fight against malaria in Benin and across Africa.', image: '/2025-special-award.jpg', imageAlt: 'Dr. Dagnon receiving the Icône 360 / Expertise France special award for malaria elimination' },
     { year: '2022', title: 'LOVE Machine Award', description: 'For representing the Bill & Melinda Gates Foundation at the opening session of the 2022 PAMCA Conference in Kigali, Rwanda.', quote: 'Nominated by Peter Berry.' },
     { year: '2020', title: 'FSN Employee of the Year', description: 'The most prestigious distinction given by the U.S. President\u2019s Malaria Initiative for its staff based in 27 countries worldwide.', quote: '\u201cFortune Dagnon is an exceptionally talented member of the PMI Benin Team with excellent communication and coordination skills. He has played an important role in building the capacity of the NMCP through his exceptional management of two highly demanding G2G agreements with the NMCP and the Cotonou Entomology Research Centre (CREC).\u201d' },
     { year: '2020', title: 'Meritorious Honor Award', description: 'For exceptional professionalism, diplomacy, and extraordinary resilience and dedication to service that resulted in the continuity of essential malaria services during extremely difficult conditions of the COVID-19 pandemic.' },

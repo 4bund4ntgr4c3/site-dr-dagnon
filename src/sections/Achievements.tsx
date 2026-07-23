@@ -197,6 +197,18 @@ export function Achievements() {
                             )}
                           </div>
                         )}
+                        {award.image && (
+                          <div className="mt-4 overflow-hidden rounded-xl border border-pine-900/10 shadow-md">
+                            <img
+                              src={award.image}
+                              alt={award.imageAlt || award.title}
+                              width={640}
+                              height={360}
+                              loading="lazy"
+                              className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
