@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Trophy, Award, X, Quote } from 'lucide-react';
+import { Trophy, Award, X, Quote, Play } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
@@ -12,6 +12,7 @@ export function Achievements() {
   const [showAwards, setShowAwards] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const [playingVideo, setPlayingVideo] = useState<string | null>(null);
 
   useFocusTrap(modalRef, closeRef, showAwards, () => setShowAwards(false));
 
@@ -164,6 +165,36 @@ export function Achievements() {
                                 {award.quote}
                               </p>
                             </div>
+                          </div>
+                        )}
+                        {award.video && (
+                          <div className="mt-4">
+                            {playingVideo === award.video ? (
+                              <div className="aspect-video w-full overflow-hidden rounded-xl border border-pine-900/10 shadow-md">
+                                <video
+                                  src={award.video}
+                                  controls
+                                  autoPlay
+                                  className="h-full w-full object-cover"
+                                />
+                              </div>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => setPlayingVideo(award.video!)}
+                                className="group/video relative flex w-full items-center gap-4 rounded-xl border border-pine-900/10 bg-pine-950 p-4 transition-all hover:border-gold-500/40 hover:shadow-md"
+                              >
+                                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold-500 text-pine-950 shadow-lg transition-transform duration-300 group-hover/video:scale-110">
+                                  <Play size={20} className="ml-0.5" fill="currentColor" />
+                                </span>
+                                <div className="text-left">
+                                  <p className="text-[13px] font-semibold text-ivory">
+                                    {award.videoLabel || (lang === 'fr' ? 'Voir la vid\u00e9o' : 'Watch video')}
+                                  </p>
+                                  <p className="text-[11px] text-pine-100/50">MP4</p>
+                                </div>
+                              </button>
+                            )}
                           </div>
                         )}
                       </div>
