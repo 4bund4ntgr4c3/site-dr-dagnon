@@ -7,6 +7,7 @@ export interface MediaEntry {
   id: string;
   type: MediaType;
   category: MediaCategory;
+  subType?: string;
   date: string; // ISO yyyy-mm-dd
   title: Record<Lang, string>;
   youtubeId?: string;
@@ -312,6 +313,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     id: 'philantropie-1',
     type: 'image',
     category: 'community',
+    subType: 'philantropie',
     date: '2025-07-01',
     title: {
       fr: 'Philanthropie — Distribution de fournitures scolaires avec ONG Reel Concept & Plus',
@@ -323,6 +325,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     id: 'philantropie-2',
     type: 'image',
     category: 'community',
+    subType: 'philantropie',
     date: '2025-07-01',
     title: {
       fr: 'Philanthropie — Aide aux enfants démunis avec ONG Reel Concept & Plus',
@@ -334,6 +337,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     id: 'philantropie-3',
     type: 'image',
     category: 'community',
+    subType: 'philantropie',
     date: '2025-07-01',
     title: {
       fr: 'Philanthropie — Soutien scolaire communautaire',
@@ -345,6 +349,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     id: 'philantropie-4',
     type: 'image',
     category: 'community',
+    subType: 'philantropie',
     date: '2025-07-01',
     title: {
       fr: 'Philanthropie — Distribution de livres et fournitures',
@@ -356,6 +361,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     id: 'philantropie-5',
     type: 'image',
     category: 'community',
+    subType: 'philantropie',
     date: '2025-07-01',
     title: {
       fr: 'Philanthropie — Équipe ONG Reel Concept & Plus et partenaires',
@@ -367,6 +373,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     id: 'philantropie-6',
     type: 'image',
     category: 'community',
+    subType: 'philantropie',
     date: '2025-07-01',
     title: {
       fr: 'Philanthropie — Collaboration communautaire et solidarité',
@@ -378,6 +385,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     id: 'philantropie-7',
     type: 'image',
     category: 'community',
+    subType: 'philantropie',
     date: '2025-07-01',
     title: {
       fr: 'Philanthropie — Enfants heureux avec leurs fournitures scolaires',
@@ -390,6 +398,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     id: 'nuit-paludisme-1',
     type: 'image',
     category: 'community',
+    subType: 'gala',
     date: '2025-06-01',
     title: {
       fr: 'La Nuit du Paludisme — Gala Icône 360, portrait officiel',
@@ -401,6 +410,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     id: 'nuit-paludisme-2',
     type: 'image',
     category: 'community',
+    subType: 'gala',
     date: '2025-06-01',
     title: {
       fr: 'La Nuit du Paludisme — Gala Icône 360, avec invités',
@@ -412,6 +422,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     id: 'nuit-paludisme-3',
     type: 'image',
     category: 'community',
+    subType: 'gala',
     date: '2025-06-01',
     title: {
       fr: 'La Nuit du Paludisme — Discours et/animations',
@@ -423,6 +434,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     id: 'nuit-paludisme-4',
     type: 'image',
     category: 'community',
+    subType: 'gala',
     date: '2025-06-01',
     title: {
       fr: 'La Nuit du Paludisme — Remise de prix Icône 360',
@@ -434,6 +446,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     id: 'nuit-paludisme-5',
     type: 'image',
     category: 'community',
+    subType: 'gala',
     date: '2025-06-01',
     title: {
       fr: 'Parrain de la lutte contre le paludisme — Attestation Icône 360 / Expertise France',

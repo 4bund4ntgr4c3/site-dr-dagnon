@@ -213,8 +213,13 @@ function MediaLanding({
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   CATEGORY VIEW — Items with filters + sidebar
+   CATEGORY VIEW — Top filter bar + chronological display
    ═══════════════════════════════════════════════════════════════════ */
+
+const SUBTYPE_MAP: Record<string, Record<'fr' | 'en', string>> = {
+  philantropie: { fr: 'Philanthropie', en: 'Philanthropy' },
+  gala: { fr: 'Galas & Cérémonies', en: 'Galas & Ceremonies' },
+};
 
 function CategoryView({
   category,
@@ -226,8 +231,8 @@ function CategoryView({
   t: (typeof UI)['fr'];
 }) {
   const [type, setType] = useState<MediaType | 'all'>('all');
-  const [year, setYear] = useState<string>('all');
-  const [sort, setSort] = useState<'desc' | 'asc'>('desc');
+  const [subType, setSubType] = useState<string>('all');
+  const [search, setSearch] = useState('');
   const [active, setActive] = useState<MediaEntry | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -235,26 +240,38 @@ function CategoryView({
   const catMeta = CATEGORY_MAP[category];
   const CatIcon = catMeta.icon;
 
-  const years = useMemo(() => {
+  const subTypes = useMemo(() => {
     const set = new Set(
-      MEDIA_ITEMS.filter((m) => m.category === category).map((m) =>
-        m.date.slice(0, 4),
-      ),
+      MEDIA_ITEMS.filter((m) => m.category === category && m.subType).map((m) => m.subType!),
     );
-    return Array.from(set).sort((a, b) => b.localeCompare(a));
+    return Array.from(set);
   }, [category]);
 
+  const hasSubTypes = subTypes.length > 0;
+
   const filtered = useMemo(() => {
+    const q = search.toLowerCase().trim();
     return MEDIA_ITEMS.filter((m) => {
       if (m.category !== category) return false;
       if (type !== 'all' && m.type !== type) return false;
-      if (year !== 'all' && !m.date.startsWith(year)) return false;
+      if (subType !== 'all' && m.subType !== subType) return false;
+      if (q) {
+        const haystack = `${m.title[lang]} ${m.subType || ''}`.toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
       return true;
-    }).sort((a, b) => {
-      const cmp = a.date.localeCompare(b.date);
-      return sort === 'desc' ? -cmp : cmp;
+    }).sort((a, b) => a.date.localeCompare(b.date));
+  }, [category, type, subType, search, lang]);
+
+  const groupedByDate = useMemo(() => {
+    const groups: Record<string, MediaEntry[]> = {};
+    filtered.forEach((m) => {
+      const monthKey = m.date.slice(0, 7);
+      if (!groups[monthKey]) groups[monthKey] = [];
+      groups[monthKey].push(m);
     });
-  }, [category, type, year, sort]);
+    return Object.entries(groups).sort(([a], [b]) => a.localeCompare(b));
+  }, [filtered]);
 
   useFocusTrap(modalRef, closeRef, !!active, () => setActive(null));
 
@@ -284,132 +301,125 @@ function CategoryView({
         </Link>
       </div>
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-[260px_1fr] lg:items-start">
-        {/* sidebar */}
-        <aside className="lg:sticky lg:top-24">
-          <div className="rounded-2xl border border-pine-900/10 bg-ivory p-4 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
-            <div className="space-y-4">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
-                  {t['mediaPage.filterType']}
-                </p>
-                <div
-                  role="group"
-                  aria-label={t['mediaPage.filterType']}
-                  className="mt-2 flex flex-wrap gap-2"
-                >
-                  {TYPE_FILTERS.map((f) => (
-                    <button
-                      key={f.value}
-                      type="button"
-                      onClick={() => setType(f.value)}
-                      className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
-                        type === f.value
-                          ? 'bg-pine-950 text-gold-400 shadow'
-                          : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
-                      }`}
-                    >
-                      {t[f.key]}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
-                  {t['mediaPage.filterYear']}
-                </p>
-                <div
-                  role="group"
-                  aria-label={t['mediaPage.filterYear']}
-                  className="mt-2 flex flex-wrap gap-2"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setYear('all')}
-                    className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
-                      year === 'all'
-                        ? 'bg-pine-950 text-gold-400 shadow'
-                        : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
-                    }`}
-                  >
-                    {t['mediaPage.all']}
-                  </button>
-                  {years.map((y) => (
-                    <button
-                      key={y}
-                      type="button"
-                      onClick={() => setYear(y)}
-                      className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
-                        year === y
-                          ? 'bg-pine-950 text-gold-400 shadow'
-                          : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
-                      }`}
-                    >
-                      {y}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
-                  {t['mediaPage.filterSort']}
-                </p>
-                <div
-                  role="group"
-                  aria-label={t['mediaPage.filterSort']}
-                  className="mt-2 flex flex-wrap gap-2"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setSort('desc')}
-                    className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
-                      sort === 'desc'
-                        ? 'bg-pine-950 text-gold-400 shadow'
-                        : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
-                    }`}
-                  >
-                    {t['mediaPage.newest']}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSort('asc')}
-                    className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
-                      sort === 'asc'
-                        ? 'bg-pine-950 text-gold-400 shadow'
-                        : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
-                    }`}
-                  >
-                    {t['mediaPage.oldest']}
-                  </button>
-                </div>
-              </div>
-            </div>
+      {/* top filter bar */}
+      <div className="mt-8 rounded-2xl border border-pine-900/10 bg-ivory p-4 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-5">
+          {/* search */}
+          <div className="relative flex-1">
+            <label htmlFor="media-search" className="sr-only">
+              {t['mediaPage.search'] || 'Rechercher...'}
+            </label>
+            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/40" />
+            <input
+              id="media-search"
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t['mediaPage.search'] || 'Rechercher...'}
+              className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/35 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
+            />
           </div>
-        </aside>
 
-        {/* items grid */}
-        <div>
-          <p className="text-[13px] font-medium text-pine-900/50">
-            {t['mediaPage.results'].replace('{n}', String(filtered.length))}
-          </p>
-
-          {filtered.length === 0 ? (
-            <p className="mt-10 rounded-2xl border border-dashed border-pine-900/15 bg-white px-6 py-16 text-center text-sm text-pine-900/50">
-              {t['mediaPage.empty']}
-            </p>
-          ) : (
-            <div className="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((m, i) => (
-                <Reveal key={m.id} delay={Math.min(i * 0.05, 0.3)}>
-                  <MediaCard m={m} lang={lang} t={t} onOpen={() => setActive(m)} />
-                </Reveal>
-              ))}
-            </div>
-          )}
+          {/* type filters */}
+          <div className="flex flex-wrap gap-2">
+            {TYPE_FILTERS.map((f) => (
+              <button
+                key={f.value}
+                type="button"
+                onClick={() => setType(f.value)}
+                className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                  type === f.value
+                    ? 'bg-pine-950 text-gold-400 shadow'
+                    : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                }`}
+              >
+                {t[f.key]}
+              </button>
+            ))}
+          </div>
         </div>
+
+        {/* subcategory chips — only when category has subtypes */}
+        {hasSubTypes && (
+          <div className="mt-3 flex flex-wrap gap-2 border-t border-pine-900/8 pt-3">
+            <button
+              type="button"
+              onClick={() => setSubType('all')}
+              className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                subType === 'all'
+                  ? 'bg-pine-950 text-gold-400 shadow'
+                  : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+              }`}
+            >
+              {t['mediaPage.subAll']}
+            </button>
+            {subTypes.map((st) => (
+              <button
+                key={st}
+                type="button"
+                onClick={() => setSubType(st)}
+                className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                  subType === st
+                    ? 'bg-pine-950 text-gold-400 shadow'
+                    : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                }`}
+              >
+                {SUBTYPE_MAP[st]?.[lang] || st}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
+
+      {/* results count */}
+      <p className="mt-5 text-[13px] font-medium text-pine-900/50">
+        {t['mediaPage.results'].replace('{n}', String(filtered.length))}
+      </p>
+
+      {/* chronological timeline display */}
+      {filtered.length === 0 ? (
+        <p className="mt-10 rounded-2xl border border-dashed border-pine-900/15 bg-white px-6 py-16 text-center text-sm text-pine-900/50">
+          {t['mediaPage.empty']}
+        </p>
+      ) : (
+        <div className="mt-6 space-y-10">
+          {groupedByDate.map(([monthKey, items], gi) => {
+            const [year, month] = monthKey.split('-');
+            const monthName = new Date(Number(year), Number(month) - 1).toLocaleDateString(
+              lang === 'fr' ? 'fr-FR' : 'en-US',
+              { month: 'long', year: 'numeric' },
+            );
+            return (
+              <Reveal key={monthKey} delay={Math.min(gi * 0.08, 0.3)}>
+                <div>
+                  {/* month header with timeline dot */}
+                  <div className="flex items-center gap-4">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 ring-2 ring-gold-500/30">
+                      <span className="h-2.5 w-2.5 rounded-full bg-gold-500" />
+                    </span>
+                    <div className="h-px flex-1 bg-gradient-to-r from-gold-500/30 to-transparent" />
+                    <h3 className="font-display text-lg font-semibold text-pine-900 capitalize">
+                      {monthName}
+                    </h3>
+                    <div className="h-px flex-1 bg-gradient-to-l from-gold-500/30 to-transparent" />
+                  </div>
+
+                  {/* items grid */}
+                  <div className="mt-5 ml-5 border-l-2 border-pine-900/8 pl-8">
+                    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                      {items.map((m, i) => (
+                        <Reveal key={m.id} delay={Math.min(i * 0.05, 0.3)}>
+                          <MediaCard m={m} lang={lang} t={t} onOpen={() => setActive(m)} />
+                        </Reveal>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      )}
 
       {/* modal */}
       {active && (
