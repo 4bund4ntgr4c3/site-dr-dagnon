@@ -88,7 +88,7 @@ export default function MediaPage() {
   useFocusTrap(modalRef, closeRef, !!active, () => setActive(null));
 
   return (
-    <main id="main-content" className="min-h-screen">
+    <main id="main-content" className="min-h-screen overflow-x-hidden">
       {/* header — hero background */}
       <section className="relative overflow-hidden bg-pine-950">
         <div className="absolute inset-0 texture-net" />
@@ -114,7 +114,7 @@ export default function MediaPage() {
       {/* content — light */}
       <section className="bg-pine-50 py-16 lg:py-20">
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[280px_1fr] lg:items-start">
+          <div className="grid gap-8 lg:grid-cols-[260px_1fr] lg:items-start">
             {/* filters sidebar */}
             <aside className="lg:sticky lg:top-24">
               <div className="rounded-2xl border border-pine-900/10 bg-ivory p-4 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
@@ -243,11 +243,11 @@ export default function MediaPage() {
           </p>
 
           {/* category miniature bar */}
-          <div className="mt-5 flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+          <div className="mt-5 flex flex-wrap gap-3 pb-2">
             <button
               type="button"
               onClick={() => setCat('all')}
-              className={`flex shrink-0 items-center gap-2 rounded-xl border px-4 py-2.5 text-[12.5px] font-semibold transition-all ${
+              className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-[12.5px] font-semibold transition-all ${
                 cat === 'all'
                   ? 'border-gold-500/50 bg-gold-500/10 text-gold-700 shadow-sm'
                   : 'border-pine-900/10 bg-white text-ink/55 hover:border-gold-500/30 hover:text-pine-900'
@@ -272,7 +272,7 @@ export default function MediaPage() {
                   key={c}
                   type="button"
                   onClick={() => setCat(c)}
-                  className={`flex shrink-0 items-center gap-2 rounded-xl border px-4 py-2.5 text-[12.5px] font-semibold transition-all ${
+                  className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-[12.5px] font-semibold transition-all ${
                     cat === c
                       ? 'border-gold-500/50 bg-gold-500/10 text-gold-700 shadow-sm'
                       : 'border-pine-900/10 bg-white text-ink/55 hover:border-gold-500/30 hover:text-pine-900'
