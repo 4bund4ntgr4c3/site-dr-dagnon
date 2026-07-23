@@ -307,4 +307,82 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     url: 'https://www.smc-alliance.org/smc-resources/joint-smc-amp-annual-meetings-2026-presentations',
     fileLabel: { fr: 'Présentation · SMC Alliance', en: 'Presentation · SMC Alliance' },
   },
+  // ── Community — Philanthropie ──────────────────────────────────────
+  {
+    id: 'philantropie-1',
+    type: 'image',
+    category: 'community',
+    date: '2025-07-01',
+    title: {
+      fr: 'Philanthropie — Distribution de fournitures scolaires avec ONG Reel Concept & Plus',
+      en: 'Philanthropy — School supplies distribution with ONG Reel Concept & Plus',
+    },
+    src: '/community/philantropie-1.jpeg',
+  },
+  {
+    id: 'philantropie-2',
+    type: 'image',
+    category: 'community',
+    date: '2025-07-01',
+    title: {
+      fr: 'Philanthropie — Aide aux enfants démunis avec ONG Reel Concept & Plus',
+      en: 'Philanthropy — Helping underprivileged children with ONG Reel Concept & Plus',
+    },
+    src: '/community/philantropie-2.jpeg',
+  },
+  {
+    id: 'philantropie-3',
+    type: 'image',
+    category: 'community',
+    date: '2025-07-01',
+    title: {
+      fr: 'Philanthropie — Soutien scolaire communautaire',
+      en: 'Philanthropy — Community education support',
+    },
+    src: '/community/philantropie-3.jpeg',
+  },
+  {
+    id: 'philantropie-4',
+    type: 'image',
+    category: 'community',
+    date: '2025-07-01',
+    title: {
+      fr: 'Philanthropie — Distribution de livres et fournitures',
+      en: 'Philanthropy — Books and supplies distribution',
+    },
+    src: '/community/philantropie-4.jpeg',
+  },
+  {
+    id: 'philantropie-5',
+    type: 'image',
+    category: 'community',
+    date: '2025-07-01',
+    title: {
+      fr: 'Philanthropie — Équipe ONG Reel Concept & Plus et partenaires',
+      en: 'Philanthropy — ONG Reel Concept & Plus team and partners',
+    },
+    src: '/community/philantropie-5.jpeg',
+  },
+  {
+    id: 'philantropie-6',
+    type: 'image',
+    category: 'community',
+    date: '2025-07-01',
+    title: {
+      fr: 'Philanthropie — Collaboration communautaire et solidarité',
+      en: 'Philanthropy — Community collaboration and solidarity',
+    },
+    src: '/community/philantropie-6.jpeg',
+  },
+  {
+    id: 'philantropie-7',
+    type: 'image',
+    category: 'community',
+    date: '2025-07-01',
+    title: {
+      fr: 'Philanthropie — Enfants heureux avec leurs fournitures scolaires',
+      en: 'Philanthropy — Happy children with school supplies',
+    },
+    src: '/community/philantropie-7.jpeg',
+  },
 ];
