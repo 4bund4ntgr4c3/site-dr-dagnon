@@ -588,7 +588,7 @@ export const UI: Record<Lang, Dict> = {
     'hero.badge': 'Public health · Malaria · Francophone Africa',
     'hero.subtitle': 'MD, MPH — Ph.D. in Health Economics (in progress)',
     'hero.intro': 'A leader in public health and malaria programs. Senior Program Officer — Malaria / Francophone Africa at the Gates Foundation, working for over 17 years to build data-driven African health systems.',
-    'hero.name': 'Seynudé Jean-Fortuné DAGNON, PhD (in progress)',
+    'hero.name': 'Seynudé Jean-Fortuné DAGNON, MD - MPH',
     'hero.linkedin': 'Follow on LinkedIn',
     'hero.contact': 'Contact me',
     'hero.based': 'Based in Africa',
@@ -728,7 +728,7 @@ export const UI: Record<Lang, Dict> = {
     'lang.en': 'EN',
     'lang.label': 'Switch language',
     'name.full': 'Seynudé Jean-Fortuné DAGNON, PhD',
-    'name.short': 'Seynudé DAGNON, PhD (in progress)',
+    'name.short': 'Seynudé DAGNON, MD - MPH',
   },
 };
 
