@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams, Link } from 'react-router';
 import {
   Play,
   FileText,
@@ -146,8 +146,8 @@ function MediaLanding({
 
         return (
           <Reveal key={cat.key} delay={Math.min(i * 0.08, 0.4)}>
-            <a
-              href={`/media/${cat.key}`}
+            <Link
+              to={`/media/${cat.key}`}
               className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)] transition-all duration-300 hover:-translate-y-2 hover:border-gold-500/40 hover:shadow-[0_32px_70px_-30px_rgba(2,36,32,0.5)]"
             >
               {/* Thumbnail */}
@@ -204,7 +204,7 @@ function MediaLanding({
                   />
                 </span>
               </div>
-            </a>
+            </Link>
           </Reveal>
         );
       })}
@@ -275,13 +275,13 @@ function CategoryView({
             {t[catMeta.descKey as keyof typeof t] || ''}
           </p>
         </div>
-        <a
-          href="/media"
+        <Link
+          to="/media"
           className="inline-flex items-center gap-2 rounded-full border border-pine-900/15 bg-white px-5 py-2.5 text-[13px] font-semibold text-pine-900/70 shadow-sm transition-all hover:text-pine-900 hover:ring-gold-500/50 shrink-0"
         >
           <ArrowLeft size={15} />
           {t['mediaPage.back']}
-        </a>
+        </Link>
       </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[260px_1fr] lg:items-start">
