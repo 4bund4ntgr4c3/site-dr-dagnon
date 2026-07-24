@@ -10,7 +10,7 @@ const SITE_URL = 'https://seynudedagnon.com';
 
 const SEO: Record<Lang, { title: string; description: string; ogLocale: string }> = {
   fr: {
-    title: 'Dr. Seynudé Jean-Fortuné DAGNON, MD — Santé publique & Paludisme',
+    title: 'Dr. Seynudé Jean-Fortuné DAGNON — Santé publique & Paludisme',
     description:
       "Leader en santé publique et programmes de lutte contre le paludisme, Senior Program Officer à la Fondation Gates. Afrique francophone, systèmes de santé, données pour la décision.",
     ogLocale: 'fr_FR',
@@ -95,7 +95,7 @@ const PUB_SEO: Record<Lang, { title: string; description: string }> = {
 /* ── JSON-LD builders ─────────────────────────────────────────── */
 
 function personJsonLd(lang: Lang) {
-  const name = lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON, MD' : 'Seynudé Jean-Fortuné DAGNON, MD';
+  const name = lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD';
   const jobTitle =
     lang === 'fr'
       ? 'Senior Program Officer — Paludisme / Afrique francophone, Fondation Gates'
@@ -150,7 +150,7 @@ function webSiteJsonLd(lang: Lang) {
     description: SEO[lang].description,
     author: {
       '@type': 'Person',
-      name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON, MD' : 'Seynudé Jean-Fortuné DAGNON, MD',
+      name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD',
     },
     inLanguage: [lang === 'fr' ? 'fr' : 'en'],
     potentialAction: {
@@ -170,7 +170,7 @@ function contactPageJsonLd(lang: Lang) {
     url: `${SITE_URL}/contact`,
     mainEntity: {
       '@type': 'Person',
-      name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON, MD' : 'Seynudé Jean-Fortuné DAGNON, MD',
+      name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD',
       jobTitle: lang === 'fr'
         ? 'Senior Program Officer — Paludisme / Afrique francophone, Fondation Gates'
         : 'Senior Program Officer — Malaria / Francophone Africa, Gates Foundation',
@@ -193,7 +193,7 @@ function collectionPageJsonLd(lang: Lang, pageTitle: string, pageDesc: string, u
     url,
     author: {
       '@type': 'Person',
-      name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON, MD' : 'Seynudé Jean-Fortuné DAGNON, MD',
+      name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD',
     },
     inLanguage: [lang === 'fr' ? 'fr' : 'en'],
   };
