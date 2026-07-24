@@ -104,25 +104,28 @@ export function Experience() {
             } as React.CSSProperties}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-8 pr-10">
-            <button
-              ref={closeRef}
-              type="button"
-              onClick={() => setActive(null)}
-              aria-label={t['media.close']}
-              className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900/60 transition-colors hover:bg-pine-900 hover:text-ivory"
-            >
-              <X size={18} />
-            </button>
-
-            {/* header */}
-            <div className="pr-12">
+            {/* sticky top bar */}
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-pine-900/10 bg-white/95 px-8 py-4 backdrop-blur">
               <span className={`inline-block rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${
                 active.current ? 'bg-gold-500 text-pine-950' : 'bg-pine-900/5 text-pine-800'
               }`}>
                 {active.period}
               </span>
-              <h2 className="mt-4 font-display text-2xl font-semibold leading-snug text-pine-950 sm:text-[1.7rem]">
+              <button
+                ref={closeRef}
+                type="button"
+                onClick={() => setActive(null)}
+                aria-label={t['media.close']}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900/60 transition-colors hover:bg-pine-900 hover:text-ivory"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="p-8 pr-10">
+            {/* header */}
+            <div className="pr-12">
+              <h2 className="font-display text-2xl font-semibold leading-snug text-pine-950 sm:text-[1.7rem]">
                 {active.role}
               </h2>
               <p className="mt-1 text-base font-semibold text-gold-700">{active.org}</p>
