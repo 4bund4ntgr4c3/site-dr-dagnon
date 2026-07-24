@@ -787,7 +787,7 @@ export const UI: Record<Lang, Dict> = {
     'lang.fr': 'FR',
     'lang.en': 'EN',
     'lang.label': 'Switch language',
-    'name.full': 'Seynudé Jean-Fortuné DAGNON, PhD',
+    'name.full': 'Seynudé Jean-Fortuné DAGNON, MD',
     'name.short': 'Seynudé DAGNON, MD',
   },
 };
