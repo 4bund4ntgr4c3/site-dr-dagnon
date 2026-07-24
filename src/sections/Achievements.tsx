@@ -111,7 +111,7 @@ export function Achievements() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* header */}
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-pine-900/10 bg-white/95 px-8 py-5 backdrop-blur">
+            <div className="sticky top-0 z-20 flex items-center justify-between border-b border-pine-900/10 bg-white/95 px-8 py-5 backdrop-blur">
               <div className="flex items-center gap-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-500 text-pine-950">
                   <Award size={19} />
