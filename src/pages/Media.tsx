@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router';
 import {
   Play,
@@ -13,6 +13,10 @@ import {
   Newspaper,
   Heart,
   Mic2,
+  ChevronLeft,
+  ChevronRight,
+  FolderOpen,
+  Camera,
 } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
@@ -203,7 +207,7 @@ function MediaLanding({
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   CATEGORY VIEW — Top filter bar + chronological display
+   COMMUNITY VIEW — Album folders + Slideshow
    ═══════════════════════════════════════════════════════════════════ */
 
 const SUBTYPE_MAP: Record<string, Record<'fr' | 'en', string>> = {
@@ -227,6 +231,291 @@ const SUBTYPE_DESC_MAP: Record<string, Record<'fr' | 'en', string>> = {
   },
 };
 
+const ALBUM_COVERS: Record<string, string> = {
+  'malaria-night': '/community/nuit-paludisme-1.jpeg',
+  'school-kits': '/community/philantropie-1.jpeg',
+  genies: '/community/genies-1.jpeg',
+};
+
+function CommunityView({
+  lang,
+  t,
+}: {
+  lang: 'fr' | 'en';
+  t: (typeof UI)['fr'];
+}) {
+  const [activeAlbum, setActiveAlbum] = useState<string | null>(null);
+  const [slideshowIndex, setSlideshowIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const albumKeys = useMemo(() => {
+    const set = new Set(
+      MEDIA_ITEMS.filter((m) => m.category === 'community' && m.subType).map((m) => m.subType!),
+    );
+    return Array.from(set);
+  }, []);
+
+  const albumPhotos = useMemo(() => {
+    if (!activeAlbum) return [];
+    return MEDIA_ITEMS.filter(
+      (m) => m.category === 'community' && m.subType === activeAlbum,
+    ).sort((a, b) => a.date.localeCompare(b.date));
+  }, [activeAlbum]);
+
+  const albumCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    MEDIA_ITEMS.filter((m) => m.category === 'community' && m.subType).forEach((m) => {
+      counts[m.subType!] = (counts[m.subType!] || 0) + 1;
+    });
+    return counts;
+  }, []);
+
+  const goNext = useCallback(() => {
+    if (albumPhotos.length === 0) return;
+    setSlideshowIndex((prev) => (prev + 1) % albumPhotos.length);
+  }, [albumPhotos.length]);
+
+  const goPrev = useCallback(() => {
+    if (albumPhotos.length === 0) return;
+    setSlideshowIndex((prev) => (prev - 1 + albumPhotos.length) % albumPhotos.length);
+  }, [albumPhotos.length]);
+
+  useEffect(() => {
+    if (isAutoPlaying && activeAlbum && albumPhotos.length > 1) {
+      autoPlayRef.current = setInterval(goNext, 4000);
+    }
+    return () => {
+      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
+    };
+  }, [isAutoPlaying, activeAlbum, albumPhotos.length, goNext]);
+
+  useEffect(() => {
+    setSlideshowIndex(0);
+    setIsAutoPlaying(true);
+  }, [activeAlbum]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape') setActiveAlbum(null);
+      if (e.key === 'ArrowRight') goNext();
+      if (e.key === 'ArrowLeft') goPrev();
+    },
+    [goNext, goPrev],
+  );
+
+  useFocusTrap(modalRef, closeRef, !!activeAlbum, () => setActiveAlbum(null));
+
+  return (
+    <>
+      {/* album grid */}
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {albumKeys.map((key, i) => {
+          const count = albumCounts[key] || 0;
+          const cover = ALBUM_COVERS[key] || '';
+          return (
+            <Reveal key={key} delay={Math.min(i * 0.1, 0.3)}>
+              <button
+                type="button"
+                onClick={() => setActiveAlbum(key)}
+                className="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)] transition-all duration-300 hover:-translate-y-2 hover:border-gold-500/40 hover:shadow-[0_32px_70px_-30px_rgba(2,36,32,0.5)] text-left"
+              >
+                {/* cover image */}
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  {cover ? (
+                    <img
+                      src={cover}
+                      alt={SUBTYPE_MAP[key]?.[lang] || key}
+                      width={400}
+                      height={300}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-purple-600 to-purple-800">
+                      <FolderOpen size={48} className="text-white/25" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-pine-950/80 via-pine-950/20 to-transparent" />
+
+                  {/* folder icon */}
+                  <span className="absolute left-4 top-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gold-500 text-pine-950 shadow-lg transition-transform duration-300 group-hover:scale-110">
+                    <FolderOpen size={22} />
+                  </span>
+
+                  {/* photo count */}
+                  <span className="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-bold text-pine-900 shadow">
+                    {count} {count > 1 ? (lang === 'fr' ? 'photos' : 'photos') : (lang === 'fr' ? 'photo' : 'photo')}
+                  </span>
+
+                  {/* album title */}
+                  <h3 className="absolute bottom-4 left-4 right-4 font-display text-xl font-semibold text-white drop-shadow-lg">
+                    {SUBTYPE_MAP[key]?.[lang] || key}
+                  </h3>
+                </div>
+
+                {/* description */}
+                <div className="flex flex-1 flex-col p-5">
+                  <p className="flex-1 text-[13px] leading-relaxed text-ink/55 line-clamp-3">
+                    {SUBTYPE_DESC_MAP[key]?.[lang] || ''}
+                  </p>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
+                    <Camera size={14} />
+                    {lang === 'fr' ? 'Voir l\'album' : 'View album'}
+                  </span>
+                </div>
+              </button>
+            </Reveal>
+          );
+        })}
+      </div>
+
+      {/* slideshow modal */}
+      {activeAlbum && (
+        <div
+          className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-pine-950/95 p-4 backdrop-blur-sm"
+          onClick={() => setActiveAlbum(null)}
+          onKeyDown={handleKeyDown}
+          role="dialog"
+          aria-modal="true"
+          aria-label={SUBTYPE_MAP[activeAlbum]?.[lang] || activeAlbum}
+          tabIndex={-1}
+        >
+          {/* header */}
+          <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-4">
+            <div>
+              <h3 className="font-display text-lg font-semibold text-white">
+                {SUBTYPE_MAP[activeAlbum]?.[lang] || activeAlbum}
+              </h3>
+              <p className="text-[13px] text-white/60">
+                {slideshowIndex + 1} / {albumPhotos.length}
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              {/* autoplay toggle */}
+              {albumPhotos.length > 1 && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsAutoPlaying(!isAutoPlaying);
+                  }}
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
+                    isAutoPlaying
+                      ? 'border-gold-500 bg-gold-500/20 text-gold-400'
+                      : 'border-white/20 text-white/60 hover:bg-white/10'
+                  }`}
+                  aria-label={isAutoPlaying ? 'Pause' : 'Play'}
+                >
+                  <Play size={16} fill={isAutoPlaying ? 'currentColor' : 'none'} />
+                </button>
+              )}
+              {/* close */}
+              <button
+                ref={closeRef}
+                type="button"
+                onClick={() => setActiveAlbum(null)}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/10"
+                aria-label={t['media.close']}
+              >
+                <X size={20} />
+              </button>
+            </div>
+          </div>
+
+          {/* slideshow content */}
+          <div
+            ref={modalRef}
+            className="relative flex w-full max-w-5xl items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {albumPhotos.length > 0 && (
+              <>
+                {/* prev button */}
+                {albumPhotos.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      goPrev();
+                      setIsAutoPlaying(false);
+                    }}
+                    className="absolute -left-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-pine-950/60 text-white backdrop-blur-sm transition-all hover:bg-white/20 lg:-left-16"
+                    aria-label={lang === 'fr' ? 'Précédent' : 'Previous'}
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                )}
+
+                {/* photo */}
+                <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+                  <img
+                    src={albumPhotos[slideshowIndex].src}
+                    alt={albumPhotos[slideshowIndex].title[lang]}
+                    className="w-full object-contain max-h-[75vh]"
+                  />
+                </div>
+
+                {/* next button */}
+                {albumPhotos.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      goNext();
+                      setIsAutoPlaying(false);
+                    }}
+                    className="absolute -right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-pine-950/60 text-white backdrop-blur-sm transition-all hover:bg-white/20 lg:-right-16"
+                    aria-label={lang === 'fr' ? 'Suivant' : 'Next'}
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* dots */}
+          {albumPhotos.length > 1 && (
+            <div className="mt-6 flex gap-2">
+              {albumPhotos.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSlideshowIndex(i);
+                    setIsAutoPlaying(false);
+                  }}
+                  className={`h-2 rounded-full transition-all ${
+                    i === slideshowIndex
+                      ? 'w-6 bg-gold-500'
+                      : 'w-2 bg-white/30 hover:bg-white/50'
+                  }`}
+                  aria-label={`${lang === 'fr' ? 'Photo' : 'Photo'} ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* photo caption */}
+          {albumPhotos.length > 0 && (
+            <p className="mt-4 max-w-2xl text-center text-[13px] text-white/60">
+              {albumPhotos[slideshowIndex].title[lang]}
+            </p>
+          )}
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CATEGORY VIEW — Top filter bar + chronological display
+   ═══════════════════════════════════════════════════════════════════ */
+
 function CategoryView({
   category,
   lang,
@@ -237,7 +526,6 @@ function CategoryView({
   t: (typeof UI)['fr'];
 }) {
   const [type, setType] = useState<MediaType | 'all'>('all');
-  const [subType, setSubType] = useState<string>('all');
   const [search, setSearch] = useState('');
   const [active, setActive] = useState<MediaEntry | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -246,28 +534,20 @@ function CategoryView({
   const catMeta = CATEGORY_MAP[category];
   const CatIcon = catMeta.icon;
 
-  const subTypes = useMemo(() => {
-    const set = new Set(
-      MEDIA_ITEMS.filter((m) => m.category === category && m.subType).map((m) => m.subType!),
-    );
-    return Array.from(set);
-  }, [category]);
-
-  const hasSubTypes = subTypes.length > 0;
+  const isCommunity = category === 'community';
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
     return MEDIA_ITEMS.filter((m) => {
       if (m.category !== category) return false;
       if (type !== 'all' && m.type !== type) return false;
-      if (subType !== 'all' && m.subType !== subType) return false;
       if (q) {
         const haystack = `${m.title[lang]} ${m.subType || ''}`.toLowerCase();
         if (!haystack.includes(q)) return false;
       }
       return true;
     }).sort((a, b) => a.date.localeCompare(b.date));
-  }, [category, type, subType, search, lang]);
+  }, [category, type, search, lang]);
 
   const groupedByDate = useMemo(() => {
     const groups: Record<string, MediaEntry[]> = {};
@@ -309,179 +589,146 @@ function CategoryView({
         </div>
       </div>
 
-      {/* top filter bar */}
-      <div className="mt-8 rounded-2xl border border-pine-900/10 bg-ivory p-4 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-5">
-          {/* search */}
-          <div className="relative flex-1">
-            <label htmlFor="media-search" className="sr-only">
-              {t['mediaPage.search'] || 'Rechercher...'}
-            </label>
-            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/40" />
-            <input
-              id="media-search"
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={t['mediaPage.search'] || 'Rechercher...'}
-              className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/35 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
-            />
-          </div>
-
-          {/* type filters */}
-          <div className="flex flex-wrap gap-2">
-            {TYPE_FILTERS.map((f) => (
-              <button
-                key={f.value}
-                type="button"
-                onClick={() => setType(f.value)}
-                className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
-                  type === f.value
-                    ? 'bg-pine-950 text-gold-400 shadow'
-                    : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
-                }`}
-              >
-                {t[f.key]}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* subcategory chips — only when category has subtypes */}
-        {hasSubTypes && (
-          <div className="mt-3 flex flex-wrap gap-2 border-t border-pine-900/8 pt-3">
-            <button
-              type="button"
-              onClick={() => setSubType('all')}
-              className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
-                subType === 'all'
-                  ? 'bg-pine-950 text-gold-400 shadow'
-                  : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
-              }`}
-            >
-              {t['mediaPage.subAll']}
-            </button>
-            {subTypes.map((st) => (
-              <button
-                key={st}
-                type="button"
-                onClick={() => setSubType(st)}
-                className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
-                  subType === st
-                    ? 'bg-pine-950 text-gold-400 shadow'
-                    : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
-                }`}
-              >
-                {SUBTYPE_MAP[st]?.[lang] || st}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* album description — shown when a specific subtype is selected */}
-        {hasSubTypes && subType !== 'all' && SUBTYPE_DESC_MAP[subType] && (
-          <div className="mt-3 rounded-xl border border-pine-900/8 bg-white/60 px-4 py-3">
-            <p className="text-[13px] leading-relaxed text-ink/60">
-              {SUBTYPE_DESC_MAP[subType][lang]}
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* results count */}
-      <p className="mt-5 text-[13px] font-medium text-pine-900/50">
-        {t['mediaPage.results'].replace('{n}', String(filtered.length))}
-      </p>
-
-      {/* chronological timeline display */}
-      {filtered.length === 0 ? (
-        <p className="mt-10 rounded-2xl border border-dashed border-pine-900/15 bg-white px-6 py-16 text-center text-sm text-pine-900/50">
-          {t['mediaPage.empty']}
-        </p>
+      {/* community — album folders view */}
+      {isCommunity ? (
+        <CommunityView lang={lang} t={t} />
       ) : (
-        <div className="mt-6 space-y-10">
-          {groupedByDate.map(([monthKey, items], gi) => {
-            const [year, month] = monthKey.split('-');
-            const monthName = new Date(Number(year), Number(month) - 1).toLocaleDateString(
-              lang === 'fr' ? 'fr-FR' : 'en-US',
-              { month: 'long', year: 'numeric' },
-            );
-            return (
-              <Reveal key={monthKey} delay={Math.min(gi * 0.08, 0.3)}>
-                <div>
-                  {/* month header with timeline dot */}
-                  <div className="flex items-center gap-4">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 ring-2 ring-gold-500/30">
-                      <span className="h-2.5 w-2.5 rounded-full bg-gold-500" />
-                    </span>
-                    <div className="h-px flex-1 bg-gradient-to-r from-gold-500/30 to-transparent" />
-                    <h3 className="font-display text-lg font-semibold text-pine-900 capitalize">
-                      {monthName}
-                    </h3>
-                    <div className="h-px flex-1 bg-gradient-to-l from-gold-500/30 to-transparent" />
-                  </div>
-
-                  {/* items grid */}
-                  <div className="mt-5 ml-5 border-l-2 border-pine-900/8 pl-8">
-                    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                      {items.map((m, i) => (
-                        <Reveal key={m.id} delay={Math.min(i * 0.05, 0.3)}>
-                          <MediaCard m={m} lang={lang} t={t} onOpen={() => setActive(m)} />
-                        </Reveal>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
-      )}
-
-      {/* modal */}
-      {active && (
-        <div
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-pine-950/90 p-4 backdrop-blur-sm"
-          onClick={() => setActive(null)}
-          role="dialog"
-          aria-modal="true"
-          aria-label={active.title[lang]}
-        >
-          <div
-            ref={modalRef}
-            className="relative w-full max-w-4xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              ref={closeRef}
-              type="button"
-              onClick={() => setActive(null)}
-              aria-label={t['media.close']}
-              className="absolute -top-12 right-0 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-ivory transition-colors hover:bg-white/10"
-            >
-              <X size={20} />
-            </button>
-            {active.type === 'video' ? (
-              <div className="aspect-video w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
-                <iframe
-                  className="h-full w-full"
-                  src={`https://www.youtube-nocookie.com/embed/${active.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
-                  title={active.title[lang]}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
+        <>
+          {/* top filter bar */}
+          <div className="mt-8 rounded-2xl border border-pine-900/10 bg-ivory p-4 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-5">
+              {/* search */}
+              <div className="relative flex-1">
+                <label htmlFor="media-search" className="sr-only">
+                  {t['mediaPage.search'] || 'Rechercher...'}
+                </label>
+                <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/40" />
+                <input
+                  id="media-search"
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder={t['mediaPage.search'] || 'Rechercher...'}
+                  className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/35 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
                 />
               </div>
-            ) : (
-              <img
-                src={active.src}
-                alt={active.title[lang]}
-                width={640}
-                height={360}
-                className="max-h-[82vh] w-auto rounded-2xl border border-white/10 shadow-2xl"
-              />
-            )}
+
+              {/* type filters */}
+              <div className="flex flex-wrap gap-2">
+                {TYPE_FILTERS.map((f) => (
+                  <button
+                    key={f.value}
+                    type="button"
+                    onClick={() => setType(f.value)}
+                    className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                      type === f.value
+                        ? 'bg-pine-950 text-gold-400 shadow'
+                        : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                    }`}
+                  >
+                    {t[f.key]}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
+
+          {/* results count */}
+          <p className="mt-5 text-[13px] font-medium text-pine-900/50">
+            {t['mediaPage.results'].replace('{n}', String(filtered.length))}
+          </p>
+
+          {/* chronological timeline display */}
+          {filtered.length === 0 ? (
+            <p className="mt-10 rounded-2xl border border-dashed border-pine-900/15 bg-white px-6 py-16 text-center text-sm text-pine-900/50">
+              {t['mediaPage.empty']}
+            </p>
+          ) : (
+            <div className="mt-6 space-y-10">
+              {groupedByDate.map(([monthKey, items], gi) => {
+                const [year, month] = monthKey.split('-');
+                const monthName = new Date(Number(year), Number(month) - 1).toLocaleDateString(
+                  lang === 'fr' ? 'fr-FR' : 'en-US',
+                  { month: 'long', year: 'numeric' },
+                );
+                return (
+                  <Reveal key={monthKey} delay={Math.min(gi * 0.08, 0.3)}>
+                    <div>
+                      {/* month header with timeline dot */}
+                      <div className="flex items-center gap-4">
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 ring-2 ring-gold-500/30">
+                          <span className="h-2.5 w-2.5 rounded-full bg-gold-500" />
+                        </span>
+                        <div className="h-px flex-1 bg-gradient-to-r from-gold-500/30 to-transparent" />
+                        <h3 className="font-display text-lg font-semibold text-pine-900 capitalize">
+                          {monthName}
+                        </h3>
+                        <div className="h-px flex-1 bg-gradient-to-l from-gold-500/30 to-transparent" />
+                      </div>
+
+                      {/* items grid */}
+                      <div className="mt-5 ml-5 border-l-2 border-pine-900/8 pl-8">
+                        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                          {items.map((m, i) => (
+                            <Reveal key={m.id} delay={Math.min(i * 0.05, 0.3)}>
+                              <MediaCard m={m} lang={lang} t={t} onOpen={() => setActive(m)} />
+                            </Reveal>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </Reveal>
+                );
+              })}
+            </div>
+          )}
+
+          {/* modal */}
+          {active && (
+            <div
+              className="fixed inset-0 z-[60] flex items-center justify-center bg-pine-950/90 p-4 backdrop-blur-sm"
+              onClick={() => setActive(null)}
+              role="dialog"
+              aria-modal="true"
+              aria-label={active.title[lang]}
+            >
+              <div
+                ref={modalRef}
+                className="relative w-full max-w-4xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  ref={closeRef}
+                  type="button"
+                  onClick={() => setActive(null)}
+                  aria-label={t['media.close']}
+                  className="absolute -top-12 right-0 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-ivory transition-colors hover:bg-white/10"
+                >
+                  <X size={20} />
+                </button>
+                {active.type === 'video' ? (
+                  <div className="aspect-video w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+                    <iframe
+                      className="h-full w-full"
+                      src={`https://www.youtube-nocookie.com/embed/${active.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
+                      title={active.title[lang]}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                  </div>
+                ) : (
+                  <img
+                    src={active.src}
+                    alt={active.title[lang]}
+                    width={640}
+                    height={360}
+                    className="max-h-[82vh] w-auto rounded-2xl border border-white/10 shadow-2xl"
+                  />
+                )}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </>
   );
