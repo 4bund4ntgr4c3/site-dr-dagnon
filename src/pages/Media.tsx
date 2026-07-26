@@ -285,7 +285,7 @@ function CommunityView({
 
   useEffect(() => {
     if (isAutoPlaying && activeAlbum && albumPhotos.length > 1) {
-      autoPlayRef.current = setInterval(goNext, 4000);
+      autoPlayRef.current = setInterval(goNext, 2000);
     }
     return () => {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
@@ -451,10 +451,21 @@ function CommunityView({
 
                 {/* photo */}
                 <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+                  {albumPhotos.map((photo, i) => (
+                    <img
+                      key={photo.id}
+                      src={photo.src}
+                      alt={photo.title[lang]}
+                      className={`w-full object-contain max-h-[75vh] absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                        i === slideshowIndex ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    />
+                  ))}
+                  {/* placeholder to maintain aspect ratio */}
                   <img
-                    src={albumPhotos[slideshowIndex].src}
-                    alt={albumPhotos[slideshowIndex].title[lang]}
-                    className="w-full object-contain max-h-[75vh]"
+                    src={albumPhotos[0].src}
+                    alt=""
+                    className="w-full object-contain max-h-[75vh] invisible"
                   />
                 </div>
 
