@@ -47,29 +47,24 @@ const MEDIA_SEO: Record<Lang, { title: string; description: string }> = {
 
 const CAT_NAMES: Record<string, { fr: string; en: string }> = {
   interview: { fr: 'Interviews', en: 'Interviews' },
-  conference: { fr: 'Conférences', en: 'Conferences' },
-  research: { fr: 'Recherche', en: 'Research' },
-  publication: { fr: 'Publications', en: 'Publications' },
+  conference: { fr: 'Présentations & Conférences', en: 'Presentations & Conferences' },
+  speaking: { fr: 'Discours publics', en: 'Public Speaking' },
   press: { fr: 'Presse', en: 'Press' },
   community: { fr: 'Engagement communautaire', en: 'Community Engagement' },
 };
 
 const CAT_DESCRIPTIONS: Record<string, { fr: string; en: string }> = {
   interview: {
-    fr: "Interviews du Dr. Seynudé Jean-Fortuné Dagnon sur la lutte contre le paludisme et la santé publique en Afrique francophone.",
-    en: "Interviews with Dr. Seynudé Jean-Fortuné Dagnon on malaria control and public health in francophone Africa.",
+    fr: "Interviews du Dr. Seynudé Jean-Fortuné Dagnon sur la lutte contre le paludisme et la santé publique.",
+    en: "Interviews with Dr. Seynudé Jean-Fortuné Dagnon on malaria control and public health.",
   },
   conference: {
-    fr: "Conférences et présentations du Dr. Seynudé Jean-Fortuné Dagnon lors d'événements internationaux sur la santé publique.",
-    en: "Conferences and presentations by Dr. Seynudé Jean-Fortuné Dagnon at international public health events.",
+    fr: "Conférences et présentations du Dr. Seynudé Jean-Fortuné Dagnon lors d'événements internationaux sur le paludisme.",
+    en: "Conferences and presentations by Dr. Seynudé Jean-Fortuné Dagnon at international malaria events.",
   },
-  research: {
-    fr: "Recherches et études du Dr. Seynudé Jean-Fortuné Dagnon sur le paludisme, la PMI et les programmes de santé en Afrique.",
-    en: "Research and studies by Dr. Seynudé Jean-Fortuné Dagnon on malaria, PMI, and health programs in Africa.",
-  },
-  publication: {
-    fr: "Publications scientifiques et médiatiques du Dr. Seynudé Jean-Fortuné Dagnon sur la santé publique.",
-    en: "Scientific and media publications by Dr. Seynudé Jean-Fortuné Dagnon on public health.",
+  speaking: {
+    fr: "Discours du Dr. Seynudé Jean-Fortuné Dagnon lors de réunions de partenaires, lancements de campagnes et cérémonies officielles.",
+    en: "Speeches by Dr. Seynudé Jean-Fortuné Dagnon at partner meetings, campaign launches, and official ceremonies.",
   },
   press: {
     fr: "Articles de presse et couvertures médiatiques du Dr. Seynudé Jean-Fortuné Dagnon.",

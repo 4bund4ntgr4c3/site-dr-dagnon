@@ -10,9 +10,9 @@ import {
   Mic,
   Presentation,
   Search,
-  BookOpen,
   Newspaper,
   Heart,
+  Mic2,
 } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
@@ -59,24 +59,14 @@ const CATEGORIES: {
     descKey: 'mediaPage.catDescConference',
   },
   {
-    key: 'research',
-    icon: Search,
+    key: 'speaking',
+    icon: Mic2,
     color: 'from-emerald-600 to-emerald-800',
     bg: 'bg-emerald-700',
     ring: 'ring-emerald-500/40',
     badge: 'bg-emerald-100 text-emerald-700',
-    thumb: 'https://img.youtube.com/vi/7zuqZfH4bzQ/hqdefault.jpg',
-    descKey: 'mediaPage.catDescResearch',
-  },
-  {
-    key: 'publication',
-    icon: BookOpen,
-    color: 'from-amber-600 to-amber-800',
-    bg: 'bg-amber-700',
-    ring: 'ring-amber-500/40',
-    badge: 'bg-amber-100 text-amber-700',
-    thumb: '',
-    descKey: 'mediaPage.catDescPublication',
+    thumb: 'https://img.youtube.com/vi/ZTW9HqJ57kA/hqdefault.jpg',
+    descKey: 'mediaPage.catDescSpeaking',
   },
   {
     key: 'press',
@@ -85,7 +75,7 @@ const CATEGORIES: {
     bg: 'bg-rose-700',
     ring: 'ring-rose-500/40',
     badge: 'bg-rose-100 text-rose-700',
-    thumb: 'https://img.youtube.com/vi/dxBGiEW41aM/hqdefault.jpg',
+    thumb: '',
     descKey: 'mediaPage.catDescPress',
   },
   {
@@ -95,7 +85,7 @@ const CATEGORIES: {
     bg: 'bg-purple-700',
     ring: 'ring-purple-500/40',
     badge: 'bg-purple-100 text-purple-700',
-    thumb: '',
+    thumb: '/community/nuit-paludisme-1.jpeg',
     descKey: 'mediaPage.catDescCommunity',
   },
 ];
@@ -217,8 +207,9 @@ function MediaLanding({
    ═══════════════════════════════════════════════════════════════════ */
 
 const SUBTYPE_MAP: Record<string, Record<'fr' | 'en', string>> = {
-  philantropie: { fr: 'Philanthropie', en: 'Philanthropy' },
-  gala: { fr: 'Galas & Cérémonies', en: 'Galas & Ceremonies' },
+  'malaria-night': { fr: 'Nuit du Paludisme', en: 'Night Against Malaria' },
+  'school-kits': { fr: 'Fournitures scolaires', en: 'School Kits' },
+  genies: { fr: 'Génies en Herbe', en: 'Génies en Herbe' },
 };
 
 function CategoryView({
@@ -479,8 +470,7 @@ function CategoryView({
 const VALID_CATEGORIES: MediaCategory[] = [
   'interview',
   'conference',
-  'research',
-  'publication',
+  'speaking',
   'press',
   'community',
 ];
