@@ -456,7 +456,7 @@ export const PUBLICATIONS: Record<Lang, { title: string; authors: string; journa
 export const UI: Record<Lang, Dict> = {
   fr: {
     'nav.linkedin': 'LinkedIn',
-    'nav.subtitle': 'MD · MPH · Santé publique',
+    'nav.subtitle': 'Santé publique & Leader de programme paludisme',
     'scrollToTop': 'Retour en haut',
     'nav.ariaLabel': 'Navigation principale',
     'nav.toggle': 'Ouvrir le menu',
@@ -566,7 +566,7 @@ export const UI: Record<Lang, Dict> = {
     'mediaPage.empty': 'Aucun média ne correspond à ces filtres.',
     'mediaPage.results': '{n} média(s)',
     'mediaPage.seoTitle': 'Médias — Dr. Seynudé Jean-Fortuné DAGNON',
-    'mediaPage.seoDescription': 'Vidéos, images et documents du Dr. Seynudé Jean-Fortuné Dagnon : conférences, interviews, interventions et publications sur la lutte contre le paludisme.',
+    'mediaPage.seoDescription': 'Interviews, présentations et engagements du Dr. Seynudé Jean-Fortuné Dagnon, leader en santé publique et programmes de lutte contre le paludisme.',
     'contact.title': 'Contact',
     'contact.intro': "Une question, un partenariat ou une intervention ? Écrivez directement au Dr. Dagnon.",
     'contact.infoTitle': 'Coordonnées',
@@ -626,7 +626,7 @@ export const UI: Record<Lang, Dict> = {
   },
   en: {
     'nav.linkedin': 'LinkedIn',
-    'nav.subtitle': 'MD · MPH · Public Health',
+    'nav.subtitle': 'Public Health & Malaria Program Leader',
     'scrollToTop': 'Back to top',
     'nav.ariaLabel': 'Main navigation',
     'nav.toggle': 'Open menu',
@@ -736,7 +736,7 @@ export const UI: Record<Lang, Dict> = {
     'mediaPage.empty': 'No media matches these filters.',
     'mediaPage.results': '{n} media',
     'mediaPage.seoTitle': 'Media — Seynudé Jean-Fortuné DAGNON, MD, MPH',
-    'mediaPage.seoDescription': 'Videos, images and documents from Seynudé Jean-Fortuné DAGNON: conferences, interviews, engagements and publications on malaria control.',
+    'mediaPage.seoDescription': 'Interviews, presentations and engagements from Seynudé Jean-Fortuné DAGNON, Public Health & Malaria Program Leader.',
     'contact.title': 'Contact',
     'contact.intro': 'A question, a partnership or an engagement? Reach out to Dr. Dagnon directly.',
     'contact.infoTitle': 'Contact details',
