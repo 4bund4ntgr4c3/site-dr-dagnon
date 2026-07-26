@@ -1,6 +1,10 @@
 {
   "routes": [
     {
+      "src": "^/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
       "src": "^/sitemap\\.xml$",
       "headers": {
         "Content-Type": "application/xml; charset=utf-8",
