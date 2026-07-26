@@ -50,7 +50,7 @@ const CAT_NAMES: Record<string, { fr: string; en: string }> = {
   conference: { fr: 'Présentations & Conférences', en: 'Presentations & Conferences' },
   speaking: { fr: 'Discours publics', en: 'Public Speaking' },
   press: { fr: 'Presse', en: 'Press' },
-  community: { fr: 'Engagement communautaire', en: 'Community Engagement' },
+  community: { fr: 'Engagement communautaire et philanthropique', en: 'Community and Philanthropic Engagement' },
 };
 
 const CAT_DESCRIPTIONS: Record<string, { fr: string; en: string }> = {

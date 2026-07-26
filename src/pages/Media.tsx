@@ -212,6 +212,21 @@ const SUBTYPE_MAP: Record<string, Record<'fr' | 'en', string>> = {
   genies: { fr: 'Génies en Herbe', en: 'Génies en Herbe' },
 };
 
+const SUBTYPE_DESC_MAP: Record<string, Record<'fr' | 'en', string>> = {
+  'malaria-night': {
+    fr: 'Depuis 2021, le Dr. Dagnon préside la Nuit du Paludisme au Bénin, une cérémonie qui honore les personnes ayant apporté des contributions significatives à l\'élimination du paludisme en Afrique et au Bénin.',
+    en: 'Since 2021, Dr. Dagnon has chaired the Night Against Malaria in Benin, a ceremony that honors individuals who have made significant contributions to malaria elimination efforts in Africa and in Benin.',
+  },
+  'school-kits': {
+    fr: 'Le Dr. Dagnon soutient la distribution de fournitures scolaires aux enfants d\'âge scolaire dans les zones défavorisées, permettant à de nombreux enfants d\'accéder à l\'éducation.',
+    en: 'Dr. Dagnon supported the distribution of school kits to school-age children in underserved areas, a contribution that has enabled many children to attend school and access education.',
+  },
+  genies: {
+    fr: 'Le Dr. Dagnon a apporté une contribution exceptionnelle au concours de connaissances générales « Génies en Herbe », qui encourage les jeunes étudiants à rester concentrés sur leurs études et à cultiver l\'excellence académique.',
+    en: 'Dr. Dagnon made a tremendous contribution to the general knowledge competition "Génies en Herbe," which encourages young students to remain focused on their studies while fostering a spirit of academic excellence.',
+  },
+};
+
 function CategoryView({
   category,
   lang,
@@ -360,6 +375,15 @@ function CategoryView({
                 {SUBTYPE_MAP[st]?.[lang] || st}
               </button>
             ))}
+          </div>
+        )}
+
+        {/* album description — shown when a specific subtype is selected */}
+        {hasSubTypes && subType !== 'all' && SUBTYPE_DESC_MAP[subType] && (
+          <div className="mt-3 rounded-xl border border-pine-900/8 bg-white/60 px-4 py-3">
+            <p className="text-[13px] leading-relaxed text-ink/60">
+              {SUBTYPE_DESC_MAP[subType][lang]}
+            </p>
           </div>
         )}
       </div>
