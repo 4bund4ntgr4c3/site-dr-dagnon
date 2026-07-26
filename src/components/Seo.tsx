@@ -10,13 +10,13 @@ const SITE_URL = 'https://seynudedagnon.com';
 
 const SEO: Record<Lang, { title: string; description: string; ogLocale: string }> = {
   fr: {
-    title: 'Dr. Seynudé Jean-Fortuné DAGNON — Santé publique & Paludisme',
+    title: 'Dr. Seynudé Jean-Fortuné DAGNON, MD, MPH — Santé publique & Paludisme',
     description:
       "Leader en santé publique et programmes de lutte contre le paludisme, Senior Program Officer à la Fondation Gates. Afrique francophone, systèmes de santé, données pour la décision.",
     ogLocale: 'fr_FR',
   },
   en: {
-    title: 'Seynudé Jean-Fortuné DAGNON, MD — Public Health & Malaria',
+    title: 'Seynudé Jean-Fortuné DAGNON, MD, MPH — Public Health & Malaria',
     description:
       'Leader in public health and malaria programs, Senior Program Officer at the Gates Foundation. Francophone Africa, health systems, data for decision-making.',
     ogLocale: 'en_US',
@@ -95,7 +95,7 @@ const PUB_SEO: Record<Lang, { title: string; description: string }> = {
 /* ── JSON-LD builders ─────────────────────────────────────────── */
 
 function personJsonLd(lang: Lang) {
-  const name = lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD';
+  const name = lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON, MD, MPH' : 'Seynudé Jean-Fortuné DAGNON, MD, MPH';
   const jobTitle =
     lang === 'fr'
       ? 'Senior Program Officer — Paludisme / Afrique francophone, Fondation Gates'
@@ -150,7 +150,7 @@ function webSiteJsonLd(lang: Lang) {
     description: SEO[lang].description,
     author: {
       '@type': 'Person',
-      name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD',
+      name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON, MD, MPH' : 'Seynudé Jean-Fortuné DAGNON, MD, MPH',
     },
     inLanguage: [lang === 'fr' ? 'fr' : 'en'],
     potentialAction: {
@@ -170,7 +170,7 @@ function contactPageJsonLd(lang: Lang) {
     url: `${SITE_URL}/contact`,
     mainEntity: {
       '@type': 'Person',
-      name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD',
+      name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON, MD, MPH' : 'Seynudé Jean-Fortuné DAGNON, MD, MPH',
       jobTitle: lang === 'fr'
         ? 'Senior Program Officer — Paludisme / Afrique francophone, Fondation Gates'
         : 'Senior Program Officer — Malaria / Francophone Africa, Gates Foundation',
@@ -193,7 +193,7 @@ function collectionPageJsonLd(lang: Lang, pageTitle: string, pageDesc: string, u
     url,
     author: {
       '@type': 'Person',
-      name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD',
+      name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON, MD, MPH' : 'Seynudé Jean-Fortuné DAGNON, MD, MPH',
     },
     inLanguage: [lang === 'fr' ? 'fr' : 'en'],
   };
@@ -245,7 +245,7 @@ export function Seo() {
     setMeta('meta[property="og:description"]', 'content', data.description);
     setMeta('meta[property="og:url"]', 'content', url);
     setMeta('meta[property="og:locale"]', 'content', SEO[lang].ogLocale);
-    setMeta('meta[property="og:site_name"]', 'content', 'Seynudé Jean-Fortuné DAGNON, MD');
+    setMeta('meta[property="og:site_name"]', 'content', 'Seynudé Jean-Fortuné DAGNON, MD, MPH');
     setMeta('meta[property="og:image"]', 'content', `${SITE_URL}/og-image.jpg`);
     setMeta('meta[property="og:image:alt"]', 'content', data.title);
     setMeta('meta[property="og:image:width"]', 'content', '1200');
