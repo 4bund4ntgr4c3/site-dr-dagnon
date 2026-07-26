@@ -561,16 +561,6 @@ function CategoryView({
     }).sort((a, b) => a.date.localeCompare(b.date));
   }, [category, type, search, lang]);
 
-  const groupedByDate = useMemo(() => {
-    const groups: Record<string, MediaEntry[]> = {};
-    filtered.forEach((m) => {
-      const monthKey = m.date.slice(0, 7);
-      if (!groups[monthKey]) groups[monthKey] = [];
-      groups[monthKey].push(m);
-    });
-    return Object.entries(groups).sort(([a], [b]) => a.localeCompare(b));
-  }, [filtered]);
-
   useFocusTrap(modalRef, closeRef, !!active, () => setActive(null));
 
   return (
@@ -650,48 +640,18 @@ function CategoryView({
             {t['mediaPage.results'].replace('{n}', String(filtered.length))}
           </p>
 
-          {/* chronological timeline display */}
+          {/* simple grid display */}
           {filtered.length === 0 ? (
             <p className="mt-10 rounded-2xl border border-dashed border-pine-900/15 bg-white px-6 py-16 text-center text-sm text-pine-900/50">
               {t['mediaPage.empty']}
             </p>
           ) : (
-            <div className="mt-6 space-y-10">
-              {groupedByDate.map(([monthKey, items], gi) => {
-                const [year, month] = monthKey.split('-');
-                const monthName = new Date(Number(year), Number(month) - 1).toLocaleDateString(
-                  lang === 'fr' ? 'fr-FR' : 'en-US',
-                  { month: 'long', year: 'numeric' },
-                );
-                return (
-                  <Reveal key={monthKey} delay={Math.min(gi * 0.08, 0.3)}>
-                    <div>
-                      {/* month header with timeline dot */}
-                      <div className="flex items-center gap-4">
-                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/15 ring-2 ring-gold-500/30">
-                          <span className="h-2.5 w-2.5 rounded-full bg-gold-500" />
-                        </span>
-                        <div className="h-px flex-1 bg-gradient-to-r from-gold-500/30 to-transparent" />
-                        <h3 className="font-display text-lg font-semibold text-pine-900 capitalize">
-                          {monthName}
-                        </h3>
-                        <div className="h-px flex-1 bg-gradient-to-l from-gold-500/30 to-transparent" />
-                      </div>
-
-                      {/* items grid */}
-                      <div className="mt-5 ml-5 border-l-2 border-pine-900/8 pl-8">
-                        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                          {items.map((m, i) => (
-                            <Reveal key={m.id} delay={Math.min(i * 0.05, 0.3)}>
-                              <MediaCard m={m} lang={lang} t={t} onOpen={() => setActive(m)} />
-                            </Reveal>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </Reveal>
-                );
-              })}
+            <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {filtered.map((m, i) => (
+                <Reveal key={m.id} delay={Math.min(i * 0.05, 0.3)}>
+                  <MediaCard m={m} lang={lang} t={t} onOpen={() => setActive(m)} />
+                </Reveal>
+              ))}
             </div>
           )}
 
