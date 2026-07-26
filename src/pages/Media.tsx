@@ -2,6 +2,7 @@ import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router';
 import {
   Play,
+  Pause,
   FileText,
   Image as ImageIcon,
   X,
@@ -402,14 +403,14 @@ function CommunityView({
                     e.stopPropagation();
                     setIsAutoPlaying(!isAutoPlaying);
                   }}
-                  className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${
                     isAutoPlaying
-                      ? 'border-gold-500 bg-gold-500/20 text-gold-400'
-                      : 'border-white/20 text-white/60 hover:bg-white/10'
+                      ? 'border-gold-500 bg-gold-500 text-pine-950 shadow-lg shadow-gold-500/30'
+                      : 'border-white/30 bg-white/10 text-white hover:bg-white/20'
                   }`}
-                  aria-label={isAutoPlaying ? 'Pause' : 'Play'}
+                  aria-label={isAutoPlaying ? (lang === 'fr' ? 'Pause' : 'Pause') : (lang === 'fr' ? 'Lecture' : 'Play')}
                 >
-                  <Play size={16} fill={isAutoPlaying ? 'currentColor' : 'none'} />
+                  {isAutoPlaying ? <Pause size={16} /> : <Play size={16} className="ml-0.5" />}
                 </button>
               )}
               {/* close */}
