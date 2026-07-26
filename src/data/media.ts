@@ -433,5 +433,76 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     src: '/community/philantropie-7.jpeg',
   },
   // ── Community — Génies en Herbe ─────────────────────────────────
-  // Placeholder — user will provide photos
+  {
+    id: 'genies-1',
+    type: 'image',
+    category: 'community',
+    subType: 'genies',
+    date: '2025-01-01',
+    title: {
+      fr: 'Génies en Herbe — Édition Dr. Seynudé Fortuné Dagnon, cérémonie de remise des prix',
+      en: 'Génies en Herbe — Dr. Seynudé Fortuné Dagnon edition, awards ceremony',
+    },
+    src: '/community/genies-1.jpeg',
+  },
+  {
+    id: 'genies-2',
+    type: 'image',
+    category: 'community',
+    subType: 'genies',
+    date: '2025-01-01',
+    title: {
+      fr: 'Génies en Herbe — Prix du meilleur marqueur',
+      en: 'Génies en Herbe — Best scorer award',
+    },
+    src: '/community/genies-2.jpeg',
+  },
+  {
+    id: 'genies-3',
+    type: 'image',
+    category: 'community',
+    subType: 'genies',
+    date: '2025-01-01',
+    title: {
+      fr: 'Génies en Herbe — Dr. Dagnon avec les lauréats',
+      en: 'Génies en Herbe — Dr. Dagnon with winners',
+    },
+    src: '/community/genies-3.jpeg',
+  },
+  {
+    id: 'genies-4',
+    type: 'image',
+    category: 'community',
+    subType: 'genies',
+    date: '2025-01-01',
+    title: {
+      fr: 'Génies en Herbe — Remise du chèque de 100 000 FCFA',
+      en: 'Génies en Herbe — Presentation of 100,000 FCFA check',
+    },
+    src: '/community/genies-4.jpeg',
+  },
+  {
+    id: 'genies-5',
+    type: 'image',
+    category: 'community',
+    subType: 'genies',
+    date: '2025-01-01',
+    title: {
+      fr: 'Génies en Herbe — Équipe participante et Dr. Dagnon',
+      en: 'Génies en Herbe — Participating team and Dr. Dagnon',
+    },
+    src: '/community/genies-5.jpeg',
+  },
+  {
+    id: 'genies-6',
+    type: 'image',
+    category: 'community',
+    subType: 'genies',
+    date: '2025-01-01',
+    title: {
+      fr: 'Génies en Herbe — Photo de groupe avec les étudiants',
+      en: 'Génies en Herbe — Group photo with students',
+    },
+    src: '/community/genies-6.jpeg',
+  },
 ];
