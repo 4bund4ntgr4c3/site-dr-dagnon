@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Play, FileDown, Newspaper, ArrowUpRight, X } from 'lucide-react';
+import { Link } from 'react-router';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
@@ -129,6 +130,19 @@ export function Media() {
             </Reveal>
           ))}
         </div>
+
+        {/* view more button */}
+        <Reveal delay={0.5}>
+          <div className="mt-10 text-center">
+            <Link
+              to="/media/speaking"
+              className="inline-flex items-center gap-2 rounded-full border border-gold-500/50 px-6 py-3 text-sm font-semibold text-gold-300 transition-all hover:bg-gold-500 hover:text-pine-950"
+            >
+              {t['media.viewMore']}
+              <ArrowUpRight size={16} />
+            </Link>
+          </div>
+        </Reveal>
       </div>
 
       {/* video modal */}
