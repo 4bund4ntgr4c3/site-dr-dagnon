@@ -1,12 +1,20 @@
-import { GraduationCap } from 'lucide-react';
+import { useState } from 'react';
+import { GraduationCap, X, ChevronRight } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
-import { EDUCATION, UI } from '@/i18n/translations';
+import { EDUCATION, TRAINING_LIST, UI } from '@/i18n/translations';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { useRef } from 'react';
 
 export function Education() {
   const { lang } = useLang();
   const t = UI[lang];
+  const [showTraining, setShowTraining] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useFocusTrap(modalRef, closeRef, showTraining, () => setShowTraining(false));
 
   return (
     <section id="formation" className="bg-ivory py-24 lg:py-32">
@@ -17,28 +25,41 @@ export function Education() {
         />
 
         <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {EDUCATION[lang].map((e, i) => (
-            <Reveal key={e.degree} delay={i * 0.08} className={i === 0 ? 'md:col-span-2 lg:col-span-1' : ''}>
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-pine-900/10 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-lg hover:shadow-pine-900/10">
-                <div className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-full bg-gold-500/10 transition-transform duration-500 group-hover:scale-[2.2]" />
-                <div className="relative">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-colors group-hover:bg-gold-500 group-hover:text-pine-950">
-                      <GraduationCap size={20} />
-                    </span>
-                    <span className="rounded-full bg-gold-500/15 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-gold-700">
-                      {e.tag}
-                    </span>
+          {EDUCATION[lang].map((e, i) => {
+            const isTraining = i === 4;
+            return (
+              <Reveal key={e.degree} delay={i * 0.08} className={i === 0 ? 'md:col-span-2 lg:col-span-1' : ''}>
+                <button
+                  type="button"
+                  onClick={isTraining ? () => setShowTraining(true) : undefined}
+                  className={`group relative h-full w-full text-left overflow-hidden rounded-2xl border border-pine-900/10 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-lg hover:shadow-pine-900/10 ${isTraining ? 'cursor-pointer' : ''}`}
+                >
+                  <div className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-full bg-gold-500/10 transition-transform duration-500 group-hover:scale-[2.2]" />
+                  <div className="relative">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-colors group-hover:bg-gold-500 group-hover:text-pine-950">
+                        <GraduationCap size={20} />
+                      </span>
+                      <span className="rounded-full bg-gold-500/15 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-gold-700">
+                        {e.tag}
+                      </span>
+                    </div>
+                    <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-pine-950">
+                      {e.degree}
+                    </h3>
+                    <p className="mt-1.5 text-sm font-semibold text-gold-700">{e.school}</p>
+                    <p className="mt-3 text-[13px] leading-relaxed text-ink/60">{e.detail}</p>
+                    {isTraining && (
+                      <span className="mt-4 inline-flex items-center gap-1 text-[12px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
+                        {lang === 'fr' ? 'Voir les formations' : 'View trainings'}
+                        <ChevronRight size={13} className="transition-transform group-hover:translate-x-0.5" />
+                      </span>
+                    )}
                   </div>
-                  <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-pine-950">
-                    {e.degree}
-                  </h3>
-                  <p className="mt-1.5 text-sm font-semibold text-gold-700">{e.school}</p>
-                  <p className="mt-3 text-[13px] leading-relaxed text-ink/60">{e.detail}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
+                </button>
+              </Reveal>
+            );
+          })}
 
           {/* languages card */}
           <Reveal delay={0.4}>
@@ -72,6 +93,41 @@ export function Education() {
           </Reveal>
         </div>
       </div>
+
+      {/* training modal */}
+      {showTraining && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+          <div className="absolute inset-0 bg-pine-950/60 backdrop-blur-sm" onClick={() => setShowTraining(false)} />
+          <div
+            ref={modalRef}
+            className="relative flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+          >
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-pine-900/10 bg-white px-6 py-4">
+              <h3 className="font-display text-xl font-semibold text-pine-950">
+                {lang === 'fr' ? 'Éducation et autres formations' : 'Education and other training'}
+              </h3>
+              <button
+                ref={closeRef}
+                type="button"
+                onClick={() => setShowTraining(false)}
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-pine-900/5 text-pine-900/60 transition-colors hover:bg-pine-900/10 hover:text-pine-900"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-6 py-5">
+              <ul className="space-y-4">
+                {TRAINING_LIST[lang].map((item, i) => (
+                  <li key={i} className="flex gap-3 text-[13.5px] leading-relaxed text-ink/70">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
