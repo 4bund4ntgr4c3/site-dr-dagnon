@@ -191,6 +191,19 @@ export const MEDIA_ITEMS: MediaEntry[] = [
   },
   // ── Press ────────────────────────────────────────────────────────
   {
+    id: 'airid-welcome-2026',
+    type: 'document',
+    category: 'press',
+    date: '2026-07-21',
+    title: {
+      fr: 'AIRID accueille le Dr. Seynudé Jean-Fortuné Dagnon de la Fondation Gates',
+      en: 'AIRID welcomes Dr. Seynudé Jean-Fortuné Dagnon from the Gates Foundation',
+    },
+    url: 'https://airid-africa.com/public/news/28-airid-welcomes-dr-seynude-jean-fortune-dagnon-from-the-gates-foundation',
+    thumb: 'https://airid-africa.com/public/assets/news/1784645757_6a5f887df2de0_10.jpg',
+    fileLabel: { fr: 'Article · AIRID Africa', en: 'Article · AIRID Africa' },
+  },
+  {
     id: 'oped-ahw-2026',
     type: 'document',
     category: 'press',
@@ -199,8 +212,22 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Tribune — Du contrôle à l\'élimination du paludisme',
       en: 'Op-ed — From malaria control to elimination',
     },
-    url: 'https://www.africahealthwatch.com/p/from-malaria-control-to-elimination',
+    url: 'https://africahealthwatch.com/from-malaria-control-to-elimination-the-turn-we-need-to-make/',
+    thumb: 'https://africahealthwatch.com/wp-content/uploads/2026/01/Africa-Health-Watch-1024x824.png',
     fileLabel: { fr: 'Article · Africa Health Watch', en: 'Article · Africa Health Watch' },
+  },
+  {
+    id: 'seneweb-data-2026',
+    type: 'document',
+    category: 'press',
+    date: '2026-05-12',
+    title: {
+      fr: 'Systèmes sanitaires africains : la bataille stratégique des données au cœur des politiques de survie',
+      en: 'African health systems: the strategic battle for data at the heart of survival policies',
+    },
+    url: 'https://www.seneweb.com/en/news/24/systemes-sanitaires-africains-la-bataille-strategique-des-donnees-au-coeur-des-politiques-de-survie-1_n_492306.html',
+    thumb: 'https://image.seneweb.com/content/news/2026-20-12//thumb_1260x800_6a03084b80aed_oftrk0p0cQ.jpg',
+    fileLabel: { fr: 'Article · Seneweb', en: 'Article · Seneweb' },
   },
   {
     id: 'smc-alliance-2026',
@@ -224,19 +251,8 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       en: 'Structuring data use in the fight against malaria in Burundi',
     },
     url: 'https://www.bluesquarehub.com/fr/bluesquare-news-structurer-lutilisation-des-donnees-dans-la-lutte-contre-le-paludisme-au-burundi/',
+    thumb: 'https://www.bluesquarehub.com/wp-content/uploads/2026/04/1774973041604.jpeg',
     fileLabel: { fr: 'Article · Bluesquare', en: 'Article · Bluesquare' },
-  },
-  {
-    id: 'gates-funding-2026',
-    type: 'document',
-    category: 'press',
-    date: '2026-02-01',
-    title: {
-      fr: 'Funding landscape — Fondation Gates',
-      en: 'Funding landscape — Gates Foundation',
-    },
-    url: 'https://allianceformalariaprevention.com/wp-content/uploads/2026/02/04-d_Funding-Landscape_Gates-Foundation_Seynude-Dagnon_ENG.pdf',
-    fileLabel: { fr: 'PDF · Présentation', en: 'PDF · Deck' },
   },
   {
     id: 'lebledparle-2022',
@@ -248,6 +264,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       en: 'Cameroon and the Bill & Melinda Gates Foundation agree on malaria fight',
     },
     url: 'https://www.lebledparle.com/le-cameroun-et-la-fondation-bill-melinda-gates-s-accordent-sur-la-lutte-contre-le-paludisme/',
+    thumb: 'https://www.lebledparle.com/wp-content/uploads/2020/09/Bill.jpg',
     fileLabel: { fr: 'Article · Lebledparle', en: 'Article · Lebledparle' },
   },
   {
@@ -260,6 +277,20 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       en: 'Malaria fight: government and Bill & Melinda Gates Foundation agree',
     },
     url: 'https://www.stopblablacam.com/societe/0703-8389-lutte-contre-le-paludisme-le-gouvernement-et-la-fondation-bill-melinda-gates-s-accordent',
+    thumb: 'https://www.stopblablacam.com/media/k2/items/cache/ad30481943e896916174a77f4c826900_L.jpg',
+    fileLabel: { fr: 'Article · StopBlaBlaCam', en: 'Article · StopBlaBlaCam' },
+  },
+  {
+    id: 'stopblablacam-en-2022',
+    type: 'document',
+    category: 'press',
+    date: '2022-03-07',
+    title: {
+      fr: 'Paludisme : le Cameroun et la fondation Bill & Melinda Gates discutent de la meilleure stratégie d\'éradication',
+      en: 'Malaria: Cameroon, Bill & Melinda Gates discuss best eradication strategy',
+    },
+    url: 'https://www.stopblablacam.com/society/0703-8390-malaria-cameroon-bill-melinda-gates-discuss-best-eradication-strategy',
+    thumb: 'https://www.stopblablacam.com/media/k2/items/cache/ad30481943e896916174a77f4c826900_L.jpg',
     fileLabel: { fr: 'Article · StopBlaBlaCam', en: 'Article · StopBlaBlaCam' },
   },
   {
@@ -271,7 +302,8 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'L\'élimination du paludisme au centre des échanges entre le Minsanté et la Fondation Gates',
       en: 'Malaria elimination at the center of exchanges between Minsante and Gates Foundation',
     },
-    url: 'https://www.minsante.cm/site/?q=en%2Fnode%2F4224',
+    url: 'https://www.minsante.cm/site/?q=en/node/4224',
+    thumb: 'https://www.minsante.cm/site/sites/default/files/styles/slider__af_/public/field/image/fondation%20Bill%20melinda%20gate.png',
     fileLabel: { fr: 'Article · Minsante', en: 'Article · Minsante' },
   },
   {
