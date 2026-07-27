@@ -97,33 +97,54 @@ export function Education() {
       {/* training modal */}
       {showTraining && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-          <div className="absolute inset-0 bg-pine-950/60 backdrop-blur-sm" onClick={() => setShowTraining(false)} />
+          <div className="absolute inset-0 bg-pine-950/70 backdrop-blur-sm" onClick={() => setShowTraining(false)} />
           <div
             ref={modalRef}
-            className="relative flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+            className="relative flex max-h-[88vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl shadow-pine-950/30 animate-in fade-in zoom-in-95 duration-200"
           >
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-pine-900/10 bg-white px-6 py-4">
-              <h3 className="font-display text-xl font-semibold text-pine-950">
-                {lang === 'fr' ? 'Éducation et autres formations' : 'Education and other training'}
-              </h3>
-              <button
-                ref={closeRef}
-                type="button"
-                onClick={() => setShowTraining(false)}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-pine-900/5 text-pine-900/60 transition-colors hover:bg-pine-900/10 hover:text-pine-900"
-              >
-                <X size={18} />
-              </button>
+            {/* header */}
+            <div className="relative overflow-hidden bg-gradient-to-br from-pine-900 via-pine-950 to-pine-900 px-6 py-6 sm:px-8">
+              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold-500/15 blur-3xl" />
+              <div className="absolute -left-8 bottom-0 h-32 w-32 rounded-full bg-gold-600/10 blur-2xl" />
+              <div className="relative flex items-start justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gold-500/20 text-gold-400 ring-1 ring-gold-500/30">
+                    <GraduationCap size={22} />
+                  </span>
+                  <div>
+                    <h3 className="font-display text-xl font-semibold text-white sm:text-2xl">
+                      {lang === 'fr' ? 'Éducation et autres formations' : 'Education and other training'}
+                    </h3>
+                    <p className="mt-1 text-[12.5px] text-pine-200/60">
+                      {lang === 'fr'
+                        ? `${TRAINING_LIST[lang].length} formations`
+                        : `${TRAINING_LIST[lang].length} trainings`}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  ref={closeRef}
+                  type="button"
+                  onClick={() => setShowTraining(false)}
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-white/20 hover:text-white"
+                >
+                  <X size={18} />
+                </button>
+              </div>
             </div>
-            <div className="flex-1 overflow-y-auto px-6 py-5">
-              <ul className="space-y-4">
+
+            {/* body */}
+            <div className="flex-1 overflow-y-auto px-6 py-5 sm:px-8">
+              <ol className="relative ml-3 border-l-2 border-gold-200/60 pl-6">
                 {TRAINING_LIST[lang].map((item, i) => (
-                  <li key={i} className="flex gap-3 text-[13.5px] leading-relaxed text-ink/70">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" />
-                    {item}
+                  <li key={i} className="relative pb-5 last:pb-0">
+                    <span className="absolute -left-[31px] flex h-5 w-5 items-center justify-center rounded-full border-2 border-gold-400 bg-white text-[10px] font-bold text-gold-600">
+                      {i + 1}
+                    </span>
+                    <p className="text-[13px] leading-relaxed text-ink/70">{item}</p>
                   </li>
                 ))}
-              </ul>
+              </ol>
             </div>
           </div>
         </div>
