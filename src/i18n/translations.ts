@@ -1,4 +1,4 @@
-import type { Lang } from './lang';
+﻿import type { Lang } from './lang';
 
 type Dict = Record<string, string>;
 
@@ -358,8 +358,8 @@ export const AWARDS: Record<Lang, AwardEntry[]> = {
     { year: '2020', title: 'Eagle Award', description: 'Pour leadership technique et programmatique exceptionnel tout au long du processus de planification op\u00e9rationnelle du paludisme en 2019.' },
     { year: '2019', title: 'U.S. Government LES of the Year', description: 'La distinction la plus prestigieuse du U.S. Department of State pour les employés locaux, pour performance exceptionnelle dans la supervision et le leadership du programme PMI au Bénin (2016–2018). Fort de cette reconnaissance, le Dr. Dagnon a continué à étendre son impact à travers le continent africain.', video: '/2019-les-award.mp4', videoLabel: 'Voir la vidéo de la cérémonie' },
     { year: '2017', title: 'On-the-Spot Cash Award', description: 'Pour pr\u00e9paration et coordination de la soumission de 9 r\u00e9sum\u00e9s scientifiques sur le paludisme pour le PMI B\u00e9nin \u00e0 la conf\u00e9rence ASTMH.' },
-    { year: '2017', title: 'Eagle Award \u2014 U.S. Embassy Cotonou', description: 'Pour l\u2019organisation de la visite du directeur adjoint du PMI, Bernard Nahlen.' },
-    { year: '2007', title: 'Laur\u00e9at du concours de pr\u00e9sentations scientifiques', description: 'Universit\u00e9 de Conakry \u2014 Th\u00e8me : d\u00e9terminants de l\u2019ob\u00e9sit\u00e9.' },
+    { year: '2017', title: 'Eagle Award — U.S. Embassy Cotonou', description: 'Pour l\u2019organisation de la visite du directeur adjoint du PMI, Bernard Nahlen.' },
+    { year: '2007', title: 'Laur\u00e9at du concours de pr\u00e9sentations scientifiques', description: 'Universit\u00e9 de Conakry — Th\u00e8me : d\u00e9terminants de l\u2019ob\u00e9sit\u00e9.' },
   ],
   en: [
     { year: '2025', title: 'Special Award — Commitment to Malaria Elimination in Africa', description: 'Icône 360 NGO and its partners, in collaboration with Expertise France, presented Dr. Dagnon with a special award in recognition of his commitment and work in the fight against malaria in Benin and across Africa.', image: '/2025-special-award.jpg', imageAlt: 'Dr. Dagnon receiving the Icône 360 / Expertise France special award for malaria elimination' },
@@ -369,8 +369,8 @@ export const AWARDS: Record<Lang, AwardEntry[]> = {
     { year: '2020', title: 'Eagle Award', description: 'For outstanding technical and programmatic leadership throughout the malaria Operational Planning process in 2019.' },
     { year: '2019', title: 'U.S. Government LES of the Year', description: 'The most prestigious distinction given by the U.S. Department of State to Foreign Service Nationals working in the U.S. administration, for outstanding sustained performance in overseeing, expanding, and leading the PMI program in Benin (2016–2018). Building on this recognition, Dr. Dagnon has continued to extend his impact across the African continent.', video: '/2019-les-award.mp4', videoLabel: 'Watch the ceremony video' },
     { year: '2017', title: 'On-the-Spot Cash Award', description: 'For preparing and coordinating the submission of 9 scientific abstracts on malaria for PMI Benin for the ASTMH conference.' },
-    { year: '2017', title: 'Eagle Award \u2014 U.S. Embassy Cotonou', description: 'For organizing the visit of PMI Deputy Director Bernard Nahlen.' },
-    { year: '2007', title: 'Laureate of Annual Scientific Presentation Competition', description: 'University of Conakry \u2014 Topic: determinants of obesity.' },
+    { year: '2017', title: 'Eagle Award — U.S. Embassy Cotonou', description: 'For organizing the visit of PMI Deputy Director Bernard Nahlen.' },
+    { year: '2007', title: 'Laureate of Annual Scientific Presentation Competition', description: 'University of Conakry — Topic: determinants of obesity.' },
   ],
 };
 
@@ -399,13 +399,13 @@ export const EDUCATION: Record<Lang, { degree: string; school: string; detail: s
 export const MEDIA: Record<Lang, { kind: string; title: string; event: string; url: string; thumb?: string }[]> = {
   fr: [
     { kind: 'video', title: 'Discours d’ouverture — 8e conférence PAMCA', event: 'PAMCA 2022 · Kigali', url: 'https://www.youtube.com/watch?v=ZTW9HqJ57kA', thumb: 'https://img.youtube.com/vi/ZTW9HqJ57kA/hqdefault.jpg' },
-    { kind: 'video', title: 'Keynote — Société civile pour l’élimination du paludisme', event: 'CS4ME 2022', url: 'https://www.youtube.com/watch?v=ZjznHt_dAaU', thumb: 'https://img.youtube.com/vi/ZjznHt_dAaU/hqdefault.jpg' },
+    { kind: 'video', title: 'Discours — Lancement campagne Stop Paludisme au Cameroun', event: 'Cameroun 2022', url: 'https://www.youtube.com/watch?v=dxBGiEW41aM', thumb: 'https://img.youtube.com/vi/dxBGiEW41aM/hqdefault.jpg' },
     { kind: 'video', title: 'Présentation — American Society of Tropical Medicine & Hygiene', event: 'ASTMH 2022', url: 'https://www.youtube.com/watch?v=skmrswZhGZE', thumb: 'https://img.youtube.com/vi/skmrswZhGZE/hqdefault.jpg' },
     { kind: 'deck', title: 'Funding landscape — Fondation Gates', event: 'AMP / SMC 2026 · Présentation (PDF)', url: 'https://allianceformalariaprevention.com/wp-content/uploads/2026/02/04-d_Funding-Landscape_Gates-Foundation_Seynude-Dagnon_ENG.pdf' },
   ],
   en: [
     { kind: 'video', title: 'Opening keynote — 8th PAMCA conference', event: 'PAMCA 2022 · Kigali', url: 'https://www.youtube.com/watch?v=ZTW9HqJ57kA', thumb: 'https://img.youtube.com/vi/ZTW9HqJ57kA/hqdefault.jpg' },
-    { kind: 'video', title: 'Keynote — Civil society for malaria elimination', event: 'CS4ME 2022', url: 'https://www.youtube.com/watch?v=ZjznHt_dAaU', thumb: 'https://img.youtube.com/vi/ZjznHt_dAaU/hqdefault.jpg' },
+    { kind: 'video', title: 'Talk — Launch of the Stop Malaria campaign in Cameroon', event: 'Cameroon 2022', url: 'https://www.youtube.com/watch?v=dxBGiEW41aM', thumb: 'https://img.youtube.com/vi/dxBGiEW41aM/hqdefault.jpg' },
     { kind: 'video', title: 'Talk — American Society of Tropical Medicine & Hygiene', event: 'ASTMH 2022', url: 'https://www.youtube.com/watch?v=skmrswZhGZE', thumb: 'https://img.youtube.com/vi/skmrswZhGZE/hqdefault.jpg' },
     { kind: 'deck', title: 'Funding landscape — Gates Foundation', event: 'AMP / SMC 2026 · Deck (PDF)', url: 'https://allianceformalariaprevention.com/wp-content/uploads/2026/02/04-d_Funding-Landscape_Gates-Foundation_Seynude-Dagnon_ENG.pdf' },
   ],
@@ -804,3 +804,4 @@ export function publicationsCount(lang: Lang, n: number): string {
   }
   return `${n} publication${n > 1 ? 's' : ''} shown`;
 }
+
