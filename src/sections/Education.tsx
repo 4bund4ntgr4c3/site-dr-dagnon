@@ -1,11 +1,10 @@
-import { useState } from 'react';
-import { GraduationCap, X, ChevronRight } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { GraduationCap, X } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { EDUCATION, TRAINING_LIST, UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
-import { useRef } from 'react';
 
 export function Education() {
   const { lang } = useLang();
@@ -52,7 +51,6 @@ export function Education() {
                     {isTraining && (
                       <span className="mt-4 inline-flex items-center gap-1 text-[12px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
                         {lang === 'fr' ? 'Voir les formations' : 'View trainings'}
-                        <ChevronRight size={13} className="transition-transform group-hover:translate-x-0.5" />
                       </span>
                     )}
                   </div>
@@ -96,55 +94,62 @@ export function Education() {
 
       {/* training modal */}
       {showTraining && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-          <div className="absolute inset-0 bg-pine-950/70 backdrop-blur-sm" onClick={() => setShowTraining(false)} />
+        <div
+          className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-pine-950/80 p-4 pt-20 pb-20 backdrop-blur-sm"
+          onClick={() => setShowTraining(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={lang === 'fr' ? 'Éducation et autres formations' : 'Education and other training'}
+        >
           <div
             ref={modalRef}
-            className="relative flex max-h-[88vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl shadow-pine-950/30 animate-in fade-in zoom-in-95 duration-200"
+            className="modal-scroll relative w-full max-w-3xl overflow-y-auto rounded-3xl border border-pine-900/10 bg-white shadow-2xl"
+            style={{ maxHeight: '80vh' } as React.CSSProperties}
+            onClick={(e) => e.stopPropagation()}
           >
             {/* header */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-pine-900 via-pine-950 to-pine-900 px-6 py-6 sm:px-8">
-              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold-500/15 blur-3xl" />
-              <div className="absolute -left-8 bottom-0 h-32 w-32 rounded-full bg-gold-600/10 blur-2xl" />
-              <div className="relative flex items-start justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gold-500/20 text-gold-400 ring-1 ring-gold-500/30">
-                    <GraduationCap size={22} />
-                  </span>
-                  <div>
-                    <h3 className="font-display text-xl font-semibold text-white sm:text-2xl">
-                      {lang === 'fr' ? 'Éducation et autres formations' : 'Education and other training'}
-                    </h3>
-                    <p className="mt-1 text-[12.5px] text-pine-200/60">
-                      {lang === 'fr'
-                        ? `${TRAINING_LIST[lang].length} formations`
-                        : `${TRAINING_LIST[lang].length} trainings`}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  ref={closeRef}
-                  type="button"
-                  onClick={() => setShowTraining(false)}
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-white/20 hover:text-white"
-                >
-                  <X size={18} />
-                </button>
+            <div className="sticky top-0 z-20 flex items-center justify-between border-b border-pine-900/10 bg-white/95 px-8 py-5 backdrop-blur">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-500 text-pine-950">
+                  <GraduationCap size={19} />
+                </span>
+                <h2 className="font-display text-xl font-semibold text-pine-950">
+                  {lang === 'fr' ? 'Éducation et autres formations' : 'Education and other training'}
+                </h2>
               </div>
+              <button
+                ref={closeRef}
+                type="button"
+                onClick={() => setShowTraining(false)}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900/60 transition-colors hover:bg-pine-900/5 hover:text-pine-900"
+              >
+                <X size={18} />
+              </button>
             </div>
 
-            {/* body */}
-            <div className="flex-1 overflow-y-auto px-6 py-5 sm:px-8">
-              <ol className="relative ml-3 border-l-2 border-gold-200/60 pl-6">
-                {TRAINING_LIST[lang].map((item, i) => (
-                  <li key={i} className="relative pb-5 last:pb-0">
-                    <span className="absolute -left-[31px] flex h-5 w-5 items-center justify-center rounded-full border-2 border-gold-400 bg-white text-[10px] font-bold text-gold-600">
-                      {i + 1}
-                    </span>
-                    <p className="text-[13px] leading-relaxed text-ink/70">{item}</p>
-                  </li>
-                ))}
-              </ol>
+            {/* timeline */}
+            <div className="p-8">
+              <div className="relative">
+                {/* vertical line */}
+                <div className="absolute bottom-4 left-[19px] top-4 w-px bg-gradient-to-b from-gold-500 via-gold-500/30 to-transparent" />
+
+                <div className="space-y-8">
+                  {TRAINING_LIST[lang].map((item, i) => (
+                    <div key={i} className="relative flex gap-5">
+                      {/* dot */}
+                      <div className="relative z-10 mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-gold-500/60 bg-white">
+                        <span className="text-[11px] font-bold text-gold-600">{i + 1}</span>
+                      </div>
+                      {/* content */}
+                      <div className="flex-1 rounded-2xl border border-pine-900/10 bg-ivory p-5 transition-colors hover:border-gold-500/40 hover:shadow-md hover:shadow-pine-900/5">
+                        <p className="text-[13px] leading-relaxed text-ink/65">
+                          {item}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
