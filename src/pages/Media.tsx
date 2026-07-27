@@ -558,7 +558,7 @@ function CategoryView({
         if (!haystack.includes(q)) return false;
       }
       return true;
-    }).sort((a, b) => a.date.localeCompare(b.date));
+    }).sort((a, b) => b.date.localeCompare(a.date));
   }, [category, type, search, lang]);
 
   useFocusTrap(modalRef, closeRef, !!active, () => setActive(null));
@@ -793,11 +793,22 @@ function MediaCard({
           href={m.url}
           target="_blank"
           rel="noreferrer"
-          className="relative flex aspect-video items-center justify-center bg-gradient-to-br from-pine-800 to-pine-950"
+          className="relative flex aspect-video items-center justify-center overflow-hidden bg-gradient-to-br from-pine-800 to-pine-950"
         >
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/40 transition-transform duration-300 group-hover:scale-110">
-            <FileText size={24} />
-          </span>
+          {m.thumb ? (
+            <img
+              src={m.thumb}
+              alt={m.title[lang]}
+              width={320}
+              height={180}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gold-500/15 text-gold-400 ring-1 ring-gold-500/40 transition-transform duration-300 group-hover:scale-110">
+              <FileText size={24} />
+            </span>
+          )}
         </a>
       ) : (
         <button
@@ -838,7 +849,7 @@ function MediaCard({
             rel="noreferrer"
             className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-600 transition-colors hover:text-gold-500"
           >
-            {t['mediaPage.download']}
+            {m.category === 'press' ? t['mediaPage.readMore'] : t['mediaPage.download']}
             <ArrowUpRight size={13} />
           </a>
         )}
