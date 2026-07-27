@@ -384,15 +384,36 @@ export const EDUCATION: Record<Lang, { degree: string; school: string; detail: s
     { degree: 'Ph.D. en économie de la santé (en cours)', school: 'Université de Groningen, Pays-Bas', detail: 'Thèse : coût-efficacité de la pulvérisation intradomiciliaire d\u2019insecticide (IRS) au nord du Bénin.', tag: 'Doctorat' },
     { degree: 'Master of Public Health (MPH)', school: 'Institut de Médecine Tropicale, Anvers, Belgique', detail: 'Santé publique en milieu tropical.', tag: 'Master' },
     { degree: 'Doctorat en médecine générale (MD)', school: 'Université de Conakry, Guinée', detail: 'Formation médicale doctorale.', tag: 'Doctorat' },
-    { degree: 'Science of Defeating Malaria', school: 'Harvard T.H. Chan School of Public Health', detail: 'Certificat ; également « Defeating Malaria: From the Gene to la Globe ».', tag: 'Certificat' },
+    { degree: 'Enseignement', school: 'IRSP Ouidah, USAID, zones de santé…', detail: 'Cliquez pour voir la liste complète des formations et enseignements.', tag: 'Enseignement' },
     { degree: 'Éducation et autres formations', school: 'Harvard, USAID, Johns Hopkins, NIH…', detail: 'Cliquez pour voir la liste complète des formations et certificats.', tag: 'Formations' },
   ],
   en: [
     { degree: 'Ph.D. in Health Economics (in progress)', school: 'University of Groningen, Netherlands', detail: 'Thesis: cost-effectiveness of indoor residual spraying (IRS) in northern Benin.', tag: 'Ph.D.' },
     { degree: 'Master of Public Health (MPH)', school: 'Institute of Tropical Medicine, Antwerp, Belgium', detail: 'Public health in tropical settings.', tag: 'Master' },
     { degree: 'Doctor of Medicine (MD)', school: 'University of Conakry, Guinea', detail: 'Doctoral medical training.', tag: 'Ph.D.' },
-    { degree: 'Science of Defeating Malaria', school: 'Harvard T.H. Chan School of Public Health', detail: 'Certificate; also \u201cDefeating Malaria: From the Gene to the Globe\u201d.', tag: 'Certificate' },
+    { degree: 'Teaching Experience', school: 'IRSP Ouidah, USAID, health zones…', detail: 'Click to see the full list of teaching and training activities.', tag: 'Teaching' },
     { degree: 'Education and other training', school: 'Harvard, USAID, Johns Hopkins, NIH…', detail: 'Click to see the full list of trainings and certificates.', tag: 'Training' },
+  ],
+};
+
+export const TEACHING_LIST: Record<Lang, { date: string; institution: string; detail: string }[]> = {
+  fr: [
+    { date: '2024', institution: 'Institut Régional de Santé Publique, Ouidah, Bénin', detail: 'Chargé de cours pour la formation nationale en malariologie à l\u2019intention des gestionnaires de programmes.' },
+    { date: '2020', institution: 'IRSP / Programme national', detail: 'Formation de jeunes logisticiens sur le Système d\u2019Information sur le Paludisme de Routine.' },
+    { date: '2014', institution: 'Bénin', detail: 'Formation de 44 statisticiens hospitaliers sur l\u2019utilisation du logiciel LOGISNIGS.' },
+    { date: '2013', institution: 'Bénin', detail: 'Formation de 34 statisticiens des zones de santé sur le logiciel LOGISNIGS.' },
+    { date: '2013', institution: 'Bénin', detail: 'Formation des agents de santé à la prise en charge du paludisme (diagnostic et traitement).' },
+    { date: '2011\u20132012', institution: 'Région Zou-Collines, Bénin', detail: 'Formation des agents de santé aux stratégies intégrées de santé familiale : planification familiale, VIH/SIDA et paludisme.' },
+    { date: '2008\u20132010', institution: 'Bénin', detail: 'Formation des agents de santé à la mise en œuvre de l\u2019audit clinique.' },
+  ],
+  en: [
+    { date: '2024', institution: 'Institut Régional de Santé Publique, Ouidah, Benin', detail: 'Lecturer for the National Malariology training for program managers.' },
+    { date: '2020', institution: 'IRSP / National program', detail: 'Training of young logisticians on the Routine Malaria Information System.' },
+    { date: '2014', institution: 'Benin', detail: 'Training of 44 hospital statisticians on the use of the LOGISNIGS software.' },
+    { date: '2013', institution: 'Benin', detail: 'Training of 34 health zones statisticians on LOGISNIGS software.' },
+    { date: '2013', institution: 'Benin', detail: 'Training of health workers in malaria management (diagnosis and treatment).' },
+    { date: '2011\u20132012', institution: 'Zou-Collines region, Benin', detail: 'Training of health workers on integrated family health strategies: family planning, HIV/AIDS, and malaria.' },
+    { date: '2008\u20132010', institution: 'Benin', detail: 'Training of health workers on the implementation of clinical audit.' },
   ],
 };
 

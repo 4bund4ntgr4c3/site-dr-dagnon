@@ -3,17 +3,35 @@ import { GraduationCap, X } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
-import { EDUCATION, TRAINING_LIST, UI } from '@/i18n/translations';
+import { EDUCATION, TRAINING_LIST, TEACHING_LIST, UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 export function Education() {
   const { lang } = useLang();
   const t = UI[lang];
   const [showTraining, setShowTraining] = useState(false);
+  const [showTeaching, setShowTeaching] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
-  useFocusTrap(modalRef, closeRef, showTraining, () => setShowTraining(false));
+  useFocusTrap(modalRef, closeRef, showTraining || showTeaching, () => {
+    setShowTraining(false);
+    setShowTeaching(false);
+  });
+
+  const handleCardClick = (i: number) => {
+    if (i === 3) setShowTeaching(true);
+    if (i === 4) setShowTraining(true);
+  };
+
+  const isPopupOpen = showTraining || showTeaching;
+  const popupData = showTraining ? TRAINING_LIST[lang] : showTeaching ? TEACHING_LIST[lang] : [];
+  const popupTitle = showTraining
+    ? (lang === 'fr' ? 'Éducation et autres formations' : 'Education and other training')
+    : (lang === 'fr' ? 'Enseignement' : 'Teaching Experience');
+  const popupIcon = showTraining
+    ? (lang === 'fr' ? 'Voir les formations' : 'View trainings')
+    : (lang === 'fr' ? 'Voir les enseignements' : 'View teaching');
 
   return (
     <section id="formation" className="bg-ivory py-24 lg:py-32">
@@ -25,13 +43,13 @@ export function Education() {
 
         <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {EDUCATION[lang].map((e, i) => {
-            const isTraining = i === 4;
+            const isPopupCard = i === 3 || i === 4;
             return (
               <Reveal key={e.degree} delay={i * 0.08} className={i === 0 ? 'md:col-span-2 lg:col-span-1' : ''}>
                 <button
                   type="button"
-                  onClick={isTraining ? () => setShowTraining(true) : undefined}
-                  className={`group relative h-full w-full text-left overflow-hidden rounded-2xl border border-pine-900/10 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-lg hover:shadow-pine-900/10 ${isTraining ? 'cursor-pointer' : ''}`}
+                  onClick={isPopupCard ? () => handleCardClick(i) : undefined}
+                  className={`group relative h-full w-full text-left overflow-hidden rounded-2xl border border-pine-900/10 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-lg hover:shadow-pine-900/10 ${isPopupCard ? 'cursor-pointer' : ''}`}
                 >
                   <div className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-full bg-gold-500/10 transition-transform duration-500 group-hover:scale-[2.2]" />
                   <div className="relative">
@@ -48,9 +66,9 @@ export function Education() {
                     </h3>
                     <p className="mt-1.5 text-sm font-semibold text-gold-700">{e.school}</p>
                     <p className="mt-3 text-[13px] leading-relaxed text-ink/60">{e.detail}</p>
-                    {isTraining && (
+                    {isPopupCard && (
                       <span className="mt-4 inline-flex items-center gap-1 text-[12px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
-                        {lang === 'fr' ? 'Voir les formations' : 'View trainings'}
+                        {popupIcon}
                       </span>
                     )}
                   </div>
@@ -92,14 +110,14 @@ export function Education() {
         </div>
       </div>
 
-      {/* training modal */}
-      {showTraining && (
+      {/* shared popup */}
+      {isPopupOpen && (
         <div
           className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-pine-950/80 p-4 pt-20 pb-20 backdrop-blur-sm"
-          onClick={() => setShowTraining(false)}
+          onClick={() => { setShowTraining(false); setShowTeaching(false); }}
           role="dialog"
           aria-modal="true"
-          aria-label={lang === 'fr' ? 'Éducation et autres formations' : 'Education and other training'}
+          aria-label={popupTitle}
         >
           <div
             ref={modalRef}
@@ -114,13 +132,13 @@ export function Education() {
                   <GraduationCap size={19} />
                 </span>
                 <h2 className="font-display text-xl font-semibold text-pine-950">
-                  {lang === 'fr' ? 'Éducation et autres formations' : 'Education and other training'}
+                  {popupTitle}
                 </h2>
               </div>
               <button
                 ref={closeRef}
                 type="button"
-                onClick={() => setShowTraining(false)}
+                onClick={() => { setShowTraining(false); setShowTeaching(false); }}
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900/60 transition-colors hover:bg-pine-900/5 hover:text-pine-900"
               >
                 <X size={18} />
@@ -134,7 +152,7 @@ export function Education() {
                 <div className="absolute bottom-4 left-[19px] top-4 w-px bg-gradient-to-b from-gold-500 via-gold-500/30 to-transparent" />
 
                 <div className="space-y-6">
-                  {TRAINING_LIST[lang].map((item, i) => (
+                  {popupData.map((item, i) => (
                     <div key={i} className="relative flex gap-5">
                       {/* dot */}
                       <div className="relative z-10 mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-gold-500/60 bg-white">
