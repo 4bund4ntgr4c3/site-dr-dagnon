@@ -566,27 +566,54 @@ function CategoryView({
   return (
     <>
       {/* category hero */}
-      <div className="mt-10 flex items-center gap-4">
-        <span
-          className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl ${catMeta.bg} text-white ring-1 ${catMeta.ring}`}
-        >
-          <CatIcon size={28} />
-        </span>
-        <div className="min-w-0 flex-1">
-          <h2 className="font-display text-2xl font-semibold text-pine-900 sm:text-3xl">
+      <div className="mt-10">
+        {/* mobile: stacked */}
+        <div className="flex items-center justify-between gap-4 sm:hidden">
+          <span
+            className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl ${catMeta.bg} text-white ring-1 ${catMeta.ring}`}
+          >
+            <CatIcon size={28} />
+          </span>
+          <Link
+            to="/media"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-pine-900/15 bg-white px-5 py-2.5 text-[13px] font-semibold text-pine-900/70 shadow-sm transition-all hover:text-pine-900 hover:ring-gold-500/50"
+          >
+            <ArrowLeft size={15} />
+            {t['mediaPage.back']}
+          </Link>
+        </div>
+        <div className="mt-4 sm:hidden">
+          <h2 className="font-display text-2xl font-semibold text-pine-900">
             {t[`mediaPage.cat${category.charAt(0).toUpperCase() + category.slice(1)}` as keyof typeof t] || category}
           </h2>
           <p className="mt-1 text-[14.5px] text-ink/50">
             {t[catMeta.descKey as keyof typeof t] || ''}
           </p>
         </div>
-        <Link
-          to="/media"
-          className="inline-flex shrink-0 items-center gap-2 rounded-full border border-pine-900/15 bg-white px-5 py-2.5 text-[13px] font-semibold text-pine-900/70 shadow-sm transition-all hover:text-pine-900 hover:ring-gold-500/50"
-        >
-          <ArrowLeft size={15} />
-          {t['mediaPage.back']}
-        </Link>
+
+        {/* desktop: single row */}
+        <div className="hidden sm:flex sm:items-center sm:gap-4">
+          <span
+            className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl ${catMeta.bg} text-white ring-1 ${catMeta.ring}`}
+          >
+            <CatIcon size={28} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h2 className="font-display text-3xl font-semibold text-pine-900">
+              {t[`mediaPage.cat${category.charAt(0).toUpperCase() + category.slice(1)}` as keyof typeof t] || category}
+            </h2>
+            <p className="mt-1 text-[14.5px] text-ink/50">
+              {t[catMeta.descKey as keyof typeof t] || ''}
+            </p>
+          </div>
+          <Link
+            to="/media"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-pine-900/15 bg-white px-5 py-2.5 text-[13px] font-semibold text-pine-900/70 shadow-sm transition-all hover:text-pine-900 hover:ring-gold-500/50"
+          >
+            <ArrowLeft size={15} />
+            {t['mediaPage.back']}
+          </Link>
+        </div>
       </div>
 
       {/* community — album folders view */}
