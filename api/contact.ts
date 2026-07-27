@@ -72,7 +72,7 @@ export default async function handler(req: any, res: any) {
         from,
         to: [to],
         reply_to: cleanEmail,
-        subject: `Portfolio contact — ${cleanSubject || cleanName}`,
+        subject: `Website contact — ${cleanSubject || cleanName}`,
         text: `New message from ${cleanName} <${cleanEmail}>:\n\n${cleanMessage}`,
       }),
     });
