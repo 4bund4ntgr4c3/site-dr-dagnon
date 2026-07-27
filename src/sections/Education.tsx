@@ -133,21 +133,31 @@ export function Education() {
                 {/* vertical line */}
                 <div className="absolute bottom-4 left-[19px] top-4 w-px bg-gradient-to-b from-gold-500 via-gold-500/30 to-transparent" />
 
-                <div className="space-y-8">
-                  {TRAINING_LIST[lang].map((item, i) => (
-                    <div key={i} className="relative flex gap-5">
-                      {/* dot */}
-                      <div className="relative z-10 mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-gold-500/60 bg-white">
-                        <span className="text-[11px] font-bold text-gold-600">{i + 1}</span>
+                <div className="space-y-6">
+                  {TRAINING_LIST[lang].map((item, i) => {
+                    const colonIdx = item.indexOf(':');
+                    const datePart = colonIdx > 0 ? item.slice(0, colonIdx).trim() : '';
+                    const restPart = colonIdx > 0 ? item.slice(colonIdx + 1).trim() : item;
+                    return (
+                      <div key={i} className="relative flex gap-5">
+                        {/* dot */}
+                        <div className="relative z-10 mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-gold-500/60 bg-white">
+                          <span className="text-[11px] font-bold text-gold-600">{i + 1}</span>
+                        </div>
+                        {/* content */}
+                        <div className="flex-1 rounded-2xl border border-pine-900/10 bg-ivory p-5 transition-colors hover:border-gold-500/40 hover:shadow-md hover:shadow-pine-900/5">
+                          {datePart && (
+                            <span className="inline-block rounded-full bg-pine-900/5 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-pine-800">
+                              {datePart}
+                            </span>
+                          )}
+                          <h3 className="mt-3 font-display text-[15px] font-semibold leading-snug text-pine-950">
+                            {restPart}
+                          </h3>
+                        </div>
                       </div>
-                      {/* content */}
-                      <div className="flex-1 rounded-2xl border border-pine-900/10 bg-ivory p-5 transition-colors hover:border-gold-500/40 hover:shadow-md hover:shadow-pine-900/5">
-                        <p className="text-[13px] leading-relaxed text-ink/65">
-                          {item}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
