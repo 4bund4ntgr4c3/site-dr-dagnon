@@ -104,6 +104,10 @@ function personJsonLd(lang: Lang) {
     description: SEO[lang].description,
     url: SITE_URL,
     image: `${SITE_URL}/og-image.jpg`,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': SITE_URL,
+    },
     sameAs: [
       'https://www.linkedin.com/in/seynud%C3%A9-jean-fortune-dagnon-md-mph-p-h-d-in-progress-093a5a2a/',
       'https://www.youtube.com/@seynudedagnon6233',
@@ -191,6 +195,34 @@ function collectionPageJsonLd(lang: Lang, pageTitle: string, pageDesc: string, u
       name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD, MPH',
     },
     inLanguage: [lang === 'fr' ? 'fr' : 'en'],
+  };
+}
+
+function breadcrumbJsonLd(lang: Lang, pathname: string) {
+  const personName = lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Dagnon';
+  const items: { name: string; url: string }[] = [
+    { name: personName, url: SITE_URL },
+  ];
+  if (pathname.startsWith('/contact')) {
+    items.push({ name: lang === 'fr' ? 'Contact' : 'Contact', url: `${SITE_URL}/contact` });
+  } else if (pathname.startsWith('/media')) {
+    items.push({ name: lang === 'fr' ? 'Médias' : 'Media', url: `${SITE_URL}/media` });
+    const cat = pathname.split('/media/')[1]?.split('/')[0];
+    if (cat && CAT_NAMES[cat]) {
+      items.push({ name: CAT_NAMES[cat][lang], url: `${SITE_URL}/media/${cat}` });
+    }
+  } else if (pathname.startsWith('/publications')) {
+    items.push({ name: lang === 'fr' ? 'Publications' : 'Publications', url: `${SITE_URL}/publications` });
+  }
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
   };
 }
 
@@ -313,15 +345,24 @@ export function Seo() {
       document.head.appendChild(websiteLd);
     }
 
+    let breadcrumbLd = document.getElementById('breadcrumb-jsonld');
+    if (!breadcrumbLd) {
+      breadcrumbLd = document.createElement('script');
+      breadcrumbLd.id = 'breadcrumb-jsonld';
+      breadcrumbLd.setAttribute('type', 'application/ld+json');
+      document.head.appendChild(breadcrumbLd);
+    }
+
     ld.textContent = JSON.stringify(personJsonLd(lang));
     websiteLd.textContent = JSON.stringify(webSiteJsonLd(lang));
+    breadcrumbLd.textContent = JSON.stringify(breadcrumbJsonLd(lang, pathname));
 
     if (isContact) {
       pageLd.textContent = JSON.stringify(contactPageJsonLd(lang));
     } else if (isMedia || isPub) {
       pageLd.textContent = JSON.stringify(collectionPageJsonLd(lang, data.title, data.description, url));
     } else {
-      pageLd.textContent = JSON.stringify(webSiteJsonLd(lang));
+      pageLd.textContent = '';
     }
   }, [lang, isContact, isMedia, isPub, isHome, mediaCategory, pathname]);
 
