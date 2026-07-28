@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import { ArrowUp } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -6,7 +7,13 @@ import { UI } from '@/i18n/translations';
 export function ScrollToTop() {
   const { lang } = useLang();
   const t = UI[lang];
+  const { pathname } = useLocation();
   const [visible, setVisible] = useState(false);
+
+  // scroll to top on route change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [pathname]);
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 500);
