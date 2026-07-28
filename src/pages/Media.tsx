@@ -431,6 +431,8 @@ function CommunityView({
             ref={modalRef}
             className="relative flex w-full max-w-5xl items-center justify-center"
             onClick={(e) => e.stopPropagation()}
+            onMouseEnter={() => setIsAutoPlaying(false)}
+            onMouseLeave={() => { if (activeAlbum) setIsAutoPlaying(true); }}
           >
             {albumPhotos.length > 0 && (
               <>

@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Send, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
@@ -18,7 +18,13 @@ export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>('idle');
-  const revealed = status === 'success';
+  const [timerRevealed, setTimerRevealed] = useState(false);
+  const revealed = status === 'success' || timerRevealed;
+
+  useEffect(() => {
+    const t = setTimeout(() => setTimerRevealed(true), 10_000);
+    return () => clearTimeout(t);
+  }, []);
 
   const update = (k: keyof typeof form, v: string) => {
     setForm((f) => ({ ...f, [k]: v }));
