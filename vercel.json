@@ -9,6 +9,9 @@
       "dest": "/media"
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "^/sitemap\\.xml$",
       "headers": {
         "Content-Type": "application/xml; charset=utf-8",
@@ -65,9 +68,6 @@
         "Content-Security-Policy": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https://www.youtube-nocookie.com https://www.youtube.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self' https://www.google-analytics.com; base-uri 'self'; form-action 'self'"
       },
       "continue": true
-    },
-    {
-      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
