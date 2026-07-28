@@ -755,6 +755,36 @@ export default function MediaPage() {
       ? (urlCategory as MediaCategory)
       : null;
 
+  const invalidCategory = urlCategory && !selectedCategory;
+
+  useEffect(() => {
+    if (invalidCategory) {
+      document.title = '404 — Page non trouvée';
+      let meta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('name', 'robots');
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', 'noindex, nofollow');
+    }
+  }, [invalidCategory]);
+
+  if (invalidCategory) {
+    return (
+      <main id="main-content" className="flex min-h-screen flex-col items-center justify-center bg-pine-950 px-5 text-center">
+        <p className="text-6xl font-display font-semibold text-gold-400">404</p>
+        <p className="mt-4 text-lg text-pine-100/70">{t['notFound.title']}</p>
+        <a
+          href="/media"
+          className="mt-8 inline-flex rounded-full bg-gold-500 px-6 py-3 text-sm font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
+        >
+          {t['notFound.back']}
+        </a>
+      </main>
+    );
+  }
+
   return (
     <main id="main-content" className="min-h-screen overflow-x-hidden">
       {/* header — hero background */}
