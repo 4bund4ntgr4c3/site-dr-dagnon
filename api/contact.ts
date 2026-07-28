@@ -1,3 +1,8 @@
+import {
+  adminNotificationHtml, adminNotificationText,
+  autoReplyHtml, autoReplyText,
+} from './email-templates';
+
 const MAX_NAME = 200;
 const MAX_EMAIL = 254;
 const MAX_SUBJECT = 500;
@@ -72,6 +77,8 @@ export default async function handler(req: ContactRequest, res: ContactResponse)
       res.status(500).json({ error: 'Email service not configured' });
       return;
     }
+
+    // 1) admin notification
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -83,7 +90,8 @@ export default async function handler(req: ContactRequest, res: ContactResponse)
         to: [to],
         reply_to: cleanEmail,
         subject: `Website contact — ${cleanSubject || cleanName}`,
-        text: `New message from ${cleanName} <${cleanEmail}>:\n\n${cleanMessage}`,
+        html: adminNotificationHtml(cleanName, cleanEmail, cleanSubject, cleanMessage),
+        text: adminNotificationText(cleanName, cleanEmail, cleanSubject, cleanMessage),
       }),
     });
     if (!r.ok) {
@@ -93,7 +101,7 @@ export default async function handler(req: ContactRequest, res: ContactResponse)
       return;
     }
 
-    // auto-reply to the sender
+    // 2) auto-reply to sender
     try {
       await fetch('https://api.resend.com/emails', {
         method: 'POST',
@@ -105,7 +113,8 @@ export default async function handler(req: ContactRequest, res: ContactResponse)
           from,
           to: [cleanEmail],
           subject: `Thank you for contacting Dr. Dagnon — ${cleanSubject || 'Your message'}`,
-          text: `Dear ${cleanName},\n\nThank you for reaching out. I have received your message and will get back to you as soon as possible.\n\nBest regards,\nDr. Seynudé Jean-Fortuné Dagnon\nPublic Health & Malaria Program Leader\nhttps://seynudedagnon.com\n\n—\nThis is an automated reply. Please do not respond directly to this email.`,
+          html: autoReplyHtml(cleanName, cleanSubject),
+          text: autoReplyText(cleanName),
         }),
       });
     } catch (e) {

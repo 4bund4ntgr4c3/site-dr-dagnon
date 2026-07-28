@@ -1,3 +1,5 @@
+import { verifyCodeHtml, verifyCodeText } from './email-templates';
+
 const codeStore = new Map<string, { code: string; expiresAt: number }>();
 const CODE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 const CODE_LENGTH = 6;
@@ -52,9 +54,6 @@ export default async function handler(req: VerifyRequest, res: VerifyResponse) {
     const verificationCode = generateCode();
     codeStore.set(cleanEmail, { code: verificationCode, expiresAt: Date.now() + CODE_TTL_MS });
 
-    const subject = 'Your verification code — Seynudé Dagnon';
-    const body = `Your verification code is: ${verificationCode}\n\nThis code expires in 5 minutes.\n\nIf you didn't request this code, please ignore this email.`;
-
     try {
       const r = await fetch('https://api.resend.com/emails', {
         method: 'POST',
@@ -65,8 +64,9 @@ export default async function handler(req: VerifyRequest, res: VerifyResponse) {
         body: JSON.stringify({
           from,
           to: [cleanEmail],
-          subject,
-          text: body,
+          subject: 'Your verification code — Seynudé Dagnon',
+          html: verifyCodeHtml(verificationCode),
+          text: verifyCodeText(verificationCode),
         }),
       });
       if (!r.ok) {
