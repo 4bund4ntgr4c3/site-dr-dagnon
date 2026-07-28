@@ -1,6 +1,10 @@
 {
   "routes": [
     {
+      "src": "^/sitemap\\.xml$",
+      "dest": "/api/sitemap"
+    },
+    {
       "src": "^/api/(.*)",
       "dest": "/api/$1"
     },
@@ -10,14 +14,6 @@
     },
     {
       "handle": "filesystem"
-    },
-    {
-      "src": "^/sitemap\\.xml$",
-      "headers": {
-        "Content-Type": "application/xml; charset=utf-8",
-        "Cache-Control": "public, max-age=86400"
-      },
-      "continue": true
     },
     {
       "src": "^/robots\\.txt$",
