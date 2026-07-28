@@ -92,6 +92,26 @@ export default async function handler(req: ContactRequest, res: ContactResponse)
       res.status(500).json({ error: 'Failed to send' });
       return;
     }
+
+    // auto-reply to the sender
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from,
+          to: [cleanEmail],
+          subject: `Thank you for contacting Dr. Dagnon — ${cleanSubject || 'Your message'}`,
+          text: `Dear ${cleanName},\n\nThank you for reaching out. I have received your message and will get back to you as soon as possible.\n\nBest regards,\nDr. Seynudé Jean-Fortuné Dagnon\nPublic Health & Malaria Program Leader\nhttps://seynudedagnon.com\n\n—\nThis is an automated reply. Please do not respond directly to this email.`,
+        }),
+      });
+    } catch (e) {
+      console.error('Auto-reply failed (non-blocking)', e);
+    }
+
     res.status(200).json({ ok: true });
   } catch (e) {
     console.error(e);
