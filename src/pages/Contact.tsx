@@ -1,5 +1,5 @@
-import { useState, useEffect, type FormEvent } from 'react';
-import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Send, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
+import { useState, type FormEvent } from 'react';
+import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Send, CheckCircle2, AlertCircle, Lock, ShieldCheck } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
@@ -7,6 +7,7 @@ import { UI } from '@/i18n/translations';
 import { LINKS } from '@/data/content';
 
 type Status = 'idle' | 'sending' | 'success' | 'error';
+type VerifyStatus = 'idle' | 'sending' | 'code-sent' | 'verifying' | 'verified' | 'error';
 
 const fieldClass =
   'w-full rounded-xl border border-pine-900/15 bg-white px-4 py-3 text-sm text-pine-900 placeholder:text-pine-900/40 outline-none transition-colors focus:border-gold-500 focus:bg-pine-50';
@@ -18,13 +19,13 @@ export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>('idle');
-  const [timerRevealed, setTimerRevealed] = useState(false);
-  const revealed = status === 'success' || timerRevealed;
+  const [submittedEmail, setSubmittedEmail] = useState('');
 
-  useEffect(() => {
-    const t = setTimeout(() => setTimerRevealed(true), 10_000);
-    return () => clearTimeout(t);
-  }, []);
+  const [verifyStatus, setVerifyStatus] = useState<VerifyStatus>('idle');
+  const [verifyCode, setVerifyCode] = useState('');
+  const [verifyError, setVerifyError] = useState('');
+
+  const revealed = verifyStatus === 'verified';
 
   const update = (k: keyof typeof form, v: string) => {
     setForm((f) => ({ ...f, [k]: v }));
@@ -52,10 +53,52 @@ export default function Contact() {
         body: JSON.stringify(form),
       });
       if (!res.ok) throw new Error('failed');
+      setSubmittedEmail(form.email);
       setStatus('success');
       setForm({ name: '', email: '', subject: '', message: '' });
     } catch {
       setStatus('error');
+    }
+  };
+
+  const sendCode = async () => {
+    if (!submittedEmail) return;
+    setVerifyStatus('sending');
+    setVerifyError('');
+    try {
+      const res = await fetch('/api/verify-phone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'send', email: submittedEmail }),
+      });
+      if (!res.ok) throw new Error('failed');
+      setVerifyStatus('code-sent');
+    } catch {
+      setVerifyStatus('error');
+      setVerifyError(lang === 'fr' ? "Échec de l'envoi du code" : 'Failed to send code');
+    }
+  };
+
+  const verifyCode_submit = async () => {
+    if (!verifyCode.trim()) return;
+    setVerifyStatus('verifying');
+    setVerifyError('');
+    try {
+      const res = await fetch('/api/verify-phone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'verify', email: submittedEmail, code: verifyCode }),
+      });
+      if (!res.ok) {
+        const data = await res.json() as { error?: string };
+        throw new Error(data.error || 'failed');
+      }
+      setVerifyStatus('verified');
+    } catch (e) {
+      setVerifyStatus('error');
+      setVerifyError(e instanceof Error
+        ? (e.message === 'Invalid code' ? (lang === 'fr' ? 'Code invalide' : 'Invalid code') : e.message === 'Code expired' ? (lang === 'fr' ? 'Code expiré' : 'Code expired') : (lang === 'fr' ? 'Erreur de vérification' : 'Verification error'))
+        : (lang === 'fr' ? 'Erreur de vérification' : 'Verification error'));
     }
   };
 
@@ -108,7 +151,7 @@ export default function Contact() {
                     </div>
                   </li>
 
-                  {/* phone — hidden until the message is sent */}
+                  {/* phone — hidden until code verified */}
                   {revealed ? (
                     t['contact.phone'].split(/\s-\s/).map((p, i) => (
                       <li key={i} className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lg hover:shadow-pine-900/8">
@@ -157,7 +200,64 @@ export default function Contact() {
                   ))}
                 </ul>
 
-                {!revealed && (
+                {/* verify phone section — shown after form submit, before verification */}
+                {status === 'success' && !revealed && (
+                  <div className="mt-5 rounded-xl border border-gold-500/30 bg-gold-500/10 p-4">
+                    {verifyStatus === 'code-sent' ? (
+                      <div className="space-y-3">
+                        <p className="text-[13px] font-medium text-pine-900">
+                          {lang === 'fr' ? 'Un code a été envoyé à votre adresse e-mail.' : 'A code has been sent to your email address.'}
+                        </p>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={verifyCode}
+                            onChange={(e) => { setVerifyCode(e.target.value); setVerifyError(''); }}
+                            placeholder={lang === 'fr' ? 'Entrez le code à 6 chiffres' : 'Enter the 6-digit code'}
+                            maxLength={6}
+                            className="w-full rounded-lg border border-pine-900/15 bg-white px-3 py-2 text-sm text-pine-900 placeholder:text-pine-900/40 outline-none focus:border-gold-500"
+                          />
+                          <button
+                            type="button"
+                            onClick={verifyCode_submit}
+                            disabled={!verifyCode.trim()}
+                            className="shrink-0 rounded-lg bg-gold-500 px-4 py-2 text-sm font-semibold text-pine-950 transition-colors hover:bg-gold-400 disabled:opacity-60"
+                          >
+                            {lang === 'fr' ? 'Vérifier' : 'Verify'}
+                          </button>
+                        </div>
+                        {verifyError && <p role="alert" className="text-xs text-red-500">{verifyError}</p>}
+                        <button
+                          type="button"
+                          onClick={sendCode}
+                          className="text-[12px] text-gold-600 hover:text-gold-500"
+                        >
+                          {lang === 'fr' ? 'Renvoyer le code' : 'Resend code'}
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <p className="text-[13px] leading-relaxed text-pine-900/70">
+                          {t['contact.revealHint']}
+                        </p>
+                        <button
+                          type="button"
+                          onClick={sendCode}
+                          disabled={verifyStatus === 'sending'}
+                          className="inline-flex items-center gap-2 rounded-lg bg-gold-500 px-4 py-2 text-sm font-semibold text-pine-950 transition-colors hover:bg-gold-400 disabled:opacity-60"
+                        >
+                          <ShieldCheck size={15} />
+                          {verifyStatus === 'sending'
+                            ? (lang === 'fr' ? 'Envoi en cours…' : 'Sending…')
+                            : (lang === 'fr' ? 'Recevoir le code par e-mail' : 'Receive code by email')}
+                        </button>
+                        {verifyError && <p role="alert" className="text-xs text-red-500">{verifyError}</p>}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {!status && !revealed && (
                   <p className="mt-5 text-[13px] leading-relaxed text-pine-900/60">{t['contact.revealHint']}</p>
                 )}
 
@@ -225,7 +325,7 @@ export default function Contact() {
                     <p className="max-w-sm text-sm text-pine-900/60">{t['contact.sentText']}</p>
                     <button
                       type="button"
-                      onClick={() => { setStatus('idle'); setForm({ name: '', email: '', subject: '', message: '' }); }}
+                      onClick={() => { setStatus('idle'); setSubmittedEmail(''); setForm({ name: '', email: '', subject: '', message: '' }); setVerifyStatus('idle'); setVerifyCode(''); }}
                       className="mt-4 inline-flex items-center gap-2 rounded-full border border-pine-900/15 px-6 py-2.5 text-sm font-medium text-pine-900 transition-colors hover:border-gold-500 hover:text-gold-700"
                     >
                       {lang === 'fr' ? 'Envoyer un autre message' : 'Send another message'}
