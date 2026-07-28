@@ -42,6 +42,7 @@ export function Achievements() {
                   onKeyDown={isAwards ? (e) => { if (e.key === 'Enter' || e.key === ' ') setShowAwards(true); } : undefined}
                   role={isAwards ? 'button' : undefined}
                   tabIndex={isAwards ? 0 : undefined}
+                  aria-label={isAwards ? t['achievements.viewFullList'] : undefined}
                 >
                   <div className="flex items-center gap-3">
                     <p className={`font-display text-[1.9rem] font-semibold leading-none ${isAwards ? 'text-gold-600' : 'text-gold-400'}`}>
@@ -59,7 +60,7 @@ export function Achievements() {
                   <p className={`mt-3 flex-1 text-[13px] leading-relaxed ${isAwards ? 'text-ink/65' : 'text-pine-100/60'}`}>{a.text}</p>
                   {isAwards && (
                     <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
-                      {lang === 'fr' ? 'Voir la liste complète' : 'View full list'} →
+                      {t['achievements.viewFullList']} →
                     </span>
                   )}
                 </div>

@@ -27,11 +27,11 @@ export function Education() {
   const isPopupOpen = showTraining || showTeaching;
   const popupData = showTraining ? TRAINING_LIST[lang] : showTeaching ? TEACHING_LIST[lang] : [];
   const popupTitle = showTraining
-    ? (lang === 'fr' ? 'Éducation et autres formations' : 'Education and other training')
-    : (lang === 'fr' ? 'Enseignement' : 'Teaching Experience');
+    ? t['education.popup.trainingTitle']
+    : t['education.popup.teachingTitle'];
   const popupIcon = showTraining
-    ? (lang === 'fr' ? 'Voir les formations' : 'View trainings')
-    : (lang === 'fr' ? 'Voir les enseignements' : 'View teaching');
+    ? t['education.popup.viewTraining']
+    : t['education.popup.viewTeaching'];
 
   return (
     <section id="formation" className="bg-ivory py-24 lg:py-32">

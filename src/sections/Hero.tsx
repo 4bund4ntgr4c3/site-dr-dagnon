@@ -151,8 +151,8 @@ export function Hero() {
                   <X size={16} />
                 </button>
                 <iframe
-                  src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=0&rel=0`}
-                  title="YouTube video"
+                  src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=0&rel=0`}
+                  title={t['hero.videoTitle']}
                   className="h-full w-full"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen

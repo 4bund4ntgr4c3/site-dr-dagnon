@@ -160,7 +160,7 @@ export default function Contact() {
                     href={LINKS.linkedin}
                     target="_blank"
                     rel="noreferrer"
-                    aria-label="LinkedIn"
+                    aria-label={t['contact.social.linkedin']}
                     className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
                   >
                     <Linkedin size={18} />
@@ -169,7 +169,7 @@ export default function Contact() {
                     href={LINKS.youtube}
                     target="_blank"
                     rel="noreferrer"
-                    aria-label="YouTube"
+                    aria-label={t['contact.social.youtube']}
                     className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
                   >
                     <Youtube size={18} />
@@ -178,7 +178,7 @@ export default function Contact() {
                     href={LINKS.facebook}
                     target="_blank"
                     rel="noreferrer"
-                    aria-label="Facebook"
+                    aria-label={t['contact.social.facebook']}
                     className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
                   >
                     <Facebook size={18} />
@@ -187,7 +187,7 @@ export default function Contact() {
                     href={LINKS.x}
                     target="_blank"
                     rel="noreferrer"
-                    aria-label="X"
+                    aria-label={t['contact.social.x']}
                     className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
                   >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -198,7 +198,7 @@ export default function Contact() {
                     href={LINKS.tiktok}
                     target="_blank"
                     rel="noreferrer"
-                    aria-label="TikTok"
+                    aria-label={t['contact.social.tiktok']}
                     className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
                   >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -217,6 +217,13 @@ export default function Contact() {
                     <CheckCircle2 size={48} className="text-gold-500" />
                     <h2 className="font-display text-2xl font-semibold text-pine-900">{t['contact.sentTitle']}</h2>
                     <p className="max-w-sm text-sm text-pine-900/60">{t['contact.sentText']}</p>
+                    <button
+                      type="button"
+                      onClick={() => { setStatus('idle'); setForm({ name: '', email: '', subject: '', message: '' }); }}
+                      className="mt-4 inline-flex items-center gap-2 rounded-full border border-pine-900/15 px-6 py-2.5 text-sm font-medium text-pine-900 transition-colors hover:border-gold-500 hover:text-gold-700"
+                    >
+                      {lang === 'fr' ? 'Envoyer un autre message' : 'Send another message'}
+                    </button>
                   </div>
                 ) : (
                   <form onSubmit={onSubmit} noValidate className="space-y-5">

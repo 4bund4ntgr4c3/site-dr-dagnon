@@ -50,6 +50,7 @@ export function Experience() {
                       }`}
                       role="button"
                       tabIndex={0}
+                      aria-label={`${job.role} — ${job.org}`}
                       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActive(job); }}
                     >
                       <div className="flex flex-wrap items-center gap-2">

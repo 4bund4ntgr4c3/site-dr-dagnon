@@ -681,6 +681,17 @@ export const UI: Record<Lang, Dict> = {
     'contact.errorText': 'Une erreur est survenue. Réessayez ou écrivez directement par e-mail.',
     'contact.required': 'Champ requis',
     'contact.emailInvalid': 'Adresse e-mail invalide',
+    'contact.social.linkedin': 'LinkedIn',
+    'contact.social.youtube': 'YouTube',
+    'contact.social.facebook': 'Facebook',
+    'contact.social.x': 'X (Twitter)',
+    'contact.social.tiktok': 'TikTok',
+    'hero.videoTitle': 'Vidéo YouTube du Dr. Dagnon',
+    'education.popup.viewTeaching': 'Voir les enseignements',
+    'education.popup.viewTraining': 'Voir les formations',
+    'education.popup.teachingTitle': 'Enseignement',
+    'education.popup.trainingTitle': 'Éducation et autres formations',
+    'achievements.viewFullList': 'Voir la liste complète',
     'footer.eyebrow': 'Contact',
     'footer.title1': 'Ensemble, accélérons',
     'footer.title2': "l’élimination du paludisme",
@@ -853,6 +864,17 @@ export const UI: Record<Lang, Dict> = {
     'contact.errorText': 'Something went wrong. Please retry or email directly.',
     'contact.required': 'Required field',
     'contact.emailInvalid': 'Invalid email address',
+    'contact.social.linkedin': 'LinkedIn',
+    'contact.social.youtube': 'YouTube',
+    'contact.social.facebook': 'Facebook',
+    'contact.social.x': 'X (Twitter)',
+    'contact.social.tiktok': 'TikTok',
+    'hero.videoTitle': "YouTube video of Dr. Dagnon's public health work",
+    'education.popup.viewTeaching': 'View teaching',
+    'education.popup.viewTraining': 'View trainings',
+    'education.popup.teachingTitle': 'Teaching Experience',
+    'education.popup.trainingTitle': 'Education and other training',
+    'achievements.viewFullList': 'View full list',
     'footer.eyebrow': 'Contact',
     'footer.title1': 'Together, let’s accelerate',
     'footer.title2': 'malaria elimination',
@@ -874,6 +896,6 @@ export function publicationsCount(lang: Lang, n: number): string {
   if (lang === 'fr') {
     return `${n} publication${n > 1 ? 's' : ''} affichée${n > 1 ? 's' : ''}`;
   }
-  return `${n} publication${n > 1 ? 's' : ''} shown`;
+  return `${n} publication${n !== 1 ? 's' : ''} shown`;
 }
 

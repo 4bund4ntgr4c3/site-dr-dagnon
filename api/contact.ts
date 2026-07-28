@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 const MAX_NAME = 200;
 const MAX_EMAIL = 254;
 const MAX_SUBJECT = 500;
@@ -22,13 +20,25 @@ function rateLimit(ip: string): boolean {
   return entry.count <= MAX_HITS;
 }
 
-export default async function handler(req: any, res: any) {
+interface ContactRequest {
+  method: string;
+  headers: Record<string, string | string[] | undefined>;
+  socket?: { remoteAddress?: string };
+  body?: { name?: string; email?: string; subject?: string; message?: string };
+}
+
+interface ContactResponse {
+  status: (code: number) => ContactResponse;
+  json: (data: unknown) => void;
+}
+
+export default async function handler(req: ContactRequest, res: ContactResponse) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
 
-  const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
+  const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').toString().split(',')[0].trim();
   if (!rateLimit(ip)) {
     res.status(429).json({ error: 'Too many requests' });
     return;

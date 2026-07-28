@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { Linkedin, Youtube, Mail, ArrowUpRight } from 'lucide-react';
 import { AfricaMap } from '@/components/AfricaMap';
 import { Reveal } from '@/components/Reveal';
@@ -46,12 +47,12 @@ export function Footer() {
                   <Youtube size={17} /> {t['footer.youtube']}
                   <ArrowUpRight size={15} />
                 </a>
-                <a
-                  href="/contact"
+                <Link
+                  to="/contact"
                   className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
                 >
                   <Mail size={17} /> {t['footer.contact']}
-                </a>
+                </Link>
               </div>
             </div>
             <div className="hidden justify-end lg:flex">
@@ -73,15 +74,27 @@ export function Footer() {
           </div>
 
           <nav aria-label={t['footerNav.ariaLabel']} className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            {NAV[lang].map((item) => (
-              <a
-                key={item.id}
-                 href={navHref(item.id)}
-                className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
-              >
-                {item.label}
-              </a>
-            ))}
+            {NAV[lang].map((item) => {
+              const href = navHref(item.id);
+              const isInternal = href.startsWith('/');
+              return isInternal ? (
+                <Link
+                  key={item.id}
+                  to={href}
+                  className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  key={item.id}
+                  href={href}
+                  className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </nav>
 
           <p className="text-[12px] text-pine-100/40">
