@@ -329,7 +329,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'La Nuit du Paludisme — Gala Icône 360, portrait officiel',
       en: 'Night Against Malaria — Icône 360 gala, official portrait',
     },
-    src: '/community/nuit-paludisme-1.jpeg',
+    src: '/community/nuit-paludisme-1.webp',
   },
   {
     id: 'nuit-paludisme-2',
@@ -341,7 +341,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'La Nuit du Paludisme — Gala Icône 360, avec invités',
       en: 'Night Against Malaria — Icône 360 gala, with guests',
     },
-    src: '/community/nuit-paludisme-2.jpeg',
+    src: '/community/nuit-paludisme-2.webp',
   },
   {
     id: 'nuit-paludisme-3',
@@ -353,7 +353,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'La Nuit du Paludisme — Discours et animations',
       en: 'Night Against Malaria — Speeches and ceremonies',
     },
-    src: '/community/nuit-paludisme-3.jpeg',
+    src: '/community/nuit-paludisme-3.webp',
   },
   {
     id: 'nuit-paludisme-4',
@@ -365,7 +365,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'La Nuit du Paludisme — Remise de prix Icône 360',
       en: 'Night Against Malaria — Icône 360 awards ceremony',
     },
-    src: '/community/nuit-paludisme-4.jpeg',
+    src: '/community/nuit-paludisme-4.webp',
   },
   {
     id: 'nuit-paludisme-5',
@@ -377,7 +377,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Parrain de la lutte contre le paludisme — Attestation Icône 360 / Expertise France',
       en: 'Malaria fight godfather — Icône 360 / Expertise France attestation',
     },
-    src: '/community/nuit-paludisme-5.jpeg',
+    src: '/community/nuit-paludisme-5.webp',
   },
   // ── Community — School Kits Distribution ─────────────────────────
   {
@@ -390,7 +390,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Distribution de fournitures scolaires — ONG Reel Concept & Plus',
       en: 'School kits distribution — ONG Reel Concept & Plus',
     },
-    src: '/community/philantropie-1.jpeg',
+    src: '/community/philantropie-1.webp',
   },
   {
     id: 'philantropie-2',
@@ -402,7 +402,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Aide aux enfants démunis — ONG Reel Concept & Plus',
       en: 'Support for underprivileged children — ONG Reel Concept & Plus',
     },
-    src: '/community/philantropie-2.jpeg',
+    src: '/community/philantropie-2.webp',
   },
   {
     id: 'philantropie-3',
@@ -414,7 +414,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Soutien scolaire communautaire',
       en: 'Community education support',
     },
-    src: '/community/philantropie-3.jpeg',
+    src: '/community/philantropie-3.webp',
   },
   {
     id: 'philantropie-4',
@@ -426,7 +426,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Distribution de livres et fournitures',
       en: 'Books and supplies distribution',
     },
-    src: '/community/philantropie-4.jpeg',
+    src: '/community/philantropie-4.webp',
   },
   {
     id: 'philantropie-5',
@@ -438,7 +438,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Équipe ONG Reel Concept & Plus et partenaires',
       en: 'ONG Reel Concept & Plus team and partners',
     },
-    src: '/community/philantropie-5.jpeg',
+    src: '/community/philantropie-5.webp',
   },
   {
     id: 'philantropie-6',
@@ -450,7 +450,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Collaboration communautaire et solidarité',
       en: 'Community collaboration and solidarity',
     },
-    src: '/community/philantropie-6.jpeg',
+    src: '/community/philantropie-6.webp',
   },
   {
     id: 'philantropie-7',
@@ -462,7 +462,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Enfants heureux avec leurs fournitures scolaires',
       en: 'Happy children with school supplies',
     },
-    src: '/community/philantropie-7.jpeg',
+    src: '/community/philantropie-7.webp',
   },
   // ── Community — Génies en Herbe ─────────────────────────────────
   {
@@ -475,7 +475,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Génies en Herbe — Édition Dr. Seynudé Fortuné Dagnon, cérémonie de remise des prix',
       en: 'Génies en Herbe — Dr. Seynudé Fortuné Dagnon edition, awards ceremony',
     },
-    src: '/community/genies-1.jpeg',
+    src: '/community/genies-1.webp',
   },
   {
     id: 'genies-2',
@@ -487,7 +487,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Génies en Herbe — Prix du meilleur marqueur',
       en: 'Génies en Herbe — Best scorer award',
     },
-    src: '/community/genies-2.jpeg',
+    src: '/community/genies-2.webp',
   },
   {
     id: 'genies-3',
@@ -499,7 +499,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Génies en Herbe — Dr. Dagnon avec les lauréats',
       en: 'Génies en Herbe — Dr. Dagnon with winners',
     },
-    src: '/community/genies-3.jpeg',
+    src: '/community/genies-3.webp',
   },
   {
     id: 'genies-4',
@@ -511,7 +511,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Génies en Herbe — Remise du chèque de 100 000 FCFA',
       en: 'Génies en Herbe — Presentation of 100,000 FCFA check',
     },
-    src: '/community/genies-4.jpeg',
+    src: '/community/genies-4.webp',
   },
   {
     id: 'genies-5',
@@ -523,7 +523,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Génies en Herbe — Équipe participante et Dr. Dagnon',
       en: 'Génies en Herbe — Participating team and Dr. Dagnon',
     },
-    src: '/community/genies-5.jpeg',
+    src: '/community/genies-5.webp',
   },
   {
     id: 'genies-6',
@@ -535,6 +535,6 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Génies en Herbe — Photo de groupe avec les étudiants',
       en: 'Génies en Herbe — Group photo with students',
     },
-    src: '/community/genies-6.jpeg',
+    src: '/community/genies-6.webp',
   },
 ];
