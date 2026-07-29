@@ -16,7 +16,9 @@ export default function Contact() {
   const { lang } = useLang();
   const t = UI[lang];
 
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  /* `website` is the honeypot — never shown, never filled by a person.
+     The API silently drops any submission that carries it. */
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', website: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>('idle');
   const [submittedEmail, setSubmittedEmail] = useState('');
@@ -24,8 +26,11 @@ export default function Contact() {
   const [verifyStatus, setVerifyStatus] = useState<VerifyStatus>('idle');
   const [verifyCode, setVerifyCode] = useState('');
   const [verifyError, setVerifyError] = useState('');
+  const [verifyToken, setVerifyToken] = useState('');
+  /* Le numéro n'existe pas côté client tant que l'API ne l'a pas renvoyé. */
+  const [phone, setPhone] = useState('');
 
-  const revealed = verifyStatus === 'verified';
+  const revealed = verifyStatus === 'verified' && !!phone;
 
   const update = (k: keyof typeof form, v: string) => {
     setForm((f) => ({ ...f, [k]: v }));
@@ -55,7 +60,7 @@ export default function Contact() {
       if (!res.ok) throw new Error('failed');
       setSubmittedEmail(form.email);
       setStatus('success');
-      setForm({ name: '', email: '', subject: '', message: '' });
+      setForm({ name: '', email: '', subject: '', message: '', website: '' });
     } catch {
       setStatus('error');
     }
@@ -71,11 +76,19 @@ export default function Contact() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'send', email: submittedEmail }),
       });
-      if (!res.ok) throw new Error('failed');
+      const data = await res.json() as { token?: string; error?: string };
+      if (!res.ok || !data.token) throw new Error(data.error || 'failed');
+      setVerifyToken(data.token);
+      setVerifyCode('');
       setVerifyStatus('code-sent');
-    } catch {
-      setVerifyStatus('error');
-      setVerifyError(lang === 'fr' ? "Échec de l'envoi du code" : 'Failed to send code');
+    } catch (e) {
+      /* si un code a déjà été envoyé, on garde le champ de saisie visible */
+      setVerifyStatus(verifyToken ? 'code-sent' : 'error');
+      setVerifyError(
+        e instanceof Error && e.message === 'Too many requests'
+          ? (lang === 'fr' ? 'Trop de demandes, réessayez plus tard' : 'Too many requests, please try again later')
+          : (lang === 'fr' ? "Échec de l'envoi du code" : 'Failed to send code'),
+      );
     }
   };
 
@@ -87,17 +100,17 @@ export default function Contact() {
       const res = await fetch('/api/verify-phone', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'verify', email: submittedEmail, code: verifyCode }),
+        body: JSON.stringify({ action: 'verify', email: submittedEmail, code: verifyCode, token: verifyToken }),
       });
-      if (!res.ok) {
-        const data = await res.json() as { error?: string };
-        throw new Error(data.error || 'failed');
-      }
+      const data = await res.json() as { phone?: string; error?: string };
+      if (!res.ok || !data.phone) throw new Error(data.error || 'failed');
+      setPhone(data.phone);
       setVerifyStatus('verified');
     } catch (e) {
-      setVerifyStatus('error');
+      /* le code reste saisissable : on ne retombe pas sur l'écran d'envoi */
+      setVerifyStatus('code-sent');
       setVerifyError(e instanceof Error
-        ? (e.message === 'Invalid code' ? (lang === 'fr' ? 'Code invalide' : 'Invalid code') : e.message === 'Code expired' ? (lang === 'fr' ? 'Code expiré' : 'Code expired') : (lang === 'fr' ? 'Erreur de vérification' : 'Verification error'))
+        ? (e.message === 'Invalid code' ? (lang === 'fr' ? 'Code invalide' : 'Invalid code') : e.message === 'Code expired' ? (lang === 'fr' ? 'Code expiré' : 'Code expired') : e.message === 'Too many requests' ? (lang === 'fr' ? 'Trop de tentatives, réessayez plus tard' : 'Too many attempts, please try again later') : (lang === 'fr' ? 'Erreur de vérification' : 'Verification error'))
         : (lang === 'fr' ? 'Erreur de vérification' : 'Verification error'));
     }
   };
@@ -153,7 +166,7 @@ export default function Contact() {
 
                   {/* phone — hidden until code verified */}
                   {revealed ? (
-                    t['contact.phone'].split(/\s-\s/).map((p, i) => (
+                    phone.split(/\s-\s/).map((p, i) => (
                       <li key={i} className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lg hover:shadow-pine-900/8">
                         <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-gold-400">
                           <Phone size={18} />
@@ -212,10 +225,11 @@ export default function Contact() {
                           <input
                             type="text"
                             value={verifyCode}
-                            onChange={(e) => { setVerifyCode(e.target.value); setVerifyError(''); }}
-                            placeholder={lang === 'fr' ? 'Entrez le code à 6 chiffres' : 'Enter the 6-digit code'}
+                            onChange={(e) => { setVerifyCode(e.target.value.toUpperCase()); setVerifyError(''); }}
+                            placeholder={lang === 'fr' ? 'Entrez le code à 6 caractères' : 'Enter the 6-character code'}
                             maxLength={6}
-                            className="w-full rounded-lg border border-pine-900/15 bg-white px-3 py-2 text-sm text-pine-900 placeholder:text-pine-900/40 outline-none focus:border-gold-500"
+                            autoComplete="one-time-code"
+                            className="w-full rounded-lg border border-pine-900/15 bg-white px-3 py-2 text-sm uppercase tracking-[0.2em] text-pine-900 placeholder:normal-case placeholder:tracking-normal placeholder:text-pine-900/40 outline-none focus:border-gold-500"
                           />
                           <button
                             type="button"
@@ -257,7 +271,7 @@ export default function Contact() {
                   </div>
                 )}
 
-                {!status && !revealed && (
+                {status !== 'success' && !revealed && (
                   <p className="mt-5 text-[13px] leading-relaxed text-pine-900/60">{t['contact.revealHint']}</p>
                 )}
 
@@ -325,7 +339,7 @@ export default function Contact() {
                     <p className="max-w-sm text-sm text-pine-900/60">{t['contact.sentText']}</p>
                     <button
                       type="button"
-                      onClick={() => { setStatus('idle'); setSubmittedEmail(''); setForm({ name: '', email: '', subject: '', message: '' }); setVerifyStatus('idle'); setVerifyCode(''); }}
+                      onClick={() => { setStatus('idle'); setSubmittedEmail(''); setForm({ name: '', email: '', subject: '', message: '', website: '' }); setVerifyStatus('idle'); setVerifyCode(''); setVerifyToken(''); setVerifyError(''); setPhone(''); }}
                       className="mt-4 inline-flex items-center gap-2 rounded-full border border-pine-900/15 px-6 py-2.5 text-sm font-medium text-pine-900 transition-colors hover:border-gold-500 hover:text-gold-700"
                     >
                       {lang === 'fr' ? 'Envoyer un autre message' : 'Send another message'}
@@ -378,6 +392,22 @@ export default function Contact() {
                         onChange={(e) => update('subject', e.target.value)}
                         className={fieldClass}
                         placeholder={t['contact.subject']}
+                      />
+                    </div>
+
+                    {/* honeypot — hidden from people, ignored by screen readers,
+                        skipped by keyboard navigation. Bots fill it; the API
+                        then drops the submission without sending anything. */}
+                    <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
+                      <label htmlFor="contact-website">Do not fill this in</label>
+                      <input
+                        id="contact-website"
+                        type="text"
+                        name="website"
+                        value={form.website}
+                        onChange={(e) => update('website', e.target.value)}
+                        tabIndex={-1}
+                        autoComplete="off"
                       />
                     </div>
 
