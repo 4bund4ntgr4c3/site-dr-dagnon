@@ -1,4 +1,5 @@
 import { rateLimit } from './_rate-limit.js';
+import { originAllowed } from './_origin.js';
 
 /* ── Shared email template helpers ──────────────────────────────── */
 
@@ -40,29 +41,6 @@ const sanitize = (s: string) => s.replace(/[\r\n\t]/g, ' ').replace(/\s+/g, ' ')
 
 const WINDOW_MS = 60_000;
 const MAX_HITS = 5;
-
-/* Requests must come from the site itself. Browsers always attach Origin to a
-   cross-origin POST, so this costs nothing for real visitors while turning
-   away scripted spam that just POSTs at the endpoint. Not a security boundary
-   — headers are forgeable — but it removes the cheapest attack. */
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://seynudedagnon.com,https://www.seynudedagnon.com')
-  .split(',')
-  .map((o) => o.trim())
-  .filter(Boolean);
-
-function originAllowed(headers: Record<string, string | string[] | undefined>): boolean {
-  const raw = (headers.origin || headers.referer || '').toString();
-  if (!raw) return false;
-  let origin: string;
-  try {
-    origin = new URL(raw).origin;
-  } catch {
-    return false;
-  }
-  if (ALLOWED_ORIGINS.includes(origin)) return true;
-  /* Vercel preview deployments and local development */
-  return /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin) || /^http:\/\/localhost(:\d+)?$/.test(origin);
-}
 
 interface Req { method: string; headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string }; body?: { name?: string; email?: string; subject?: string; message?: string; website?: string } }
 interface Res { status(c: number): Res; json(d: unknown): void }

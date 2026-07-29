@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import { rateLimit } from './_rate-limit.js';
+import { originAllowed } from './_origin.js';
 
 /* ── Shared email template helpers ──────────────────────────────── */
 
@@ -81,26 +82,6 @@ function checkToken(token: string, email: string, code: string): 'ok' | 'expired
 
 const WINDOW_MS = 10 * 60 * 1000;
 const LIMITS = { sendIp: 5, sendEmail: 3, verifyIp: 10 };
-
-/* Same origin gate as the contact endpoint: this handler also sends email, so
-   it is worth the same cheap filter against scripted abuse. */
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://seynudedagnon.com,https://www.seynudedagnon.com')
-  .split(',')
-  .map((o) => o.trim())
-  .filter(Boolean);
-
-function originAllowed(headers: Record<string, string | string[] | undefined>): boolean {
-  const raw = (headers.origin || headers.referer || '').toString();
-  if (!raw) return false;
-  let origin: string;
-  try {
-    origin = new URL(raw).origin;
-  } catch {
-    return false;
-  }
-  if (ALLOWED_ORIGINS.includes(origin)) return true;
-  return /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin) || /^http:\/\/localhost(:\d+)?$/.test(origin);
-}
 
 /* ── Verify handler ────────────────────────────────────────────── */
 

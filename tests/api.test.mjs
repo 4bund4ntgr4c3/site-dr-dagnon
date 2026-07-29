@@ -236,9 +236,26 @@ test('a lookalike origin does not slip through', async () => {
 });
 
 test('previews and local development are allowed', async () => {
-  for (const origin of ['http://localhost:3000', 'https://site-dr-dagnon-abc123.vercel.app', 'https://www.seynudedagnon.com']) {
+  /* sd.studio26.online is this project's actual staging domain — a same-origin
+     POST from it was rejected by an earlier version of this allowlist that
+     only knew about *.vercel.app, which is the exact bug this test exists to
+     catch a second time. */
+  for (const origin of [
+    'http://localhost:3000',
+    'https://site-dr-dagnon-abc123.vercel.app',
+    'https://www.seynudedagnon.com',
+    'https://sd.studio26.online',
+    'https://any-project.studio26.online',
+  ]) {
     const out = await call(contact, { name: 'A', email: 'a@example.test', message: 'hi' }, { origin, ip: `10.4.1.${origin.length}` });
     assert.notEqual(out.code, 403, `${origin} should be allowed`);
+  }
+});
+
+test('a studio26.online lookalike does not slip through', async () => {
+  for (const origin of ['https://studio26.online.evil.example', 'http://sd.studio26.online', 'https://sd.studio26.online.evil.example']) {
+    const out = await call(contact, { name: 'A', email: 'a@example.test', message: 'hi' }, { origin, ip: '10.4.1.9' });
+    assert.equal(out.code, 403, `${origin} should be refused`);
   }
 });
 
