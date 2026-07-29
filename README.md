@@ -1,73 +1,78 @@
-# React + TypeScript + Vite
+# seynudedagnon.com
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Portfolio of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, deployed on Vercel with two serverless functions.
 
-Currently, two official plugins are available:
+## Commands
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev      # dev server on :3000
+npm run build    # typecheck, bundle, then prerender 18 pages + sitemap + 404
+npm test         # build, then 52 tests (node --test)
+npm run lint
+npm run images   # one-off: convert public/ photos to WebP (see below)
+npm run gen:og   # one-off: regenerate og-image.jpg
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Environment variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Set in the Vercel project settings. Only the first two are required for the
+contact form to work at all.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Variable | Required | Purpose |
+|---|---|---|
+| `RESEND_API_KEY` | yes | sending mail through Resend |
+| `CONTACT_TO_EMAIL` | yes | where contact messages are delivered |
+| `CONTACT_FROM_EMAIL` | no | sender identity, defaults to `Portfolio <admin@seynudedagnon.com>` |
+| `VERIFY_SECRET` | recommended | signs the phone-verification tokens; falls back to `RESEND_API_KEY` |
+| `CONTACT_PHONE` | no | the protected phone number, so it can change without a code deploy |
+| `ALLOWED_ORIGINS` | no | comma-separated origin allowlist for the API |
+| `KV_REST_API_URL` + `KV_REST_API_TOKEN` | no | shared rate-limit store (see below) |
+
+Attaching a Vercel KV store sets the `KV_*` pair automatically. Upstash's own
+`UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` are read too.
+
+## Things that are not obvious
+
+**The phone number is not in the client bundle.** It lives in
+`api/verify-phone.ts` and is only returned after a code sent by email is
+verified. The verification is stateless — a signed token carries an HMAC of
+the code — because serverless instances share no memory. A test asserts no
+phone-shaped string ever reaches `dist/`.
+
+**Rate limiting degrades gracefully.** `api/_rate-limit.ts` uses the shared KV
+store when credentials exist and per-instance memory otherwise. Without the
+shared store the limits only slow a single client down; a burst spread across
+lambda instances gets through.
+
+**URLs carry the language.** English at the root, French under `/fr`
+(`src/i18n/routing.ts`). This is what makes the hreflang tags meaningful. A
+French-speaking first-time visitor is redirected once, unless they have picked
+a language before — see the comment in `src/i18n/LanguageContext.tsx`, which
+also explains how to remove that behaviour.
+
+**The `<head>` is static, the body is not.** `scripts/prerender.mjs` writes one
+HTML file per route per language, with its own title, canonical, hreflang and
+JSON-LD, all from `src/seo/meta.ts` — the same module `<Seo />` uses at
+runtime. Link unfurlers do not run JavaScript, so this is where it matters.
+The sitemap and `404.html` come from the same run. The script fails the build
+rather than skipping quietly, which an earlier Playwright-based version did on
+every deploy without anyone noticing.
+
+**Routes are listed explicitly in `vercel.json`** rather than relying on a
+catch-all rewrite, so a URL that does not exist gets a real 404 instead of a
+soft 200. A test keeps that list in sync with the prerendered routes.
+
+**Images are converted once and committed.** `npm run images` reads `public/`
+and writes WebP at quality 72 — chosen by measuring these files, not by
+habit; the reasoning is in `scripts/optimize-images.mjs`. Deploys never depend
+on `sharp` being installable.
+
+## After deploying
+
+```bash
+curl -s https://seynudedagnon.com/fr/contact | grep -o '<title>[^<]*</title>'
+curl -sI https://seynudedagnon.com/sitemap.xml | grep -i content-type
+curl -sI https://seynudedagnon.com/this-does-not-exist | head -1
 ```
+
+Expected: the French contact title, `application/xml`, and `HTTP/2 404`.

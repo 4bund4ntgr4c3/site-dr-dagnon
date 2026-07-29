@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main, staging]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      # `npm test` builds first, so this also covers the typecheck, the bundle
+      # and the prerender. A broken <head> or a missing asset fails here rather
+      # than silently shipping.
+      - run: npm test
+
+      # Surfaces what the visitor actually downloads, so a jump in bundle size
+      # shows up in the diff instead of six months later.
+      - name: Report bundle size
+        if: always()
+        run: |
+          echo "### Client bundle" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          ls -lh dist/assets/*.js | awk '{print $5, $9}' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY

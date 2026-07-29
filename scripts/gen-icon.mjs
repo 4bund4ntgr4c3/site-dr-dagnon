@@ -5,7 +5,6 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
-const CHROME = 'C:\\Users\\Studio26\\AppData\\Local\\ms-playwright\\chromium-1208\\chrome-win64\\chrome.exe';
 const out = path.join(root, 'public', 'icon-512.png');
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>
@@ -20,7 +19,7 @@ const tmp = path.join(root, 'scripts', '.icon-tmp.html');
 fs.writeFileSync(tmp, html, 'utf-8');
 
 const browser = await chromium.launch({
-  executablePath: CHROME,
+  /* chromium resolved from playwright's own registry — no machine-specific path */
   headless: true,
   args: ['--no-sandbox', '--disable-setuid-sandbox'],
 });

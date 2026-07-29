@@ -5,7 +5,6 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
-const CHROME = 'C:\\Users\\Studio26\\AppData\\Local\\ms-playwright\\chromium-1208\\chrome-win64\\chrome.exe';
 const photo = path.join(root, 'public', 'dr-seynude-dagnon.jpeg');
 const out = path.join(root, 'public', 'og-image.jpg');
 
@@ -40,7 +39,7 @@ const tmp = path.join(root, 'scripts', '.og-tmp.html');
 fs.writeFileSync(tmp, html, 'utf-8');
 
 const browser = await chromium.launch({
-  executablePath: CHROME,
+  /* chromium resolved from playwright's own registry — no machine-specific path */
   headless: true,
   args: ['--no-sandbox', '--disable-setuid-sandbox'],
 });

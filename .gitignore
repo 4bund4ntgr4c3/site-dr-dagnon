@@ -34,3 +34,6 @@ lint.log
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code local config
+.claude/
