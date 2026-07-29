@@ -1,70 +1,80 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https://www.youtube-nocookie.com https://www.youtube.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self' https://www.google-analytics.com; base-uri 'self'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/gtag.js",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
+    },
+    {
+      "source": "/og-image.jpg",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    },
     {
       "source": "/robots.txt",
       "headers": [
         { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
         { "key": "Cache-Control", "value": "public, max-age=86400" }
       ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
     }
   ],
-  "routes": [
-    {
-      "src": "^/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "^/media/(publication|research)$",
-      "dest": "/media"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "^/gtag\\.js$",
-      "headers": {
-        "Cache-Control": "public, max-age=86400"
-      },
-      "continue": true
-    },
-    {
-      "src": "^/og-image\\.jpg$",
-      "headers": {
-        "Cache-Control": "public, max-age=86400",
-        "Access-Control-Allow-Origin": "*"
-      },
-      "continue": true
-    },
-    {
-      "src": "^/assets/(.*)",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
-      "continue": true
-    },
-    {
-      "src": "^/(.*)\\.webmanifest$",
-      "headers": {
-        "Content-Type": "application/manifest+json",
-        "Cache-Control": "public, max-age=86400"
-      },
-      "continue": true
-    },
-    {
-      "src": "^/(.*)",
-      "headers": {
-        "X-Content-Type-Options": "nosniff",
-        "X-Frame-Options": "DENY",
-        "Referrer-Policy": "strict-origin-when-cross-origin",
-        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
-        "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
-        "Content-Security-Policy": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https://www.youtube-nocookie.com https://www.youtube.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self' https://www.google-analytics.com; base-uri 'self'; form-action 'self'"
-      },
-      "continue": true
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+  "rewrites": [
+    { "source": "/media/publication", "destination": "/media/index.html" },
+    { "source": "/media/research", "destination": "/media/index.html" },
+    { "source": "/fr/media/publication", "destination": "/fr/media/index.html" },
+    { "source": "/fr/media/research", "destination": "/fr/media/index.html" },
+
+    { "source": "/contact", "destination": "/contact/index.html" },
+    { "source": "/media", "destination": "/media/index.html" },
+    { "source": "/media/interview", "destination": "/media/interview/index.html" },
+    { "source": "/media/conference", "destination": "/media/conference/index.html" },
+    { "source": "/media/speaking", "destination": "/media/speaking/index.html" },
+    { "source": "/media/press", "destination": "/media/press/index.html" },
+    { "source": "/media/community", "destination": "/media/community/index.html" },
+    { "source": "/publications", "destination": "/publications/index.html" },
+
+    { "source": "/fr", "destination": "/fr/index.html" },
+    { "source": "/fr/contact", "destination": "/fr/contact/index.html" },
+    { "source": "/fr/media", "destination": "/fr/media/index.html" },
+    { "source": "/fr/media/interview", "destination": "/fr/media/interview/index.html" },
+    { "source": "/fr/media/conference", "destination": "/fr/media/conference/index.html" },
+    { "source": "/fr/media/speaking", "destination": "/fr/media/speaking/index.html" },
+    { "source": "/fr/media/press", "destination": "/fr/media/press/index.html" },
+    { "source": "/fr/media/community", "destination": "/fr/media/community/index.html" },
+    { "source": "/fr/publications", "destination": "/fr/publications/index.html" }
   ]
 }

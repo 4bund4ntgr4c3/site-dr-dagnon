@@ -6,6 +6,7 @@ import { LINKS } from '@/data/content';
 import { useLang } from '@/i18n/useLang';
 import { NAV, UI } from '@/i18n/translations';
 import { navHref } from '@/lib/nav';
+import { localePath } from '@/i18n/routing';
 
 export function Footer() {
   const { lang } = useLang();
@@ -48,7 +49,7 @@ export function Footer() {
                   <ArrowUpRight size={15} />
                 </a>
                 <Link
-                  to="/contact"
+                  to={localePath(lang, '/contact')}
                   className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
                 >
                   <Mail size={17} /> {t['footer.contact']}
@@ -75,7 +76,7 @@ export function Footer() {
 
           <nav aria-label={t['footerNav.ariaLabel']} className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {NAV[lang].map((item) => {
-              const href = navHref(item.id);
+              const href = navHref(lang, item.id);
               const isInternal = href.startsWith('/');
               return isInternal ? (
                 <Link

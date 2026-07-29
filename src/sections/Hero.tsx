@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { Link } from 'react-router';
 import { motion } from 'framer-motion';
 import { Linkedin, Mail, ArrowDown, MapPin, Award, BookOpen, Play, X } from 'lucide-react';
 import { LINKS } from '@/data/content';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { NameHighlight } from '@/components/NameHighlight';
+import { localePath } from '@/i18n/routing';
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -74,13 +76,13 @@ export function Hero() {
                 <Linkedin size={17} className="transition-transform group-hover:scale-110" />
                 {t['hero.linkedin']}
               </a>
-              <a
-                href="/contact"
+              <Link
+                to={localePath(lang, '/contact')}
                 className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
               >
                 <Mail size={17} />
                 {t['hero.contact']}
-              </a>
+              </Link>
             </motion.div>
 
             <motion.div
@@ -114,10 +116,19 @@ export function Hero() {
                 animate={{ opacity: showVideo ? 0 : 1 }}
                 transition={{ duration: 0.6, ease: 'easeInOut' }}
                 onClick={() => setShowVideo(true)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setShowVideo(true);
+                  }
+                }}
+                role="button"
+                tabIndex={showVideo ? -1 : 0}
+                aria-label={t['hero.videoTitle']}
                 style={{ pointerEvents: showVideo ? 'none' : 'auto' }}
               >
                 <img
-                  src="/dr-seynude-dagnon.jpeg"
+                  src="/dr-seynude-dagnon.webp"
                   alt={lang === 'fr' ? 'Portrait du Dr. Seynudé Jean-Fortuné Dagnon' : 'Portrait of Dr. Seynudé Jean-Fortuné Dagnon'}
                   width={400}
                   height={400}
@@ -150,13 +161,17 @@ export function Hero() {
                     >
                   <X size={16} />
                 </button>
-                <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=0&rel=0`}
-                  title={t['hero.videoTitle']}
-                  className="h-full w-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+                {/* mounted on demand: otherwise the YouTube player is fetched
+                    on every home-page visit, for a video most people never open */}
+                {showVideo && (
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&rel=0`}
+                    title={t['hero.videoTitle']}
+                    className="h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                )}
               </motion.div>
             </div>
 

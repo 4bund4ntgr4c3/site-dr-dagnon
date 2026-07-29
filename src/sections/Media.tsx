@@ -6,6 +6,7 @@ import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { MEDIA, UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { localePath } from '@/i18n/routing';
 
 type MediaItem = (typeof MEDIA)[keyof typeof MEDIA][number];
 
@@ -135,7 +136,7 @@ export function Media() {
         <Reveal delay={0.5}>
           <div className="mt-10 text-center">
             <Link
-              to="/media/speaking"
+              to={localePath(lang, '/media/speaking')}
               className="inline-flex items-center gap-2 rounded-full border border-gold-500/50 px-6 py-3 text-sm font-semibold text-gold-300 transition-all hover:bg-gold-500 hover:text-pine-950"
             >
               {t['media.viewMore']}

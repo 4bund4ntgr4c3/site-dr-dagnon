@@ -24,6 +24,7 @@ import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { localePath } from '@/i18n/routing';
 import {
   MEDIA_ITEMS,
   type MediaEntry,
@@ -90,7 +91,7 @@ const CATEGORIES: {
     bg: 'bg-purple-700',
     ring: 'ring-purple-500/40',
     badge: 'bg-purple-100 text-purple-700',
-    thumb: '/community/nuit-paludisme-1.jpeg',
+    thumb: '/community/nuit-paludisme-1-thumb.webp',
     descKey: 'mediaPage.catDescCommunity',
   },
 ];
@@ -121,8 +122,10 @@ const TYPE_FILTERS: { value: MediaType | 'all'; key: string }[] = [
    ═══════════════════════════════════════════════════════════════════ */
 
 function MediaLanding({
+  lang,
   t,
 }: {
+  lang: 'fr' | 'en';
   t: (typeof UI)['fr'];
 }) {
   const catCounts = useMemo(() => {
@@ -142,7 +145,7 @@ function MediaLanding({
         return (
           <Reveal key={cat.key} delay={Math.min(i * 0.08, 0.4)}>
             <Link
-              to={`/media/${cat.key}`}
+              to={localePath(lang, `/media/${cat.key}`)}
               className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)] transition-all duration-300 hover:-translate-y-2 hover:border-gold-500/40 hover:shadow-[0_32px_70px_-30px_rgba(2,36,32,0.5)]"
             >
               {/* Thumbnail */}
@@ -232,10 +235,12 @@ const SUBTYPE_DESC_MAP: Record<string, Record<'fr' | 'en', string>> = {
   },
 };
 
+/* dedicated 800px thumbnails: these are rendered in ~400px cards, so the
+   full-size photo would be several times the bytes actually needed */
 const ALBUM_COVERS: Record<string, string> = {
-  'malaria-night': '/community/nuit-paludisme-1.jpeg',
-  'school-kits': '/community/philantropie-1.jpeg',
-  genies: '/community/genies-1.jpeg',
+  'malaria-night': '/community/nuit-paludisme-1-thumb.webp',
+  'school-kits': '/community/philantropie-1-thumb.webp',
+  genies: '/community/genies-1-thumb.webp',
 };
 
 function CommunityView({
@@ -279,6 +284,14 @@ function CommunityView({
     setSlideshowIndex((prev) => (prev + 1) % albumPhotos.length);
   }, [albumPhotos.length]);
 
+  /* resetting here rather than in an effect keyed on activeAlbum: the reset
+     belongs to the act of opening an album, not to a render pass */
+  const openAlbum = (key: string) => {
+    setActiveAlbum(key);
+    setSlideshowIndex(0);
+    setIsAutoPlaying(true);
+  };
+
   const goPrev = useCallback(() => {
     if (albumPhotos.length === 0) return;
     setSlideshowIndex((prev) => (prev - 1 + albumPhotos.length) % albumPhotos.length);
@@ -292,11 +305,6 @@ function CommunityView({
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     };
   }, [isAutoPlaying, activeAlbum, albumPhotos.length, goNext]);
-
-  useEffect(() => {
-    setSlideshowIndex(0);
-    setIsAutoPlaying(true);
-  }, [activeAlbum]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -320,7 +328,7 @@ function CommunityView({
             <Reveal key={key} delay={Math.min(i * 0.1, 0.3)}>
               <button
                 type="button"
-                onClick={() => setActiveAlbum(key)}
+                onClick={() => openAlbum(key)}
                 className="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)] transition-all duration-300 hover:-translate-y-2 hover:border-gold-500/40 hover:shadow-[0_32px_70px_-30px_rgba(2,36,32,0.5)] text-left"
               >
                 {/* cover image */}
@@ -454,16 +462,28 @@ function CommunityView({
 
                 {/* photo */}
                 <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
-                  {albumPhotos.map((photo, i) => (
-                    <img
-                      key={photo.id}
-                      src={photo.src}
-                      alt={photo.title[lang]}
-                      className={`w-full object-contain max-h-[75vh] absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                        i === slideshowIndex ? 'opacity-100' : 'opacity-0'
-                      }`}
-                    />
-                  ))}
+                  {/* only the current slide and its neighbours are mounted —
+                      an album used to pull every photo down at once */}
+                  {albumPhotos.map((photo, i) => {
+                    const last = albumPhotos.length - 1;
+                    const adjacent =
+                      Math.abs(i - slideshowIndex) <= 1 ||
+                      (slideshowIndex === 0 && i === last) ||
+                      (slideshowIndex === last && i === 0);
+                    if (!adjacent) return null;
+                    return (
+                      <img
+                        key={photo.id}
+                        src={photo.src}
+                        alt={photo.title[lang]}
+                        loading={i === slideshowIndex ? 'eager' : 'lazy'}
+                        decoding="async"
+                        className={`w-full object-contain max-h-[75vh] absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                          i === slideshowIndex ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      />
+                    );
+                  })}
                   {/* placeholder to maintain aspect ratio */}
                   <img
                     src={albumPhotos[0].src}
@@ -577,7 +597,7 @@ function CategoryView({
             <CatIcon size={28} />
           </span>
           <Link
-            to="/media"
+            to={localePath(lang, '/media')}
             className="inline-flex shrink-0 items-center gap-2 rounded-full border border-pine-900/15 bg-white px-5 py-2.5 text-[13px] font-semibold text-pine-900/70 shadow-sm transition-all hover:text-pine-900 hover:ring-gold-500/50"
           >
             <ArrowLeft size={15} />
@@ -609,7 +629,7 @@ function CategoryView({
             </p>
           </div>
           <Link
-            to="/media"
+            to={localePath(lang, '/media')}
             className="inline-flex shrink-0 items-center gap-2 rounded-full border border-pine-900/15 bg-white px-5 py-2.5 text-[13px] font-semibold text-pine-900/70 shadow-sm transition-all hover:text-pine-900 hover:ring-gold-500/50"
           >
             <ArrowLeft size={15} />
@@ -757,30 +777,22 @@ export default function MediaPage() {
 
   const invalidCategory = urlCategory && !selectedCategory;
 
-  useEffect(() => {
-    if (invalidCategory) {
-      document.title = '404 — Page non trouvée';
-      let meta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('name', 'robots');
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', 'noindex, nofollow');
-    }
-  }, [invalidCategory]);
+  /* No title/robots handling here: an unknown category is a path outside the
+     route list, so <Seo /> already marks it noindex and gives it a translated
+     404 title. This used to set them itself — hardcoded in French, on English
+     pages too — and the two fought over the same tags. */
 
   if (invalidCategory) {
     return (
       <main id="main-content" className="flex min-h-screen flex-col items-center justify-center bg-pine-950 px-5 text-center">
         <p className="text-6xl font-display font-semibold text-gold-400">404</p>
         <p className="mt-4 text-lg text-pine-100/70">{t['notFound.title']}</p>
-        <a
-          href="/media"
+        <Link
+          to={localePath(lang, '/media')}
           className="mt-8 inline-flex rounded-full bg-gold-500 px-6 py-3 text-sm font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
         >
           {t['notFound.back']}
-        </a>
+        </Link>
       </main>
     );
   }
@@ -817,7 +829,7 @@ export default function MediaPage() {
           {selectedCategory ? (
             <CategoryView category={selectedCategory} lang={lang} t={t} />
           ) : (
-            <MediaLanding t={t} />
+            <MediaLanding lang={lang} t={t} />
           )}
         </div>
       </section>

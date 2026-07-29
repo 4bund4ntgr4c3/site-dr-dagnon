@@ -4,6 +4,7 @@ import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { EXPERTISE, UI } from '@/i18n/translations';
+import { localePath } from '@/i18n/routing';
 
 const ICONS: Record<string, typeof ShieldCheck> = {
   shield: ShieldCheck,
@@ -58,7 +59,7 @@ export function Expertise() {
           {/* CTA card */}
           <Reveal delay={0.45}>
             <Link
-              to="/contact"
+              to={localePath(lang, '/contact')}
               className="group flex h-full min-h-[220px] flex-col justify-between rounded-2xl bg-gradient-to-br from-gold-500 to-gold-600 p-7 text-pine-950 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-gold-600/30"
             >
               <p className="font-display text-2xl font-semibold leading-snug">
