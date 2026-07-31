@@ -8,7 +8,7 @@ import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { PUB_ITEMS, type PubEntry } from '@/data/publications';
 
 const pill = (active: boolean) =>
-  `rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+  `whitespace-nowrap rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
     active
       ? 'bg-pine-950 text-gold-400 shadow'
       : 'bg-white text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
@@ -79,9 +79,9 @@ export default function PublicationsPage() {
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
           {/* filters — top bar */}
           <div className="rounded-2xl border border-pine-900/10 bg-ivory p-4 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center justify-between gap-6">
               {/* search */}
-              <div className="w-full lg:max-w-xs">
+              <div className="min-w-0 w-full lg:max-w-xs">
                 <label htmlFor="pub-search" className="sr-only">
                   {t['pubPage.search']}
                 </label>
@@ -99,12 +99,12 @@ export default function PublicationsPage() {
               </div>
 
               {/* year + sort */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+              <div className="flex shrink-0 items-center gap-x-6">
                 <div className="flex items-center gap-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">
+                  <p className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">
                     {t['pubPage.filterYear']}
                   </p>
-                  <div role="group" aria-label={t['pubPage.filterYear']} className="flex flex-wrap gap-2">
+                  <div role="group" aria-label={t['pubPage.filterYear']} className="flex gap-2">
                     <button type="button" onClick={() => setYear('all')} className={pill(year === 'all')}>
                       {t['pubPage.all']}
                     </button>
@@ -117,7 +117,7 @@ export default function PublicationsPage() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">
+                  <p className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">
                     {t['pubPage.filterSort']}
                   </p>
                   <div role="group" aria-label={t['pubPage.filterSort']} className="flex gap-2">
