@@ -117,7 +117,7 @@ export function ThemeToggle() {
           <div
             role="menu"
             aria-label={t['theme.label']}
-            className="overflow-hidden rounded-xl border border-pine-900/15 bg-white p-1 shadow-xl shadow-pine-950/20"
+            className="overflow-hidden rounded-2xl border border-white/10 bg-pine-950/95 p-1.5 shadow-xl shadow-pine-950/40 backdrop-blur-md"
           >
             {options.map((o) => (
               <button
@@ -128,13 +128,13 @@ export function ThemeToggle() {
                 onClick={() => select(o.mode)}
                 className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
                   o.mode === mode
-                    ? 'bg-pine-900/5 font-semibold text-pine-900'
-                    : 'text-pine-900/75 hover:bg-pine-900/5 hover:text-pine-900'
+                    ? 'bg-white/10 font-semibold text-ivory'
+                    : 'text-pine-100/85 hover:bg-white/5 hover:text-gold-400'
                 }`}
               >
-                <span className={o.mode === mode ? 'text-gold-600' : 'text-pine-900/60'}>{o.icon}</span>
+                <span className={o.mode === mode ? 'text-gold-400' : 'text-pine-100/70'}>{o.icon}</span>
                 <span className="flex-1 text-left">{o.label}</span>
-                {o.mode === mode && <Check size={14} className="text-gold-600" />}
+                {o.mode === mode && <Check size={14} className="text-gold-400" />}
               </button>
             ))}
           </div>
