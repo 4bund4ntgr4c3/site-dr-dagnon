@@ -110,6 +110,47 @@ test('titles and descriptions are unique, present and translated', () => {
   }
 });
 
+/* Google truncates a SERP snippet past roughly 60 chars of title or 155-160
+   of description — not at a sentence boundary, wherever the pixel budget runs
+   out. These budgets are on the decoded text (what a reader actually sees),
+   not the HTML-escaped attribute value, since "&amp;" reads as one character
+   wide, not five. */
+const decodeEntities = (s) => s.replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+
+test('titles and descriptions stay inside the SERP snippet budget', () => {
+  eachPage(({ id, html }) => {
+    const title = decodeEntities(attr(html, /<title>([^<]*)<\/title>/) ?? '');
+    const description = decodeEntities(attr(html, /<meta name="description" content="([^"]+)"/) ?? '');
+    assert.ok(title.length <= 60, `${id}: title is ${title.length} chars, over the ~60 budget — "${title}"`);
+    assert.ok(description.length <= 160, `${id}: description is ${description.length} chars, over the ~160 budget — "${description}"`);
+  });
+});
+
+test('the H1 differs by page, not just by language', () => {
+  /* every page used to render the exact same <h1><NameHighlight /></h1> —
+     verified live in production across five routes before this was fixed.
+     The name may still anchor every H1, but the page's own topic has to be
+     in there too, or Google has nothing to tell the pages apart by. */
+  eachPage(({ id, html }) => {
+    const h1 = decodeEntities((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? '').replace(/<[^>]*>/g, '').trim());
+    assert.ok(h1.length > 0, `${id}: no H1 text`);
+  });
+  for (const lang of LANGS) {
+    const h1sByRoute = new Map();
+    eachPage(({ route, lang: l, html }) => {
+      if (l !== lang) return;
+      const h1 = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? '').replace(/<[^>]*>/g, '').trim();
+      h1sByRoute.set(route, h1);
+    });
+    /* home is allowed to be just the name — every other route must not match it */
+    const homeH1 = h1sByRoute.get('/');
+    for (const [route, h1] of h1sByRoute) {
+      if (route === '/') continue;
+      assert.notEqual(h1, homeH1, `${lang} ${route}: H1 is identical to the homepage's — "${h1}"`);
+    }
+  }
+});
+
 test('og:locale matches the page and names the other language', () => {
   eachPage(({ id, lang, html }) => {
     assert.equal(attr(html, /<meta property="og:locale" content="([^"]+)"/), lang === 'fr' ? 'fr_FR' : 'en_US', id);
@@ -131,6 +172,27 @@ test('JSON-LD parses and cannot break out of its script tag', () => {
     assert.equal(items.length, depth, `${id} breadcrumb depth`);
     assert.equal(items.at(-1).item, absUrl(lang, route), `${id} breadcrumb tail`);
     assert.equal(items[0].item, absUrl(lang, '/'), `${id} breadcrumb root is not localized`);
+  });
+});
+
+test('structured data does not advertise a search box that does not exist', () => {
+  /* the WebSite schema used to declare a SearchAction targeting /?q=..., but
+     nothing on the site reads that query param — the filters on /media and
+     /publications are client-side React state, not URL-addressable */
+  eachPage(({ id, html }) => {
+    const websiteBlock = html.match(/<script id="website-jsonld"[^>]*>([\s\S]*?)<\/script>/)?.[1];
+    assert.ok(websiteBlock, `${id}: no website-jsonld block`);
+    assert.ok(!JSON.parse(websiteBlock).potentialAction, `${id}: website-jsonld still declares a SearchAction`);
+  });
+});
+
+test('the Person schema carries no unreachable university URL', () => {
+  eachPage(({ id, html }) => {
+    const personBlock = html.match(/<script id="person-jsonld"[^>]*>([\s\S]*?)<\/script>/)?.[1];
+    const alumniOf = JSON.parse(personBlock).alumniOf ?? [];
+    const conakry = alumniOf.find((a) => a.name === 'University of Conakry');
+    assert.ok(conakry, `${id}: University of Conakry entry missing`);
+    assert.ok(!conakry.url, `${id}: still links to the dead univconakry.edu.gn — remove until a working URL is known`);
   });
 });
 

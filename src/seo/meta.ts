@@ -16,18 +16,20 @@ const homeUrl = (lang: Lang) => absUrl(lang, '/');
 
 /* ── Page-level SEO data ──────────────────────────────────────── */
 
+/* Titles kept to ~60 chars and descriptions to ~150 — past that, Google
+   truncates the SERP snippet mid-word rather than at a sentence boundary. */
 export const SEO: Record<Lang, { title: string; description: string; keywords: string; ogLocale: string }> = {
   fr: {
-    title: 'Dr. Seynudé Jean-Fortuné DAGNON — Santé publique, Paludisme & Leadership en Afrique francophone',
+    title: 'Dr. Seynudé Dagnon — Santé publique & Paludisme en Afrique',
     description:
-      "Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Leader en santé publique et paludisme. Senior Program Officer à la Fondation Gates, 17+ ans d'expérience au Bénin et en Afrique francophone. Systèmes de santé, données pour la décision, élimination du paludisme.",
+      "Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Leader en santé publique et paludisme à la Fondation Gates. 17+ ans au Bénin et en Afrique francophone.",
     keywords: 'Seynudé Dagnon, paludisme, santé publique, Fondation Gates, USAID, PMI, Bénin, Afrique francophone, économie de la santé, leader paludisme, malaria program leader, Cotonou, doctorat Groningen, MPH Antwerp',
     ogLocale: 'fr_FR',
   },
   en: {
-    title: 'Seynudé Jean-Fortuné DAGNON, MD, MPH — Public Health & Malaria Program Leader',
+    title: 'Seynudé Dagnon, MD, MPH — Public Health & Malaria Leader',
     description:
-      'Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Public Health & Malaria Program Leader. Senior Program Officer at the Gates Foundation with 17+ years of experience across Benin and Francophone Africa. Health systems, data-driven decision-making, malaria elimination.',
+      'Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Public Health & Malaria Leader at the Gates Foundation. 17+ years across Benin and Francophone Africa.',
     keywords: 'Seynudé Dagnon, malaria, public health, Gates Foundation, USAID, PMI, Benin, Francophone Africa, health economics, malaria program leader, Cotonou, PhD Groningen, MPH Antwerp, vector control, SMC',
     ogLocale: 'en_US',
   },
@@ -35,13 +37,13 @@ export const SEO: Record<Lang, { title: string; description: string; keywords: s
 
 export const CONTACT_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
-    title: 'Contact — Dr. Seynudé Jean-Fortuné DAGNON | Santé publique & Paludisme',
-    description: 'Contactez le Dr. Seynudé Jean-Fortuné Dagnon pour des partenariats, conférences, conseils techniques ou échanges sur la santé publique et le paludisme en Afrique francophone. Formulaire, e-mail et réseaux sociaux. Basé à Cotonou (Bénin) et Dakar (Sénégal).',
+    title: 'Contact — Dr. Seynudé Jean-Fortuné DAGNON',
+    description: 'Contactez le Dr. Seynudé Jean-Fortuné Dagnon pour un partenariat, une conférence ou un conseil technique sur le paludisme et la santé publique.',
     keywords: 'contact Dr Dagnon, email santé publique, partenariat paludisme, conférence Afrique, conseil technique Bénin, Cotonou, Dakar, Sénégal',
   },
   en: {
-    title: 'Contact — Seynudé Jean-Fortuné DAGNON, MD, MPH | Public Health & Malaria',
-    description: 'Contact Dr. Seynudé Jean-Fortuné Dagnon for partnerships, conferences, technical advice or discussions on public health and malaria in Francophone Africa. Form, email and social networks. Based in Cotonou (Benin) and Dakar (Senegal).',
+    title: 'Contact — Seynudé Jean-Fortuné DAGNON, MD, MPH',
+    description: 'Contact Dr. Seynudé Jean-Fortuné Dagnon for partnerships, conferences or technical advice on malaria and public health in Francophone Africa.',
     keywords: 'contact Dr Dagnon, public health email, malaria partnership, Africa conference, technical advice Benin, Cotonou, Dakar, Senegal',
   },
 };
@@ -49,15 +51,19 @@ export const CONTACT_SEO: Record<Lang, { title: string; description: string; key
 export const MEDIA_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Médias — Interviews, Conférences & Engagements du Dr. Dagnon',
-    description: "Interviews, conférences internationales, discours publics, couvertures médiatiques et engagement communautaire du Dr. Seynudé Jean-Fortuné Dagnon sur la lutte contre le paludisme et la santé publique en Afrique.",
+    description: 'Interviews, conférences, discours, presse et engagement communautaire du Dr. Seynudé Jean-Fortuné Dagnon sur le paludisme et la santé publique en Afrique.',
     keywords: 'interviews Dr Dagnon, conférences paludisme, discours santé publique, presse Bénin, engagements communautaires, Nuit du Paludisme, media malaria Africa',
   },
   en: {
     title: 'Media — Interviews, Conferences & Engagements of Dr. Dagnon',
-    description: 'Interviews, international conferences, public speeches, press coverage and community engagement by Dr. Seynudé Jean-Fortuné Dagnon on malaria control and public health in Africa.',
+    description: 'Interviews, conferences, speeches, press coverage and community engagement by Dr. Seynudé Jean-Fortuné Dagnon on malaria and public health in Africa.',
     keywords: 'Dr Dagnon interviews, malaria conferences, public health speeches, press Benin, community engagement, Night Against Malaria, media malaria Africa',
   },
 };
+
+/** Short brand suffix for titles that need to stay under ~60 chars —
+    "Seynudé Jean-Fortuné DAGNON, MD, MPH" alone eats most of that budget. */
+const shortName = (lang: Lang) => (lang === 'fr' ? 'Dr. Dagnon' : 'Seynudé Dagnon');
 
 export const CAT_NAMES: Record<string, { fr: string; en: string }> = {
   interview: { fr: 'Interviews', en: 'Interviews' },
@@ -69,12 +75,12 @@ export const CAT_NAMES: Record<string, { fr: string; en: string }> = {
 
 export const CAT_DESCRIPTIONS: Record<string, { fr: string; en: string; keywords: string }> = {
   interview: {
-    fr: "Interviews du Dr. Seynudé Jean-Fortuné Dagnon sur la lutte contre le paludisme, les systèmes de santé africains et l'élimination du paludisme en Afrique francophone.",
+    fr: "Interviews du Dr. Seynudé Jean-Fortuné Dagnon sur la lutte contre le paludisme et les systèmes de santé en Afrique francophone.",
     en: "Interviews with Dr. Seynudé Jean-Fortuné Dagnon on malaria control, African health systems and malaria elimination in Francophone Africa.",
     keywords: 'interview Dr Dagnon, paludisme Afrique, santé publique interview, malaria expert interview, Gates Foundation',
   },
   conference: {
-    fr: "Conférences et présentations du Dr. Seynudé Jean-Fortuné Dagnon lors d'événements internationaux sur le paludisme, la recherche opérationnelle et les politiques de santé.",
+    fr: "Conférences et présentations du Dr. Seynudé Jean-Fortuné Dagnon lors d'événements internationaux sur le paludisme et les politiques de santé.",
     en: "Conferences and presentations by Dr. Seynudé Jean-Fortuné Dagnon at international events on malaria, operational research and health policy.",
     keywords: 'conférence Dr Dagnon, présentation paludisme, malaria conference, health policy Africa, operational research malaria',
   },
@@ -98,12 +104,12 @@ export const CAT_DESCRIPTIONS: Record<string, { fr: string; en: string; keywords
 export const PUB_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Publications scientifiques — Dr. Seynudé Jean-Fortuné DAGNON',
-    description: "Publications scientifiques et articles du Dr. Seynudé Jean-Fortuné Dagnon dans Malaria Journal, Parasites & Vectors, Frontiers in Tropical Diseases et autres revues. Entomologie, lutte antipaludique, politiques d'élimination en Afrique francophone.",
+    description: "Publications scientifiques du Dr. Seynudé Jean-Fortuné Dagnon dans Malaria Journal, Parasites & Vectors et autres revues. Entomologie, lutte antipaludique.",
     keywords: 'publications Dr Dagnon, Malaria Journal, Parasites Vectors, Frontiers Tropical Diseases, recherche paludisme, entomologie, IRS, SMC, vector control Africa',
   },
   en: {
-    title: 'Scientific Publications — Seynudé Jean-Fortuné DAGNON, MD, MPH',
-    description: 'Scientific publications and articles by Seynudé Jean-Fortuné Dagnon in Malaria Journal, Parasites & Vectors, Frontiers in Tropical Diseases and others. Entomology, malaria control, elimination policy in Francophone Africa.',
+    title: 'Scientific Publications — Seynudé Jean-Fortuné DAGNON',
+    description: 'Scientific publications by Seynudé Jean-Fortuné Dagnon in Malaria Journal, Parasites & Vectors. Malaria control and elimination in Francophone Africa.',
     keywords: 'Dr Dagnon publications, Malaria Journal, Parasites Vectors, Frontiers Tropical Diseases, malaria research, entomology, IRS, SMC, vector control Africa',
   },
 };
@@ -131,7 +137,9 @@ export function personJsonLd(lang: Lang) {
       'https://www.tiktok.com/@fortunedagnon',
     ],
     alumniOf: [
-      { '@type': 'CollegeOrUniversity', name: 'University of Conakry', url: 'https://www.univconakry.edu.gn/' },
+      /* no `url` — univconakry.edu.gn no longer resolves (verified); update
+         if the university's site reappears under a new domain */
+      { '@type': 'CollegeOrUniversity', name: 'University of Conakry' },
       { '@type': 'CollegeOrUniversity', name: 'Institute of Tropical Medicine, Antwerp', url: 'https://www.itg.be/' },
       { '@type': 'CollegeOrUniversity', name: 'University of Groningen', url: 'https://www.rug.nl/' },
     ],
@@ -160,11 +168,10 @@ export function webSiteJsonLd(lang: Lang) {
     description: SEO[lang].description,
     author: { '@type': 'Person', name: fullName(lang) },
     inLanguage: [lang],
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${SITE_URL}/?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
-    },
+    /* No SearchAction here: the site has no query-param-driven search route
+       for Google to link to. The filters on /media and /publications are
+       client-side React state, not URL-addressable, so a Sitelinks Search Box
+       schema would point at a search that doesn't exist. */
   };
 }
 
@@ -259,7 +266,10 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
     ? PUB_SEO[lang]
     : isMedia && catName
       ? {
-          title: `${catName[lang]} — ${UI[lang]['mediaPage.badge']}`,
+          /* the brand name, not the generic "Media"/"Médias" suffix every
+             category used to share — that gave /media/press a 15-char title
+             with no differentiator and no brand */
+          title: `${catName[lang]} — ${shortName(lang)}`,
           description: catDesc?.[lang] || MEDIA_SEO[lang].description,
           keywords: catDesc?.keywords || MEDIA_SEO[lang].keywords,
         }

@@ -66,7 +66,7 @@ export default function PublicationsPage() {
               {t['pubPage.badge']}
             </span>
             <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl lg:text-[4.4rem]">
-              <NameHighlight />
+              {t['pubPage.badge']} — <NameHighlight />
             </h1>
             <p className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
               {t['pubPage.intro']}
