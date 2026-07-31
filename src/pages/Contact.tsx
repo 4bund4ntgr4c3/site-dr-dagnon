@@ -300,7 +300,7 @@ export default function Contact() {
                   <p className="mt-5 text-[13px] leading-relaxed text-pine-900/60">{t['contact.revealHint']}</p>
                 )}
 
-                <div className="mt-8 flex flex-wrap gap-3">
+                <div className="mt-8 flex flex-wrap items-center gap-3">
                   <a
                     href={LINKS.linkedin}
                     target="_blank"
@@ -339,25 +339,13 @@ export default function Contact() {
                       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                     </svg>
                   </a>
-                  <a
-                    href={LINKS.tiktok}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={t['contact.social.tiktok']}
-                    className="flex h-11 w-11 items-center justify-center rounded-xl bg-pine-900 text-gold-400 transition-all duration-300 hover:bg-gold-500 hover:text-pine-950"
+                  <Link
+                    to={localePath(lang, '/cv')}
+                    className="inline-flex h-11 items-center gap-2 rounded-xl bg-pine-950 px-4 text-sm font-semibold text-gold-400 transition-all duration-300 hover:bg-pine-900"
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1 0-5.78 2.92 2.92 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 3 15.57 6.33 6.33 0 0 0 9.37 22a6.33 6.33 0 0 0 6.38-6.22V9.4a8.16 8.16 0 0 0 3.84.96V7.5a4.85 4.85 0 0 1-2-.81z" />
-                    </svg>
-                  </a>
+                    <FileText size={16} /> {t['cvPage.download']}
+                  </Link>
                 </div>
-
-                <Link
-                  to={localePath(lang, '/cv')}
-                  className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-pine-900/10 bg-pine-950 px-5 py-4 text-sm font-semibold text-gold-400 transition-all duration-300 hover:border-gold-500/40 hover:bg-pine-900"
-                >
-                  <FileText size={17} /> {t['cvPage.download']}
-                </Link>
               </div>
             </Reveal>
 

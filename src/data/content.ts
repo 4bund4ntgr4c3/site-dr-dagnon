@@ -4,5 +4,4 @@ export const LINKS = {
   youtube: 'https://www.youtube.com/@seynudedagnon6233',
   facebook: 'https://www.facebook.com/jeanfortune.dagnon/',
   x: 'https://x.com/SeynudeD',
-  tiktok: 'https://www.tiktok.com/@fortunedagnon',
 };

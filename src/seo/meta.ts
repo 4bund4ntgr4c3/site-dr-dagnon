@@ -203,7 +203,6 @@ export function personJsonLd(lang: Lang) {
       'https://www.youtube.com/@seynudedagnon6233',
       'https://www.facebook.com/jeanfortune.dagnon/',
       'https://x.com/SeynudeD',
-      'https://www.tiktok.com/@fortunedagnon',
     ],
     alumniOf: [
       /* no `url` — univconakry.edu.gn no longer resolves (verified); update
