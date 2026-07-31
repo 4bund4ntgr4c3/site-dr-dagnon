@@ -6,6 +6,7 @@ import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
 import { UI, IDENTITY, EXPERIENCE, EDUCATION, TEACHING_LIST, TRAINING_LIST, AWARDS } from '@/i18n/translations';
 import { PUB_ITEMS } from '@/data/publications';
+import { CV_PROFILE, CV_REVIEWS, CV_MEMBERSHIPS } from '@/data/cv';
 import { LINKS } from '@/data/content';
 import { localePath } from '@/i18n/routing';
 import type { Lang } from '@/i18n/lang';
@@ -28,11 +29,9 @@ export default function Cv() {
   const { lang } = useLang();
   const t = UI[lang];
   const otherLang: Lang = lang === 'fr' ? 'en' : 'fr';
-  const [role, focus, scope, languages] = IDENTITY[lang];
+  const [role, , , languages] = IDENTITY[lang];
   const education = EDUCATION[lang].slice(0, 3);
-  const pubs = PUB_ITEMS.filter((p) => p.type === 'publication')
-    .sort((a, b) => b.year - a.year)
-    .slice(0, 8);
+  const pubs = PUB_ITEMS.filter((p) => p.type === 'publication').sort((a, b) => b.year - a.year);
 
   return (
     <main id="main-content" className="min-h-screen">
@@ -118,20 +117,11 @@ export default function Cv() {
         </header>
 
         <Section title={t['cvPage.profile']}>
-          <div className="grid gap-x-8 gap-y-2.5 sm:grid-cols-3">
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-pine-900/55">{role.title}</p>
-              <p className="mt-1 text-[12.5px] leading-snug">{role.text}</p>
-            </div>
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-pine-900/55">{focus.title}</p>
-              <p className="mt-1 text-[12.5px] leading-snug">{focus.text}</p>
-            </div>
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-pine-900/55">{scope.title}</p>
-              <p className="mt-1 text-[12.5px] leading-snug">{scope.text}</p>
-            </div>
-          </div>
+          <ul className="list-disc space-y-1.5 pl-4 text-[12px] leading-relaxed text-pine-900/80">
+            {CV_PROFILE[lang].map((b) => (
+              <li key={b}>{b}</li>
+            ))}
+          </ul>
         </Section>
 
         <Section title={t['cvPage.experience']}>
@@ -203,6 +193,28 @@ export default function Cv() {
               </p>
             ))}
           </div>
+        </Section>
+
+        <Section title={t['cvPage.scientificWork']}>
+          <p className="text-[12px] leading-relaxed text-pine-900/80">
+            <span className="font-semibold text-pine-900">{t['cvPage.reviewer']} :</span> PLOS ONE, BMC
+          </p>
+          <ul className="mt-2 list-disc space-y-1 pl-4 text-[11.5px] leading-relaxed text-pine-900/70">
+            {CV_REVIEWS[lang].map((r) => (
+              <li key={r.ref ?? r.title.en}>
+                <span className="italic">{r.title[lang]}</span>
+                {r.ref ? ` (${r.ref})` : ''} — {r.journal}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-[12px] font-semibold text-pine-900">{t['cvPage.memberships']}</p>
+          <ul className="mt-1.5 list-disc space-y-1 pl-4 text-[11.5px] leading-relaxed text-pine-900/70">
+            {CV_MEMBERSHIPS[lang].map((m) => (
+              <li key={m.period + m.org}>
+                <span className="font-semibold text-pine-900">{m.period}</span> — {m.org}
+              </li>
+            ))}
+          </ul>
         </Section>
 
         <Section title={t['cvPage.awards']}>

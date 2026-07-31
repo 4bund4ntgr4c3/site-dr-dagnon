@@ -4,8 +4,13 @@ import { AfricaMap } from '@/components/AfricaMap';
 import { Reveal } from '@/components/Reveal';
 import { LINKS } from '@/data/content';
 import { useLang } from '@/i18n/useLang';
-import { UI } from '@/i18n/translations';
+import { NAV, UI } from '@/i18n/translations';
+import { navHref } from '@/lib/nav';
 import { localePath } from '@/i18n/routing';
+
+/* Mirrors the header's page-level bar links (same items, same hrefs) — the
+   one thing intentionally missing is the Home dropdown's section submenu. */
+const BAR_EXCLUDED = ['apropos', 'expertise', 'parcours', 'formation', 'realisations'];
 
 export function Footer() {
   const { lang } = useLang();
@@ -72,12 +77,15 @@ export function Footer() {
           </div>
 
           <nav aria-label={t['footerNav.ariaLabel']} className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            <Link
-              to={localePath(lang, '/')}
-              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
-            >
-              {t['nav.home']}
-            </Link>
+            {NAV[lang].filter((item) => !BAR_EXCLUDED.includes(item.id)).map((item) => (
+              <Link
+                key={item.id}
+                to={navHref(lang, item.id)}
+                className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
 
           <p className="text-[12px] text-pine-100/40">
