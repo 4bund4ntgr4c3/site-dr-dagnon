@@ -15,8 +15,8 @@ module.exports = {
           800: '#153f3a', 900: '#0c2e2a', 950: '#071f1c',
         },
         gold: {
-          200: '#eeddb0', 300: '#e3c983', 400: '#d4b25f', 500: '#c9a24b',
-          600: '#a8823a', 700: '#86652d',
+          100: '#f5ecd3', 200: '#eeddb0', 300: '#e3c983', 400: '#d4b25f', 500: '#c9a24b',
+          600: '#a8823a', 700: '#86652d', 800: '#6b5124',
         },
         ivory: '#f7f4ed',
         ink: '#17211e',
@@ -73,6 +73,8 @@ module.exports = {
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        card: "var(--shadow-card)",
+        "card-hover": "var(--shadow-card-hover)",
       },
       keyframes: {
         "accordion-down": {

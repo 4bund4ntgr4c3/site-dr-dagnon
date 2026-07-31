@@ -69,7 +69,7 @@ export default function ProjectArticle() {
         </div>
       </section>
 
-      <section className="bg-pine-50 py-14 lg:py-18">
+      <section className="bg-pine-50 py-14 lg:py-20">
         <div className="mx-auto max-w-3xl px-5 lg:px-8">
           <Reveal>
             <article className="space-y-10">
@@ -129,7 +129,7 @@ export default function ProjectArticle() {
             <footer className="mt-12 border-t border-pine-900/10 pt-6">
               <Link
                 to={localePath(lang, '/projets')}
-                className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-600 transition-colors hover:text-gold-500"
+                className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-700 transition-colors hover:text-gold-500"
               >
                 <ArrowLeft size={13} />
                 {t['projetsPage.back']}

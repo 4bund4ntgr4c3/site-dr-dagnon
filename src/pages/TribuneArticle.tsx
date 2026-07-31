@@ -71,7 +71,7 @@ export default function TribuneArticle() {
         </div>
       </section>
 
-      <section className="bg-pine-50 py-14 lg:py-18">
+      <section className="bg-pine-50 py-14 lg:py-20">
         <div className="mx-auto max-w-3xl px-5 lg:px-8">
           <Reveal>
             <article className="space-y-6">
@@ -81,13 +81,13 @@ export default function TribuneArticle() {
             </article>
 
             <footer className="mt-12 border-t border-pine-900/10 pt-6">
-              <p className="text-[12.5px] leading-relaxed text-pine-900/60">
+              <p className="text-[12.5px] leading-relaxed text-pine-900/70">
                 {t['tribunesPage.reprint']}{' '}
                 <a
                   href={entry.source.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="font-semibold text-gold-600 transition-colors hover:text-gold-500"
+                  className="font-semibold text-gold-700 transition-colors hover:text-gold-500"
                 >
                   {entry.source.name}
                 </a>
@@ -96,7 +96,7 @@ export default function TribuneArticle() {
                   href={entry.source.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1 font-semibold text-gold-600 transition-colors hover:text-gold-500"
+                  className="inline-flex items-center gap-1 font-semibold text-gold-700 transition-colors hover:text-gold-500"
                 >
                   {t['tribunesPage.original']}
                   <ExternalLink size={12} />
@@ -114,7 +114,7 @@ function TribuneBlockView({ block }: { block: TribuneBlock }) {
   switch (block.kind) {
     case 'byline':
       return (
-        <p className="border-l-2 border-gold-500/50 pl-4 text-[13px] leading-relaxed text-pine-900/60 italic">
+        <p className="border-l-2 border-gold-500/50 pl-4 text-[13px] leading-relaxed text-pine-900/70 italic">
           {block.text}
         </p>
       );

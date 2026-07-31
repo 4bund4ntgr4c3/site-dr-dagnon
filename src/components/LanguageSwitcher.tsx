@@ -20,6 +20,7 @@ export function LanguageSwitcher({ className = '' }: { className?: string }) {
       {SUPPORTED.map((l: Lang) => (
         <button
           key={l}
+          type="button"
           onClick={() => handle(l)}
           aria-pressed={lang === l}
           className={`rounded-full px-3 py-1.5 text-[12px] font-semibold transition-colors ${

@@ -147,7 +147,7 @@ function MediaLanding({
           <Reveal key={cat.key} delay={Math.min(i * 0.08, 0.4)}>
             <Link
               to={localePath(lang, `/media/${cat.key}`)}
-              className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)] transition-all duration-300 hover:-translate-y-2 hover:border-gold-500/40 hover:shadow-[0_32px_70px_-30px_rgba(2,36,32,0.5)]"
+              className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-card transition-all duration-300 hover:-translate-y-2 hover:border-gold-500/40 hover:shadow-card-hover"
             >
               {/* Thumbnail */}
               <div className="relative aspect-[16/9] overflow-hidden">
@@ -195,7 +195,7 @@ function MediaLanding({
                 <p className="flex-1 text-[13.5px] leading-relaxed text-ink/75">
                   {t[cat.descKey as keyof typeof t] || ''}
                 </p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
+                <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-700 transition-colors group-hover:text-gold-500">
                   {t['mediaPage.all'] === 'Tout' ? 'Explorer' : 'Explore'}
                   <ArrowUpRight
                     size={14}
@@ -324,7 +324,7 @@ function CommunityView({
               <button
                 type="button"
                 onClick={() => openAlbum(key)}
-                className="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)] transition-all duration-300 hover:-translate-y-2 hover:border-gold-500/40 hover:shadow-[0_32px_70px_-30px_rgba(2,36,32,0.5)] text-left"
+                className="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-card transition-all duration-300 hover:-translate-y-2 hover:border-gold-500/40 hover:shadow-card-hover text-left"
               >
                 {/* cover image */}
                 <div className="relative aspect-[4/3] overflow-hidden">
@@ -365,7 +365,7 @@ function CommunityView({
                   <p className="flex-1 text-[13px] leading-relaxed text-ink/75 line-clamp-3">
                     {subtypeDesc(t, key)}
                   </p>
-                  <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-700 transition-colors group-hover:text-gold-500">
                     <Camera size={14} />
                     {lang === 'fr' ? 'Voir l\'album' : 'View album'}
                   </span>
@@ -412,6 +412,7 @@ function CommunityView({
                       : 'border-white/30 bg-white/10 text-white hover:bg-white/20'
                   }`}
                   aria-label={isAutoPlaying ? (lang === 'fr' ? 'Pause' : 'Pause') : (lang === 'fr' ? 'Lecture' : 'Play')}
+                  aria-pressed={isAutoPlaying}
                 >
                   {isAutoPlaying ? <Pause size={16} /> : <Play size={16} className="ml-0.5" />}
                 </button>
@@ -506,9 +507,9 @@ function CommunityView({
             )}
           </div>
 
-          {/* dots */}
+          {/* dots — 24px hit targets around the visual dot */}
           {albumPhotos.length > 1 && (
-            <div className="mt-6 flex gap-2">
+            <div className="mt-6 flex items-center gap-2">
               {albumPhotos.map((_, i) => (
                 <button
                   key={i}
@@ -518,13 +519,18 @@ function CommunityView({
                     setSlideshowIndex(i);
                     setIsAutoPlaying(false);
                   }}
-                  className={`h-2 rounded-full transition-all ${
-                    i === slideshowIndex
-                      ? 'w-6 bg-gold-500'
-                      : 'w-2 bg-white/30 hover:bg-white/50'
+                  className={`flex h-6 w-6 items-center justify-center rounded-full transition-all ${
+                    i === slideshowIndex ? '' : 'hover:bg-white/10'
                   }`}
-                  aria-label={`${lang === 'fr' ? 'Photo' : 'Photo'} ${i + 1}`}
-                />
+                  aria-label={`${lang === 'fr' ? 'Photo' : 'Photo'} ${i + 1}${i === slideshowIndex ? (lang === 'fr' ? ', actuelle' : ', current') : ''}`}
+                  aria-current={i === slideshowIndex ? 'true' : undefined}
+                >
+                  <span
+                    className={`block h-2 rounded-full transition-all ${
+                      i === slideshowIndex ? 'w-6 bg-gold-500' : 'w-2 bg-white/30'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           )}
@@ -639,7 +645,7 @@ function CategoryView({
       ) : (
         <>
           {/* top filter bar */}
-          <div className="mt-8 rounded-2xl border border-pine-900/10 bg-ivory p-4 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
+          <div className="mt-8 rounded-2xl border border-pine-900/10 bg-ivory p-4 shadow-card">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-5">
               {/* search */}
               <div className="relative flex-1">
@@ -664,6 +670,7 @@ function CategoryView({
                     key={f.value}
                     type="button"
                     onClick={() => setType(f.value)}
+                    aria-pressed={type === f.value}
                     className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                       type === f.value
                         ? 'bg-pine-950 text-gold-400 shadow'
@@ -844,7 +851,7 @@ function MediaCard({
   const meta = `${t[`mediaPage.cat${m.category.charAt(0).toUpperCase() + m.category.slice(1)}` as keyof typeof t] || m.category} · ${formatDate(m.date, lang)}`;
 
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-[0_24px_60px_-45px_rgba(2,36,32,0.5)] transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-500/40">
+    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-500/40">
       {isDoc ? (
         <a
           href={m.url}
@@ -893,21 +900,21 @@ function MediaCard({
       )}
 
       <div className="flex flex-1 flex-col p-5">
-        <p className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-gold-500">
+        <p className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-gold-700">
           {meta}
         </p>
-        <h3 className="mt-2 font-display text-[15.5px] font-semibold leading-snug text-pine-900">
+        <h3 className="mt-2 font-display text-[1.15rem] font-semibold leading-snug text-pine-900">
           {m.title[lang]}
         </h3>
         {m.description && (
-          <p className="mt-2 flex-1 text-[12.5px] leading-relaxed text-pine-900/60 line-clamp-3">{m.description[lang]}</p>
+          <p className="mt-2 flex-1 text-[12.5px] leading-relaxed text-pine-900/70 line-clamp-3">{m.description[lang]}</p>
         )}
         {isDoc && (
           <a
             href={m.url}
             target="_blank"
             rel="noreferrer"
-            className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-600 transition-colors hover:text-gold-500"
+            className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-700 transition-colors hover:text-gold-500"
           >
             {m.category === 'press' ? t['mediaPage.readMore'] : t['mediaPage.download']}
             <ArrowUpRight size={13} />
@@ -917,7 +924,7 @@ function MediaCard({
           <button
             type="button"
             onClick={onOpen}
-            className="mt-4 inline-flex items-center gap-1.5 text-left text-[12px] font-semibold text-gold-600 transition-colors hover:text-gold-500"
+            className="mt-4 inline-flex items-center gap-1.5 text-left text-[12px] font-semibold text-gold-700 transition-colors hover:text-gold-500"
           >
             {t['mediaPage.view']}
             <ArrowUpRight size={13} />

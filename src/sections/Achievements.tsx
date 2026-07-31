@@ -35,7 +35,7 @@ export function Achievements() {
                 <div
                   className={`group flex h-full flex-col rounded-2xl p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1.5 ${
                     isAwards
-                      ? 'border border-pine-900/10 bg-white hover:border-gold-500/40 hover:shadow-lg hover:shadow-gold-500/10'
+                      ? 'border border-pine-900/10 bg-white hover:border-gold-500/40 hover:shadow-card-hover'
                       : 'border border-white/10 bg-pine-950/60 hover:border-gold-500/40'
                   }`}
                   onClick={isAwards ? () => setShowAwards(true) : undefined}
@@ -45,7 +45,7 @@ export function Achievements() {
                   aria-label={isAwards ? t['achievements.viewFullList'] : undefined}
                 >
                   <div className="flex items-center gap-3">
-                    <p className={`font-display text-[1.9rem] font-semibold leading-none ${isAwards ? 'text-gold-600' : 'text-gold-400'}`}>
+                    <p className={`font-display text-[1.9rem] font-semibold leading-none ${isAwards ? 'text-gold-700' : 'text-gold-400'}`}>
                       {a.metric}
                     </p>
                     {isAwards && (
@@ -54,12 +54,12 @@ export function Achievements() {
                       </span>
                     )}
                   </div>
-                  <h3 className={`mt-4 flex items-start gap-2 font-display text-lg font-semibold leading-snug ${isAwards ? 'text-pine-900' : 'text-ivory'}`}>
+                  <h3 className={`mt-4 flex items-start gap-2 font-display text-[1.15rem] font-semibold leading-snug ${isAwards ? 'text-pine-900' : 'text-ivory'}`}>
                     {a.title}
                   </h3>
                   <p className={`mt-3 flex-1 text-[13px] leading-relaxed ${isAwards ? 'text-ink/65' : 'text-pine-100/60'}`}>{a.text}</p>
                   {isAwards && (
-                    <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-700 transition-colors group-hover:text-gold-500">
                       {t['achievements.viewFullList']} →
                     </span>
                   )}

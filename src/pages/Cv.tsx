@@ -75,9 +75,9 @@ export default function Cv() {
 
       <section className="bg-pine-50 py-16 lg:py-20 print:bg-white print:py-0">
         {/* the document — one white sheet */}
-        <article className="cv-sheet mx-auto max-w-4xl rounded-3xl bg-white px-6 py-10 text-pine-900 shadow-[0_24px_80px_-50px_rgba(2,36,32,0.55)] sm:px-12 lg:px-16 print:max-w-none print:rounded-none print:px-0 print:py-0 print:shadow-none">
+        <article className="cv-sheet mx-auto max-w-4xl rounded-3xl bg-white px-6 py-10 text-pine-900 shadow-card sm:px-12 lg:px-16 print:max-w-none print:rounded-none print:px-0 print:py-0 print:shadow-none">
         <header className="border-b-2 border-pine-900 pb-6">
-          <h1 className="font-display text-3xl font-semibold tracking-tight">{t['cvPage.title']}</h1>
+          <h2 className="font-display text-3xl font-semibold tracking-tight">{t['cvPage.title']}</h2>
           <p className="mt-2 font-display text-xl font-semibold">{t['name.full']}</p>
           <p className="mt-1 text-[13px] font-medium italic text-pine-900/75">{role.text}</p>
           <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-[12px] text-pine-900/70">
@@ -122,7 +122,7 @@ export default function Cv() {
               <div key={e.org + e.period} className="break-inside-avoid">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5">
                   <h3 className="font-display text-[15px] font-semibold leading-snug">{e.role}</h3>
-                  <span className="text-[11.5px] font-semibold text-pine-900/60">{e.period}</span>
+                  <span className="text-[11.5px] font-semibold text-pine-900/70">{e.period}</span>
                 </div>
                 <p className="text-[12.5px] font-semibold text-gold-700">{e.org}</p>
                 <p className="mt-1 text-[12.5px] leading-relaxed text-pine-900/80">{e.text}</p>
@@ -155,7 +155,7 @@ export default function Cv() {
                   <h3 className="text-[13px] font-semibold">{ed.degree}</h3>
                   <p className="text-[12px] text-pine-900/70">{ed.school}</p>
                 </div>
-                <span className="text-[10.5px] font-bold uppercase tracking-[0.18em] text-pine-900/55">{ed.tag}</span>
+                <span className="text-[10.5px] font-bold uppercase tracking-[0.18em] text-pine-900/65">{ed.tag}</span>
               </div>
             ))}
           </div>
@@ -230,7 +230,7 @@ export default function Cv() {
                 <span className="font-medium">{p.authors[lang]}</span> ({p.year}).{' '}
                 <span className="italic">{p.title[lang]}</span>. {p.journal[lang]}.
                 {p.url && (
-                  <span className="text-pine-900/55">
+                  <span className="text-pine-900/65">
                     {' '}
                     {p.url.replace(/^https:\/\/(doi\.org|dx\.doi\.org)\//, '').replace(/^https:\/\/(www\.)?/, '')}
                   </span>
@@ -240,7 +240,7 @@ export default function Cv() {
           </div>
         </Section>
 
-        <p className="mt-8 border-t border-pine-900/15 pt-4 text-[11.5px] italic text-pine-900/55">
+        <p className="mt-8 border-t border-pine-900/15 pt-4 text-[11.5px] italic text-pine-900/65">
           {t['cvPage.refs']}
         </p>
         </article>

@@ -17,7 +17,7 @@ export function SectionHeading({
     <Reveal className={align === 'center' ? 'text-center' : ''}>
       <p
         className={`text-xs font-semibold uppercase tracking-[0.28em] ${
-          dark ? 'text-gold-400' : 'text-pine-600'
+          dark ? 'text-gold-400 gold-text' : 'text-pine-600'
         }`}
       >
         {eyebrow}

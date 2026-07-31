@@ -6,6 +6,8 @@ import { ScrollToTop } from '@/components/ScrollToTop'
 import { Seo } from '@/components/Seo'
 import { NotFoundView } from '@/components/NotFoundView'
 import { LanguageProvider } from '@/i18n/LanguageContext'
+import { useLang } from '@/i18n/useLang'
+import { UI } from '@/i18n/translations'
 
 /* The four routed page components are injected rather than imported here, so
    the client and the build-time server renderer can each supply their own
@@ -41,6 +43,18 @@ function NotFound() {
   return <NotFoundView />;
 }
 
+function SkipLink() {
+  const { lang } = useLang();
+  return (
+    <a
+      href="#main-content"
+      className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-xl focus:bg-pine-950 focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-gold-300 focus:shadow-xl"
+    >
+      {UI[lang]['a11y.skip']}
+    </a>
+  );
+}
+
 /* The same page tree is mounted twice: once at the root (English) and once
    under /fr (French). See src/i18n/routing.ts. */
 const routesFor = (Pages: AppPages) => [
@@ -60,6 +74,7 @@ const routesFor = (Pages: AppPages) => [
 export default function App({ pages }: { pages: AppPages }) {
   return (
     <LanguageProvider>
+      <SkipLink />
       <Seo />
       <Navbar />
       <Suspense fallback={<Loading />}>

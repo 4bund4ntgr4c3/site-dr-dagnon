@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Send, CheckCircle2, AlertCircle, Lock, ShieldCheck, Mic, Mic2, Handshake, Newspaper, FileText } from 'lucide-react';
 import { Link } from 'react-router';
 import { Reveal } from '@/components/Reveal';
@@ -12,7 +12,7 @@ type Status = 'idle' | 'sending' | 'success' | 'error';
 type VerifyStatus = 'idle' | 'sending' | 'code-sent' | 'verifying' | 'verified' | 'error';
 
 const fieldClass =
-  'w-full rounded-xl border border-pine-900/15 bg-white px-4 py-3 text-sm text-pine-900 placeholder:text-pine-900/65 outline-none transition-colors focus:border-gold-500 focus:bg-pine-50';
+  'w-full rounded-xl border border-pine-900/15 bg-white px-4 py-3 text-sm text-pine-900 placeholder:text-pine-900/65 outline-none transition-colors focus:border-gold-500 focus:bg-pine-50 focus:ring-2 focus:ring-gold-500/20';
 
 /* Every type pre-fills the subject with a relevant default (editable) and is
    sent to the API so the message is easy to route. */
@@ -58,6 +58,23 @@ export default function Contact() {
     }));
   };
 
+  /* Radiogroup keyboard navigation — arrows move between request types,
+     Home/End jump to the first/last, focus follows the selection. */
+  const typeRef = useRef<HTMLDivElement>(null);
+  const onTypeKeyDown = (e: React.KeyboardEvent) => {
+    const values = REQUEST_TYPES.map((r) => r.value);
+    const idx = values.indexOf(form.type);
+    const last = values.length - 1;
+    let next = -1;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (idx + 1) % values.length;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (idx - 1 + values.length) % values.length;
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = last;
+    else return;
+    e.preventDefault();
+    selectType(values[next]);
+    (typeRef.current?.querySelectorAll('[role="radio"]')[next] as HTMLElement | undefined)?.focus();
+  };
   const validate = () => {
     const e: Record<string, string> = {};
     if (!form.name.trim()) e.name = t['contact.required'];
@@ -175,7 +192,7 @@ export default function Contact() {
 
                 <ul className="mt-6 space-y-4">
                   {/* email — always visible */}
-                  <li className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lg hover:shadow-pine-900/8">
+                  <li className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-card-hover">
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-gold-400">
                       <Mail size={18} />
                     </span>
@@ -192,7 +209,7 @@ export default function Contact() {
                   {/* phone — hidden until code verified */}
                   {revealed ? (
                     phone.split(/\s-\s/).map((p, i) => (
-                      <li key={i} className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lg hover:shadow-pine-900/8">
+                      <li key={i} className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-card-hover">
                         <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-gold-400">
                           <Phone size={18} />
                         </span>
@@ -207,7 +224,7 @@ export default function Contact() {
                       </li>
                     ))
                   ) : (
-                    <li className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lg hover:shadow-pine-900/8">
+                    <li className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-card-hover">
                       <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-gold-400">
                         <Phone size={18} />
                       </span>
@@ -223,7 +240,7 @@ export default function Contact() {
                   )}
 
                   {/* location — always visible */}
-                  <li className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lg hover:shadow-pine-900/8">
+                  <li className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-card-hover">
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-gold-400">
                       <MapPin size={18} />
                     </span>
@@ -250,15 +267,16 @@ export default function Contact() {
                             value={verifyCode}
                             onChange={(e) => { setVerifyCode(e.target.value.toUpperCase()); setVerifyError(''); }}
                             placeholder={lang === 'fr' ? 'Entrez le code à 6 caractères' : 'Enter the 6-character code'}
+                            aria-label={lang === 'fr' ? 'Code de vérification' : 'Verification code'}
                             maxLength={6}
                             autoComplete="one-time-code"
-                            className="w-full rounded-lg border border-pine-900/15 bg-white px-3 py-2 text-sm uppercase tracking-[0.2em] text-pine-900 placeholder:normal-case placeholder:tracking-normal placeholder:text-pine-900/65 outline-none focus:border-gold-500"
+                            className="w-full rounded-xl border border-pine-900/15 bg-white px-3 py-2 text-sm uppercase tracking-[0.2em] text-pine-900 placeholder:normal-case placeholder:tracking-normal placeholder:text-pine-900/65 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
                           />
                           <button
                             type="button"
                             onClick={verifyCode_submit}
                             disabled={!verifyCode.trim()}
-                            className="shrink-0 rounded-lg bg-gold-500 px-4 py-2 text-sm font-semibold text-pine-950 transition-colors hover:bg-gold-400 disabled:opacity-60"
+                            className="shrink-0 rounded-xl bg-gold-500 px-4 py-2 text-sm font-semibold text-pine-950 transition-colors hover:bg-gold-400 disabled:opacity-60"
                           >
                             {lang === 'fr' ? 'Vérifier' : 'Verify'}
                           </button>
@@ -349,7 +367,7 @@ export default function Contact() {
 
             {/* form */}
             <Reveal delay={0.18}>
-              <div className="rounded-3xl border border-pine-900/10 bg-white p-8 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)]">
+              <div className="rounded-3xl border border-pine-900/10 bg-white p-8 shadow-card">
                 {status === 'success' ? (
                   <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
                     <CheckCircle2 size={48} className="text-gold-500" />
@@ -366,10 +384,10 @@ export default function Contact() {
                 ) : (
                   <form onSubmit={onSubmit} noValidate className="space-y-5">
                     <div>
-                      <p className="mb-2 text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                      <p className="mb-2 text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/70">
                         {t['contact.requestType']}
                       </p>
-                      <div role="radiogroup" aria-label={t['contact.requestType']} className="flex flex-wrap gap-2">
+                      <div ref={typeRef} role="radiogroup" aria-label={t['contact.requestType']} onKeyDown={onTypeKeyDown} className="flex flex-wrap gap-2">
                         {REQUEST_TYPES.map((rt) => {
                           const Icon = rt.icon;
                           const active = form.type === rt.value;
@@ -386,7 +404,7 @@ export default function Contact() {
                                   : 'border-pine-900/15 bg-pine-900/5 text-pine-900/75 hover:border-gold-500/70 hover:bg-gold-500/10 hover:text-pine-900'
                               }`}
                             >
-                              <Icon size={15} className={`shrink-0 ${active ? 'text-gold-400' : 'text-pine-900/60'}`} />
+                              <Icon size={15} className={`shrink-0 ${active ? 'text-gold-400' : 'text-pine-900/70'}`} />
                               {t[rt.labelKey as keyof typeof t]}
                             </button>
                           );
@@ -395,7 +413,7 @@ export default function Contact() {
                     </div>
 
                     <div>
-                      <label htmlFor="contact-name" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                      <label htmlFor="contact-name" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/70">
                         {t['contact.name']}
                       </label>
                       <input
@@ -413,7 +431,7 @@ export default function Contact() {
 
                     <div className="grid gap-5 sm:grid-cols-2">
                       <div>
-                        <label htmlFor="contact-email" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                        <label htmlFor="contact-email" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/70">
                           {t['contact.emailField']}
                         </label>
                         <input
@@ -430,7 +448,7 @@ export default function Contact() {
                       </div>
 
                       <div>
-                        <label htmlFor="contact-phone" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                        <label htmlFor="contact-phone" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/70">
                           {t['contact.phoneField']}
                         </label>
                         <input
@@ -450,7 +468,7 @@ export default function Contact() {
                     </div>
 
                     <div>
-                      <label htmlFor="contact-subject" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                      <label htmlFor="contact-subject" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/70">
                         {t['contact.subject']}
                       </label>
                       <input
@@ -480,7 +498,7 @@ export default function Contact() {
                     </div>
 
                     <div>
-                      <label htmlFor="contact-message" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                      <label htmlFor="contact-message" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/70">
                         {t['contact.message']}
                       </label>
                       <textarea

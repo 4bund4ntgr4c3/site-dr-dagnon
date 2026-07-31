@@ -155,7 +155,7 @@ function EventCard({
 
   return (
     <article
-      className={`group flex gap-5 rounded-2xl border bg-white p-5 shadow-[0_24px_60px_-45px_rgba(2,36,32,0.5)] transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 sm:p-6 ${
+      className={`group flex gap-5 rounded-2xl border bg-white p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 sm:p-6 ${
         upcoming ? 'border-gold-500/50' : 'border-pine-900/10'
       }`}
     >
@@ -173,12 +173,12 @@ function EventCard({
             <TypeIcon size={12} />
             {t[meta.key]}
           </span>
-          <span className="inline-flex items-center gap-1 text-[11.5px] text-pine-900/60">
+          <span className="inline-flex items-center gap-1 text-[11.5px] text-pine-900/70">
             <MapPin size={12} />
             {e.location[lang]}
           </span>
         </div>
-        <h3 className="mt-2 font-display text-[16px] font-semibold leading-snug text-pine-900">
+        <h3 className="mt-2 font-display text-[1.15rem] font-semibold leading-snug text-pine-900">
           {e.title[lang]}
         </h3>
         <p className="mt-1.5 text-[12.5px] leading-relaxed text-pine-900/70 line-clamp-3">{e.description[lang]}</p>
@@ -187,7 +187,7 @@ function EventCard({
             href={e.link}
             target="_blank"
             rel="noreferrer"
-            className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500"
+            className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-700 transition-colors group-hover:text-gold-500"
           >
             {t['agendaPage.details']}
             <ArrowUpRight size={13} />

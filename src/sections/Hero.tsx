@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { motion } from 'framer-motion';
 import { Linkedin, Mail, ArrowDown, MapPin, Award, BookOpen, Play, X } from 'lucide-react';
@@ -19,6 +19,17 @@ export function Hero() {
   const { lang } = useLang();
   const t = UI[lang];
   const [showVideo, setShowVideo] = useState(false);
+
+  /* Escape closes the video overlay even while focus sits inside the
+     YouTube player */
+  useEffect(() => {
+    if (!showVideo) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setShowVideo(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [showVideo]);
 
   return (
     <section id="accueil" className="relative min-h-screen overflow-hidden bg-pine-950">
@@ -155,6 +166,7 @@ export function Hero() {
                 style={{ pointerEvents: showVideo ? 'auto' : 'none' }}
               >
                     <button
+                      type="button"
                       onClick={() => setShowVideo(false)}
                       className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-pine-950/80 text-ivory transition-colors hover:bg-gold-500 hover:text-pine-950"
                       aria-label={t['media.close']}
@@ -201,7 +213,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
-          className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-pine-100/50 transition-colors hover:text-gold-400 md:flex"
+          className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-pine-100/60 transition-colors hover:text-gold-400 md:flex"
         >
           <span className="text-[10px] uppercase tracking-[0.3em]">{t['hero.discover']}</span>
           <motion.span animate={{ y: [0, 6, 0] }} transition={{ duration: 1.8, repeat: Infinity }}>

@@ -41,11 +41,13 @@ export function Experience() {
                         job.current
                           ? 'border-gold-500 bg-gold-400 shadow-[0_0_0_5px_rgba(201,162,75,0.25)]'
                           : 'border-pine-500 bg-ivory'
-                      } md:left-auto ${left ? 'md:-right-2' : 'md:-left-2'}`}
-                    />
+                      } ${left ? 'md:left-auto md:-right-2' : 'md:-left-2'}`}
+                    >
+                      {job.current && <span className="absolute inset-0 animate-ping rounded-full bg-gold-500/25" />}
+                    </span>
                     <div
                       onClick={() => setActive(job)}
-                      className={`ml-10 w-full cursor-pointer rounded-2xl border bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-pine-900/10 md:ml-0 ${
+                      className={`ml-10 w-full cursor-pointer rounded-2xl border bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover md:ml-0 ${
                         job.current ? 'border-gold-500/60 ring-1 ring-gold-500/30' : 'border-pine-900/10 hover:border-gold-500/40'
                       }`}
                       role="button"
@@ -69,7 +71,7 @@ export function Experience() {
                           </span>
                         )}
                       </div>
-                      <h3 className="mt-3.5 font-display text-[1.3rem] font-semibold leading-snug text-pine-950">
+                      <h3 className="mt-3.5 font-display text-[1.15rem] font-semibold leading-snug text-pine-950">
                         {job.role}
                       </h3>
                       <p className="mt-1 text-sm font-semibold text-gold-700">{job.org}</p>

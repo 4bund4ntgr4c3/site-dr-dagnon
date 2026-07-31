@@ -56,7 +56,9 @@ export function Publications() {
               {YEARS.map((y) => (
                 <button
                   key={y}
+                  type="button"
                   onClick={() => setYear(y)}
+                  aria-pressed={year === y}
                   className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                     year === y
                       ? 'bg-pine-950 text-gold-400 shadow'
@@ -79,7 +81,7 @@ export function Publications() {
           {filtered.map((p, i) => (
             <Reveal key={p.title} delay={Math.min(i * 0.04, 0.3)} y={16}>
               <article
-                className={`group flex gap-5 rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-pine-900/8 ${
+                className={`group flex gap-5 rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover ${
                   p.featured
                     ? 'border-gold-500/50 bg-gradient-to-r from-gold-500/10 to-transparent'
                     : 'border-pine-900/10 bg-ivory/60 hover:border-gold-500/40'
@@ -102,7 +104,7 @@ export function Publications() {
                       </span>
                     )}
                   </div>
-                  <h3 className="mt-2.5 font-display text-[1.05rem] font-semibold leading-snug text-pine-950">
+                  <h3 className="mt-2.5 font-display text-[1.15rem] font-semibold leading-snug text-pine-950">
                     {p.title}
                   </h3>
                   <p className="mt-1.5 truncate text-[12.5px] text-ink/75" title={p.authors}>

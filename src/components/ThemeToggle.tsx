@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from 'react';
 import { Check, Monitor, Moon, Sun } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -70,7 +70,10 @@ export function ThemeToggle() {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') {
+        setOpen(false);
+        ref.current?.querySelector<HTMLButtonElement>('button')?.focus();
+      }
     };
     document.addEventListener('mousedown', onDown);
     document.addEventListener('keydown', onKey);
@@ -94,6 +97,33 @@ export function ThemeToggle() {
     track('theme_change', { event_category: 'engagement', event_label: m });
   };
 
+  const onOptionKey = (e: ReactKeyboardEvent<HTMLButtonElement>, i: number) => {
+    const last = options.length - 1;
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        focusOption(i + 1 > last ? 0 : i + 1);
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        focusOption(i - 1 < 0 ? last : i - 1);
+        break;
+      case 'Home':
+        e.preventDefault();
+        focusOption(0);
+        break;
+      case 'End':
+        e.preventDefault();
+        focusOption(last);
+        break;
+    }
+  };
+
+  const focusOption = (i: number) => {
+    const options = ref.current?.querySelectorAll<HTMLButtonElement>('[role="menuitemradio"]');
+    options?.[i]?.focus();
+  };
+
   return (
     <div
       ref={ref}
@@ -104,6 +134,12 @@ export function ThemeToggle() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
+        onKeyDown={(e) => {
+          if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+          e.preventDefault();
+          setOpen(true);
+          focusOption(e.key === 'ArrowDown' ? 0 : options.length - 1);
+        }}
         aria-label={t['theme.label']}
         aria-haspopup="menu"
         aria-expanded={open}
@@ -119,13 +155,14 @@ export function ThemeToggle() {
             aria-label={t['theme.label']}
             className="overflow-hidden rounded-2xl border border-white/10 bg-pine-950/95 p-1.5 shadow-xl shadow-pine-950/40 backdrop-blur-md"
           >
-            {options.map((o) => (
+            {options.map((o, i) => (
               <button
                 key={o.mode}
                 type="button"
                 role="menuitemradio"
                 aria-checked={o.mode === mode}
                 onClick={() => select(o.mode)}
+                onKeyDown={(e) => onOptionKey(e, i)}
                 className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
                   o.mode === mode
                     ? 'bg-white/10 font-semibold text-ivory'

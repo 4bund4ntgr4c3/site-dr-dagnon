@@ -22,9 +22,9 @@ export function Newsletter() {
             intro={t['newsletter.text']}
           />
           <Reveal delay={0.12}>
-            <div className="mt-12 rounded-3xl border border-pine-900/10 bg-white p-8 shadow-[0_24px_60px_-40px_rgba(2,36,32,0.45)] sm:p-10">
+            <div className="mt-12 rounded-3xl border border-pine-900/10 bg-white p-8 shadow-card sm:p-10">
               <NewsletterForm />
-              <p className="mt-5 flex items-center justify-center gap-1.5 text-[12.5px] text-pine-900/55">
+              <p className="mt-5 flex items-center justify-center gap-1.5 text-[12.5px] text-pine-900/65">
                 <Mail size={13} className="shrink-0" />
                 {t['newsletter.privacy']}
               </p>

@@ -49,7 +49,7 @@ export function Education() {
                 <button
                   type="button"
                   onClick={isPopupCard ? () => handleCardClick(i) : undefined}
-                  className={`group relative h-full w-full text-left overflow-hidden rounded-2xl border border-pine-900/10 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-lg hover:shadow-pine-900/10 ${isPopupCard ? 'cursor-pointer' : ''}`}
+                  className={`group relative h-full w-full text-left overflow-hidden rounded-2xl border border-pine-900/10 bg-white p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-lg hover:shadow-pine-900/10 ${isPopupCard ? 'cursor-pointer' : ''}`}
                 >
                   <div className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-full bg-gold-500/10 transition-transform duration-500 group-hover:scale-[2.2]" />
                   <div className="relative">
@@ -61,13 +61,13 @@ export function Education() {
                         {e.tag}
                       </span>
                     </div>
-                    <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-pine-950">
+                    <h3 className="mt-5 font-display text-[1.15rem] font-semibold leading-snug text-pine-950">
                       {e.degree}
                     </h3>
                     <p className="mt-1.5 text-sm font-semibold text-gold-700">{e.school}</p>
                     <p className="mt-3 text-[13px] leading-relaxed text-ink/75">{e.detail}</p>
                     {isPopupCard && (
-                      <span className="mt-4 inline-flex items-center gap-1 text-[12px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
+                      <span className="mt-4 inline-flex items-center gap-1 text-[12px] font-semibold text-gold-700 transition-colors group-hover:text-gold-500">
                         {popupIcon}
                       </span>
                     )}
@@ -139,6 +139,7 @@ export function Education() {
                 ref={closeRef}
                 type="button"
                 onClick={() => { setShowTraining(false); setShowTeaching(false); }}
+                aria-label={t['media.close']}
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900/60 transition-colors hover:bg-pine-900/5 hover:text-pine-900"
               >
                 <X size={18} />
@@ -156,7 +157,7 @@ export function Education() {
                     <div key={i} className="relative flex gap-5">
                       {/* dot */}
                       <div className="relative z-10 mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-gold-500/60 bg-white">
-                        <span className="text-[11px] font-bold text-gold-600">{i + 1}</span>
+                        <span className="text-[11px] font-bold text-gold-700">{i + 1}</span>
                       </div>
                       {/* content */}
                       <div className="flex-1 rounded-2xl border border-pine-900/10 bg-ivory p-5 transition-colors hover:border-gold-500/40 hover:shadow-md hover:shadow-pine-900/5">

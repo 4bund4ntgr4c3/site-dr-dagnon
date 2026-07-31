@@ -24,6 +24,11 @@
     --input: 160 12% 85%;
     --ring: 170 61% 16%;
     --radius: 0.75rem;
+    --shadow-card: 0 24px 60px -45px rgba(2, 36, 32, 0.5);
+    --shadow-card-hover:
+      0 10px 15px -3px rgba(2, 36, 32, 0.1),
+      0 4px 6px -4px rgba(2, 36, 32, 0.1),
+      0 0 40px -16px rgba(201, 162, 75, 0.22);
   }
 }
 
@@ -121,23 +126,36 @@
   }
 }
 
-/* Dark theme — #181a1b page background with #202325 elevated surfaces, on a
-   strict grey ramp so every AA contrast level holds, while the already-dark
-   sections (heroes, pine-950 blocks, gold accents) stay as-is. Kept unlayered,
-   at the very end: the build flattens Tailwind's layers, so rules inside
-   @layer lose to the unlayered utilities. Plain rules with a
+/* Dark theme — #171d1c page background with #202a28 elevated surfaces, both
+   with a faint teal undertone so the grey ramp still carries the brand,
+   on a strict contrast ramp so every AA contrast level holds, while the
+   already-dark sections (heroes, pine-950 blocks, gold accents) stay as-is.
+   Kept unlayered, at the very end: the build flattens Tailwind's layers, so
+   rules inside @layer lose to the unlayered utilities. Plain rules with a
    higher-specificity selector (.dark …) always win. */
 .dark {
   color-scheme: dark;
+  --shadow-card: 0 24px 60px -22px rgba(0, 0, 0, 0.7);
+  --shadow-card-hover:
+    0 24px 55px -20px rgba(0, 0, 0, 0.75),
+    0 0 48px -10px rgba(201, 162, 75, 0.32);
 }
 .dark body {
-  background-color: #181a1b;
+  background-color: #171d1c;
 }
 .dark .bg-pine-50 {
-  background-color: #181a1b;
+  background-color: #131a18;
 }
 .dark .bg-pine-900 {
-  background-color: #34393c;
+  background-color: #34403d;
+}
+/* Chips and icons keep their dark-teal fill inside the sections that are
+   always dark (heroes, media, expertise, achievements, footer) — the grey
+   conversion only applies to chips on converted-light surfaces. */
+.dark .bg-pine-950 .bg-pine-900,
+.dark #realisations .bg-pine-900,
+.dark #stats .bg-pine-900 {
+  background-color: #0c2e2a;
 }
 .dark #realisations,
 .dark #stats {
@@ -147,34 +165,34 @@
   background-color: rgba(255, 255, 255, 0.08);
 }
 .dark .bg-ivory {
-  background-color: #181a1b;
+  background-color: #171d1c;
 }
 .dark .bg-ivory\/60 {
-  background-color: rgba(24, 26, 27, 0.6);
+  background-color: rgba(23, 29, 28, 0.6);
 }
 .dark .bg-white {
-  background-color: #202325;
+  background-color: #202a28;
 }
 .dark .bg-white\/95 {
-  background-color: rgba(32, 35, 37, 0.95);
+  background-color: rgba(32, 42, 40, 0.95);
 }
 .dark .bg-white\/90 {
-  background-color: rgba(32, 35, 37, 0.9);
+  background-color: rgba(32, 42, 40, 0.9);
 }
 .dark .bg-white\/70 {
-  background-color: rgba(32, 35, 37, 0.7);
+  background-color: rgba(32, 42, 40, 0.7);
 }
 .dark .bg-white\/50 {
-  background-color: rgba(32, 35, 37, 0.5);
+  background-color: rgba(32, 42, 40, 0.5);
 }
 .dark .bg-white\/30 {
-  background-color: rgba(32, 35, 37, 0.3);
+  background-color: rgba(32, 42, 40, 0.3);
 }
 .dark .hover\:bg-pine-50:hover {
-  background-color: #2b2f31;
+  background-color: #2b3533;
 }
 .dark .focus\:bg-pine-50:focus {
-  background-color: #2b2f31;
+  background-color: #2b3533;
 }
 .dark .hover\:bg-pine-900\/5:hover {
   background-color: rgba(255, 255, 255, 0.08);
@@ -193,6 +211,12 @@
 }
 .dark .text-ink\/60 {
   color: rgba(236, 236, 236, 0.68);
+}
+.dark .text-pine-600 {
+  color: #8dbcb4;
+}
+.dark .text-pine-700\/80 {
+  color: rgba(141, 188, 180, 0.8);
 }
 .dark .text-pine-800 {
   color: #d6d6d6;
@@ -251,6 +275,42 @@
 .dark .bg-gold-100.text-gold-700 {
   color: #86652d;
 }
+/* Gold gradient text — the dark mode's signature accent. Only applied to
+   plain gold labels (eyebrows, taglines); backgrounds clip to glyphs so
+   neighbouring inline icons keep their own fill. */
+.dark .gold-text {
+  background-image: linear-gradient(92deg, #e8cf94, #d4b25f 48%, #c9a24b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Decorative gold glows breathe a bit more on the dark ramp */
+.dark .bg-gold-600\/10 {
+  background-color: rgba(201, 162, 75, 0.2);
+}
+.dark .bg-gold-600\/12 {
+  background-color: rgba(201, 162, 75, 0.24);
+}
+/* A fine gold hairline where a converted-light section meets its neighbours */
+.dark section.bg-white,
+.dark section.bg-ivory,
+.dark section.bg-pine-50 {
+  border-top: 1px solid rgba(201, 162, 75, 0.16);
+}
+@media print {
+  .dark section.bg-white,
+  .dark section.bg-ivory,
+  .dark section.bg-pine-50 {
+    border-top: none;
+  }
+}
+/* The timeline "current role" halo and other decorative pings must respect
+   the reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-ping {
+    animation: none;
+  }
+}
 .dark .placeholder\:text-pine-900\/65::placeholder {
   color: rgba(224, 224, 224, 0.7);
 }
@@ -287,3 +347,17 @@
   .dark ::-moz-selection {
     color: #071f1c;
   }
+
+/* Global focus indicator — gold-600 clears 3:1 on the light surfaces, the
+   darker dark-mode gold clears it on the grey ramp, and gold buttons get a
+   pine-950 outline so the ring never disappears into the fill. */
+:focus-visible {
+  outline: 2px solid #a8823a;
+  outline-offset: 2px;
+}
+.dark :focus-visible {
+  outline-color: #d9bb78;
+}
+.bg-gold-500:focus-visible {
+  outline-color: #071f1c;
+}

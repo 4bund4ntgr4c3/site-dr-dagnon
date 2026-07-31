@@ -61,20 +61,20 @@ function ProjectCard({ e, lang, t }: { e: ProjectEntry; lang: 'fr' | 'en'; t: ty
   return (
     <Link
       to={localePath(lang, `/projets/${e.slug}`)}
-      className="group flex h-full flex-col rounded-2xl border border-pine-900/10 bg-white p-5 shadow-[0_24px_60px_-45px_rgba(2,36,32,0.5)] transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 sm:p-6"
+      className="group flex h-full flex-col rounded-2xl border border-pine-900/10 bg-white p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 sm:p-6"
     >
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-pine-950 px-3 py-1 text-[11px] font-semibold text-gold-400">
           {e.tag[lang]}
         </span>
-        <span className="text-[11.5px] text-pine-900/50">{e.period[lang]}</span>
-        <span className="ml-auto text-[11.5px] text-pine-900/50">{e.location[lang]}</span>
+        <span className="text-[11.5px] text-pine-900/65">{e.period[lang]}</span>
+        <span className="ml-auto text-[11.5px] text-pine-900/65">{e.location[lang]}</span>
       </div>
       <h2 className="mt-3 font-display text-[1.15rem] font-semibold leading-snug text-pine-900 transition-colors group-hover:text-gold-600">
         {e.title[lang]}
       </h2>
       <p className="mt-2 text-[12.5px] leading-relaxed text-pine-900/70 line-clamp-3">{e.description[lang]}</p>
-      <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-[12px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
+      <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-[12px] font-semibold text-gold-700 transition-colors group-hover:text-gold-500">
         {t['projetsPage.read']}
         <ArrowUpRight size={13} />
       </span>

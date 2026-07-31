@@ -18,18 +18,18 @@ export function Footer() {
   const t = UI[lang];
 
   return (
-    <footer id="contact" className="relative overflow-hidden bg-[#051512]">
+    <footer id="contact" className="relative overflow-hidden bg-pine-950">
       <div className="absolute inset-0 texture-net opacity-70" />
       <div className="relative mx-auto max-w-7xl px-5 pb-12 pt-24 lg:px-8 lg:pt-32">
         {/* CTA */}
         <Reveal>
           <div className="grid items-center gap-10 border-b border-white/5 pb-16 lg:grid-cols-[1.4fr_1fr]">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold-400">{t['footer.eyebrow']}</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold-400 gold-text">{t['footer.eyebrow']}</p>
               <h2 className="mt-4 font-display text-3xl font-medium leading-tight text-ivory sm:text-4xl lg:text-[3rem]">
                 {t['footer.title1']}
                 <br />
-                <span className="italic text-gold-400">{t['footer.title2']}</span>.
+                <span className="italic text-gold-400 gold-text">{t['footer.title2']}</span>.
               </h2>
               <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-pine-100/65">
                 {t['footer.text']}
@@ -68,7 +68,7 @@ export function Footer() {
         {/* newsletter strip */}
         <div className="flex flex-col items-center justify-between gap-6 border-b border-white/5 py-10 lg:flex-row">
           <div className="text-center lg:text-left">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold-400">{t['newsletter.eyebrow']}</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold-400 gold-text">{t['newsletter.eyebrow']}</p>
             <p className="mt-1.5 max-w-md text-[15px] text-pine-100/65">{t['newsletter.footerText']}</p>
           </div>
           <div className="w-full sm:w-auto sm:min-w-[26rem]">
@@ -100,7 +100,7 @@ export function Footer() {
             ))}
           </nav>
 
-          <p className="text-[12px] text-pine-100/40">
+          <p className="text-[12px] text-pine-100/50">
             {t['footer.rights']}
           </p>
         </div>

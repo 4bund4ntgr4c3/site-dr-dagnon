@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Link } from 'react-router';
 import { Menu, X, Linkedin, ChevronDown } from 'lucide-react';
 import { LINKS } from '@/data/content';
@@ -84,6 +84,31 @@ export function Navbar() {
   };
   const pageItems = NAV[lang].filter((item) => !BAR_EXCLUDED.includes(item.id));
 
+  /* arrow keys move focus through the open Home menu (desktop) */
+  const onHomeMenuKey = (e: ReactKeyboardEvent<HTMLAnchorElement>) => {
+    const items = Array.from(homeRef.current?.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]') ?? []);
+    const idx = items.indexOf(e.currentTarget);
+    const last = items.length - 1;
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        items[(idx + 1) % items.length]?.focus();
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        items[(idx - 1 + items.length) % items.length]?.focus();
+        break;
+      case 'Home':
+        e.preventDefault();
+        items[0]?.focus();
+        break;
+      case 'End':
+        e.preventDefault();
+        items[last]?.focus();
+        break;
+    }
+  };
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 transition-all duration-500">
       <div ref={headerRef} className="mx-auto max-w-7xl px-3 pt-2 lg:px-4 lg:pt-3">
@@ -115,6 +140,15 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={() => setHomeOpen(!homeOpen)}
+                onKeyDown={(e) => {
+                  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+                  e.preventDefault();
+                  setHomeOpen(true);
+                  const items = homeRef.current?.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]');
+                  if (items?.length) {
+                    (e.key === 'ArrowDown' ? items[0] : items[items.length - 1]).focus();
+                  }
+                }}
                 aria-haspopup="true"
                 aria-expanded={homeOpen}
                 aria-controls="nav-home-menu"
@@ -141,6 +175,7 @@ export function Navbar() {
                         role="menuitem"
                         to={homeHref(lang, id)}
                         onClick={() => goToSection(id)}
+                        onKeyDown={onHomeMenuKey}
                         className="block rounded-lg px-3 py-2 text-[13px] font-medium text-pine-100/90 transition-colors hover:bg-white/5 hover:text-gold-400"
                       >
                         {sectionLabel(lang, id)}

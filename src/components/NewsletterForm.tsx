@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useId, useState, type FormEvent } from 'react';
 import { CheckCircle2, AlertCircle, Send } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -11,6 +11,7 @@ type Status = 'idle' | 'sending' | 'success' | 'error';
 export function NewsletterForm({ compact = false }: { compact?: boolean }) {
   const { lang } = useLang();
   const t = UI[lang];
+  const id = useId();
 
   const [email, setEmail] = useState('');
   /* `website` is the honeypot — never shown, never filled by a person. */
@@ -67,9 +68,9 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
           skipped by keyboard navigation. Bots fill it; the API then drops
           the subscription without sending anything. */}
       <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
-        <label htmlFor="newsletter-website">Do not fill this in</label>
+        <label htmlFor={`${id}-website`}>Do not fill this in</label>
         <input
-          id="newsletter-website"
+          id={`${id}-website`}
           type="text"
           name="website"
           value={website}
@@ -80,11 +81,11 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
       </div>
 
       <div className={`flex gap-2.5 ${compact ? '' : 'mx-auto max-w-xl'}`}>
-        <label htmlFor="newsletter-email" className="sr-only">
+        <label htmlFor={`${id}-email`} className="sr-only">
           {t['newsletter.placeholder']}
         </label>
         <input
-          id="newsletter-email"
+          id={`${id}-email`}
           type="email"
           autoComplete="email"
           value={email}
@@ -94,8 +95,8 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
           aria-invalid={status === 'error'}
           className={`w-full rounded-full border text-sm outline-none transition-colors focus:ring-2 ${
             compact
-              ? 'h-11 border-white/10 bg-white/5 px-5 text-ivory placeholder:text-pine-100/45 backdrop-blur focus:border-gold-400/50 focus:ring-gold-400/10'
-              : 'border-pine-900/10 bg-white px-6 py-3.5 text-pine-900 placeholder:text-pine-900/50 focus:border-gold-500 focus:ring-gold-500/10'
+              ? 'h-11 border-white/10 bg-white/5 px-5 text-ivory placeholder:text-pine-100/55 backdrop-blur focus:border-gold-400/50 focus:ring-gold-400/10'
+              : 'border-pine-900/10 bg-white px-6 py-3.5 text-pine-900 placeholder:text-pine-900/65 focus:border-gold-500 focus:ring-gold-500/10'
           }`}
         />
         <button
@@ -115,7 +116,7 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
           role="alert"
           className={`flex items-center justify-center gap-1.5 text-xs ${compact ? 'mt-2' : 'mt-3'}`}
         >
-          <AlertCircle size={13} className="shrink-0 text-red-500" />
+          <AlertCircle size={13} className={`shrink-0 ${compact ? 'text-red-500' : 'text-red-600'}`} />
           <span className={compact ? 'text-red-500' : 'text-red-600'}>{message}</span>
         </p>
       )}

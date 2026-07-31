@@ -52,7 +52,7 @@ function MediaCard({ m, watchLabel, downloadLabel, onPlay }: { m: MediaItem; wat
       </div>
       <div className="flex flex-1 flex-col p-5">
         <p className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-gold-400">{m.event}</p>
-        <h3 className="mt-2 flex-1 font-display text-[15.5px] font-semibold leading-snug text-ivory">
+        <h3 className="mt-2 flex-1 font-display text-[1.15rem] font-semibold leading-snug text-ivory">
           {m.title}
         </h3>
         <a
