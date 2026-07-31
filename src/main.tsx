@@ -4,6 +4,21 @@ import { BrowserRouter } from 'react-router'
 import './index.css'
 import App, { type AppPages } from './App.tsx'
 
+/* Apply the saved or system theme before the first paint (the strict CSP
+   forbids inline scripts, so this runs from the entry module). */
+(() => {
+  try {
+    const saved = localStorage.getItem('theme');
+    const dark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (dark) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
+    }
+  } catch {
+    /* storage unavailable — stay with the light theme */
+  }
+})();
+
 const pages: AppPages = {
   Home: lazy(() => import('./pages/Home')),
   Contact: lazy(() => import('./pages/Contact')),

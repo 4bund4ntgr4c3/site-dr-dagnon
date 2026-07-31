@@ -5,6 +5,7 @@ import { LINKS } from '@/data/content';
 import { NAV, UI } from '@/i18n/translations';
 import { useLang } from '@/i18n/useLang';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { track } from '@/lib/analytics';
 import { navHref } from '@/lib/nav';
 import { localePath } from '@/i18n/routing';
@@ -163,6 +164,7 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <LanguageSwitcher className="inline-flex" />
 
             <a
