@@ -23,7 +23,7 @@ export function Footer() {
       <div className="relative mx-auto max-w-7xl px-5 pb-12 pt-24 lg:px-8 lg:pt-32">
         {/* CTA */}
         <Reveal>
-          <div className="grid items-center gap-10 border-b border-white/8 pb-16 lg:grid-cols-[1.4fr_1fr]">
+          <div className="grid items-center gap-10 border-b border-white/5 pb-16 lg:grid-cols-[1.4fr_1fr]">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold-400">{t['footer.eyebrow']}</p>
               <h2 className="mt-4 font-display text-3xl font-medium leading-tight text-ivory sm:text-4xl lg:text-[3rem]">
@@ -66,7 +66,7 @@ export function Footer() {
         </Reveal>
 
         {/* newsletter strip */}
-        <div className="flex flex-col items-center justify-between gap-6 border-b border-white/8 py-10 lg:flex-row">
+        <div className="flex flex-col items-center justify-between gap-6 border-b border-white/5 py-10 lg:flex-row">
           <div className="text-center lg:text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold-400">{t['newsletter.eyebrow']}</p>
             <p className="mt-1.5 max-w-md text-[15px] text-pine-100/65">{t['newsletter.footerText']}</p>
