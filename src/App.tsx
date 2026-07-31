@@ -29,6 +29,9 @@ export interface AppPages {
   Projects: ComponentType
   ProjectArticle: ComponentType
   Cv: ComponentType
+  PressKit: ComponentType
+  Invite: ComponentType
+  NewsletterArchive: ComponentType
 }
 
 function Loading() {
@@ -69,6 +72,9 @@ const routesFor = (Pages: AppPages) => [
   <Route key="project-article" path="projets/:slug" element={<Pages.ProjectArticle />} />,
   <Route key="agenda" path="agenda" element={<Pages.Agenda />} />,
   <Route key="cv" path="cv" element={<Pages.Cv />} />,
+  <Route key="presse" path="presse" element={<Pages.PressKit />} />,
+  <Route key="inviter" path="inviter" element={<Pages.Invite />} />,
+  <Route key="newsletter" path="newsletter" element={<Pages.NewsletterArchive />} />,
 ]
 
 export default function App({ pages }: { pages: AppPages }) {

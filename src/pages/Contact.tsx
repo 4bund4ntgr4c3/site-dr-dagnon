@@ -29,8 +29,22 @@ export default function Contact() {
   const t = UI[lang];
 
   /* `website` is the honeypot — never shown, never filled by a person.
-     The API silently drops any submission that carries it. */
-  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '', website: '', type: 'general' });
+     The API silently drops any submission that carries it. Deep links from
+     /inviter, /presse or the footer can carry ?type=speaking, ?subject=…
+     and ?message=… — they pre-fill the form once, at mount, before the
+     visitor types. */
+  const [form, setForm] = useState(() => {
+    const base = { name: '', email: '', phone: '', subject: '', message: '', website: '', type: 'general' };
+    if (typeof window === 'undefined') return base;
+    const params = new URLSearchParams(window.location.search);
+    const rt = REQUEST_TYPES.find((r) => r.value === params.get('type'));
+    return {
+      ...base,
+      type: rt ? rt.value : 'general',
+      subject: params.get('subject') ?? (rt?.subjectKey ? t[rt.subjectKey as keyof typeof t] : ''),
+      message: params.get('message') ?? '',
+    };
+  });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>('idle');
   const [submittedEmail, setSubmittedEmail] = useState('');
@@ -75,6 +89,7 @@ export default function Contact() {
     selectType(values[next]);
     (typeRef.current?.querySelectorAll('[role="radio"]')[next] as HTMLElement | undefined)?.focus();
   };
+
   const validate = () => {
     const e: Record<string, string> = {};
     if (!form.name.trim()) e.name = t['contact.required'];

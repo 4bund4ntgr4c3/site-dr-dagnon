@@ -1,11 +1,12 @@
 import { useMemo } from 'react';
-import { Calendar, MapPin, ArrowUpRight, Presentation, Mic, Users, MessagesSquare, Newspaper, CalendarDays } from 'lucide-react';
+import { Calendar, MapPin, ArrowUpRight, Presentation, Mic, Users, MessagesSquare, Newspaper, CalendarDays, CalendarPlus } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
 import { AGENDA_ITEMS, type AgendaEntry, type AgendaType } from '@/data/agenda';
+import type { Lang } from '@/i18n/lang';
 
 const TYPE_META: Record<AgendaType, { icon: typeof Calendar; key: string }> = {
   conference: { icon: Presentation, key: 'agendaPage.type.conference' },
@@ -13,6 +14,35 @@ const TYPE_META: Record<AgendaType, { icon: typeof Calendar; key: string }> = {
   community: { icon: Users, key: 'agendaPage.type.community' },
   interview: { icon: MessagesSquare, key: 'agendaPage.type.interview' },
   press: { icon: Newspaper, key: 'agendaPage.type.press' },
+};
+
+/* iCal lines longer than 75 octets must be folded with a CRLF + space. */
+const icsEscape = (s: string) =>
+  s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+const fold = (line: string) => (line.length <= 74 ? line : line.match(/.{1,74}/g)?.join('\r\n ') ?? line);
+
+const buildIcs = (lang: Lang): string => {
+  const now = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//seynudedagnon.com//Agenda//FR',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    ...AGENDA_ITEMS.flatMap((e) => [
+      'BEGIN:VEVENT',
+      `UID:${e.id}@seynudedagnon.com`,
+      `DTSTAMP:${now}`,
+      `DTSTART;VALUE=DATE:${e.date.replace(/-/g, '')}`,
+      `SUMMARY:${icsEscape(e.title[lang])}`,
+      `DESCRIPTION:${icsEscape(e.description[lang])}`,
+      `LOCATION:${icsEscape(e.location[lang])}`,
+      ...(e.link ? [`URL:${e.link}`] : []),
+      'END:VEVENT',
+    ]),
+    'END:VCALENDAR',
+  ];
+  return lines.map(fold).join('\r\n') + '\r\n';
 };
 
 /* The ISO date is split, not parsed with new Date(), so the rendered day,
@@ -75,10 +105,29 @@ export default function Agenda() {
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
           {/* upcoming */}
           <div>
-            <h2 className="inline-flex items-center gap-2.5 font-display text-2xl font-semibold text-pine-900">
-              <CalendarDays size={22} className="text-gold-500" />
-              {t['agendaPage.upcoming']}
-            </h2>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 className="inline-flex items-center gap-2.5 font-display text-2xl font-semibold text-pine-900">
+                <CalendarDays size={22} className="text-gold-500" />
+                {t['agendaPage.upcoming']}
+              </h2>
+              <button
+                type="button"
+                onClick={() => {
+                  const blob = new Blob([buildIcs(lang)], { type: 'text/calendar;charset=utf-8' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'agenda-dagnon.ics';
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
+                title={t['agendaPage.exportIcsTitle']}
+                className="inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-4 py-2 text-[12.5px] font-semibold text-gold-700 transition-all hover:-translate-y-0.5 hover:bg-gold-500 hover:text-pine-950"
+              >
+                <CalendarPlus size={14} />
+                {t['agendaPage.exportIcs']}
+              </button>
+            </div>
 
             {upcoming.length > 0 ? (
               <div className="mt-6 grid gap-5 lg:grid-cols-2">

@@ -12,9 +12,11 @@ import {
 } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NotFoundView } from '@/components/NotFoundView';
+import { ShareButtons } from '@/components/ShareButtons';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
+import { absUrl } from '@/seo/meta';
 import { PROJECTS } from '@/data/projects';
 
 export default function ProjectArticle() {
@@ -135,6 +137,10 @@ export default function ProjectArticle() {
                 {t['projetsPage.back']}
               </Link>
             </footer>
+
+            <div className="mt-6 border-t border-pine-900/10 pt-6">
+              <ShareButtons title={entry.title[lang]} url={absUrl(lang, `/projets/${entry.slug}`)} />
+            </div>
           </Reveal>
         </div>
       </section>

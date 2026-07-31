@@ -38,6 +38,9 @@ const ROUTES = [
   '/projets/reponse-epidemies-benin',
   '/projets/contrat-g2g-pnlp-benin',
   '/agenda',
+  '/presse',
+  '/inviter',
+  '/newsletter',
 ];
 
 const dist = path.resolve('dist');
@@ -294,6 +297,52 @@ test('the sitemap matches what was actually built', () => {
   assert.equal((sitemap.match(/xhtml:link/g) || []).length, locs.length * 3, 'each url needs its 3 alternates');
   assert.ok(sitemap.startsWith('<?xml'), 'sitemap must start with the XML declaration');
   assert.ok(sitemap.trim().endsWith('</urlset>'), 'sitemap is truncated');
+});
+
+test('the RSS feed is well-formed and lists every hosted page', () => {
+  const feed = fs.readFileSync(path.join(dist, 'feed.xml'), 'utf-8');
+  assert.ok(feed.startsWith('<?xml'), 'feed must start with the XML declaration');
+  assert.match(feed, /<rss version="2\.0"/, 'feed must be RSS 2.0');
+  assert.match(feed, /<channel>/, 'feed must have a channel');
+  assert.ok(feed.trim().endsWith('</rss>'), 'feed is truncated');
+
+  const titles = [...feed.matchAll(/<title>([^<]+)<\/title>/g)].map((m) => m[1]);
+  const links = [...feed.matchAll(/<link>([^<]+)<\/link>/g)].map((m) => m[1]);
+  assert.ok(titles.length >= 8, `expected a tribune and project per hosted entry, found ${titles.length}`);
+  assert.equal(new Set(links).size, links.length, 'duplicate <link> in the feed');
+
+  /* every feed link must be a real prerendered, canonical page URL */
+  const tribunesSource = fs.readFileSync(path.resolve('src/data/tribunes.ts'), 'utf-8');
+  const projectsSource = fs.readFileSync(path.resolve('src/data/projects.ts'), 'utf-8');
+  const slugsOf = (s) => [...s.matchAll(/slug: '([a-z0-9-]+)'/g)].map((m) => m[1]);
+  for (const slug of slugsOf(tribunesSource)) {
+    assert.ok(links.includes(`${SITE}/tribunes/${slug}`), `feed is missing ${SITE}/tribunes/${slug}`);
+  }
+  for (const slug of slugsOf(projectsSource)) {
+    assert.ok(links.includes(`${SITE}/projets/${slug}`), `feed is missing ${SITE}/projets/${slug}`);
+  }
+  assert.equal(new Set(titles.slice(1)).size, titles.slice(1).length, 'duplicate <title> in the feed');
+
+  /* the same feeds CSP trap as the sitemap: the blanket rule would break
+     Chrome's native XML rendering of the feed too */
+  const config = JSON.parse(fs.readFileSync(path.resolve('vercel.json'), 'utf-8'));
+  const indexOf = (source) => config.headers.findIndex((h) => h.source === source);
+  const generalIdx = indexOf('/(.*)');
+  const feedIdx = indexOf('/feed.xml');
+  assert.ok(feedIdx > generalIdx, '/feed.xml header rule must come after /(.*) to override it');
+  const feedCsp = config.headers[feedIdx].headers.find((h) => h.key === 'Content-Security-Policy');
+  assert.ok(feedCsp, '/feed.xml must explicitly override Content-Security-Policy');
+  assert.equal(feedCsp.value, '', 'an empty value is what neutralises the policy for this path');
+});
+
+test('every page announces the RSS feed in its head', () => {
+  eachPage(({ id, html }) => {
+    assert.match(
+      html,
+      /<link rel="alternate" type="application\/rss\+xml" title="[^"]+" href="https:\/\/seynudedagnon\.com\/feed\.xml" \/>/,
+      `${id}: missing the feed <link> tag`,
+    );
+  });
 });
 
 test('404.html is a real error page, not a copy of the home page', () => {

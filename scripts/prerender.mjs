@@ -55,7 +55,7 @@ const escapeAttr = (s) =>
 /* `</script>` inside JSON-LD would close the tag early */
 const jsonLdSafe = (data) => JSON.stringify(data).replace(/</g, '\\u003c');
 
-function headBlock(meta, image, { indexable = true } = {}) {
+function headBlock(meta, image, { indexable = true, feedUrl = null } = {}) {
   const tag = (n, v) => `    <meta name="${n}" content="${escapeAttr(v)}" />`;
   const prop = (p, v) => `    <meta property="${p}" content="${escapeAttr(v)}" />`;
   const ld = (id, data) =>
@@ -66,6 +66,11 @@ function headBlock(meta, image, { indexable = true } = {}) {
     `    <title>${escapeAttr(meta.title)}</title>`,
     tag('description', meta.description),
     tag('keywords', meta.keywords),
+    ...(feedUrl
+      ? [
+          `    <link rel="alternate" type="application/rss+xml" title="${escapeAttr(meta.title)}" href="${escapeAttr(feedUrl)}" />`,
+        ]
+      : []),
     /* an error page claims no canonical URL and offers no alternates */
     ...(indexable
       ? [
@@ -165,9 +170,11 @@ async function run() {
     ROUTE_PRIORITY,
     DEFAULT_ROUTE_PRIORITY,
     SITE_URL,
+    buildRss,
   } = await loadMeta();
   const { renderPage } = await loadRenderer();
   const image = `${SITE_URL}/og-image.jpg`;
+  const feedUrl = `${SITE_URL}/feed.xml`;
 
   const before = template.slice(0, startAt);
   const after = template.slice(endAt + END.length);
@@ -185,7 +192,7 @@ async function run() {
       const bodyHtml = renderPage(urlPath);
       /* <html lang> sits outside the SEO block but still has to follow the
          language of the page being written */
-      const html = withBody(before + headBlock(meta, image) + after, bodyHtml).replace(
+      const html = withBody(before + headBlock(meta, image, { feedUrl }) + after, bodyHtml).replace(
         /<html lang="[^"]*"/,
         `<html lang="${lang}"`,
       );
@@ -233,7 +240,11 @@ async function run() {
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`;
   fs.writeFileSync(path.join(dist, 'sitemap.xml'), sitemap, 'utf-8');
 
-  console.log(`[prerender] ${written} pages + 404.html + sitemap.xml (${urls.length} urls)`);
+  /* RSS — same single source of truth as the sitemap: everything the feed
+     lists must be an actual prerendered page. */
+  fs.writeFileSync(path.join(dist, 'feed.xml'), buildRss(), 'utf-8');
+
+  console.log(`[prerender] ${written} pages + 404.html + sitemap.xml (${urls.length} urls) + feed.xml`);
 }
 
 run().catch((e) => die(e.stack || e.message));

@@ -2,9 +2,11 @@ import { useParams, Link } from 'react-router';
 import { ArrowLeft, ExternalLink, Newspaper, CalendarDays } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NotFoundView } from '@/components/NotFoundView';
+import { ShareButtons } from '@/components/ShareButtons';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
+import { absUrl } from '@/seo/meta';
 import { TRIBUNES, type TribuneBlock } from '@/data/tribunes';
 
 const parts = (iso: string) => {
@@ -103,6 +105,10 @@ export default function TribuneArticle() {
                 </a>
               </p>
             </footer>
+
+            <div className="mt-6 border-t border-pine-900/10 pt-6">
+              <ShareButtons title={entry.title[lang]} url={absUrl(lang, `/tribunes/${entry.slug}`)} />
+            </div>
           </Reveal>
         </div>
       </section>

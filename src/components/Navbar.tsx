@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Link } from 'react-router';
-import { Menu, X, Linkedin, ChevronDown } from 'lucide-react';
+import { Menu, X, Linkedin, ChevronDown, Search } from 'lucide-react';
 import { LINKS } from '@/data/content';
 import { NAV, UI } from '@/i18n/translations';
 import { useLang } from '@/i18n/useLang';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { SearchModal } from '@/components/SearchModal';
 import { track } from '@/lib/analytics';
 import { navHref } from '@/lib/nav';
 import { localePath } from '@/i18n/routing';
@@ -31,6 +32,10 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [homeOpen, setHomeOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  /* remounts SearchModal on every open so a finished session's query never
+     leaks into the next one */
+  const [searchSession, setSearchSession] = useState(0);
   const { lang } = useLang();
   const t = UI[lang];
   const headerRef = useRef<HTMLDivElement>(null);
@@ -40,6 +45,28 @@ export function Navbar() {
   /* the open mobile menu is a dialog: Escape closes it, Tab stays inside,
      the page behind stops scrolling */
   useFocusTrap(headerRef, toggleRef, open, () => setOpen(false));
+
+  const openSearch = () => {
+    setSearchOpen(true);
+    setSearchSession((s) => s + 1);
+  };
+
+  /* Cmd/Ctrl+K toggles the global search, from anywhere on the site */
+  const searchOpenRef = useRef(false);
+  useEffect(() => {
+    searchOpenRef.current = searchOpen;
+  }, [searchOpen]);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setSearchOpen((v) => !v);
+        if (!searchOpenRef.current) setSearchSession((s) => s + 1);
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -110,7 +137,9 @@ export function Navbar() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 transition-all duration-500">
+    <>
+      <SearchModal key={searchSession} open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <header className="fixed inset-x-0 top-0 z-50 transition-all duration-500">
       <div ref={headerRef} className="mx-auto max-w-7xl px-3 pt-2 lg:px-4 lg:pt-3">
         <div
           className={`flex h-16 lg:h-[72px] items-center justify-between gap-4 px-4 lg:px-6 transition-all duration-500 ${
@@ -199,6 +228,15 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={openSearch}
+              aria-label={t['search.open']}
+              title={`${t['search.open']} — Ctrl+K`}
+              className="text-pine-100/80 transition-colors hover:text-gold-400 p-2"
+            >
+              <Search size={19} />
+            </button>
             <ThemeToggle />
             <LanguageSwitcher className="inline-flex" />
 
@@ -296,5 +334,6 @@ export function Navbar() {
         )}
       </div>
     </header>
+    </>
   );
 }

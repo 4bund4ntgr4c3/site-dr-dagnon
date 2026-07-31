@@ -30,6 +30,9 @@ const pages: AppPages = {
   Projects: lazy(() => import('./pages/Projects')),
   ProjectArticle: lazy(() => import('./pages/ProjectArticle')),
   Cv: lazy(() => import('./pages/Cv')),
+  PressKit: lazy(() => import('./pages/PressKit')),
+  Invite: lazy(() => import('./pages/Invite')),
+  NewsletterArchive: lazy(() => import('./pages/NewsletterArchive')),
 }
 
 createRoot(document.getElementById('root')!).render(

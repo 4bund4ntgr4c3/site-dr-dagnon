@@ -60,6 +60,17 @@
           "value": ""
         }
       ]
+    },
+    {
+      "source": "/feed.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/rss+xml; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" },
+        {
+          "key": "Content-Security-Policy",
+          "value": ""
+        }
+      ]
     }
   ],
   "rewrites": [
@@ -83,6 +94,9 @@
     { "source": "/projets/reponse-epidemies-benin", "destination": "/projets/reponse-epidemies-benin/index.html" },
     { "source": "/projets/contrat-g2g-pnlp-benin", "destination": "/projets/contrat-g2g-pnlp-benin/index.html" },
     { "source": "/agenda", "destination": "/agenda/index.html" },
+    { "source": "/presse", "destination": "/presse/index.html" },
+    { "source": "/inviter", "destination": "/inviter/index.html" },
+    { "source": "/newsletter", "destination": "/newsletter/index.html" },
 
     { "source": "/fr", "destination": "/fr/index.html" },
     { "source": "/fr/contact", "destination": "/fr/contact/index.html" },
@@ -104,6 +118,9 @@
     { "source": "/fr/projets/irs-nord-benin", "destination": "/fr/projets/irs-nord-benin/index.html" },
     { "source": "/fr/projets/reponse-epidemies-benin", "destination": "/fr/projets/reponse-epidemies-benin/index.html" },
     { "source": "/fr/projets/contrat-g2g-pnlp-benin", "destination": "/fr/projets/contrat-g2g-pnlp-benin/index.html" },
-    { "source": "/fr/agenda", "destination": "/fr/agenda/index.html" }
+    { "source": "/fr/agenda", "destination": "/fr/agenda/index.html" },
+    { "source": "/fr/presse", "destination": "/fr/presse/index.html" },
+    { "source": "/fr/inviter", "destination": "/fr/inviter/index.html" },
+    { "source": "/fr/newsletter", "destination": "/fr/newsletter/index.html" }
   ]
 }

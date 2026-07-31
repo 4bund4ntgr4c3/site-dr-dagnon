@@ -98,6 +98,24 @@ export function Footer() {
                 {item.label}
               </Link>
             ))}
+            <Link
+              to={localePath(lang, '/presse')}
+              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+            >
+              {t['footer.linkPresse']}
+            </Link>
+            <Link
+              to={localePath(lang, '/inviter')}
+              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+            >
+              {t['footer.linkInviter']}
+            </Link>
+            <Link
+              to={localePath(lang, '/newsletter')}
+              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+            >
+              {t['footer.linkNewsletter']}
+            </Link>
           </nav>
 
           <p className="text-[12px] text-pine-100/50">

@@ -129,6 +129,45 @@ export const AGENDA_SEO: Record<Lang, { title: string; description: string; keyw
   },
 };
 
+export const PRESSE_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Kit de presse — Dr. Dagnon',
+    description: "Kit de presse du Dr. Seynudé Jean-Fortuné Dagnon : biographie, chiffres clés, photo et contact pour les journalistes et les médias.",
+    keywords: 'kit de presse Dr Dagnon, biographie paludisme, photo presse, contact médias, expert paludisme Afrique, porte-parole santé publique',
+  },
+  en: {
+    title: 'Press Kit — Seynudé Dagnon',
+    description: "Press kit for Dr. Seynudé Jean-Fortuné Dagnon: biography, key figures, photo and contact for journalists and media teams.",
+    keywords: 'Dr Dagnon press kit, malaria biography, press photo, media contact, malaria expert Africa, public health spokesperson',
+  },
+};
+
+export const INVITER_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Inviter le Dr. Dagnon — Conférences & médias',
+    description: "Invitez le Dr. Seynudé Dagnon : conférences, panels, formations et interviews sur le paludisme et la santé publique en Afrique francophone.",
+    keywords: 'inviter Dr Dagnon, conférencier paludisme, keynote santé publique, panel Afrique, intervenant Fondation Gates, conférence malaria',
+  },
+  en: {
+    title: 'Invite Dr. Dagnon — Conferences & Media',
+    description: "Invite Dr. Seynudé Dagnon: conferences, panels, workshops and interviews on malaria and public health across Francophone Africa.",
+    keywords: 'invite Dr Dagnon, malaria speaker, public health keynote, Africa panel, Gates Foundation speaker, malaria conference',
+  },
+};
+
+export const NEWSLETTER_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Newsletter — Dr. Dagnon',
+    description: "Archives de la newsletter du Dr. Seynudé Dagnon : analyses, dates clés et avancées de la lutte contre le paludisme en Afrique.",
+    keywords: 'newsletter Dr Dagnon, archive newsletter paludisme, lettre d\'information santé publique, veille malaria Afrique',
+  },
+  en: {
+    title: 'Newsletter — Seynudé Dagnon',
+    description: "Archive of Dr. Seynudé Dagnon's newsletter: analysis, key dates and progress in the malaria fight across Africa.",
+    keywords: 'Dr Dagnon newsletter, malaria newsletter archive, public health newsletter, malaria news Africa',
+  },
+};
+
 export const TRIBUNES_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Tribunes & Analyses — Dr. Dagnon',
@@ -298,6 +337,12 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
     if (project) items.push({ name: project.title[lang], url: absUrl(lang, `/projets/${project.slug}`) });
   } else if (path.startsWith('/agenda')) {
     items.push({ name: 'Agenda', url: absUrl(lang, '/agenda') });
+  } else if (path === '/presse') {
+    items.push({ name: lang === 'fr' ? 'Kit de presse' : 'Press kit', url: absUrl(lang, '/presse') });
+  } else if (path === '/inviter') {
+    items.push({ name: lang === 'fr' ? 'Inviter le Dr' : 'Invite the Dr', url: absUrl(lang, '/inviter') });
+  } else if (path === '/newsletter') {
+    items.push({ name: 'Newsletter', url: absUrl(lang, '/newsletter') });
   }
   return {
     '@context': 'https://schema.org',
@@ -343,6 +388,61 @@ export function projectJsonLd(lang: Lang, entry: (typeof PROJECTS)[number], url:
   };
 }
 
+/* ── RSS feed ──────────────────────────────────────────────────── */
+
+/* One feed for the whole site, pointing at the canonical (English) URLs —
+   RSS 2.0 has no per-item language alternates, and splitting the feed per
+   language would halve its reach. Consumed only by scripts/prerender.mjs at
+   build time; it ships as dist/feed.xml. */
+export function buildRss(): string {
+  const xmlEscape = (s: string) =>
+    String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const rfc822 = (iso: string) => new Date(`${iso}T00:00:00Z`).toUTCString();
+
+  const items: { title: string; link: string; pubDate: string; description: string }[] = [
+    ...TRIBUNES.map((e) => ({
+      title: e.title.en,
+      link: absUrl('en', `/tribunes/${e.slug}`),
+      pubDate: rfc822(e.date),
+      description: e.description.en,
+    })),
+    ...PROJECTS.map((e) => ({
+      title: e.title.en,
+      link: absUrl('en', `/projets/${e.slug}`),
+      pubDate: rfc822(e.date),
+      description: e.description.en,
+    })),
+  ].sort((a, b) => b.pubDate.localeCompare(a.pubDate));
+
+  const itemXml = items
+    .map(
+      (i) => `  <item>
+    <title>${xmlEscape(i.title)}</title>
+    <link>${i.link}</link>
+    <guid isPermaLink="true">${i.link}</guid>
+    <pubDate>${i.pubDate}</pubDate>
+    <description>${xmlEscape(i.description)}</description>
+  </item>`,
+    )
+    .join('\n');
+
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+    '  <channel>',
+    `    <title>${xmlEscape(SEO.en.title)}</title>`,
+    `    <link>${homeUrl('en')}</link>`,
+    `    <description>${xmlEscape(SEO.en.description)}</description>`,
+    '    <language>en</language>',
+    `    <lastBuildDate>${rfc822(new Date().toISOString().slice(0, 10))}</lastBuildDate>`,
+    `    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>`,
+    itemXml,
+    '  </channel>',
+    '</rss>',
+    '',
+  ].join('\n');
+}
+
 /* ── Resolved metadata for one route ──────────────────────────── */
 
 export interface PageMeta {
@@ -372,6 +472,9 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const mediaCategory = isMedia && !isMediaLanding ? route.split('/media/')[1]?.split('/')[0] || null : null;
   const isPub = route.startsWith('/publications');
   const isAgenda = route.startsWith('/agenda');
+  const isPresse = route === '/presse';
+  const isInvite = route === '/inviter';
+  const isNewsletter = route === '/newsletter';
   const isTribunes = route === '/tribunes';
   const isTribuneArticle = route.startsWith('/tribunes/') && !isTribunes;
   const tribuneSlug = isTribuneArticle ? route.split('/tribunes/')[1]?.split('/')[0] || null : null;
@@ -426,7 +529,13 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
           ? CV_SEO[lang]
           : isAgenda
             ? AGENDA_SEO[lang]
-            : SEO[lang];
+            : isPresse
+              ? PRESSE_SEO[lang]
+              : isInvite
+                ? INVITER_SEO[lang]
+                : isNewsletter
+                  ? NEWSLETTER_SEO[lang]
+                  : SEO[lang];
 
   const url = absUrl(lang, route);
 
@@ -455,7 +564,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
             ? articleJsonLd(lang, tribune, url)
             : project
               ? projectJsonLd(lang, project, url)
-              : isMedia || isPub || isAgenda || isTribunes || isProjects
+              : isMedia || isPub || isAgenda || isTribunes || isProjects || isPresse || isInvite || isNewsletter
                 ? collectionPageJsonLd(lang, data.title, data.description, url)
                 : null,
     },
@@ -481,6 +590,9 @@ export const PRERENDER_ROUTES = [
   '/projets',
   ...PROJECTS.map((p) => `/projets/${p.slug}`),
   '/agenda',
+  '/presse',
+  '/inviter',
+  '/newsletter',
 ];
 
 export const PRERENDER_LANGS: Lang[] = SUPPORTED;
@@ -495,6 +607,9 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/tribunes': { priority: '0.8', changefreq: 'weekly' },
   '/projets': { priority: '0.8', changefreq: 'weekly' },
   '/agenda': { priority: '0.8', changefreq: 'weekly' },
+  '/presse': { priority: '0.5', changefreq: 'monthly' },
+  '/inviter': { priority: '0.5', changefreq: 'monthly' },
+  '/newsletter': { priority: '0.5', changefreq: 'weekly' },
   ...Object.fromEntries(
     TRIBUNES.map((t) => [`/tribunes/${t.slug}`, { priority: '0.7', changefreq: 'monthly' }]),
   ),
