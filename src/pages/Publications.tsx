@@ -89,21 +89,21 @@ export default function PublicationsPage() {
                       {t['pubPage.search']}
                     </label>
                     <div className="relative">
-                      <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/40" />
+                      <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/60" />
                       <input
                         id="pub-search"
                         type="text"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder={t['pubPage.search']}
-                        className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/35 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
+                        className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/65 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
                       />
                     </div>
                   </div>
 
                   {/* type */}
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">
                       {t['pubPage.filterType']}
                     </p>
                     <div role="group" aria-label={t['pubPage.filterType']} className="mt-2 flex flex-wrap gap-2">
@@ -115,7 +115,7 @@ export default function PublicationsPage() {
                           className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                             type === f.value
                               ? 'bg-pine-950 text-gold-400 shadow'
-                              : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                              : 'bg-white text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
                           }`}
                         >
                           {t[f.key]}
@@ -126,7 +126,7 @@ export default function PublicationsPage() {
 
                   {/* year */}
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">
                       {t['pubPage.filterYear']}
                     </p>
                     <div role="group" aria-label={t['pubPage.filterYear']} className="mt-2 flex flex-wrap gap-2">
@@ -136,7 +136,7 @@ export default function PublicationsPage() {
                         className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                           year === 'all'
                             ? 'bg-pine-950 text-gold-400 shadow'
-                            : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                            : 'bg-white text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
                         }`}
                       >
                         {t['pubPage.all']}
@@ -149,7 +149,7 @@ export default function PublicationsPage() {
                           className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                             year === y
                               ? 'bg-pine-950 text-gold-400 shadow'
-                              : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                              : 'bg-white text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
                           }`}
                         >
                           {y}
@@ -160,7 +160,7 @@ export default function PublicationsPage() {
 
                   {/* sort */}
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/50">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">
                       {t['pubPage.filterSort']}
                     </p>
                     <div role="group" aria-label={t['pubPage.filterSort']} className="mt-2 flex flex-wrap gap-2">
@@ -170,7 +170,7 @@ export default function PublicationsPage() {
                         className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                           sort === 'desc'
                             ? 'bg-pine-950 text-gold-400 shadow'
-                            : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                            : 'bg-white text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
                         }`}
                       >
                         {t['pubPage.newest']}
@@ -181,7 +181,7 @@ export default function PublicationsPage() {
                         className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                           sort === 'asc'
                             ? 'bg-pine-950 text-gold-400 shadow'
-                            : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                            : 'bg-white text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
                         }`}
                       >
                         {t['pubPage.oldest']}
@@ -195,12 +195,12 @@ export default function PublicationsPage() {
             {/* main */}
             <div>
               <h2 className="sr-only">{t['pubPage.badge']}</h2>
-              <p className="text-[13px] font-medium text-pine-900/55">
+              <p className="text-[13px] font-medium text-pine-900/75">
                 {t['pubPage.results'].replace('{n}', String(filtered.length))}
               </p>
 
               {filtered.length === 0 ? (
-                <p className="mt-10 rounded-2xl border border-dashed border-pine-900/15 bg-white px-6 py-16 text-center text-sm text-pine-900/55">
+                <p className="mt-10 rounded-2xl border border-dashed border-pine-900/15 bg-white px-6 py-16 text-center text-sm text-pine-900/75">
                   {t['pubPage.empty']}
                 </p>
               ) : (
@@ -330,7 +330,7 @@ function PubCard({ p, lang, t }: { p: PubEntry; lang: 'fr' | 'en'; t: typeof UI[
         <h3 className="mt-2 flex-1 font-display text-[15px] font-semibold leading-snug text-pine-900">
           {p.title[lang]}
         </h3>
-        <p className="mt-2 text-[12px] text-pine-900/50 line-clamp-2">{p.authors[lang]}</p>
+        <p className="mt-2 text-[12px] text-pine-900/75 line-clamp-2">{p.authors[lang]}</p>
         {p.url && (
           <span className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
             {p.type === 'blog' ? t['pubPage.readPost'] : t['pubPage.readPaper']}

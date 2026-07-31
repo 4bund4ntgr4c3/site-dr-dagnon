@@ -133,6 +133,23 @@ test('non-POST methods are refused', async () => {
   assert.equal(out.code, 405);
 });
 
+test('fails closed when CONTACT_PHONE is not configured', async () => {
+  const prev = process.env.CONTACT_PHONE;
+  delete process.env.CONTACT_PHONE;
+  try {
+    /* a fresh module instance (cache-busted), so the module-scope
+       PHONE constant is recomputed without the env var */
+    const url = pathToFileURL(path.resolve('node_modules/.tmp/api/verify-phone.js')).href + `?nophone=${Date.now()}`;
+    const handler = (await import(url)).default;
+    const out = await call(handler, { action: 'send', email: 'nophone@example.test' }, { ip: '10.1.0.10' });
+    assert.equal(out.code, 500);
+    assert.equal(out.body.error, 'Phone not configured');
+    assert.ok(!out.body.phone);
+  } finally {
+    process.env.CONTACT_PHONE = prev;
+  }
+});
+
 test('an invalid email is refused before any email is sent', async () => {
   const before = sent.length;
   const out = await call(verifyPhone, { action: 'send', email: 'not-an-email' }, { ip: '10.1.0.9' });

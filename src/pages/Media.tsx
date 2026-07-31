@@ -191,7 +191,7 @@ function MediaLanding({
 
               {/* Description */}
               <div className="flex flex-1 flex-col p-5">
-                <p className="flex-1 text-[13.5px] leading-relaxed text-ink/55">
+                <p className="flex-1 text-[13.5px] leading-relaxed text-ink/75">
                   {t[cat.descKey as keyof typeof t] || ''}
                 </p>
                 <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
@@ -214,31 +214,19 @@ function MediaLanding({
    COMMUNITY VIEW — Album folders + Slideshow
    ═══════════════════════════════════════════════════════════════════ */
 
-const SUBTYPE_MAP: Record<string, Record<'fr' | 'en', string>> = {
-  'malaria-night': { fr: 'Nuit du Paludisme', en: 'Night Against Malaria' },
-  'nuit-paludisme-5e': { fr: '5e Nuit du Paludisme', en: '5th Night Against Malaria' },
-  'school-kits': { fr: 'Fournitures scolaires', en: 'School Kits' },
-  genies: { fr: 'Génies en Herbe', en: 'Génies en Herbe' },
+/* subtype → translation key; the label and the description live in
+   translations.ts, not here, so both languages stay in one place */
+const SUBTYPE_KEY: Record<string, string> = {
+  'malaria-night': 'mediaPage.subMalariaNight',
+  'nuit-paludisme-5e': 'mediaPage.subMalariaNight5e',
+  'school-kits': 'mediaPage.subSchoolKits',
+  genies: 'mediaPage.subGenies',
 };
 
-const SUBTYPE_DESC_MAP: Record<string, Record<'fr' | 'en', string>> = {
-  'malaria-night': {
-    fr: 'Depuis 2021, le Dr. Dagnon préside la Nuit du Paludisme au Bénin, une cérémonie qui honore les personnes ayant apporté des contributions significatives à l\'élimination du paludisme en Afrique et au Bénin.',
-    en: 'Since 2021, Dr. Dagnon has chaired the Night Against Malaria in Benin, a ceremony that honors individuals who have made significant contributions to malaria elimination efforts in Africa and in Benin.',
-  },
-  'nuit-paludisme-5e': {
-    fr: 'La 5e édition de la Nuit du Paludisme, organisée par l\'ONG Icône 360° au Bénin, en présence du parrain Dr. Dagnon et des partenaires Expertise France et le Ministère de la Santé.',
-    en: 'The 5th edition of the Night Against Malaria, organized by NGO Icône 360° in Benin, with patron Dr. Dagnon and partners Expertise France and the Ministry of Health.',
-  },
-  'school-kits': {
-    fr: 'Le Dr. Dagnon soutient la distribution de fournitures scolaires aux enfants d\'âge scolaire dans les zones défavorisées, permettant à de nombreux enfants d\'accéder à l\'éducation.',
-    en: 'Dr. Dagnon supported the distribution of school kits to school-age children in underserved areas, a contribution that has enabled many children to attend school and access education.',
-  },
-  genies: {
-    fr: 'Le Dr. Dagnon a apporté une contribution exceptionnelle au concours de connaissances générales « Génies en Herbe », qui encourage les jeunes étudiants à rester concentrés sur leurs études et à cultiver l\'excellence académique.',
-    en: 'Dr. Dagnon made a tremendous contribution to the general knowledge competition "Génies en Herbe," which encourages young students to remain focused on their studies while fostering a spirit of academic excellence.',
-  },
-};
+const subtypeLabel = (t: (typeof UI)['fr'], key: string) =>
+  t[`${SUBTYPE_KEY[key] ?? ''}` as keyof typeof t] || key;
+const subtypeDesc = (t: (typeof UI)['fr'], key: string) =>
+  t[`${SUBTYPE_KEY[key] ?? ''}Desc` as keyof typeof t] || '';
 
 /* dedicated 800px thumbnails: these are rendered in ~400px cards, so the
    full-size photo would be several times the bytes actually needed */
@@ -342,7 +330,7 @@ function CommunityView({
                   {cover ? (
                     <img
                       src={cover}
-                      alt={SUBTYPE_MAP[key]?.[lang] || key}
+                      alt={subtypeLabel(t, key)}
                       width={400}
                       height={300}
                       loading="lazy"
@@ -367,14 +355,14 @@ function CommunityView({
 
                   {/* album title */}
                   <h3 className="absolute bottom-4 left-4 right-4 font-display text-xl font-semibold text-white drop-shadow-lg">
-                    {SUBTYPE_MAP[key]?.[lang] || key}
+                    {subtypeLabel(t, key)}
                   </h3>
                 </div>
 
                 {/* description */}
                 <div className="flex flex-1 flex-col p-5">
-                  <p className="flex-1 text-[13px] leading-relaxed text-ink/55 line-clamp-3">
-                    {SUBTYPE_DESC_MAP[key]?.[lang] || ''}
+                  <p className="flex-1 text-[13px] leading-relaxed text-ink/75 line-clamp-3">
+                    {subtypeDesc(t, key)}
                   </p>
                   <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
                     <Camera size={14} />
@@ -395,14 +383,14 @@ function CommunityView({
           onKeyDown={handleKeyDown}
           role="dialog"
           aria-modal="true"
-          aria-label={SUBTYPE_MAP[activeAlbum]?.[lang] || activeAlbum}
+          aria-label={subtypeLabel(t, activeAlbum)}
           tabIndex={-1}
         >
           {/* header */}
           <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-4">
             <div>
               <h3 className="font-display text-lg font-semibold text-white">
-                {SUBTYPE_MAP[activeAlbum]?.[lang] || activeAlbum}
+                {subtypeLabel(t, activeAlbum)}
               </h3>
               <p className="text-[13px] text-white/60">
                 {slideshowIndex + 1} / {albumPhotos.length}
@@ -614,7 +602,7 @@ function CategoryView({
           <h2 className="font-display text-2xl font-semibold text-pine-900">
             {t[`mediaPage.cat${category.charAt(0).toUpperCase() + category.slice(1)}` as keyof typeof t] || category}
           </h2>
-          <p className="mt-1 text-[14.5px] text-ink/50">
+          <p className="mt-1 text-[14.5px] text-ink/70">
             {t[catMeta.descKey as keyof typeof t] || ''}
           </p>
         </div>
@@ -630,7 +618,7 @@ function CategoryView({
             <h2 className="font-display text-3xl font-semibold text-pine-900">
               {t[`mediaPage.cat${category.charAt(0).toUpperCase() + category.slice(1)}` as keyof typeof t] || category}
             </h2>
-            <p className="mt-1 text-[14.5px] text-ink/50">
+            <p className="mt-1 text-[14.5px] text-ink/70">
               {t[catMeta.descKey as keyof typeof t] || ''}
             </p>
           </div>
@@ -657,14 +645,14 @@ function CategoryView({
                 <label htmlFor="media-search" className="sr-only">
                   {t['mediaPage.search'] || 'Rechercher...'}
                 </label>
-                <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/40" />
+                <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/60" />
                 <input
                   id="media-search"
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder={t['mediaPage.search'] || 'Rechercher...'}
-                  className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/35 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
+                  className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/65 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
                 />
               </div>
 
@@ -678,7 +666,7 @@ function CategoryView({
                     className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                       type === f.value
                         ? 'bg-pine-950 text-gold-400 shadow'
-                        : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                        : 'bg-white text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
                     }`}
                   >
                     {t[f.key]}
@@ -689,13 +677,13 @@ function CategoryView({
           </div>
 
           {/* results count */}
-          <p className="mt-5 text-[13px] font-medium text-pine-900/50">
+          <p className="mt-5 text-[13px] font-medium text-pine-900/75">
             {t['mediaPage.results'].replace('{n}', String(filtered.length))}
           </p>
 
           {/* simple grid display */}
           {filtered.length === 0 ? (
-            <p className="mt-10 rounded-2xl border border-dashed border-pine-900/15 bg-white px-6 py-16 text-center text-sm text-pine-900/50">
+            <p className="mt-10 rounded-2xl border border-dashed border-pine-900/15 bg-white px-6 py-16 text-center text-sm text-pine-900/75">
               {t['mediaPage.empty']}
             </p>
           ) : (

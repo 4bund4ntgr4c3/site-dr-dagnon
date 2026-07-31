@@ -7,7 +7,7 @@ Portfolio of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, d
 ```bash
 npm run dev      # dev server on :3000
 npm run build    # typecheck, bundle, then prerender 18 pages + sitemap + 404
-npm test         # build, then 52 tests (node --test)
+npm test         # build, then 64 tests (node --test)
 npm run lint
 npm run images   # one-off: convert public/ photos to WebP (see below)
 npm run gen:og   # one-off: regenerate og-image.jpg
@@ -24,7 +24,7 @@ contact form to work at all.
 | `CONTACT_TO_EMAIL` | yes | where contact messages are delivered |
 | `CONTACT_FROM_EMAIL` | no | sender identity, defaults to `Portfolio <admin@seynudedagnon.com>` |
 | `VERIFY_SECRET` | recommended | signs the phone-verification tokens; falls back to `RESEND_API_KEY` |
-| `CONTACT_PHONE` | no | the protected phone number, so it can change without a code deploy |
+| `CONTACT_PHONE` | yes (phone reveal) | the protected phone number, so it can change without a code deploy |
 | `ALLOWED_ORIGINS` | no | comma-separated origin allowlist for the API |
 | `KV_REST_API_URL` + `KV_REST_API_TOKEN` | no | shared rate-limit store (see below) |
 
@@ -35,7 +35,9 @@ Attaching a Vercel KV store sets the `KV_*` pair automatically. Upstash's own
 
 **The phone number is not in the client bundle.** It lives in
 `api/verify-phone.ts` and is only returned after a code sent by email is
-verified. The verification is stateless — a signed token carries an HMAC of
+verified. It comes from `CONTACT_PHONE` with no hardcoded default — if that
+variable is unset, the endpoint fails closed rather than revealing a number.
+The verification is stateless — a signed token carries an HMAC of
 the code — because serverless instances share no memory. A test asserts no
 phone-shaped string ever reaches `dist/`.
 

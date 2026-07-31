@@ -134,7 +134,7 @@ export function Experience() {
 
             {/* responsibilities */}
             <div className="mt-8">
-              <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-pine-900/50">
+              <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-pine-900/75">
                 <Briefcase size={16} className="text-gold-500" />
                 {t['experience.responsibilities']}
               </div>
@@ -151,7 +151,7 @@ export function Experience() {
             {/* projects */}
             {active.details.projects && active.details.projects.length > 0 && (
               <div className="mt-8">
-                <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-pine-900/50">
+                <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-pine-900/75">
                   <Target size={16} className="text-gold-500" />
                   {t['experience.projects']}
                 </div>
@@ -160,7 +160,7 @@ export function Experience() {
                     <div key={i} className="flex items-start justify-between gap-4 rounded-xl border border-pine-900/10 bg-ivory/60 p-4">
                       <div>
                         <p className="text-[13.5px] font-semibold text-pine-900">{p.name}</p>
-                        <p className="text-[12px] text-ink/50">{p.scope}</p>
+                        <p className="text-[12px] text-ink/70">{p.scope}</p>
                       </div>
                       <span className="shrink-0 rounded-full bg-pine-900 px-2.5 py-0.5 text-[11px] font-bold text-gold-400">
                         {p.budget}

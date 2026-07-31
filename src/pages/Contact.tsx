@@ -10,7 +10,7 @@ type Status = 'idle' | 'sending' | 'success' | 'error';
 type VerifyStatus = 'idle' | 'sending' | 'code-sent' | 'verifying' | 'verified' | 'error';
 
 const fieldClass =
-  'w-full rounded-xl border border-pine-900/15 bg-white px-4 py-3 text-sm text-pine-900 placeholder:text-pine-900/40 outline-none transition-colors focus:border-gold-500 focus:bg-pine-50';
+  'w-full rounded-xl border border-pine-900/15 bg-white px-4 py-3 text-sm text-pine-900 placeholder:text-pine-900/65 outline-none transition-colors focus:border-gold-500 focus:bg-pine-50';
 
 export default function Contact() {
   const { lang } = useLang();
@@ -155,7 +155,7 @@ export default function Contact() {
                       <Mail size={18} />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/50">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/75">
                         {t['contact.emailLabel']}
                       </p>
                       <a href={`mailto:${t['contact.email']}`} className="text-sm font-medium text-pine-900 transition-colors hover:text-gold-600">
@@ -172,7 +172,7 @@ export default function Contact() {
                           <Phone size={18} />
                         </span>
                         <div className="min-w-0 flex-1">
-                          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/50">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/75">
                             {t['contact.phoneLabel']}
                           </p>
                           <a href={`tel:${p.replace(/\s/g, '')}`} className="text-sm font-medium text-pine-900 transition-colors hover:text-gold-600">
@@ -187,10 +187,10 @@ export default function Contact() {
                         <Phone size={18} />
                       </span>
                       <div className="min-w-0 flex-1">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/50">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/75">
                           {t['contact.phoneLabel']}
                         </p>
-                        <span className="inline-flex items-center gap-1.5 text-sm font-medium text-pine-900/55">
+                        <span className="inline-flex items-center gap-1.5 text-sm font-medium text-pine-900/75">
                           <Lock size={13} /> {t['contact.locked']}
                         </span>
                       </div>
@@ -204,7 +204,7 @@ export default function Contact() {
                         <MapPin size={18} />
                       </span>
                       <div className="min-w-0 flex-1">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/50">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/75">
                           {t['contact.locationLabel']}
                         </p>
                         <p className="text-sm font-medium text-pine-900">{l}</p>
@@ -229,7 +229,7 @@ export default function Contact() {
                             placeholder={lang === 'fr' ? 'Entrez le code à 6 caractères' : 'Enter the 6-character code'}
                             maxLength={6}
                             autoComplete="one-time-code"
-                            className="w-full rounded-lg border border-pine-900/15 bg-white px-3 py-2 text-sm uppercase tracking-[0.2em] text-pine-900 placeholder:normal-case placeholder:tracking-normal placeholder:text-pine-900/40 outline-none focus:border-gold-500"
+                            className="w-full rounded-lg border border-pine-900/15 bg-white px-3 py-2 text-sm uppercase tracking-[0.2em] text-pine-900 placeholder:normal-case placeholder:tracking-normal placeholder:text-pine-900/65 outline-none focus:border-gold-500"
                           />
                           <button
                             type="button"

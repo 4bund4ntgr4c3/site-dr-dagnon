@@ -65,7 +65,7 @@ export function Education() {
                       {e.degree}
                     </h3>
                     <p className="mt-1.5 text-sm font-semibold text-gold-700">{e.school}</p>
-                    <p className="mt-3 text-[13px] leading-relaxed text-ink/60">{e.detail}</p>
+                    <p className="mt-3 text-[13px] leading-relaxed text-ink/75">{e.detail}</p>
                     {isPopupCard && (
                       <span className="mt-4 inline-flex items-center gap-1 text-[12px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
                         {popupIcon}

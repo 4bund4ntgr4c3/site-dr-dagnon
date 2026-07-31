@@ -26,9 +26,12 @@ function verifyHtml(code: string): string {
 
 /* ── Protected data ─────────────────────────────────────────────
    The phone number lives here, never in the client bundle. It is
-   only ever returned by a `verify` call carrying a valid code.     */
+   only ever returned by a `verify` call carrying a valid code.
+   It comes solely from CONTACT_PHONE — deliberately no hardcoded
+   default, so the number can change (or be withheld) without a
+   code deploy.                                                  */
 
-const PHONE = process.env.CONTACT_PHONE || '+229 01 66 99 32 47 - +221 77 385 60 89';
+const PHONE = process.env.CONTACT_PHONE;
 
 /* ── Stateless verification tokens ──────────────────────────────
    Serverless instances do not share memory, so a code kept in a
@@ -92,6 +95,7 @@ export default async function handler(req: Req, res: Res) {
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
   if (!originAllowed(req.headers)) { res.status(403).json({ error: 'Forbidden' }); return; }
   if (!SECRET) { res.status(500).json({ error: 'Verification not configured' }); return; }
+if (!PHONE) { res.status(500).json({ error: 'Phone not configured' }); return; }
 
   const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').toString().split(',')[0].trim();
   const { action, email, code, token } = req.body || {};

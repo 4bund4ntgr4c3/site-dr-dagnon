@@ -35,7 +35,7 @@ export function About() {
                 <blockquote className="font-display text-lg italic leading-relaxed text-pine-900">
                   {t['about.quote']}
                 </blockquote>
-                <figcaption className="mt-3 text-xs font-medium uppercase tracking-widest text-ink/50">
+                <figcaption className="mt-3 text-xs font-medium uppercase tracking-widest text-ink/70">
                   {t['about.quoteCite']}
                 </figcaption>
               </figure>

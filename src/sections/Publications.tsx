@@ -43,13 +43,13 @@ export function Publications() {
         <Reveal delay={0.15}>
           <div className="mt-10 flex flex-col gap-4 rounded-2xl border border-pine-900/10 bg-ivory p-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="relative flex-1 sm:max-w-sm">
-              <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/40" />
+              <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/60" />
               <input
                 aria-label={t['publications.search']}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={t['publications.search']}
-                className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/35 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
+                className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/65 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
               />
             </div>
             <div className="flex flex-wrap gap-2">
@@ -60,7 +60,7 @@ export function Publications() {
                   className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                     year === y
                       ? 'bg-pine-950 text-gold-400 shadow'
-                      : 'bg-white text-ink/60 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                      : 'bg-white text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
                   }`}
                 >
                   {y}
@@ -70,7 +70,7 @@ export function Publications() {
           </div>
         </Reveal>
 
-        <p className="mt-5 text-[12.5px] font-medium uppercase tracking-widest text-ink/45">
+        <p className="mt-5 text-[12.5px] font-medium uppercase tracking-widest text-ink/75">
           {publicationsCount(lang, filtered.length)}
         </p>
 
@@ -105,7 +105,7 @@ export function Publications() {
                   <h3 className="mt-2.5 font-display text-[1.05rem] font-semibold leading-snug text-pine-950">
                     {p.title}
                   </h3>
-                  <p className="mt-1.5 truncate text-[12.5px] text-ink/55" title={p.authors}>
+                  <p className="mt-1.5 truncate text-[12.5px] text-ink/75" title={p.authors}>
                     {p.authors}
                   </p>
                 </div>
@@ -135,7 +135,7 @@ export function Publications() {
           ))}
 
           {filtered.length === 0 && (
-            <div className="rounded-2xl border border-dashed border-pine-900/20 p-12 text-center text-sm text-ink/50">
+            <div className="rounded-2xl border border-dashed border-pine-900/20 p-12 text-center text-sm text-ink/70">
               {t['publications.empty']}
             </div>
           )}
