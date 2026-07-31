@@ -9,11 +9,11 @@ import App, { type AppPages } from './App.tsx'
 (() => {
   try {
     const saved = localStorage.getItem('theme');
-    const dark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    if (dark) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.style.colorScheme = 'dark';
-    }
+    const dark =
+      saved === 'dark' ||
+      ((saved === null || saved === 'system') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.classList.toggle('dark', dark);
+    document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
   } catch {
     /* storage unavailable — stay with the light theme */
   }

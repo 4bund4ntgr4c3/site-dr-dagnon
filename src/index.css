@@ -121,110 +121,110 @@
   }
 }
 
-/* Dark theme — flips the light surfaces of the ivory/pine palette while the
-   already-dark sections (heroes, pine-950 blocks, gold accents) stay as-is.
-   Kept unlayered, at the very end: the build flattens Tailwind's layers, so
-   rules inside @layer lose to the unlayered utilities. Plain rules with a
-   higher-specificity selector (.dark …) always win. */
+/* Dark theme — #181a1b dark-grey surfaces replace the light ivory/pine ones,
+   while the already-dark sections (heroes, pine-950 blocks, gold accents)
+   stay as-is. Kept unlayered, at the very end: the build flattens Tailwind's
+   layers, so rules inside @layer lose to the unlayered utilities. Plain rules
+   with a higher-specificity selector (.dark …) always win. */
 .dark {
   color-scheme: dark;
 }
-  .dark body {
-    background-color: #0b2925;
-  }
-  .dark .bg-pine-50 {
-    background-color: #0b2925;
-  }
-  .dark .bg-ivory {
-    background-color: #0d2e29;
-  }
-  .dark .bg-ivory\/60 {
-    background-color: rgba(13, 46, 41, 0.6);
-  }
-  .dark .bg-white {
-    background-color: #12372f;
-  }
-  .dark .bg-white\/95 {
-    background-color: rgba(18, 55, 47, 0.95);
-  }
-  .dark .bg-white\/90 {
-    background-color: rgba(18, 55, 47, 0.9);
-  }
-  .dark .bg-white\/70 {
-    background-color: rgba(18, 55, 47, 0.7);
-  }
-  .dark .bg-white\/50 {
-    background-color: rgba(18, 55, 47, 0.5);
-  }
-  .dark .bg-white\/30 {
-    background-color: rgba(18, 55, 47, 0.3);
-  }
-  .dark .hover\:bg-pine-50:hover {
-    background-color: #12372f;
-  }
-  .dark .focus\:bg-pine-50:focus {
-    background-color: #12372f;
-  }
-  .dark .hover\:bg-pine-900\/5:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-  }
-  .dark .text-ink {
-    color: #e7eeea;
-  }
-  .dark .text-ink\/75 {
-    color: rgba(231, 238, 234, 0.75);
-  }
-  .dark .text-ink\/70 {
-    color: rgba(231, 238, 234, 0.7);
-  }
-  .dark .text-ink\/65 {
-    color: rgba(231, 238, 234, 0.65);
-  }
-  .dark .text-ink\/60 {
-    color: rgba(231, 238, 234, 0.6);
-  }
-  .dark .text-pine-900 {
-    color: #d9e9e4;
-  }
-  .dark .text-pine-900\/90 {
-    color: rgba(217, 233, 228, 0.9);
-  }
-  .dark .text-pine-900\/85 {
-    color: rgba(217, 233, 228, 0.85);
-  }
-  .dark .text-pine-900\/80 {
-    color: rgba(217, 233, 228, 0.8);
-  }
-  .dark .text-pine-900\/75 {
-    color: rgba(217, 233, 228, 0.75);
-  }
-  .dark .text-pine-900\/70 {
-    color: rgba(217, 233, 228, 0.7);
-  }
-  .dark .text-pine-900\/65 {
-    color: rgba(217, 233, 228, 0.65);
-  }
-  .dark .text-pine-900\/60 {
-    color: rgba(217, 233, 228, 0.6);
-  }
-  .dark .text-pine-900\/55 {
-    color: rgba(217, 233, 228, 0.55);
-  }
-  .dark .text-pine-900\/50 {
-    color: rgba(217, 233, 228, 0.5);
-  }
-  .dark .text-gold-600 {
-    color: #d9bb78;
-  }
-  .dark .placeholder\:text-pine-900\/65::placeholder {
-    color: rgba(217, 233, 228, 0.65);
-  }
-  .dark .placeholder\:text-pine-900\/50::placeholder {
-    color: rgba(217, 233, 228, 0.5);
-  }
-  .dark .placeholder\:text-ink\/65::placeholder {
-    color: rgba(231, 238, 234, 0.65);
-  }
+.dark body {
+  background-color: #181a1b;
+}
+.dark .bg-pine-50 {
+  background-color: #181a1b;
+}
+.dark .bg-ivory {
+  background-color: #181a1b;
+}
+.dark .bg-ivory\/60 {
+  background-color: rgba(24, 26, 27, 0.6);
+}
+.dark .bg-white {
+  background-color: #181a1b;
+}
+.dark .bg-white\/95 {
+  background-color: rgba(24, 26, 27, 0.95);
+}
+.dark .bg-white\/90 {
+  background-color: rgba(24, 26, 27, 0.9);
+}
+.dark .bg-white\/70 {
+  background-color: rgba(24, 26, 27, 0.7);
+}
+.dark .bg-white\/50 {
+  background-color: rgba(24, 26, 27, 0.5);
+}
+.dark .bg-white\/30 {
+  background-color: rgba(24, 26, 27, 0.3);
+}
+.dark .hover\:bg-pine-50:hover {
+  background-color: #202325;
+}
+.dark .focus\:bg-pine-50:focus {
+  background-color: #202325;
+}
+.dark .hover\:bg-pine-900\/5:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+.dark .text-ink {
+  color: #ececec;
+}
+.dark .text-ink\/75 {
+  color: rgba(236, 236, 236, 0.75);
+}
+.dark .text-ink\/70 {
+  color: rgba(236, 236, 236, 0.7);
+}
+.dark .text-ink\/65 {
+  color: rgba(236, 236, 236, 0.65);
+}
+.dark .text-ink\/60 {
+  color: rgba(236, 236, 236, 0.6);
+}
+.dark .text-pine-900 {
+  color: #e0e0e0;
+}
+.dark .text-pine-900\/90 {
+  color: rgba(224, 224, 224, 0.9);
+}
+.dark .text-pine-900\/85 {
+  color: rgba(224, 224, 224, 0.85);
+}
+.dark .text-pine-900\/80 {
+  color: rgba(224, 224, 224, 0.8);
+}
+.dark .text-pine-900\/75 {
+  color: rgba(224, 224, 224, 0.75);
+}
+.dark .text-pine-900\/70 {
+  color: rgba(224, 224, 224, 0.7);
+}
+.dark .text-pine-900\/65 {
+  color: rgba(224, 224, 224, 0.65);
+}
+.dark .text-pine-900\/60 {
+  color: rgba(224, 224, 224, 0.6);
+}
+.dark .text-pine-900\/55 {
+  color: rgba(224, 224, 224, 0.55);
+}
+.dark .text-pine-900\/50 {
+  color: rgba(224, 224, 224, 0.5);
+}
+.dark .text-gold-600 {
+  color: #d9bb78;
+}
+.dark .placeholder\:text-pine-900\/65::placeholder {
+  color: rgba(224, 224, 224, 0.65);
+}
+.dark .placeholder\:text-pine-900\/50::placeholder {
+  color: rgba(224, 224, 224, 0.5);
+}
+.dark .placeholder\:text-ink\/65::placeholder {
+  color: rgba(236, 236, 236, 0.65);
+}
   .dark .border-pine-900 {
     border-color: rgba(255, 255, 255, 0.18);
   }
