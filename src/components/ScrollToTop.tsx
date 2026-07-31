@@ -7,13 +7,33 @@ import { UI } from '@/i18n/translations';
 export function ScrollToTop() {
   const { lang } = useLang();
   const t = UI[lang];
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   const [visible, setVisible] = useState(false);
 
-  // scroll to top on route change
+  // scroll to the hash target on navigation; otherwise to top
   useEffect(() => {
+    if (hash) {
+      const id = hash.slice(1);
+      /* the target section may not exist yet — the Home chunk is lazy-loaded
+         and the sections render after it resolves — so retry for a while */
+      let tries = 0;
+      let cancelled = false;
+      const attempt = () => {
+        if (cancelled) return;
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (tries++ < 20) {
+          window.setTimeout(attempt, 50);
+        }
+      };
+      attempt();
+      return () => {
+        cancelled = true;
+      };
+    }
     window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [pathname]);
+  }, [pathname, hash]);
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 500);
