@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { Linkedin, Youtube, FileText } from 'lucide-react';
 import { AfricaMap } from '@/components/AfricaMap';
 import { Reveal } from '@/components/Reveal';
+import { NewsletterForm } from '@/components/NewsletterForm';
 import { LINKS } from '@/data/content';
 import { useLang } from '@/i18n/useLang';
 import { NAV, UI } from '@/i18n/translations';
@@ -63,6 +64,17 @@ export function Footer() {
             </div>
           </div>
         </Reveal>
+
+        {/* newsletter strip */}
+        <div className="flex flex-col items-center justify-between gap-6 border-b border-white/8 py-10 lg:flex-row">
+          <div className="text-center lg:text-left">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold-400">{t['newsletter.eyebrow']}</p>
+            <p className="mt-1.5 max-w-md text-[15px] text-pine-100/65">{t['newsletter.footerText']}</p>
+          </div>
+          <div className="w-full sm:w-auto sm:min-w-[26rem]">
+            <NewsletterForm compact />
+          </div>
+        </div>
 
         {/* bottom bar */}
         <div className="flex flex-col items-center justify-between gap-6 pt-10 md:flex-row">

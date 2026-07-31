@@ -39,6 +39,7 @@ const load = async (name) => {
 };
 const verifyPhone = await load('verify-phone.js');
 const contact = await load('contact.js');
+const newsletter = await load('newsletter.js');
 const { rateLimit, usingSharedStore } = await import(
   pathToFileURL(path.resolve('node_modules/.tmp/api/_rate-limit.js')).href
 );
@@ -249,6 +250,129 @@ test('an invalid phone number is refused', async () => {
   assert.equal(sent.length, before, 'no email should have been sent');
 });
 
+/* ── newsletter: subscribe once, welcome once ─────────────────────────── */
+
+/** sets the fake KV up and makes the SADD pipeline reply with `saddResult` */
+const withNewsletterKv = async (fn, saddResult = 1) => {
+  process.env.KV_REST_API_URL = 'https://fake-kv.upstash.io/';
+  process.env.KV_REST_API_TOKEN = 'fake-token';
+  kvCalls.length = 0;
+  kvResponder = () => ({ ok: true, json: async () => [{ result: saddResult }] });
+  try {
+    return await fn();
+  } finally {
+    delete process.env.KV_REST_API_URL;
+    delete process.env.KV_REST_API_TOKEN;
+    kvResponder = null;
+  }
+};
+
+const saddCalls = () => kvCalls.filter((c) => c.commands?.[0]?.[0] === 'SADD');
+const lastEmail = () => sent.at(-1);
+
+test('a valid subscription stores the address and sends a welcome email', async () => {
+  await withNewsletterKv(async () => {
+    const before = sent.length;
+    const out = await call(newsletter, { email: 'Sub@Example.COM', lang: 'en' }, { ip: '10.6.0.1' });
+    assert.equal(out.code, 200);
+    assert.deepEqual(out.body, { ok: true });
+
+    const sadd = saddCalls();
+    assert.equal(sadd.length, 1, 'expected exactly one SADD pipeline');
+    assert.equal(sadd[0].url, 'https://fake-kv.upstash.io/pipeline');
+    assert.equal(sadd[0].auth, 'Bearer fake-token');
+    assert.deepEqual(sadd[0].commands[0], ['SADD', 'newsletter:emails', 'sub@example.com'], 'the address is stored lowercased');
+
+    const mail = lastEmail();
+    assert.equal(sent.length, before + 1, 'expected exactly one welcome email');
+    assert.match(mail.subject, /Welcome to Dr\. Dagnon/);
+    assert.match(mail.html, /Thank you for subscribing/);
+    assert.equal(mail.to[0], 'sub@example.com');
+  });
+});
+
+test('a known address is not welcomed twice', async () => {
+  await withNewsletterKv(async () => {
+    const before = sent.length;
+    const out = await call(newsletter, { email: 'old@example.test', lang: 'en' }, { ip: '10.6.0.2' });
+    assert.equal(out.code, 200);
+    assert.deepEqual(out.body, { ok: true, already: true });
+    assert.equal(sent.length, before, 'a re-subscription must not send another welcome email');
+  }, 0);
+});
+
+test('the welcome email follows the visitor language', async () => {
+  await withNewsletterKv(async () => {
+    const out = await call(newsletter, { email: 'fr@example.test', lang: 'fr' }, { ip: '10.6.0.3' });
+    assert.equal(out.code, 200);
+    const mail = lastEmail();
+    assert.match(mail.subject, /Bienvenue/);
+    assert.match(mail.html, /Merci de votre inscription/);
+  });
+});
+
+test('an invalid email is refused before anything is stored or sent', async () => {
+  await withNewsletterKv(async () => {
+    const beforeSent = sent.length;
+    const out = await call(newsletter, { email: 'not-an-email' }, { ip: '10.6.0.4' });
+    assert.equal(out.code, 400);
+    assert.equal(out.body.error, 'Invalid email');
+    assert.equal(sent.length, beforeSent);
+    assert.equal(saddCalls().length, 0, 'nothing should reach the store');
+  });
+});
+
+test('a missing email is refused', async () => {
+  const out = await call(newsletter, { lang: 'fr' }, { ip: '10.6.0.5' });
+  assert.equal(out.code, 400);
+});
+
+test('a filled honeypot is dropped silently, without storing or sending', async () => {
+  await withNewsletterKv(async () => {
+    const beforeSent = sent.length;
+    const out = await call(newsletter, { email: 'bot@example.test', website: 'http://spam.example' }, { ip: '10.6.0.6' });
+    assert.equal(out.code, 200);
+    assert.deepEqual(out.body, { ok: true });
+    assert.equal(sent.length, beforeSent);
+    assert.equal(saddCalls().length, 0);
+  });
+});
+
+test('subscriptions still work when the store is down', async () => {
+  await withNewsletterKv(async () => {
+    kvResponder = () => ({ ok: false, json: async () => ({}) });
+    const before = sent.length;
+    const out = await call(newsletter, { email: 'outage@example.test' }, { ip: '10.6.0.7' });
+    assert.equal(out.code, 200, 'a store outage must not block the subscription');
+    assert.equal(sent.length, before + 1, 'the welcome email should still go out');
+  });
+});
+
+test('subscriptions still work with no store configured at all', async () => {
+  const beforeSent = sent.length;
+  const beforeKv = kvCalls.length;
+  const out = await call(newsletter, { email: 'nokv@example.test' }, { ip: '10.6.0.8' });
+  assert.equal(out.code, 200);
+  assert.equal(sent.length, beforeSent + 1);
+  assert.equal(kvCalls.length, beforeKv, 'no store configured, so nothing should be sent');
+});
+
+test('newsletter is capped per IP', async () => {
+  const results = [];
+  for (let i = 0; i < 8; i++) {
+    results.push(await call(newsletter, { email: `ip${i}@example.test` }, { ip: '10.6.1.1' }));
+  }
+  assert.ok(results.some((r) => r.code === 429), 'expected at least one 429');
+});
+
+test('newsletter is capped per email address', async () => {
+  const results = [];
+  for (let i = 0; i < 4; i++) {
+    results.push(await call(newsletter, { email: 'flood-sub@example.test' }, { ip: `10.6.2.${i}` }));
+  }
+  assert.ok(results.some((r) => r.code === 429), 'expected at least one 429');
+});
+
 /* ── rate limiting — last, because the counters are module state ──────── */
 
 test('send is capped per email address', async () => {
@@ -274,7 +398,7 @@ test('contact is capped per IP', async () => {
 
 test('a request with no Origin header is refused', async () => {
   const before = sent.length;
-  for (const handler of [contact, verifyPhone]) {
+  for (const handler of [contact, verifyPhone, newsletter]) {
     const out = await call(handler, { action: 'send', email: 'x@example.test', name: 'A', message: 'hi' }, { origin: null, ip: '10.4.0.1' });
     assert.equal(out.code, 403);
   }
@@ -283,7 +407,7 @@ test('a request with no Origin header is refused', async () => {
 
 test('a request from another site is refused', async () => {
   const before = sent.length;
-  for (const handler of [contact, verifyPhone]) {
+  for (const handler of [contact, verifyPhone, newsletter]) {
     const out = await call(handler, { action: 'send', email: 'x@example.test', name: 'A', message: 'hi' }, { origin: 'https://evil.example', ip: '10.4.0.2' });
     assert.equal(out.code, 403);
   }

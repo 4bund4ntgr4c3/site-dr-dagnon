@@ -40,7 +40,7 @@ function compile(label, files, rootDir, outDir) {
   fs.writeFileSync(path.join(outDir, 'package.json'), '{"type":"module"}\n');
 }
 
-compile('api/', ['api/contact.ts', 'api/verify-phone.ts', 'api/_origin.ts'], 'api', path.join(tmp, 'api'));
+compile('api/', ['api/contact.ts', 'api/verify-phone.ts', 'api/newsletter.ts', 'api/_origin.ts'], 'api', path.join(tmp, 'api'));
 compile('src/i18n/routing.ts', ['src/i18n/routing.ts'], 'src/i18n', path.join(tmp, 'i18n'));
 
 /* pass the files explicitly: directory arguments behave inconsistently across
