@@ -53,37 +53,29 @@ export default function Cv() {
             <p className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
               {t['cvPage.intro']}
             </p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-2 rounded-full bg-gold-500 px-6 py-3 text-sm font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
+              >
+                <Printer size={15} /> {t['cvPage.print']}
+              </button>
+              <Link
+                to={localePath(otherLang, '/cv')}
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
+              >
+                {t['cvPage.otherLang']}
+              </Link>
+            </div>
+            <p className="mt-3 text-xs text-pine-100/55">{t['cvPage.printHint']}</p>
           </Reveal>
         </div>
       </section>
 
       <section className="bg-pine-50 py-16 lg:py-20 print:bg-white print:py-0">
-        <div className="relative mx-auto max-w-4xl px-5 lg:px-0">
-          {/* action bar — screen only, never printed */}
-          <div className="mb-6 print:hidden">
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-pine-900/10 bg-white p-4 shadow-lg shadow-pine-900/8">
-              <p className="text-sm font-semibold text-pine-900">{t['cvPage.title']}</p>
-              <div className="flex flex-wrap items-center gap-3">
-                <Link
-                  to={localePath(otherLang, '/cv')}
-                  className="rounded-full border border-pine-900/15 px-4 py-2 text-[13px] font-semibold text-pine-900 transition-colors hover:border-gold-500 hover:text-gold-700"
-                >
-                  {t['cvPage.otherLang']}
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => window.print()}
-                  className="inline-flex items-center gap-2 rounded-full bg-gold-500 px-5 py-2.5 text-[13px] font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
-                >
-                  <Printer size={15} /> {t['cvPage.print']}
-                </button>
-              </div>
-            </div>
-            <p className="mt-2 text-xs text-pine-900/55">{t['cvPage.printHint']}</p>
-          </div>
-
-          {/* the document — one white sheet */}
-          <article className="cv-sheet mx-auto rounded-3xl bg-white px-6 py-10 text-pine-900 shadow-[0_24px_80px_-50px_rgba(2,36,32,0.55)] sm:px-12 lg:px-16 print:max-w-none print:rounded-none print:px-0 print:py-0 print:shadow-none">
+        {/* the document — one white sheet */}
+        <article className="cv-sheet mx-auto max-w-4xl rounded-3xl bg-white px-6 py-10 text-pine-900 shadow-[0_24px_80px_-50px_rgba(2,36,32,0.55)] sm:px-12 lg:px-16 print:max-w-none print:rounded-none print:px-0 print:py-0 print:shadow-none">
         <header className="border-b-2 border-pine-900 pb-6">
           <h1 className="font-display text-3xl font-semibold tracking-tight">{t['cvPage.title']}</h1>
           <p className="mt-2 font-display text-xl font-semibold">{t['name.full']}</p>
@@ -251,8 +243,7 @@ export default function Cv() {
         <p className="mt-8 border-t border-pine-900/15 pt-4 text-[11.5px] italic text-pine-900/55">
           {t['cvPage.refs']}
         </p>
-          </article>
-        </div>
+        </article>
       </section>
     </main>
   );
