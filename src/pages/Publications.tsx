@@ -259,6 +259,7 @@ export default function PublicationsPage() {
               <p className="mt-1 text-sm font-medium text-gold-600">
                 {p.journal[lang]} · {p.year}
               </p>
+              <p className="mt-4 text-sm leading-relaxed text-pine-900/75">{p.description[lang]}</p>
               {p.url && (
                 <a
                   href={p.url}
@@ -300,6 +301,7 @@ function FeaturedCard({ p, lang, t }: { p: PubEntry; lang: 'fr' | 'en'; t: typeo
         <p className="mt-1 text-sm font-medium text-gold-300/80">
           {p.journal[lang]} · {p.year}
         </p>
+        <p className="mt-3 text-sm leading-relaxed text-pine-100/70">{p.description[lang]}</p>
       </div>
       {p.url && (
         <span className="inline-flex items-center gap-2 self-start rounded-full border border-gold-500/50 px-5 py-2.5 text-sm font-semibold text-gold-300 transition-all group-hover:bg-gold-500 group-hover:text-pine-950 lg:self-center">
@@ -331,6 +333,7 @@ function PubCard({ p, lang, t }: { p: PubEntry; lang: 'fr' | 'en'; t: typeof UI[
           {p.title[lang]}
         </h3>
         <p className="mt-2 text-[12px] text-pine-900/75 line-clamp-2">{p.authors[lang]}</p>
+        <p className="mt-2 text-[12.5px] leading-relaxed text-pine-900/60 line-clamp-3">{p.description[lang]}</p>
         {p.url && (
           <span className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-600 transition-colors group-hover:text-gold-500">
             {p.type === 'blog' ? t['pubPage.readPost'] : t['pubPage.readPaper']}

@@ -896,9 +896,12 @@ function MediaCard({
         <p className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-gold-500">
           {meta}
         </p>
-        <h3 className="mt-2 flex-1 font-display text-[15.5px] font-semibold leading-snug text-pine-900">
+        <h3 className="mt-2 font-display text-[15.5px] font-semibold leading-snug text-pine-900">
           {m.title[lang]}
         </h3>
+        {m.description && (
+          <p className="mt-2 flex-1 text-[12.5px] leading-relaxed text-pine-900/60 line-clamp-3">{m.description[lang]}</p>
+        )}
         {isDoc && (
           <a
             href={m.url}

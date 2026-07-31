@@ -10,6 +10,8 @@ export interface MediaEntry {
   subType?: string;
   date: string;
   title: Record<Lang, string>;
+  /** One-sentence factual summary, shown on the card — press articles only. */
+  description?: Record<Lang, string>;
   youtubeId?: string;
   thumb?: string;
   src?: string;
@@ -199,6 +201,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'AIRID accueille le Dr. Seynudé Jean-Fortuné Dagnon de la Fondation Gates',
       en: 'AIRID welcomes Dr. Seynudé Jean-Fortuné Dagnon from the Gates Foundation',
     },
+    description: { fr: 'L\'AIRID a accueilli le Dr Dagnon pour une visite axée sur le renforcement des partenariats de recherche et l\'innovation scientifique au service de la santé au Bénin.', en: 'AIRID hosted Dr. Dagnon for a visit centered on strengthening research partnerships and advancing scientific innovation for health outcomes in Benin.' },
     url: 'https://airid-africa.com/public/news/28-airid-welcomes-dr-seynude-jean-fortune-dagnon-from-the-gates-foundation',
     thumb: 'https://airid-africa.com/public/assets/news/1784645757_6a5f887df2de0_10.jpg',
     fileLabel: { fr: 'Article · AIRID Africa', en: 'Article · AIRID Africa' },
@@ -212,6 +215,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Tribune — Du contrôle à l\'élimination du paludisme',
       en: 'Op-ed — From malaria control to elimination',
     },
+    description: { fr: 'Tribune plaidant pour un passage, en Afrique, de la gestion des flambées de paludisme à l\'arrêt définitif de la transmission, via des stratégies équitables et pilotées localement.', en: 'Op-ed arguing that African nations must shift from managing malaria outbreaks to permanently ending transmission, through equity-focused, locally-led strategies.' },
     url: 'https://africahealthwatch.com/from-malaria-control-to-elimination-the-turn-we-need-to-make/',
     thumb: 'https://africahealthwatch.com/wp-content/uploads/2026/01/Africa-Health-Watch-1024x824.png',
     fileLabel: { fr: 'Article · Africa Health Watch', en: 'Article · Africa Health Watch' },
@@ -225,6 +229,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Systèmes sanitaires africains : la bataille stratégique des données au cœur des politiques de survie',
       en: 'African health systems: the strategic battle for data at the heart of survival policies',
     },
+    description: { fr: 'Relate une rencontre à Dakar où des experts de la Fondation Gates ont souligné que des données de santé fiables sont indispensables au suivi des maladies et à l\'allocation des ressources, le Sénégal s\'imposant comme un leader régional.', en: 'Reports from a Dakar meeting where Gates Foundation experts stressed that reliable health data is essential to disease tracking and resource allocation, with Senegal emerging as a regional leader.' },
     url: 'https://www.seneweb.com/en/news/24/systemes-sanitaires-africains-la-bataille-strategique-des-donnees-au-coeur-des-politiques-de-survie-1_n_492306.html',
     thumb: 'https://image.seneweb.com/content/news/2026-20-12//thumb_1260x800_6a03084b80aed_oftrk0p0cQ.jpg',
     fileLabel: { fr: 'Article · Seneweb', en: 'Article · Seneweb' },
@@ -238,6 +243,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Présentations — Réunion annuelle conjointe SMC 2026',
       en: 'Presentations — Joint SMC Annual Meeting 2026',
     },
+    description: { fr: 'Présentations de la première réunion conjointe SMC Alliance / Alliance for Malaria Prevention à Kampala, portant sur la digitalisation des campagnes, l\'optimisation des coûts et les stratégies de chimioprévention.', en: 'Presentations from the first joint SMC Alliance / Alliance for Malaria Prevention meeting in Kampala, covering campaign digitalization, cost optimization and chemoprevention strategies.' },
     url: 'https://www.smc-alliance.org/smc-resources/joint-smc-amp-annual-meetings-2026-presentations',
     fileLabel: { fr: 'Présentation · SMC Alliance', en: 'Presentation · SMC Alliance' },
   },
@@ -250,6 +256,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Structurer l\'utilisation des données dans la lutte contre le paludisme au Burundi',
       en: 'Structuring data use in the fight against malaria in Burundi',
     },
+    description: { fr: 'Présente l\'appui de Bluesquare au ministère de la Santé du Burundi pour la mise en place d\'un entrepôt national de données paludisme, dans le cadre du projet Malariya Pi financé par la Fondation Gates et la Belgique.', en: 'Covers Bluesquare\'s support for Burundi\'s Ministry of Health in building a national malaria data warehouse under the Gates- and Belgium-funded Malariya Pi project.' },
     url: 'https://www.bluesquarehub.com/fr/bluesquare-news-structurer-lutilisation-des-donnees-dans-la-lutte-contre-le-paludisme-au-burundi/',
     thumb: 'https://www.bluesquarehub.com/wp-content/uploads/2026/04/1774973041604.jpeg',
     fileLabel: { fr: 'Article · Bluesquare', en: 'Article · Bluesquare' },
@@ -263,6 +270,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Le Cameroun et la fondation Bill & Mélinda Gates s\'accordent sur la lutte contre le paludisme',
       en: 'Cameroon and the Bill & Melinda Gates Foundation agree on malaria fight',
     },
+    description: { fr: 'Relate la rencontre entre le ministère de la Santé du Cameroun et la Fondation Gates pour renforcer le programme national de lutte contre le paludisme.', en: 'Reports on Cameroon\'s Ministry of Health meeting with the Gates Foundation to strengthen the national malaria control program.' },
     url: 'https://www.lebledparle.com/le-cameroun-et-la-fondation-bill-melinda-gates-s-accordent-sur-la-lutte-contre-le-paludisme/',
     thumb: 'https://www.lebledparle.com/wp-content/uploads/2020/09/Bill.jpg',
     fileLabel: { fr: 'Article · Lebledparle', en: 'Article · Lebledparle' },
@@ -276,6 +284,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Lutte contre le paludisme : le gouvernement et la fondation Bill & Melinda Gates s\'accordent',
       en: 'Malaria fight: government and Bill & Melinda Gates Foundation agree',
     },
+    description: { fr: 'Le ministre camerounais Malachie Manaouda et le Dr Dagnon de la Fondation Gates ont évoqué le renforcement de la surveillance et des données ; l\'OMS a demandé un accès rapide aux traitements et une place dans la distribution du futur vaccin.', en: 'Cameroon\'s health minister Malachie Manaouda and Dr. Dagnon of the Gates Foundation discussed strengthening surveillance and data systems; WHO called for faster treatment access and future vaccine allocation for Cameroon.' },
     url: 'https://www.stopblablacam.com/societe/0703-8389-lutte-contre-le-paludisme-le-gouvernement-et-la-fondation-bill-melinda-gates-s-accordent',
     thumb: 'https://www.stopblablacam.com/media/k2/items/cache/ad30481943e896916174a77f4c826900_L.jpg',
     fileLabel: { fr: 'Article · StopBlaBlaCam', en: 'Article · StopBlaBlaCam' },
@@ -289,6 +298,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'Paludisme : le Cameroun et la fondation Bill & Melinda Gates discutent de la meilleure stratégie d\'éradication',
       en: 'Malaria: Cameroon, Bill & Melinda Gates discuss best eradication strategy',
     },
+    description: { fr: 'La Fondation Gates s\'est engagée à soutenir le programme de lutte contre le paludisme du Cameroun — renforcement de la surveillance et des données — tandis que l\'OMS a réclamé un accès plus rapide aux traitements et une place dans la distribution du futur vaccin.', en: 'The Gates Foundation pledged support for Cameroon\'s malaria control program — bolstering surveillance and data systems — while WHO pressed for faster treatment access and future vaccine allocation.' },
     url: 'https://www.stopblablacam.com/society/0703-8390-malaria-cameroon-bill-melinda-gates-discuss-best-eradication-strategy',
     thumb: 'https://www.stopblablacam.com/media/k2/items/cache/ad30481943e896916174a77f4c826900_L.jpg',
     fileLabel: { fr: 'Article · StopBlaBlaCam', en: 'Article · StopBlaBlaCam' },
@@ -302,6 +312,7 @@ export const MEDIA_ITEMS: MediaEntry[] = [
       fr: 'L\'élimination du paludisme au centre des échanges entre le Minsanté et la Fondation Gates',
       en: 'Malaria elimination at the center of exchanges between Minsante and Gates Foundation',
     },
+    description: { fr: 'Le ministère camerounais de la Santé a annoncé une campagne de mobilisation du secteur privé contre le paludisme, lancée le 10 mars 2022 sous le patronage de la Première dame Chantal Biya, à l\'issue d\'échanges avec la Fondation Gates sur la surveillance et les données.', en: 'Cameroon\'s Ministry of Health announced a private-sector malaria campaign launching March 10, 2022 under First Lady Chantal Biya\'s patronage, following talks with the Gates Foundation on surveillance and data.' },
     url: 'https://www.minsante.cm/site/?q=en/node/4224',
     thumb: 'https://www.minsante.cm/site/sites/default/files/styles/slider__af_/public/field/image/fondation%20Bill%20melinda%20gate.png',
     fileLabel: { fr: 'Article · Minsante', en: 'Article · Minsante' },

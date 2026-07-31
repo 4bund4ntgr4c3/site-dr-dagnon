@@ -115,7 +115,13 @@ test('titles and descriptions are unique, present and translated', () => {
    out. These budgets are on the decoded text (what a reader actually sees),
    not the HTML-escaped attribute value, since "&amp;" reads as one character
    wide, not five. */
-const decodeEntities = (s) => s.replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+const decodeEntities = (s) =>
+  s
+    .replace(/&amp;/g, '&')
+    .replace(/&#39;|&#x27;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>');
 
 test('titles and descriptions stay inside the SERP snippet budget', () => {
   eachPage(({ id, html }) => {
@@ -350,5 +356,66 @@ test('every local image referenced by the app exists in dist/', () => {
   assert.ok(refs.length >= 20, `expected the media data to reference images, found ${refs.length}`);
   for (const ref of new Set(refs)) {
     assert.ok(fs.existsSync(path.join(dist, ref)), `${ref} is referenced but missing from dist/`);
+  }
+});
+
+test('every publication and press article has a real, non-generic description', () => {
+  /* PubEntry.description and MediaEntry.description used to not exist at all —
+     cards showed only a title, authors/journal, and a date. Google Search
+     Console flagging thin content on these pages is what prompted adding
+     them; this guards against a future edit silently dropping one. */
+  const pubSource = fs.readFileSync(path.resolve('src/data/publications.ts'), 'utf-8');
+  const pubIds = [...pubSource.matchAll(/id: '([\w-]+)'/g)].map((m) => m[1]);
+  assert.ok(pubIds.length >= 15, `expected ~17 publications, found ${pubIds.length}`);
+
+  const descFieldRe = new RegExp(
+    "description: \\{ fr: '((?:[^'\\\\]|\\\\.)*)', en: '((?:[^'\\\\]|\\\\.)*)' \\}",
+  );
+  const unescape = (s) => s.replace(/\\(.)/g, '$1');
+
+  const pubBlocks = pubSource.split(/\n {2}\{\n/).slice(1);
+  assert.equal(pubBlocks.length, pubIds.length, 'publication block count does not match id count');
+  for (const [i, block] of pubBlocks.entries()) {
+    const id = pubIds[i];
+    const desc = block.match(descFieldRe);
+    assert.ok(desc, `${id}: no description field`);
+    assert.ok(desc[1].length >= 40, `${id}: French description too short (${desc[1].length} chars)`);
+    assert.ok(desc[2].length >= 40, `${id}: English description too short (${desc[2].length} chars)`);
+    assert.notEqual(desc[1], desc[2], `${id}: French and English descriptions are identical`);
+  }
+
+  /* every rendered publication card must show its description, not just its title */
+  for (const lang of LANGS) {
+    const html = pages.get(`${lang} /publications`);
+    const bodyText = decodeEntities((html.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? '').replace(/<[^>]*>/g, ' '));
+    for (const block of pubBlocks) {
+      const id = block.match(/id: '([\w-]+)'/)[1];
+      const descMatch = block.match(descFieldRe);
+      const raw = lang === 'fr' ? descMatch[1] : descMatch[2];
+      const text = unescape(raw).slice(0, 40);
+      assert.ok(bodyText.includes(text), `${lang} /publications: ${id}'s description is not rendered on its card`);
+    }
+  }
+
+  /* press documents: at least the ones known to carry a description must render it.
+     Split into per-entry blocks first, same as the publications check above —
+     a single regex spanning the whole file risks a lazy match skipping past an
+     id-less entry (e.g. the one press video with no description) and pairing
+     its id with a later, unrelated entry's description. */
+  const mediaSource = fs.readFileSync(path.resolve('src/data/media.ts'), 'utf-8');
+  const mediaBlocks = mediaSource.split(/\n {2}\{\n/).slice(1);
+  const pressWithDesc = mediaBlocks
+    .map((block) => ({ id: block.match(/id: '([\w-]+)'/)?.[1], desc: block.match(descFieldRe) }))
+    .filter((e) => e.id && e.desc)
+    .map((e) => [null, e.id, e.desc[1], e.desc[2]]);
+  assert.ok(pressWithDesc.length >= 9, `expected 9 press descriptions, found ${pressWithDesc.length}`);
+  for (const lang of LANGS) {
+    const html = pages.get(`${lang} /media/press`);
+    const bodyText = decodeEntities((html.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? '').replace(/<[^>]*>/g, ' '));
+    for (const [, id, fr, en] of pressWithDesc) {
+      const raw = lang === 'fr' ? fr : en;
+      const text = unescape(raw).slice(0, 40);
+      assert.ok(bodyText.includes(text), `${lang} /media/press: ${id}'s description is not rendered on its card`);
+    }
   }
 });
