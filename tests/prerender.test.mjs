@@ -252,6 +252,32 @@ test('vercel.json serves every prerendered route explicitly', () => {
   }
 });
 
+test('sitemap.xml is exempt from the CSP applied to every other path', () => {
+  /* The blanket `/(.*)` rule's Content-Security-Policy breaks Chrome's native
+     XML pretty-printer: blocked from the internal resource it needs, Chrome
+     falls back to parsing the response as HTML, discarding the unrecognised
+     <urlset>/<url>/<loc> tags but keeping their text — and since the
+     generated sitemap has no whitespace between sibling tags, that renders as
+     one unreadable wall of concatenated dates and priorities. Googlebot is
+     unaffected (it parses the XML directly), but a human sanity-checking the
+     sitemap in a browser sees garbage. This asserts the override is still
+     there and still wins: Vercel applies later array entries' header values
+     over earlier ones for the same key, so this rule must both exist and
+     come after the general `/(.*)` rule. */
+  const config = JSON.parse(fs.readFileSync(path.resolve('vercel.json'), 'utf-8'));
+  const indexOf = (source) => config.headers.findIndex((h) => h.source === source);
+
+  const generalIdx = indexOf('/(.*)');
+  const sitemapIdx = indexOf('/sitemap.xml');
+  assert.ok(generalIdx !== -1, 'no general CSP rule found — has vercel.json been restructured?');
+  assert.ok(sitemapIdx !== -1, 'no /sitemap.xml header rule found');
+  assert.ok(sitemapIdx > generalIdx, '/sitemap.xml header rule must come after /(.*) to override it');
+
+  const sitemapCsp = config.headers[sitemapIdx].headers.find((h) => h.key === 'Content-Security-Policy');
+  assert.ok(sitemapCsp, '/sitemap.xml must explicitly override Content-Security-Policy');
+  assert.equal(sitemapCsp.value, '', 'an empty value is what neutralises the policy for this path');
+});
+
 test('every local image referenced by the app exists in dist/', () => {
   /* catches a renamed or forgotten asset — a 404 image is invisible in a
      build log and only shows up as a hole on the page */
