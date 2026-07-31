@@ -244,6 +244,10 @@
 .dark .text-gold-700\/80 {
   color: rgba(217, 187, 120, 0.8);
 }
+.dark .text-red-500,
+.dark .text-red-600 {
+  color: #f87171;
+}
 .dark .bg-gold-100.text-gold-700 {
   color: #86652d;
 }
@@ -269,7 +273,7 @@
     border-color: rgba(255, 255, 255, 0.19);
   }
   .dark .border-pine-900\/10 {
-    border-color: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.16);
   }
   .dark .ring-pine-900\/10 {
     --tw-ring-color: rgba(255, 255, 255, 0.14);
