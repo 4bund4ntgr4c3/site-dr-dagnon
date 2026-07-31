@@ -26,6 +26,7 @@ const ROUTES = [
   '/media/press',
   '/media/community',
   '/publications',
+  '/agenda',
 ];
 
 const dist = path.resolve('dist');
@@ -364,7 +365,7 @@ test('every publication and press article has a real, non-generic description', 
      cards showed only a title, authors/journal, and a date. Google Search
      Console flagging thin content on these pages is what prompted adding
      them; this guards against a future edit silently dropping one. */
-  const pubSource = fs.readFileSync(path.resolve('src/data/publications.ts'), 'utf-8');
+  const pubSource = fs.readFileSync(path.resolve('src/data/publications.ts'), 'utf-8').replace(/\r\n/g, '\n');
   const pubIds = [...pubSource.matchAll(/id: '([\w-]+)'/g)].map((m) => m[1]);
   assert.ok(pubIds.length >= 15, `expected ~17 publications, found ${pubIds.length}`);
 
@@ -402,7 +403,7 @@ test('every publication and press article has a real, non-generic description', 
      a single regex spanning the whole file risks a lazy match skipping past an
      id-less entry (e.g. the one press video with no description) and pairing
      its id with a later, unrelated entry's description. */
-  const mediaSource = fs.readFileSync(path.resolve('src/data/media.ts'), 'utf-8');
+  const mediaSource = fs.readFileSync(path.resolve('src/data/media.ts'), 'utf-8').replace(/\r\n/g, '\n');
   const mediaBlocks = mediaSource.split(/\n {2}\{\n/).slice(1);
   const pressWithDesc = mediaBlocks
     .map((block) => ({ id: block.match(/id: '([\w-]+)'/)?.[1], desc: block.match(descFieldRe) }))
@@ -417,5 +418,66 @@ test('every publication and press article has a real, non-generic description', 
       const text = unescape(raw).slice(0, 40);
       assert.ok(bodyText.includes(text), `${lang} /media/press: ${id}'s description is not rendered on its card`);
     }
+  }
+});
+
+test('every agenda event has a real, non-generic description in both languages', () => {
+  const source = fs.readFileSync(path.resolve('src/data/agenda.ts'), 'utf-8').replace(/\r\n/g, '\n');
+  const ids = [...source.matchAll(/id: '([\w-]+)'/g)].map((m) => m[1]);
+  assert.ok(ids.length >= 10, `expected ~13 agenda events, found ${ids.length}`);
+
+  const dateFieldRe = /date: '(\d{4}-\d{2}-\d{2})'/;
+  const locFieldRe = /location: \{ fr: '((?:[^'\\]|\\.)*)', en: '((?:[^'\\]|\\.)*)' \}/;
+  const descFieldRe = /description: \{ fr: '((?:[^'\\]|\\.)*)', en: '((?:[^'\\]|\\.)*)' \}/;
+  const unescape = (s) => s.replace(/\\(.)/g, '$1');
+
+  const blocks = source.split(/\n {2}\{\n/).slice(1);
+  assert.equal(blocks.length, ids.length, 'agenda block count does not match id count');
+  for (const [i, block] of blocks.entries()) {
+    const id = ids[i];
+    const date = block.match(dateFieldRe)?.[1];
+    assert.ok(date, `${id}: no date field`);
+    assert.match(date, /^\d{4}-\d{2}-\d{2}$/, `${id}: bad date — must be an ISO yyyy-mm-dd string`);
+    const loc = block.match(locFieldRe);
+    assert.ok(loc, `${id}: no location field`);
+    assert.ok(loc[1].length >= 3 && loc[2].length >= 3, `${id}: location too short`);
+    const desc = block.match(descFieldRe);
+    assert.ok(desc, `${id}: no description field`);
+    assert.ok(desc[1].length >= 40, `${id}: French description too short (${desc[1].length} chars)`);
+    assert.ok(desc[2].length >= 40, `${id}: English description too short (${desc[2].length} chars)`);
+    assert.notEqual(desc[1], desc[2], `${id}: French and English descriptions are identical`);
+  }
+
+  /* every rendered agenda card must show its description in the body */
+  for (const lang of LANGS) {
+    const html = pages.get(`${lang} /agenda`);
+    assert.ok(html, `${lang} /agenda is missing from the build`);
+    const bodyText = decodeEntities((html.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? '').replace(/<[^>]*>/g, ' '));
+    for (const block of blocks) {
+      const id = block.match(/id: '([\w-]+)'/)[1];
+      const desc = block.match(descFieldRe);
+      const text = unescape(lang === 'fr' ? desc[1] : desc[2]).slice(0, 40);
+      assert.ok(bodyText.includes(text), `${lang} /agenda: ${id}'s description is not rendered on its card`);
+    }
+  }
+});
+
+test('the agenda page separates upcoming from past and can show an empty upcoming state', () => {
+  for (const lang of LANGS) {
+    const html = pages.get(`${lang} /agenda`);
+    const bodyText = decodeEntities((html.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? '').replace(/<[^>]*>/g, ' '));
+    const t = {
+      upcoming: lang === 'fr' ? 'À venir' : 'Upcoming',
+      past: lang === 'fr' ? 'Passé' : 'Past',
+      emptyUpcoming: lang === 'fr' ? 'Aucun événement à venir' : 'No upcoming events',
+    };
+    assert.ok(bodyText.includes(t.upcoming), `${lang}: missing "upcoming" section heading`);
+    assert.ok(bodyText.includes(t.past), `${lang}: missing "past" section heading`);
+    /* an event dated today or later lands in upcoming; nothing in the data is
+       fabricated, so the empty state may legitimately be what renders */
+    assert.ok(
+      bodyText.includes(t.emptyUpcoming) || bodyText.includes(lang === 'fr' ? 'Conférence' : 'Conference'),
+      `${lang}: agenda should either show upcoming events or the empty state`,
+    );
   }
 });

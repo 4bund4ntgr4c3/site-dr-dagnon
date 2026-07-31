@@ -5,10 +5,11 @@ import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Media from './pages/Media';
 import Publications from './pages/Publications';
+import Agenda from './pages/Agenda';
 
 /* Plain imports, not React.lazy() — see the comment on AppPages in App.tsx
    for why renderToStaticMarkup needs this. */
-const pages: AppPages = { Home, Contact, Media, Publications };
+const pages: AppPages = { Home, Contact, Media, Publications, Agenda };
 
 /* Renders a route to plain HTML for scripts/prerender.mjs to embed in each
    generated dist/.../index.html — this is what a crawler sees before any

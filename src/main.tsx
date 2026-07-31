@@ -9,6 +9,7 @@ const pages: AppPages = {
   Contact: lazy(() => import('./pages/Contact')),
   Media: lazy(() => import('./pages/Media')),
   Publications: lazy(() => import('./pages/Publications')),
+  Agenda: lazy(() => import('./pages/Agenda')),
 }
 
 createRoot(document.getElementById('root')!).render(

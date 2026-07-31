@@ -114,6 +114,19 @@ export const PUB_SEO: Record<Lang, { title: string; description: string; keyword
   },
 };
 
+export const AGENDA_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Agenda — Conférences & engagements du Dr. Dagnon',
+    description: 'Conférences, prises de parole et engagements communautaires du Dr. Seynudé Jean-Fortuné Dagnon — dates clés en Afrique.',
+    keywords: 'agenda Dr Dagnon, conférences paludisme, prise de parole, Nuit du Paludisme, agenda santé publique Afrique, événements malaria',
+  },
+  en: {
+    title: 'Agenda — Conferences & Engagements of Dr. Dagnon',
+    description: 'Conferences, speaking engagements and community commitments of Dr. Seynudé Jean-Fortuné Dagnon — key dates across Africa.',
+    keywords: 'Dr Dagnon agenda, malaria conferences, speaking engagements, Night Against Malaria, public health events Africa, malaria events',
+  },
+};
+
 const fullName = (lang: Lang) => (lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD, MPH');
 
 /* ── JSON-LD builders ─────────────────────────────────────────── */
@@ -216,6 +229,8 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
     if (cat && CAT_NAMES[cat]) items.push({ name: CAT_NAMES[cat][lang], url: absUrl(lang, `/media/${cat}`) });
   } else if (path.startsWith('/publications')) {
     items.push({ name: 'Publications', url: absUrl(lang, '/publications') });
+  } else if (path.startsWith('/agenda')) {
+    items.push({ name: 'Agenda', url: absUrl(lang, '/agenda') });
   }
   return {
     '@context': 'https://schema.org',
@@ -251,6 +266,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isMediaLanding = route === '/media';
   const mediaCategory = isMedia && !isMediaLanding ? route.split('/media/')[1]?.split('/')[0] || null : null;
   const isPub = route.startsWith('/publications');
+  const isAgenda = route.startsWith('/agenda');
   const notFound = !PRERENDER_ROUTES.includes(route);
 
   const catName = mediaCategory ? CAT_NAMES[mediaCategory] : null;
@@ -277,7 +293,9 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
         ? MEDIA_SEO[lang]
         : isContact
           ? CONTACT_SEO[lang]
-          : SEO[lang];
+          : isAgenda
+            ? AGENDA_SEO[lang]
+            : SEO[lang];
 
   const url = absUrl(lang, route);
 
@@ -302,7 +320,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
         ? null
         : isContact
           ? contactPageJsonLd(lang)
-          : isMedia || isPub
+          : isMedia || isPub || isAgenda
             ? collectionPageJsonLd(lang, data.title, data.description, url)
             : null,
     },
@@ -322,6 +340,7 @@ export const PRERENDER_ROUTES = [
   '/media/press',
   '/media/community',
   '/publications',
+  '/agenda',
 ];
 
 export const PRERENDER_LANGS: Lang[] = SUPPORTED;
@@ -332,6 +351,7 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/contact': { priority: '0.7', changefreq: 'monthly' },
   '/media': { priority: '0.9', changefreq: 'weekly' },
   '/publications': { priority: '0.9', changefreq: 'weekly' },
+  '/agenda': { priority: '0.8', changefreq: 'weekly' },
 };
 export const DEFAULT_ROUTE_PRIORITY = { priority: '0.8', changefreq: 'monthly' };
 

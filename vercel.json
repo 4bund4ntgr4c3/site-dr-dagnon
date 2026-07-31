@@ -71,6 +71,7 @@
     { "source": "/media/press", "destination": "/media/press/index.html" },
     { "source": "/media/community", "destination": "/media/community/index.html" },
     { "source": "/publications", "destination": "/publications/index.html" },
+    { "source": "/agenda", "destination": "/agenda/index.html" },
 
     { "source": "/fr", "destination": "/fr/index.html" },
     { "source": "/fr/contact", "destination": "/fr/contact/index.html" },
@@ -80,6 +81,7 @@
     { "source": "/fr/media/speaking", "destination": "/fr/media/speaking/index.html" },
     { "source": "/fr/media/press", "destination": "/fr/media/press/index.html" },
     { "source": "/fr/media/community", "destination": "/fr/media/community/index.html" },
-    { "source": "/fr/publications", "destination": "/fr/publications/index.html" }
+    { "source": "/fr/publications", "destination": "/fr/publications/index.html" },
+    { "source": "/fr/agenda", "destination": "/fr/agenda/index.html" }
   ]
 }

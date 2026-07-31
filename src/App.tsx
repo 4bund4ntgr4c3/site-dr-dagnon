@@ -21,6 +21,7 @@ export interface AppPages {
   Contact: ComponentType
   Media: ComponentType
   Publications: ComponentType
+  Agenda: ComponentType
 }
 
 function Loading() {
@@ -43,6 +44,7 @@ const routesFor = (Pages: AppPages) => [
   <Route key="media" path="media" element={<Pages.Media />} />,
   <Route key="media-category" path="media/:category" element={<Pages.Media />} />,
   <Route key="publications" path="publications" element={<Pages.Publications />} />,
+  <Route key="agenda" path="agenda" element={<Pages.Agenda />} />,
 ]
 
 export default function App({ pages }: { pages: AppPages }) {

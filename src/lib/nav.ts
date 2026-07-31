@@ -7,5 +7,6 @@ export function navHref(lang: Lang, id: string): string {
   if (id === 'contact') return localePath(lang, '/contact');
   if (id === 'medias') return localePath(lang, '/media');
   if (id === 'publications') return localePath(lang, '/publications');
+  if (id === 'agenda') return localePath(lang, '/agenda');
   return `${localePath(lang, '/')}#${id}`;
 }
