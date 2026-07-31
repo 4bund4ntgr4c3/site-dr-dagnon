@@ -99,7 +99,7 @@ export default function PublicationsPage() {
               </div>
 
               {/* year + sort */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 lg:min-w-0 lg:flex-1 lg:flex-nowrap lg:overflow-x-auto lg:py-1 lg:no-scrollbar">
+              <div className="flex flex-nowrap items-center gap-x-6 overflow-x-auto py-1 no-scrollbar lg:shrink-0 lg:py-0 lg:overflow-visible">
                 <div className="flex items-center gap-2">
                   <p className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">
                     {t['pubPage.filterYear']}
