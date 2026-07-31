@@ -223,19 +223,17 @@ export default function Contact() {
                   )}
 
                   {/* location — always visible */}
-                  {t['contact.location'].split(/\s-\s/).map((l, i) => (
-                    <li key={i} className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lg hover:shadow-pine-900/8">
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-gold-400">
-                        <MapPin size={18} />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/75">
-                          {t['contact.locationLabel']}
-                        </p>
-                        <p className="text-sm font-medium text-pine-900">{l}</p>
-                      </div>
-                    </li>
-                  ))}
+                  <li className="flex items-center gap-4 rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lg hover:shadow-pine-900/8">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-gold-400">
+                      <MapPin size={18} />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/75">
+                        {t['contact.locationLabel']}
+                      </p>
+                      <p className="text-sm font-medium text-pine-900">{t['contact.location']}</p>
+                    </div>
+                  </li>
                 </ul>
 
                 {/* verify phone section — shown after form submit, before verification */}
