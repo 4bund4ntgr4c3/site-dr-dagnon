@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
+import { NotFoundView } from '@/components/NotFoundView';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
@@ -777,18 +778,7 @@ export default function MediaPage() {
      pages too — and the two fought over the same tags. */
 
   if (invalidCategory) {
-    return (
-      <main id="main-content" className="flex min-h-screen flex-col items-center justify-center bg-pine-950 px-5 text-center">
-        <p className="text-6xl font-display font-semibold text-gold-400">404</p>
-        <p className="mt-4 text-lg text-pine-100/70">{t['notFound.title']}</p>
-        <Link
-          to={localePath(lang, '/media')}
-          className="mt-8 inline-flex rounded-full bg-gold-500 px-6 py-3 text-sm font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
-        >
-          {t['notFound.back']}
-        </Link>
-      </main>
-    );
+    return <NotFoundView backHref="/media" />;
   }
 
   return (

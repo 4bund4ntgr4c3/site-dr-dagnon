@@ -1,13 +1,11 @@
 import { Suspense, type ComponentType } from 'react'
-import { Routes, Route, Link } from 'react-router'
+import { Routes, Route } from 'react-router'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/sections/Footer'
 import { ScrollToTop } from '@/components/ScrollToTop'
 import { Seo } from '@/components/Seo'
+import { NotFoundView } from '@/components/NotFoundView'
 import { LanguageProvider } from '@/i18n/LanguageContext'
-import { useLang } from '@/i18n/useLang'
-import { localePath } from '@/i18n/routing'
-import { UI } from '@/i18n/translations'
 
 /* The four routed page components are injected rather than imported here, so
    the client and the build-time server renderer can each supply their own
@@ -34,20 +32,7 @@ function Loading() {
 }
 
 function NotFound() {
-  const { lang } = useLang();
-  const t = UI[lang];
-  return (
-    <main id="main-content" className="flex min-h-screen flex-col items-center justify-center bg-pine-950 px-5 text-center">
-      <p className="text-6xl font-display font-semibold text-gold-400">404</p>
-      <p className="mt-4 text-lg text-pine-100/70">{t['notFound.title']}</p>
-      <Link
-        to={localePath(lang, '/')}
-        className="mt-8 inline-flex rounded-full bg-gold-500 px-6 py-3 text-sm font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
-      >
-        {t['notFound.back']}
-      </Link>
-    </main>
-  )
+  return <NotFoundView />;
 }
 
 /* The same page tree is mounted twice: once at the root (English) and once
