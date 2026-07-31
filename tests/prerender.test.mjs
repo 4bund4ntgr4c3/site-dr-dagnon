@@ -142,9 +142,48 @@ test('attribute values are escaped', () => {
 
 test('every page still boots the app', () => {
   eachPage(({ id, html }) => {
-    assert.ok(html.includes('<div id="root"></div>'), `${id} lost its mount point`);
+    assert.match(html, /<div id="root">/, `${id} lost its mount point`);
     assert.match(html, /<script type="module"[^>]*src="\/assets\/index-[^"]+\.js"/, `${id} lost its entry script`);
     assert.match(html, /href="\/assets\/index-[^"]+\.css"/, `${id} lost its stylesheet`);
+  });
+});
+
+/* src/entry-server.tsx server-renders <App> into <div id="root">, which used
+   to be shipped empty — Search Console reported every non-home route as
+   "Discovered — currently not indexed" because Googlebot's first fetch saw no
+   text and no links to follow. These assertions are the regression test for
+   that: real visible text, real internal links, and — the specific bug this
+   caught once already — genuinely different content per route rather than
+   every page rendering the same <Suspense> fallback. */
+test('the server-rendered body has substantial, page-specific text', () => {
+  /* Vite hoists the entry <script type="module"> into <head> for production
+     builds, so the root div's real closing tag is the one right before
+     </body> — not one followed by a <script>, which is what an earlier
+     version of this assertion assumed. */
+  const bodyOf = (html) => html.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? '';
+  const textOf = (html) => bodyOf(html).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+
+  eachPage(({ id, html }) => {
+    const text = textOf(html);
+    assert.ok(text.length > 150, `${id}: only ${text.length} chars of server-rendered text`);
+  });
+
+  const seen = new Map();
+  eachPage(({ id, lang, route, html }) => {
+    const text = textOf(html);
+    const key = `${lang} ${text.length}`;
+    const dupe = seen.get(key);
+    assert.ok(!dupe || dupe.route === route, `${id} rendered identically to ${dupe?.id} — likely the <Suspense> fallback again`);
+    seen.set(key, { id, route });
+  });
+});
+
+test('the server-rendered body contains real internal links', () => {
+  const bodyOf = (html) => html.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? '';
+  eachPage(({ id, lang, html }) => {
+    const hrefs = [...bodyOf(html).matchAll(/<a [^>]*href="([^"]+)"/g)].map((m) => m[1]);
+    const internal = hrefs.filter((h) => h.startsWith('/') || h.startsWith(absUrl(lang, '/')));
+    assert.ok(internal.length >= 3, `${id}: only ${internal.length} internal links in the server-rendered body`);
   });
 });
 
@@ -182,8 +221,10 @@ test('404.html is a real error page, not a copy of the home page', () => {
   assert.match(html, /<meta name="robots" content="noindex/, '404.html must not be indexable');
   assert.doesNotMatch(html, /rel="canonical"/, 'an error page must not claim a canonical URL');
   assert.doesNotMatch(html, /rel="alternate"/, 'an error page has no language alternates');
-  /* the app still boots so React Router can render the branded 404 view */
-  assert.ok(html.includes('<div id="root"></div>'));
+  /* the app still boots so React Router can render the branded 404 view,
+     server-rendered like every other page rather than left empty */
+  assert.match(html, /<div id="root">/);
+  assert.match(html, /404/, '404.html body should say 404 somewhere');
   assert.match(html, /<script type="module"[^>]*src="\/assets\/index-[^"]+\.js"/);
 });
 

@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { Suspense, type ComponentType } from 'react'
 import { Routes, Route, Link } from 'react-router'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/sections/Footer'
@@ -9,10 +9,21 @@ import { useLang } from '@/i18n/useLang'
 import { localePath } from '@/i18n/routing'
 import { UI } from '@/i18n/translations'
 
-const Home = lazy(() => import('./pages/Home'))
-const Contact = lazy(() => import('./pages/Contact'))
-const MediaPage = lazy(() => import('./pages/Media'))
-const PublicationsPage = lazy(() => import('./pages/Publications'))
+/* The four routed page components are injected rather than imported here, so
+   the client and the build-time server renderer can each supply their own
+   version: main.tsx passes React.lazy() wrappers for code-splitting, while
+   entry-server.tsx passes plain imports. renderToStaticMarkup is synchronous
+   and cannot wait for a lazy import to resolve — with lazy components it
+   silently rendered the <Suspense> fallback for every route instead of the
+   actual page, which is why every prerendered page used to come out
+   identical. Keeping one Routes/Suspense/Navbar/Footer tree here, shared by
+   both entry points, avoids maintaining that structure twice. */
+export interface AppPages {
+  Home: ComponentType
+  Contact: ComponentType
+  Media: ComponentType
+  Publications: ComponentType
+}
 
 function Loading() {
   return (
@@ -41,23 +52,23 @@ function NotFound() {
 
 /* The same page tree is mounted twice: once at the root (English) and once
    under /fr (French). See src/i18n/routing.ts. */
-const pages = () => [
-  <Route key="home" index element={<Home />} />,
-  <Route key="contact" path="contact" element={<Contact />} />,
-  <Route key="media" path="media" element={<MediaPage />} />,
-  <Route key="media-category" path="media/:category" element={<MediaPage />} />,
-  <Route key="publications" path="publications" element={<PublicationsPage />} />,
+const routesFor = (Pages: AppPages) => [
+  <Route key="home" index element={<Pages.Home />} />,
+  <Route key="contact" path="contact" element={<Pages.Contact />} />,
+  <Route key="media" path="media" element={<Pages.Media />} />,
+  <Route key="media-category" path="media/:category" element={<Pages.Media />} />,
+  <Route key="publications" path="publications" element={<Pages.Publications />} />,
 ]
 
-export default function App() {
+export default function App({ pages }: { pages: AppPages }) {
   return (
     <LanguageProvider>
       <Seo />
       <Navbar />
       <Suspense fallback={<Loading />}>
         <Routes>
-          <Route path="/">{pages()}</Route>
-          <Route path="/fr">{pages()}</Route>
+          <Route path="/">{routesFor(pages)}</Route>
+          <Route path="/fr">{routesFor(pages)}</Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

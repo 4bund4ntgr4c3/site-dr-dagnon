@@ -1,16 +1,31 @@
-/* Writes one static HTML file per route into dist/, each with its own <head>.
+/* Writes one static HTML file per route into dist/, each with its own <head>
+ * and a fully server-rendered <body>.
  *
- * Why no headless browser: the previous version drove Playwright, which needs
- * a Chromium binary the Vercel build image does not have — so it silently
+ * Why no headless browser: an earlier version drove Playwright, which needs a
+ * Chromium binary the Vercel build image does not have — so it silently
  * skipped and every deploy shipped a bare SPA. It also rendered only "/" and
  * wrote it to dist/index.html, meaning /contact and /publications were served
  * the home page's metadata.
  *
- * What this replaces it with: the <head> of every route is generated from
- * src/seo/meta.ts — the same module <Seo /> uses at runtime. That is what
- * link unfurlers (LinkedIn, X, WhatsApp, Slack) read, and none of them run
- * JavaScript, so this is where the value is. The body stays client-rendered;
- * Googlebot executes JS and indexes it.
+ * The <head> of every route comes from src/seo/meta.ts — the same module
+ * <Seo /> uses at runtime — so link unfurlers (LinkedIn, X, WhatsApp, Slack)
+ * see the right title, description and JSON-LD without executing JavaScript.
+ *
+ * The <body> comes from src/entry-server.tsx, which renders <App> with
+ * react-dom/server's renderToStaticMarkup. This used to be left empty on the
+ * theory that "Googlebot executes JS and indexes it" — in practice, Search
+ * Console reported every route beyond the homepage as "Discovered — currently
+ * not indexed": Google saw an empty <div id="root"></div>, no text, no links,
+ * and deprioritized coming back to render it. Real markup here means a
+ * crawler's very first fetch already has the content.
+ *
+ * The client still does a plain createRoot().render() in main.tsx, not
+ * hydrateRoot — so this static markup is discarded and replaced the moment
+ * React mounts. That is deliberate: it means a component that behaves
+ * differently with no DOM (Reveal starts "shown" because
+ * IntersectionObserver doesn't exist in Node, for instance) can never produce
+ * a hydration-mismatch error. The only cost is a brief flash before the
+ * interactive app takes over, the same trade-off most static blogs make.
  *
  * This script fails the build on error instead of skipping quietly.
  */
@@ -23,7 +38,8 @@ import { build } from 'vite';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const dist = path.join(root, 'dist');
-const tmp = path.join(root, 'node_modules', '.tmp', 'prerender');
+const tmpMeta = path.join(root, 'node_modules', '.tmp', 'prerender-meta');
+const tmpServer = path.join(root, 'node_modules', '.tmp', 'prerender-server');
 
 const START = '<!-- seo:start';
 const END = '<!-- seo:end -->';
@@ -100,13 +116,32 @@ async function loadMeta() {
     resolve: { alias: { '@': path.join(root, 'src') } },
     build: {
       ssr: path.join(root, 'src', 'seo', 'meta.ts'),
-      outDir: tmp,
+      outDir: tmpMeta,
       emptyOutDir: true,
       minify: false,
       rollupOptions: { output: { entryFileNames: 'meta.mjs' } },
     },
   });
-  return import(pathToFileURL(path.join(tmp, 'meta.mjs')).href);
+  return import(pathToFileURL(path.join(tmpMeta, 'meta.mjs')).href);
+}
+
+async function loadRenderer() {
+  /* Same trick, for the page tree itself. A separate output directory: both
+     builds set emptyOutDir, and sharing one would let the second wipe out the
+     first's output. */
+  await build({
+    configFile: false,
+    logLevel: 'error',
+    resolve: { alias: { '@': path.join(root, 'src') } },
+    build: {
+      ssr: path.join(root, 'src', 'entry-server.tsx'),
+      outDir: tmpServer,
+      emptyOutDir: true,
+      minify: false,
+      rollupOptions: { output: { entryFileNames: 'entry-server.mjs' } },
+    },
+  });
+  return import(pathToFileURL(path.join(tmpServer, 'entry-server.mjs')).href);
 }
 
 async function run() {
@@ -131,22 +166,29 @@ async function run() {
     DEFAULT_ROUTE_PRIORITY,
     SITE_URL,
   } = await loadMeta();
+  const { renderPage } = await loadRenderer();
   const image = `${SITE_URL}/og-image.jpg`;
 
   const before = template.slice(0, startAt);
   const after = template.slice(endAt + END.length);
+  if (!after.includes('<div id="root"></div>')) {
+    die('<div id="root"></div> not found in dist/index.html — check index.html.');
+  }
+
+  const withBody = (html, bodyHtml) => html.replace('<div id="root"></div>', `<div id="root">${bodyHtml}</div>`);
 
   let written = 0;
   for (const lang of PRERENDER_LANGS) {
     for (const route of PRERENDER_ROUTES) {
       const meta = pageMeta(lang, route);
+      const urlPath = localePath(lang, route);
+      const bodyHtml = renderPage(urlPath);
       /* <html lang> sits outside the SEO block but still has to follow the
          language of the page being written */
-      const html = (before + headBlock(meta, image) + after).replace(
+      const html = withBody(before + headBlock(meta, image) + after, bodyHtml).replace(
         /<html lang="[^"]*"/,
         `<html lang="${lang}"`,
       );
-      const urlPath = localePath(lang, route);
       const outFile = urlPath === '/' ? path.join(dist, 'index.html') : path.join(dist, urlPath, 'index.html');
       fs.mkdirSync(path.dirname(outFile), { recursive: true });
       fs.writeFileSync(outFile, html, 'utf-8');
@@ -156,20 +198,22 @@ async function run() {
   }
 
   /* 404.html — Vercel serves it with a real 404 status for anything that
-     matched no route, instead of the soft 200 the SPA fallback produced. The
-     app still boots from it, so React Router renders the branded 404 view. */
-  /* pageMeta already returns 404 metadata for any path outside the route
-     list, so the title lives in one place and stays translated */
-  const notFoundMeta = pageMeta(DEFAULT_LANG, '/__not-found__');
+     matched no route, instead of the soft 200 the SPA fallback produced.
+     Rendered from the same unmatched path pageMeta already treats as 404, so
+     the two can't disagree with each other. */
+  const notFoundPath = '/__not-found__';
+  const notFoundMeta = pageMeta(DEFAULT_LANG, notFoundPath);
   if (!notFoundMeta.notFound) die('pageMeta no longer flags unknown routes — 404.html would claim to be a real page.');
-  const notFoundHtml = (
+  const notFoundBody = renderPage(notFoundPath);
+  const notFoundHtml = withBody(
     before +
-    headBlock(
-      { ...notFoundMeta, jsonLd: { ...notFoundMeta.jsonLd, breadcrumb: null } },
-      image,
-      { indexable: false },
-    ) +
-    after
+      headBlock(
+        { ...notFoundMeta, jsonLd: { ...notFoundMeta.jsonLd, breadcrumb: null } },
+        image,
+        { indexable: false },
+      ) +
+      after,
+    notFoundBody,
   ).replace(/<meta name="robots" content="[^"]*"/, '<meta name="robots" content="noindex, follow"');
   fs.writeFileSync(path.join(dist, '404.html'), notFoundHtml, 'utf-8');
 
