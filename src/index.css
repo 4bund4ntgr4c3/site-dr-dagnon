@@ -45,6 +45,24 @@
   }
 }
 
+/* Cross-fade on theme switch, instead of an abrupt flash. Scoped to the
+   properties dark mode actually rewrites (colors, borders, icon fills) —
+   never layout, so it can't introduce jank. A universal selector has zero
+   specificity, so any element with its own transition-* utility (buttons,
+   hover states) keeps that timing untouched; this only fills the elements
+   that currently jump instantly. Off for reduced-motion, and inert on first
+   paint — main.tsx sets the .dark class before mount, so nothing is
+   transitioning FROM at that point, only toggles afterwards animate. */
+@media (prefers-reduced-motion: no-preference) {
+  *,
+  *::before,
+  *::after {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: ease;
+    transition-duration: 200ms;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
