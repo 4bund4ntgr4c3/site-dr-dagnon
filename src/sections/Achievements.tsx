@@ -17,7 +17,7 @@ export function Achievements() {
   useFocusTrap(modalRef, closeRef, showAwards, () => setShowAwards(false));
 
   return (
-    <section id="realisations" className="relative overflow-hidden bg-pine-900 py-24 lg:py-32 dark:bg-pine-900">
+    <section id="realisations" className="relative overflow-hidden bg-pine-900 py-24 lg:py-32">
       <div className="absolute inset-0 texture-dots opacity-50" />
       <div className="absolute -right-40 -top-24 h-[420px] w-[420px] rounded-full bg-gold-600/10 blur-[110px]" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">

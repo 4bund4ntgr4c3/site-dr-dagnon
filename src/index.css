@@ -1,139 +1,5 @@
 @tailwind base;
 @tailwind components;
-
-/* Dark theme — flips the light surfaces of the ivory/pine palette while the
-   already-dark sections (heroes, pine-950 blocks, gold accents) stay as-is.
-   Declared before `@tailwind utilities` so regular utilities (e.g.
-   `dark:bg-pine-900`) can override it where a section must stay original. */
-@layer theme {
-  .dark {
-    color-scheme: dark;
-  }
-  .dark body {
-    background-color: #0b2925;
-  }
-  .dark .bg-pine-50 {
-    background-color: #0b2925;
-  }
-  .dark .bg-ivory {
-    background-color: #0d2e29;
-  }
-  .dark .bg-ivory\/60 {
-    background-color: rgba(13, 46, 41, 0.6);
-  }
-  .dark .bg-white {
-    background-color: #12372f;
-  }
-  .dark .bg-white\/95 {
-    background-color: rgba(18, 55, 47, 0.95);
-  }
-  .dark .bg-white\/90 {
-    background-color: rgba(18, 55, 47, 0.9);
-  }
-  .dark .bg-white\/70 {
-    background-color: rgba(18, 55, 47, 0.7);
-  }
-  .dark .bg-white\/50 {
-    background-color: rgba(18, 55, 47, 0.5);
-  }
-  .dark .bg-white\/30 {
-    background-color: rgba(18, 55, 47, 0.3);
-  }
-  .dark .bg-pine-900 {
-    background-color: #17443c;
-  }
-  .dark .hover\:bg-pine-900:hover {
-    background-color: #1c4f46;
-  }
-  .dark .hover\:bg-pine-50:hover {
-    background-color: #12372f;
-  }
-  .dark .focus\:bg-pine-50:focus {
-    background-color: #12372f;
-  }
-  .dark .hover\:bg-pine-900\/5:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-  }
-  .dark .text-ink {
-    color: #e7eeea;
-  }
-  .dark .text-ink\/75 {
-    color: rgba(231, 238, 234, 0.75);
-  }
-  .dark .text-ink\/70 {
-    color: rgba(231, 238, 234, 0.7);
-  }
-  .dark .text-ink\/65 {
-    color: rgba(231, 238, 234, 0.65);
-  }
-  .dark .text-ink\/60 {
-    color: rgba(231, 238, 234, 0.6);
-  }
-  .dark .text-pine-900 {
-    color: #d9e9e4;
-  }
-  .dark .text-pine-900\/90 {
-    color: rgba(217, 233, 228, 0.9);
-  }
-  .dark .text-pine-900\/85 {
-    color: rgba(217, 233, 228, 0.85);
-  }
-  .dark .text-pine-900\/80 {
-    color: rgba(217, 233, 228, 0.8);
-  }
-  .dark .text-pine-900\/75 {
-    color: rgba(217, 233, 228, 0.75);
-  }
-  .dark .text-pine-900\/70 {
-    color: rgba(217, 233, 228, 0.7);
-  }
-  .dark .text-pine-900\/65 {
-    color: rgba(217, 233, 228, 0.65);
-  }
-  .dark .text-pine-900\/60 {
-    color: rgba(217, 233, 228, 0.6);
-  }
-  .dark .text-pine-900\/55 {
-    color: rgba(217, 233, 228, 0.55);
-  }
-  .dark .text-pine-900\/50 {
-    color: rgba(217, 233, 228, 0.5);
-  }
-  .dark .text-gold-600 {
-    color: #d9bb78;
-  }
-  .dark .placeholder\:text-pine-900\/65::placeholder {
-    color: rgba(217, 233, 228, 0.65);
-  }
-  .dark .placeholder\:text-pine-900\/50::placeholder {
-    color: rgba(217, 233, 228, 0.5);
-  }
-  .dark .placeholder\:text-ink\/65::placeholder {
-    color: rgba(231, 238, 234, 0.65);
-  }
-  .dark .border-pine-900 {
-    border-color: rgba(255, 255, 255, 0.18);
-  }
-  .dark .border-pine-900\/25 {
-    border-color: rgba(255, 255, 255, 0.22);
-  }
-  .dark .border-pine-900\/20 {
-    border-color: rgba(255, 255, 255, 0.18);
-  }
-  .dark .border-pine-900\/15 {
-    border-color: rgba(255, 255, 255, 0.14);
-  }
-  .dark .border-pine-900\/10 {
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-  .dark .ring-pine-900\/10 {
-    --tw-ring-color: rgba(255, 255, 255, 0.1);
-  }
-  .dark .ring-pine-50 {
-    --tw-ring-color: rgba(240, 247, 245, 0.25);
-  }
-}
-
 @tailwind utilities;
 
 @layer base {
@@ -254,3 +120,129 @@
     background: #fff !important;
   }
 }
+
+/* Dark theme — flips the light surfaces of the ivory/pine palette while the
+   already-dark sections (heroes, pine-950 blocks, gold accents) stay as-is.
+   Kept unlayered, at the very end: the build flattens Tailwind's layers, so
+   rules inside @layer lose to the unlayered utilities. Plain rules with a
+   higher-specificity selector (.dark …) always win. */
+.dark {
+  color-scheme: dark;
+}
+  .dark body {
+    background-color: #0b2925;
+  }
+  .dark .bg-pine-50 {
+    background-color: #0b2925;
+  }
+  .dark .bg-ivory {
+    background-color: #0d2e29;
+  }
+  .dark .bg-ivory\/60 {
+    background-color: rgba(13, 46, 41, 0.6);
+  }
+  .dark .bg-white {
+    background-color: #12372f;
+  }
+  .dark .bg-white\/95 {
+    background-color: rgba(18, 55, 47, 0.95);
+  }
+  .dark .bg-white\/90 {
+    background-color: rgba(18, 55, 47, 0.9);
+  }
+  .dark .bg-white\/70 {
+    background-color: rgba(18, 55, 47, 0.7);
+  }
+  .dark .bg-white\/50 {
+    background-color: rgba(18, 55, 47, 0.5);
+  }
+  .dark .bg-white\/30 {
+    background-color: rgba(18, 55, 47, 0.3);
+  }
+  .dark .hover\:bg-pine-50:hover {
+    background-color: #12372f;
+  }
+  .dark .focus\:bg-pine-50:focus {
+    background-color: #12372f;
+  }
+  .dark .hover\:bg-pine-900\/5:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+  .dark .text-ink {
+    color: #e7eeea;
+  }
+  .dark .text-ink\/75 {
+    color: rgba(231, 238, 234, 0.75);
+  }
+  .dark .text-ink\/70 {
+    color: rgba(231, 238, 234, 0.7);
+  }
+  .dark .text-ink\/65 {
+    color: rgba(231, 238, 234, 0.65);
+  }
+  .dark .text-ink\/60 {
+    color: rgba(231, 238, 234, 0.6);
+  }
+  .dark .text-pine-900 {
+    color: #d9e9e4;
+  }
+  .dark .text-pine-900\/90 {
+    color: rgba(217, 233, 228, 0.9);
+  }
+  .dark .text-pine-900\/85 {
+    color: rgba(217, 233, 228, 0.85);
+  }
+  .dark .text-pine-900\/80 {
+    color: rgba(217, 233, 228, 0.8);
+  }
+  .dark .text-pine-900\/75 {
+    color: rgba(217, 233, 228, 0.75);
+  }
+  .dark .text-pine-900\/70 {
+    color: rgba(217, 233, 228, 0.7);
+  }
+  .dark .text-pine-900\/65 {
+    color: rgba(217, 233, 228, 0.65);
+  }
+  .dark .text-pine-900\/60 {
+    color: rgba(217, 233, 228, 0.6);
+  }
+  .dark .text-pine-900\/55 {
+    color: rgba(217, 233, 228, 0.55);
+  }
+  .dark .text-pine-900\/50 {
+    color: rgba(217, 233, 228, 0.5);
+  }
+  .dark .text-gold-600 {
+    color: #d9bb78;
+  }
+  .dark .placeholder\:text-pine-900\/65::placeholder {
+    color: rgba(217, 233, 228, 0.65);
+  }
+  .dark .placeholder\:text-pine-900\/50::placeholder {
+    color: rgba(217, 233, 228, 0.5);
+  }
+  .dark .placeholder\:text-ink\/65::placeholder {
+    color: rgba(231, 238, 234, 0.65);
+  }
+  .dark .border-pine-900 {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  .dark .border-pine-900\/25 {
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+  .dark .border-pine-900\/20 {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  .dark .border-pine-900\/15 {
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+  .dark .border-pine-900\/10 {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .dark .ring-pine-900\/10 {
+    --tw-ring-color: rgba(255, 255, 255, 0.1);
+  }
+  .dark .ring-pine-50 {
+    --tw-ring-color: rgba(240, 247, 245, 0.25);
+  }
