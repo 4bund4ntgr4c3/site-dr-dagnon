@@ -14,6 +14,7 @@ const pages: AppPages = {
   TribuneArticle: lazy(() => import('./pages/TribuneArticle')),
   Projects: lazy(() => import('./pages/Projects')),
   ProjectArticle: lazy(() => import('./pages/ProjectArticle')),
+  Cv: lazy(() => import('./pages/Cv')),
 }
 
 createRoot(document.getElementById('root')!).render(

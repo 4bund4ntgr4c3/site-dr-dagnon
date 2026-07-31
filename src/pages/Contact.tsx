@@ -1,10 +1,12 @@
 import { useState, type FormEvent } from 'react';
-import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Send, CheckCircle2, AlertCircle, Lock, ShieldCheck, Mic, Mic2, Handshake, Newspaper } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Send, CheckCircle2, AlertCircle, Lock, ShieldCheck, Mic, Mic2, Handshake, Newspaper, FileText } from 'lucide-react';
+import { Link } from 'react-router';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { LINKS } from '@/data/content';
+import { localePath } from '@/i18n/routing';
 
 type Status = 'idle' | 'sending' | 'success' | 'error';
 type VerifyStatus = 'idle' | 'sending' | 'code-sent' | 'verifying' | 'verified' | 'error';
@@ -349,6 +351,13 @@ export default function Contact() {
                     </svg>
                   </a>
                 </div>
+
+                <Link
+                  to={localePath(lang, '/cv')}
+                  className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-pine-900/10 bg-pine-950 px-5 py-4 text-sm font-semibold text-gold-400 transition-all duration-300 hover:border-gold-500/40 hover:bg-pine-900"
+                >
+                  <FileText size={17} /> {t['cvPage.download']}
+                </Link>
               </div>
             </Reveal>
 

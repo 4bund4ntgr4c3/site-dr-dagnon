@@ -64,6 +64,7 @@
   ],
   "rewrites": [
     { "source": "/contact", "destination": "/contact/index.html" },
+    { "source": "/cv", "destination": "/cv/index.html" },
     { "source": "/media", "destination": "/media/index.html" },
     { "source": "/media/interview", "destination": "/media/interview/index.html" },
     { "source": "/media/conference", "destination": "/media/conference/index.html" },
@@ -85,6 +86,7 @@
 
     { "source": "/fr", "destination": "/fr/index.html" },
     { "source": "/fr/contact", "destination": "/fr/contact/index.html" },
+    { "source": "/fr/cv", "destination": "/fr/cv/index.html" },
     { "source": "/fr/media", "destination": "/fr/media/index.html" },
     { "source": "/fr/media/interview", "destination": "/fr/media/interview/index.html" },
     { "source": "/fr/media/conference", "destination": "/fr/media/conference/index.html" },

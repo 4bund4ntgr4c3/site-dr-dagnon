@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Linkedin, Youtube, Mail, ArrowUpRight } from 'lucide-react';
+import { Linkedin, Youtube, Mail, ArrowUpRight, FileText } from 'lucide-react';
 import { AfricaMap } from '@/components/AfricaMap';
 import { Reveal } from '@/components/Reveal';
 import { LINKS } from '@/data/content';
@@ -53,6 +53,12 @@ export function Footer() {
                   className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
                 >
                   <Mail size={17} /> {t['footer.contact']}
+                </Link>
+                <Link
+                  to={localePath(lang, '/cv')}
+                  className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
+                >
+                  <FileText size={17} /> {t['cvPage.download']}
                 </Link>
               </div>
             </div>

@@ -155,6 +155,19 @@ export const PROJETS_SEO: Record<Lang, { title: string; description: string; key
   },
 };
 
+export const CV_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Curriculum Vitae — Dr. Seynudé Dagnon',
+    description: 'CV complet du Dr. Seynudé Dagnon : 17 ans dans les programmes paludisme, formation, enseignements, distinctions et publications. Imprimable en PDF.',
+    keywords: 'CV Dr Dagnon, curriculum vitae santé publique, parcours paludisme, expérience Fondation Gates, USAID, PMI, formation Groningen, imprimer CV PDF',
+  },
+  en: {
+    title: 'Resume — Dr. Seynudé Dagnon, malaria program leader',
+    description: 'Full resume of Dr. Seynudé Dagnon: 17+ years in malaria programs, education, teaching, awards and publications. Print-ready PDF version.',
+    keywords: 'Dr Dagnon resume, public health CV, malaria career, Gates Foundation, USAID, PMI, education Groningen, print CV PDF',
+  },
+};
+
 /** Short headline for the <title> budget: whatever comes after a colon is
     treated as a subtitle and dropped (a French colon has a space before it,
     hence the trim). */
@@ -266,6 +279,8 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
   ];
   if (path.startsWith('/contact')) {
     items.push({ name: 'Contact', url: absUrl(lang, '/contact') });
+  } else if (path.startsWith('/cv')) {
+    items.push({ name: lang === 'fr' ? 'Curriculum Vitae' : 'Resume', url: absUrl(lang, '/cv') });
   } else if (path.startsWith('/media')) {
     items.push({ name: lang === 'fr' ? 'Médias' : 'Media', url: absUrl(lang, '/media') });
     const cat = path.split('/media/')[1]?.split('/')[0];
@@ -352,6 +367,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   /* canonical URLs never carry a trailing slash (the sitemap has none either) */
   const route = path.replace(/\/+$/, '') || '/';
   const isContact = route.startsWith('/contact');
+  const isCv = route === '/cv';
   const isMedia = route.startsWith('/media');
   const isMediaLanding = route === '/media';
   const mediaCategory = isMedia && !isMediaLanding ? route.split('/media/')[1]?.split('/')[0] || null : null;
@@ -405,8 +421,10 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
         }
       : isMedia
         ? MEDIA_SEO[lang]
-        : isContact
-          ? CONTACT_SEO[lang]
+      : isContact
+        ? CONTACT_SEO[lang]
+        : isCv
+          ? CV_SEO[lang]
           : isAgenda
             ? AGENDA_SEO[lang]
             : SEO[lang];
@@ -451,6 +469,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
 export const PRERENDER_ROUTES = [
   '/',
   '/contact',
+  '/cv',
   '/media',
   '/media/interview',
   '/media/conference',
@@ -471,6 +490,7 @@ export const PRERENDER_LANGS: Lang[] = SUPPORTED;
 export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: string }> = {
   '/': { priority: '1.0', changefreq: 'weekly' },
   '/contact': { priority: '0.7', changefreq: 'monthly' },
+  '/cv': { priority: '0.7', changefreq: 'monthly' },
   '/media': { priority: '0.9', changefreq: 'weekly' },
   '/publications': { priority: '0.9', changefreq: 'weekly' },
   '/tribunes': { priority: '0.8', changefreq: 'weekly' },

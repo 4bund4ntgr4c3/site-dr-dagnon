@@ -84,3 +84,30 @@
 .modal-scroll::-webkit-scrollbar-track { background: transparent; }
 .modal-scroll::-webkit-scrollbar-thumb { background: rgba(201,162,75,0.3); border-radius: 9999px; margin: 8px 0; }
 .modal-scroll::-webkit-scrollbar-thumb:hover { background: rgba(201,162,75,0.5); }
+
+/* The CV sheet keeps its subtle gold accents in the printed PDF */
+.cv-sheet {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Print — the CV page is the primary use case: a clean A4 document with no
+   site chrome. The header is matched by its fixed positioning (it is the
+   only fixed element in the page tree), the footer by its id. */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  header.fixed,
+  #contact {
+    display: none !important;
+  }
+  main {
+    background: #fff !important;
+  }
+}

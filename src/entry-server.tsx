@@ -10,10 +10,11 @@ import Tribunes from './pages/Tribunes';
 import TribuneArticle from './pages/TribuneArticle';
 import Projects from './pages/Projects';
 import ProjectArticle from './pages/ProjectArticle';
+import Cv from './pages/Cv';
 
 /* Plain imports, not React.lazy() — see the comment on AppPages in App.tsx
    for why renderToStaticMarkup needs this. */
-const pages: AppPages = { Home, Contact, Media, Publications, Agenda, Tribunes, TribuneArticle, Projects, ProjectArticle };
+const pages: AppPages = { Home, Contact, Media, Publications, Agenda, Tribunes, TribuneArticle, Projects, ProjectArticle, Cv };
 
 /* Renders a route to plain HTML for scripts/prerender.mjs to embed in each
    generated dist/.../index.html — this is what a crawler sees before any
