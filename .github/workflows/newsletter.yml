@@ -1,0 +1,39 @@
+name: Newsletter
+
+# Sends the newsletter digest automatically whenever content lands on main.
+# The sender (scripts/send-newsletter.mjs) diffs the publications and tribunes
+# against `newsletter:last-sent` in KV, so pushes without new content (or the
+# very first one, which establishes the baseline) do nothing.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/data/publications.ts'
+      - 'src/data/tribunes.ts'
+      - 'scripts/send-newsletter.mjs'
+      - '.github/workflows/newsletter.yml'
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Skips cleanly (exit 0) until the secrets below are configured in the
+      # repository settings, and never re-sends what was already mailed.
+      - name: Send newsletter digest
+        run: node scripts/send-newsletter.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NEWSLETTER_TO_EMAIL: ${{ secrets.NEWSLETTER_TO_EMAIL }}
+          NEWSLETTER_FROM_EMAIL: ${{ secrets.NEWSLETTER_FROM_EMAIL }}
+          KV_REST_API_URL: ${{ secrets.KV_REST_API_URL }}
+          KV_REST_API_TOKEN: ${{ secrets.KV_REST_API_TOKEN }}

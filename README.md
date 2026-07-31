@@ -1,13 +1,13 @@
 # seynudedagnon.com
 
-Portfolio of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, deployed on Vercel with two serverless functions.
+Portfolio of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, deployed on Vercel with three serverless functions.
 
 ## Commands
 
 ```bash
 npm run dev      # dev server on :3000
-npm run build    # typecheck, bundle, then prerender 18 pages + sitemap + 404
-npm test         # build, then 64 tests (node --test)
+npm run build    # typecheck, bundle, then prerender 42 urls + sitemap + 404
+npm test         # build, then 97 tests (node --test)
 npm run lint
 npm run images   # one-off: convert public/ photos to WebP (see below)
 npm run gen:og   # one-off: regenerate og-image.jpg
@@ -30,6 +30,27 @@ contact form to work at all.
 
 Attaching a Vercel KV store sets the `KV_*` pair automatically. Upstash's own
 `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` are read too.
+
+### Newsletter automation (GitHub Actions)
+
+`.github/workflows/newsletter.yml` sends the newsletter digest on every push
+to `main` that touches the publications or tribunes data. The sender
+(`scripts/send-newsletter.mjs`) reads the subscriber list
+(`newsletter:emails`, written by `/api/newsletter`) and the sent-state
+(`newsletter:last-sent`) from the KV store, then mails the new items via
+Resend, owner in `to` and subscribers in `bcc` batches of 50. The first run
+establishes a baseline and sends nothing, so the archive is never re-mailed.
+Store the same credentials as GitHub repository secrets:
+
+| Secret | Purpose |
+|---|---|
+| `RESEND_API_KEY` | sending the digest through Resend |
+| `NEWSLETTER_TO_EMAIL` | the owner's inbox — receives every digest as `to`, and is used for the unsubscribe link |
+| `NEWSLETTER_FROM_EMAIL` | optional sender identity |
+| `KV_REST_API_URL` + `KV_REST_API_TOKEN` | subscriber list and sent-state |
+
+The job skips cleanly (exit 0) until the secrets are configured, and a failed
+send leaves the state untouched so the next push retries it.
 
 ## Things that are not obvious
 
