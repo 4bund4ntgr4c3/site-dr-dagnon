@@ -1,5 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/media/publication", "destination": "/media", "permanent": true },
+    { "source": "/media/research", "destination": "/media", "permanent": true },
+    { "source": "/fr/media/publication", "destination": "/fr/media", "permanent": true },
+    { "source": "/fr/media/research", "destination": "/fr/media", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -53,11 +59,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/media/publication", "destination": "/media/index.html" },
-    { "source": "/media/research", "destination": "/media/index.html" },
-    { "source": "/fr/media/publication", "destination": "/fr/media/index.html" },
-    { "source": "/fr/media/research", "destination": "/fr/media/index.html" },
-
     { "source": "/contact", "destination": "/contact/index.html" },
     { "source": "/media", "destination": "/media/index.html" },
     { "source": "/media/interview", "destination": "/media/interview/index.html" },
