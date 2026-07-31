@@ -6,6 +6,7 @@
 import { UI } from '@/i18n/translations';
 import { DEFAULT_LANG, localePath } from '@/i18n/routing';
 import { SUPPORTED, type Lang } from '@/i18n/lang';
+import { TRIBUNES } from '@/data/tribunes';
 
 export const SITE_URL = 'https://seynudedagnon.com';
 
@@ -127,6 +128,25 @@ export const AGENDA_SEO: Record<Lang, { title: string; description: string; keyw
   },
 };
 
+export const TRIBUNES_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Tribunes & Analyses — Dr. Dagnon',
+    description: 'Tribunes et analyses du Dr. Seynudé Jean-Fortuné Dagnon — textes hébergés, indexés et partageables sur le paludisme et la santé publique.',
+    keywords: 'tribune Dr Dagnon, op-ed paludisme, analyse santé publique, élimination paludisme, Afrique, tribunes hébergées',
+  },
+  en: {
+    title: 'Op-Eds & Analyses — Seynudé Dagnon',
+    description: 'Op-eds and analyses by Dr. Seynudé Jean-Fortuné Dagnon — hosted, indexable and shareable texts on malaria and public health in Africa.',
+    keywords: 'Dr Dagnon op-ed, malaria op-ed, public health analysis, malaria elimination, Africa, hosted tribunes',
+  },
+};
+
+/** Short headline for the <title> budget: whatever comes after a colon is
+    treated as a subtitle and dropped (a French colon has a space before it,
+    hence the trim). */
+const tribuneShortTitle = (lang: Lang, entry: (typeof TRIBUNES)[number]) =>
+  `${entry.title[lang].split(':')[0].trim()} — ${shortName(lang)}`;
+
 const fullName = (lang: Lang) => (lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD, MPH');
 
 /* ── JSON-LD builders ─────────────────────────────────────────── */
@@ -229,6 +249,11 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
     if (cat && CAT_NAMES[cat]) items.push({ name: CAT_NAMES[cat][lang], url: absUrl(lang, `/media/${cat}`) });
   } else if (path.startsWith('/publications')) {
     items.push({ name: 'Publications', url: absUrl(lang, '/publications') });
+  } else if (path.startsWith('/tribunes')) {
+    items.push({ name: lang === 'fr' ? 'Tribunes' : 'Op-Eds', url: absUrl(lang, '/tribunes') });
+    const tribuneSlug = path.split('/tribunes/')[1]?.split('/')[0];
+    const tribune = tribuneSlug ? TRIBUNES.find((t) => t.slug === tribuneSlug) : null;
+    if (tribune) items.push({ name: tribune.title[lang], url: absUrl(lang, `/tribunes/${tribune.slug}`) });
   } else if (path.startsWith('/agenda')) {
     items.push({ name: 'Agenda', url: absUrl(lang, '/agenda') });
   }
@@ -236,6 +261,27 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: items.map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, item: item.url })),
+  };
+}
+
+export function articleJsonLd(lang: Lang, entry: (typeof TRIBUNES)[number], url: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: entry.title[lang],
+    description: entry.description[lang],
+    datePublished: entry.date,
+    inLanguage: [lang],
+    /* co-authors, including the site's owner — the reprint is attributed in
+       full rather than presented as a solo piece */
+    author: [
+      { '@type': 'Person', name: 'Professor Rose Leke' },
+      { '@type': 'Person', name: 'Seynudé Jean-Fortuné Dagnon' },
+    ],
+    publisher: { '@type': 'Organization', name: entry.source.name, url: entry.source.url },
+    url,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    image: `${SITE_URL}/og-image.jpg`,
   };
 }
 
@@ -267,6 +313,10 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const mediaCategory = isMedia && !isMediaLanding ? route.split('/media/')[1]?.split('/')[0] || null : null;
   const isPub = route.startsWith('/publications');
   const isAgenda = route.startsWith('/agenda');
+  const isTribunes = route === '/tribunes';
+  const isTribuneArticle = route.startsWith('/tribunes/') && !isTribunes;
+  const tribuneSlug = isTribuneArticle ? route.split('/tribunes/')[1]?.split('/')[0] || null : null;
+  const tribune = tribuneSlug ? TRIBUNES.find((t) => t.slug === tribuneSlug) || null : null;
   const notFound = !PRERENDER_ROUTES.includes(route);
 
   const catName = mediaCategory ? CAT_NAMES[mediaCategory] : null;
@@ -278,7 +328,15 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
         description: SEO[lang].description,
         keywords: SEO[lang].keywords,
       }
-    : isPub
+    : tribune
+      ? {
+          title: tribuneShortTitle(lang, tribune),
+          description: tribune.description[lang],
+          keywords: TRIBUNES_SEO[lang].keywords,
+        }
+      : isTribunes
+        ? TRIBUNES_SEO[lang]
+        : isPub
     ? PUB_SEO[lang]
     : isMedia && catName
       ? {
@@ -320,9 +378,11 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
         ? null
         : isContact
           ? contactPageJsonLd(lang)
-          : isMedia || isPub || isAgenda
-            ? collectionPageJsonLd(lang, data.title, data.description, url)
-            : null,
+          : tribune
+            ? articleJsonLd(lang, tribune, url)
+            : isMedia || isPub || isAgenda || isTribunes
+              ? collectionPageJsonLd(lang, data.title, data.description, url)
+              : null,
     },
   };
 }
@@ -340,6 +400,8 @@ export const PRERENDER_ROUTES = [
   '/media/press',
   '/media/community',
   '/publications',
+  '/tribunes',
+  ...TRIBUNES.map((t) => `/tribunes/${t.slug}`),
   '/agenda',
 ];
 
@@ -351,7 +413,11 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/contact': { priority: '0.7', changefreq: 'monthly' },
   '/media': { priority: '0.9', changefreq: 'weekly' },
   '/publications': { priority: '0.9', changefreq: 'weekly' },
+  '/tribunes': { priority: '0.8', changefreq: 'weekly' },
   '/agenda': { priority: '0.8', changefreq: 'weekly' },
+  ...Object.fromEntries(
+    TRIBUNES.map((t) => [`/tribunes/${t.slug}`, { priority: '0.7', changefreq: 'monthly' }]),
+  ),
 };
 export const DEFAULT_ROUTE_PRIORITY = { priority: '0.8', changefreq: 'monthly' };
 

@@ -71,6 +71,8 @@
     { "source": "/media/press", "destination": "/media/press/index.html" },
     { "source": "/media/community", "destination": "/media/community/index.html" },
     { "source": "/publications", "destination": "/publications/index.html" },
+    { "source": "/tribunes", "destination": "/tribunes/index.html" },
+    { "source": "/tribunes/from-malaria-control-to-elimination", "destination": "/tribunes/from-malaria-control-to-elimination/index.html" },
     { "source": "/agenda", "destination": "/agenda/index.html" },
 
     { "source": "/fr", "destination": "/fr/index.html" },
@@ -82,6 +84,8 @@
     { "source": "/fr/media/press", "destination": "/fr/media/press/index.html" },
     { "source": "/fr/media/community", "destination": "/fr/media/community/index.html" },
     { "source": "/fr/publications", "destination": "/fr/publications/index.html" },
+    { "source": "/fr/tribunes", "destination": "/fr/tribunes/index.html" },
+    { "source": "/fr/tribunes/from-malaria-control-to-elimination", "destination": "/fr/tribunes/from-malaria-control-to-elimination/index.html" },
     { "source": "/fr/agenda", "destination": "/fr/agenda/index.html" }
   ]
 }

@@ -10,6 +10,8 @@ const pages: AppPages = {
   Media: lazy(() => import('./pages/Media')),
   Publications: lazy(() => import('./pages/Publications')),
   Agenda: lazy(() => import('./pages/Agenda')),
+  Tribunes: lazy(() => import('./pages/Tribunes')),
+  TribuneArticle: lazy(() => import('./pages/TribuneArticle')),
 }
 
 createRoot(document.getElementById('root')!).render(

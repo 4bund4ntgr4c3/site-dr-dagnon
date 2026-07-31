@@ -26,6 +26,8 @@ const ROUTES = [
   '/media/press',
   '/media/community',
   '/publications',
+  '/tribunes',
+  '/tribunes/from-malaria-control-to-elimination',
   '/agenda',
 ];
 
@@ -175,7 +177,7 @@ test('JSON-LD parses and cannot break out of its script tag', () => {
     }
     const breadcrumb = blocks.find(([, i]) => i === 'breadcrumb-jsonld');
     const items = JSON.parse(breadcrumb[2]).itemListElement;
-    const depth = route === '/' ? 1 : route.startsWith('/media/') ? 3 : 2;
+    const depth = route === '/' ? 1 : route.startsWith('/media/') || route.startsWith('/tribunes/') ? 3 : 2;
     assert.equal(items.length, depth, `${id} breadcrumb depth`);
     assert.equal(items.at(-1).item, absUrl(lang, route), `${id} breadcrumb tail`);
     assert.equal(items[0].item, absUrl(lang, '/'), `${id} breadcrumb root is not localized`);
@@ -479,5 +481,63 @@ test('the agenda page separates upcoming from past and can show an empty upcomin
       bodyText.includes(t.emptyUpcoming) || bodyText.includes(lang === 'fr' ? 'Conférence' : 'Conference'),
       `${lang}: agenda should either show upcoming events or the empty state`,
     );
+  }
+});
+
+test('every hosted tribune is a complete, bilingual, non-generic reprint', () => {
+  const source = fs.readFileSync(path.resolve('src/data/tribunes.ts'), 'utf-8').replace(/\r\n/g, '\n');
+  const unescape = (s) => s.replace(/\\(.)/g, '$1');
+
+  const slugFieldRe = /slug: '([a-z0-9-]+)'/;
+  const dateFieldRe = /date: '(\d{4}-\d{2}-\d{2})'/;
+  const titleFieldRe = /title:\s*\{\s*fr: '((?:[^'\\]|\\.)*)',\s*en: '((?:[^'\\]|\\.)*)'\s*,?\s*\}/;
+  const descFieldRe = /description:\s*\{\s*fr: '((?:[^'\\]|\\.)*)',\s*en: '((?:[^'\\]|\\.)*)'\s*,?\s*\}/;
+
+  const blocks = source.split(/\n {2}\{\n/).slice(1);
+  const entries = [];
+  for (const [i, block] of blocks.entries()) {
+    const slug = block.match(slugFieldRe)?.[1];
+    assert.ok(slug, `tribune #${i}: no slug field`);
+    const date = block.match(dateFieldRe)?.[1];
+    assert.match(date, /^\d{4}-\d{2}-\d{2}$/, `${slug}: bad date — must be an ISO yyyy-mm-dd string`);
+    const title = block.match(titleFieldRe);
+    assert.ok(title, `${slug}: no title field`);
+    assert.ok(title[1].length >= 20 && title[2].length >= 20, `${slug}: title too short`);
+    const desc = block.match(descFieldRe);
+    assert.ok(desc, `${slug}: no description field`);
+    assert.ok(desc[1].length >= 40, `${slug}: French description too short (${desc[1].length} chars)`);
+    assert.ok(desc[2].length >= 40, `${slug}: English description too short (${desc[2].length} chars)`);
+    assert.notEqual(desc[1], desc[2], `${slug}: French and English descriptions are identical`);
+    assert.ok(block.match(/body: \{/), `${slug}: no body field`);
+    entries.push({ slug, title: [title[1], title[2]], desc: [desc[1], desc[2]], block });
+  }
+  assert.ok(entries.length >= 1, 'expected at least one tribune');
+
+  for (const lang of LANGS) {
+    const listHtml = pages.get(`${lang} /tribunes`);
+    const listText = decodeEntities((listHtml.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? '').replace(/<[^>]*>/g, ' '));
+    for (const e of entries) {
+      const text = unescape(lang === 'fr' ? e.desc[0] : e.desc[1]).slice(0, 40);
+      assert.ok(listText.includes(text), `${lang} /tribunes: ${e.slug}'s description is not rendered on its card`);
+    }
+  }
+});
+
+test('every tribune article page renders the full body in both languages', () => {
+  for (const lang of LANGS) {
+    const html = pages.get(`${lang} /tribunes/from-malaria-control-to-elimination`);
+    const bodyText = decodeEntities((html.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? '').replace(/<[^>]*>/g, ' '));
+    const markers = [
+      ...(lang === 'fr'
+        ? ['Dans les petites villes d\'Afrique', 'à faire ce virage']
+        : ['In small towns across Africa', 'ready to make that turn']),
+      /* the list page and article page must actually link to each other */
+      lang === 'fr' ? 'Toutes les tribunes' : 'All op-eds',
+    ];
+    for (const marker of markers) {
+      assert.ok(bodyText.includes(marker), `${lang}: tribune body is missing "${marker}"`);
+    }
+    /* the reprint must attribute its source in the body */
+    assert.ok(bodyText.includes('Africa Health Watch'), `${lang}: no source attribution on the article page`);
   }
 });
