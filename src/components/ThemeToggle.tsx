@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Check, ChevronDown, Monitor, Moon, Sun } from 'lucide-react';
+import { Check, Monitor, Moon, Sun } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { track } from '@/lib/analytics';
@@ -95,7 +95,12 @@ export function ThemeToggle() {
   };
 
   return (
-    <div ref={ref} className="relative">
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -103,35 +108,36 @@ export function ThemeToggle() {
         aria-haspopup="menu"
         aria-expanded={open}
         title={t['theme.label']}
-        className="flex h-9 items-center gap-1 rounded-full border border-white/15 bg-white/5 px-2.5 text-pine-100/85 backdrop-blur-sm transition-colors hover:text-gold-300"
+        className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-pine-100/85 backdrop-blur-sm transition-colors hover:text-gold-300"
       >
         {current.icon}
-        <ChevronDown size={13} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
-        <div
-          role="menu"
-          aria-label={t['theme.label']}
-          className="absolute right-0 top-full z-50 mt-2 w-44 rounded-xl border border-pine-900/15 bg-white p-1 shadow-xl shadow-pine-950/20"
-        >
-          {options.map((o) => (
-            <button
-              key={o.mode}
-              type="button"
-              role="menuitemradio"
-              aria-checked={o.mode === mode}
-              onClick={() => select(o.mode)}
-              className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
-                o.mode === mode
-                  ? 'bg-pine-900/5 font-semibold text-pine-900'
-                  : 'text-pine-900/75 hover:bg-pine-900/5 hover:text-pine-900'
-              }`}
-            >
-              <span className={o.mode === mode ? 'text-gold-600' : 'text-pine-900/60'}>{o.icon}</span>
-              <span className="flex-1 text-left">{o.label}</span>
-              {o.mode === mode && <Check size={14} className="text-gold-600" />}
-            </button>
-          ))}
+        <div className="absolute right-0 top-full z-50 w-44 pt-2">
+          <div
+            role="menu"
+            aria-label={t['theme.label']}
+            className="overflow-hidden rounded-xl border border-pine-900/15 bg-white p-1 shadow-xl shadow-pine-950/20"
+          >
+            {options.map((o) => (
+              <button
+                key={o.mode}
+                type="button"
+                role="menuitemradio"
+                aria-checked={o.mode === mode}
+                onClick={() => select(o.mode)}
+                className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
+                  o.mode === mode
+                    ? 'bg-pine-900/5 font-semibold text-pine-900'
+                    : 'text-pine-900/75 hover:bg-pine-900/5 hover:text-pine-900'
+                }`}
+              >
+                <span className={o.mode === mode ? 'text-gold-600' : 'text-pine-900/60'}>{o.icon}</span>
+                <span className="flex-1 text-left">{o.label}</span>
+                {o.mode === mode && <Check size={14} className="text-gold-600" />}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>
