@@ -30,7 +30,7 @@ export function Stats() {
   const locale = UI[lang]['stats.locale'];
 
   return (
-    <section className="relative border-y border-gold-500/20 bg-pine-900">
+    <section id="stats" className="relative border-y border-gold-500/20 bg-pine-900">
       <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-white/5 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
         {STATS[lang].map((s, i) => (
           <Reveal key={s.label} delay={i * 0.1} className="px-8 py-10 lg:py-12">

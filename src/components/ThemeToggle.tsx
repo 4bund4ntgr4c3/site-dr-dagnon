@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Monitor, Moon, Sun } from 'lucide-react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { Check, ChevronDown, Monitor, Moon, Sun } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { track } from '@/lib/analytics';
@@ -40,13 +40,14 @@ export function ThemeToggle() {
   const { lang } = useLang();
   const t = UI[lang];
   const [mode, setMode] = useState<ThemeMode>(() => (typeof document !== 'undefined' ? readMode() : 'system'));
-  const [dark, setDark] = useState(() => typeof document !== 'undefined' && document.documentElement.classList.contains('dark'));
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const sync = () => {
       const m = readMode();
       setMode(m);
-      setDark(m === 'dark' || (m === 'system' && prefersDark()));
+      setOpen(false);
     };
     const onStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY) sync();
@@ -63,27 +64,76 @@ export function ThemeToggle() {
     };
   }, []);
 
-  const toggle = () => {
-    const next: ThemeMode = mode === 'light' ? 'dark' : mode === 'dark' ? 'system' : dark ? 'light' : 'dark';
-    apply(next);
-    setMode(next);
-    setDark(next === 'dark' || (next === 'system' && prefersDark()));
-    track('theme_change', { event_category: 'engagement', event_label: next });
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  const options: { mode: ThemeMode; label: string; icon: ReactNode }[] = [
+    { mode: 'system', label: t['theme.mode.system'], icon: <Monitor size={15} /> },
+    { mode: 'light', label: t['theme.mode.light'], icon: <Sun size={15} /> },
+    { mode: 'dark', label: t['theme.mode.dark'], icon: <Moon size={15} /> },
+  ];
+  const current = options.find((o) => o.mode === mode)!;
+
+  const select = (m: ThemeMode) => {
+    apply(m);
+    setMode(m);
+    setOpen(false);
+    track('theme_change', { event_category: 'engagement', event_label: m });
   };
 
-  const label = mode === 'dark' ? t['theme.toSystem'] : dark ? t['theme.toLight'] : t['theme.toDark'];
-  const icon =
-    mode === 'dark' ? <Monitor size={16} /> : dark ? <Sun size={16} /> : <Moon size={16} />;
-
   return (
-    <button
-      type="button"
-      onClick={toggle}
-      aria-label={label}
-      title={label}
-      className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-pine-100/85 backdrop-blur-sm transition-colors hover:text-gold-300"
-    >
-      {icon}
-    </button>
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-label={t['theme.label']}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        title={t['theme.label']}
+        className="flex h-9 items-center gap-1 rounded-full border border-white/15 bg-white/5 px-2.5 text-pine-100/85 backdrop-blur-sm transition-colors hover:text-gold-300"
+      >
+        {current.icon}
+        <ChevronDown size={13} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div
+          role="menu"
+          aria-label={t['theme.label']}
+          className="absolute right-0 top-full z-50 mt-2 w-44 rounded-xl border border-pine-900/15 bg-white p-1 shadow-xl shadow-pine-950/20"
+        >
+          {options.map((o) => (
+            <button
+              key={o.mode}
+              type="button"
+              role="menuitemradio"
+              aria-checked={o.mode === mode}
+              onClick={() => select(o.mode)}
+              className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
+                o.mode === mode
+                  ? 'bg-pine-900/5 font-semibold text-pine-900'
+                  : 'text-pine-900/75 hover:bg-pine-900/5 hover:text-pine-900'
+              }`}
+            >
+              <span className={o.mode === mode ? 'text-gold-600' : 'text-pine-900/60'}>{o.icon}</span>
+              <span className="flex-1 text-left">{o.label}</span>
+              {o.mode === mode && <Check size={14} className="text-gold-600" />}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

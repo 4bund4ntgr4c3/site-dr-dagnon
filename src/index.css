@@ -121,11 +121,12 @@
   }
 }
 
-/* Dark theme — #181a1b dark-grey surfaces replace the light ivory/pine ones,
-   while the already-dark sections (heroes, pine-950 blocks, gold accents)
-   stay as-is. Kept unlayered, at the very end: the build flattens Tailwind's
-   layers, so rules inside @layer lose to the unlayered utilities. Plain rules
-   with a higher-specificity selector (.dark …) always win. */
+/* Dark theme — #181a1b page background with #202325 elevated surfaces, on a
+   strict grey ramp so every AA contrast level holds, while the already-dark
+   sections (heroes, pine-950 blocks, gold accents) stay as-is. Kept unlayered,
+   at the very end: the build flattens Tailwind's layers, so rules inside
+   @layer lose to the unlayered utilities. Plain rules with a
+   higher-specificity selector (.dark …) always win. */
 .dark {
   color-scheme: dark;
 }
@@ -135,6 +136,16 @@
 .dark .bg-pine-50 {
   background-color: #181a1b;
 }
+.dark .bg-pine-900 {
+  background-color: #2b2f31;
+}
+.dark #realisations,
+.dark #stats {
+  background-color: #0c2e2a;
+}
+.dark .bg-pine-900\/5 {
+  background-color: rgba(255, 255, 255, 0.08);
+}
 .dark .bg-ivory {
   background-color: #181a1b;
 }
@@ -142,28 +153,28 @@
   background-color: rgba(24, 26, 27, 0.6);
 }
 .dark .bg-white {
-  background-color: #181a1b;
+  background-color: #202325;
 }
 .dark .bg-white\/95 {
-  background-color: rgba(24, 26, 27, 0.95);
+  background-color: rgba(32, 35, 37, 0.95);
 }
 .dark .bg-white\/90 {
-  background-color: rgba(24, 26, 27, 0.9);
+  background-color: rgba(32, 35, 37, 0.9);
 }
 .dark .bg-white\/70 {
-  background-color: rgba(24, 26, 27, 0.7);
+  background-color: rgba(32, 35, 37, 0.7);
 }
 .dark .bg-white\/50 {
-  background-color: rgba(24, 26, 27, 0.5);
+  background-color: rgba(32, 35, 37, 0.5);
 }
 .dark .bg-white\/30 {
-  background-color: rgba(24, 26, 27, 0.3);
+  background-color: rgba(32, 35, 37, 0.3);
 }
 .dark .hover\:bg-pine-50:hover {
-  background-color: #202325;
+  background-color: #262a2c;
 }
 .dark .focus\:bg-pine-50:focus {
-  background-color: #202325;
+  background-color: #262a2c;
 }
 .dark .hover\:bg-pine-900\/5:hover {
   background-color: rgba(255, 255, 255, 0.08);
@@ -182,6 +193,17 @@
 }
 .dark .text-ink\/60 {
   color: rgba(236, 236, 236, 0.6);
+}
+.dark .text-pine-800 {
+  color: #d6d6d6;
+}
+.dark .text-pine-950 {
+  color: #ececec;
+}
+.dark .bg-gold-500.text-pine-950,
+.dark .bg-gold-500\/90.text-pine-950,
+.dark .from-gold-500.text-pine-950 {
+  color: #071f1c;
 }
 .dark .text-pine-900 {
   color: #e0e0e0;
@@ -211,10 +233,19 @@
   color: rgba(224, 224, 224, 0.55);
 }
 .dark .text-pine-900\/50 {
-  color: rgba(224, 224, 224, 0.5);
+  color: rgba(224, 224, 224, 0.6);
 }
 .dark .text-gold-600 {
   color: #d9bb78;
+}
+.dark .text-gold-700 {
+  color: #d9bb78;
+}
+.dark .text-gold-700\/80 {
+  color: rgba(217, 187, 120, 0.8);
+}
+.dark .bg-gold-100.text-gold-700 {
+  color: #86652d;
 }
 .dark .placeholder\:text-pine-900\/65::placeholder {
   color: rgba(224, 224, 224, 0.65);
@@ -245,4 +276,10 @@
   }
   .dark .ring-pine-50 {
     --tw-ring-color: rgba(240, 247, 245, 0.25);
+  }
+  .dark ::selection {
+    color: #071f1c;
+  }
+  .dark ::-moz-selection {
+    color: #071f1c;
   }
