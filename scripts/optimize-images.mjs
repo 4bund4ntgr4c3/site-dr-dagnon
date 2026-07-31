@@ -36,6 +36,7 @@ const QUALITY = 72;
 /* shown in ~400px cards — a 2x thumbnail is plenty */
 const THUMB_SOURCES = new Set([
   'community/nuit-paludisme-1',
+  'community/nuit-paludisme-5e-1',
   'community/philantropie-1',
   'community/genies-1',
 ]);

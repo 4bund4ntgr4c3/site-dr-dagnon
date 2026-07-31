@@ -216,6 +216,7 @@ function MediaLanding({
 
 const SUBTYPE_MAP: Record<string, Record<'fr' | 'en', string>> = {
   'malaria-night': { fr: 'Nuit du Paludisme', en: 'Night Against Malaria' },
+  'nuit-paludisme-5e': { fr: '5e Nuit du Paludisme', en: '5th Night Against Malaria' },
   'school-kits': { fr: 'Fournitures scolaires', en: 'School Kits' },
   genies: { fr: 'Génies en Herbe', en: 'Génies en Herbe' },
 };
@@ -224,6 +225,10 @@ const SUBTYPE_DESC_MAP: Record<string, Record<'fr' | 'en', string>> = {
   'malaria-night': {
     fr: 'Depuis 2021, le Dr. Dagnon préside la Nuit du Paludisme au Bénin, une cérémonie qui honore les personnes ayant apporté des contributions significatives à l\'élimination du paludisme en Afrique et au Bénin.',
     en: 'Since 2021, Dr. Dagnon has chaired the Night Against Malaria in Benin, a ceremony that honors individuals who have made significant contributions to malaria elimination efforts in Africa and in Benin.',
+  },
+  'nuit-paludisme-5e': {
+    fr: 'La 5e édition de la Nuit du Paludisme, organisée par l\'ONG Icône 360° au Bénin, en présence du parrain Dr. Dagnon et des partenaires Expertise France et le Ministère de la Santé.',
+    en: 'The 5th edition of the Night Against Malaria, organized by NGO Icône 360° in Benin, with patron Dr. Dagnon and partners Expertise France and the Ministry of Health.',
   },
   'school-kits': {
     fr: 'Le Dr. Dagnon soutient la distribution de fournitures scolaires aux enfants d\'âge scolaire dans les zones défavorisées, permettant à de nombreux enfants d\'accéder à l\'éducation.',
@@ -239,6 +244,7 @@ const SUBTYPE_DESC_MAP: Record<string, Record<'fr' | 'en', string>> = {
    full-size photo would be several times the bytes actually needed */
 const ALBUM_COVERS: Record<string, string> = {
   'malaria-night': '/community/nuit-paludisme-1-thumb.webp',
+  'nuit-paludisme-5e': '/community/nuit-paludisme-5e-1-thumb.webp',
   'school-kits': '/community/philantropie-1-thumb.webp',
   genies: '/community/genies-1-thumb.webp',
 };

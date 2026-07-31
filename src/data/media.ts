@@ -379,6 +379,103 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     },
     src: '/community/nuit-paludisme-5.webp',
   },
+  // ── Community — 5e Nuit du Paludisme (Icône 360°) ──────────────
+  {
+    id: 'nuit-paludisme-5e-1',
+    type: 'image',
+    category: 'community',
+    subType: 'nuit-paludisme-5e',
+    date: '2025-07-15',
+    title: {
+      fr: '5e Nuit du Paludisme — Portrait officiel du Dr. Dagnon',
+      en: '5th Night Against Malaria — Dr. Dagnon official portrait',
+    },
+    src: '/community/nuit-paludisme-5e-1.webp',
+  },
+  {
+    id: 'nuit-paludisme-5e-2',
+    type: 'image',
+    category: 'community',
+    subType: 'nuit-paludisme-5e',
+    date: '2025-07-15',
+    title: {
+      fr: '5e Nuit du Paludisme — Échange avec un invité d\'honneur',
+      en: '5th Night Against Malaria — Conversation with a guest of honor',
+    },
+    src: '/community/nuit-paludisme-5e-2.webp',
+  },
+  {
+    id: 'nuit-paludisme-5e-3',
+    type: 'image',
+    category: 'community',
+    subType: 'nuit-paludisme-5e',
+    date: '2025-07-15',
+    title: {
+      fr: '5e Nuit du Paludisme — Photo avec partenaire Expertise France',
+      en: '5th Night Against Malaria — Photo with Expertise France partner',
+    },
+    src: '/community/nuit-paludisme-5e-3.webp',
+  },
+  {
+    id: 'nuit-paludisme-5e-4',
+    type: 'image',
+    category: 'community',
+    subType: 'nuit-paludisme-5e',
+    date: '2025-07-15',
+    title: {
+      fr: '5e Nuit du Paludisme — Photo avec invitée',
+      en: '5th Night Against Malaria — Photo with guest',
+    },
+    src: '/community/nuit-paludisme-5e-4.webp',
+  },
+  {
+    id: 'nuit-paludisme-5e-5',
+    type: 'image',
+    category: 'community',
+    subType: 'nuit-paludisme-5e',
+    date: '2025-07-15',
+    title: {
+      fr: '5e Nuit du Paludisme — Remise d\'attestation à Dr. Christiane Lokossou Dossouho',
+      en: '5th Night Against Malaria — Attestation presented to Dr. Christiane Lokossou Dossouho',
+    },
+    src: '/community/nuit-paludisme-5e-5.webp',
+  },
+  {
+    id: 'nuit-paludisme-5e-6',
+    type: 'image',
+    category: 'community',
+    subType: 'nuit-paludisme-5e',
+    date: '2025-07-15',
+    title: {
+      fr: '5e Nuit du Paludisme — Remise d\'attestation à Dr. Cédric Gandondoudjro',
+      en: '5th Night Against Malaria — Attestation presented to Dr. Cédric Gandondoudjro',
+    },
+    src: '/community/nuit-paludisme-5e-6.webp',
+  },
+  {
+    id: 'nuit-paludisme-5e-7',
+    type: 'image',
+    category: 'community',
+    subType: 'nuit-paludisme-5e',
+    date: '2025-07-15',
+    title: {
+      fr: '5e Nuit du Paludisme — Discours du parrain Dr. Dagnon',
+      en: '5th Night Against Malaria — Speech by patron Dr. Dagnon',
+    },
+    src: '/community/nuit-paludisme-5e-7.webp',
+  },
+  {
+    id: 'nuit-paludisme-5e-8',
+    type: 'image',
+    category: 'community',
+    subType: 'nuit-paludisme-5e',
+    date: '2025-07-15',
+    title: {
+      fr: '5e Nuit du Paludisme — Photo de groupe des lauréats, soirée de gala',
+      en: '5th Night Against Malaria — Group photo of awardees, gala evening',
+    },
+    src: '/community/nuit-paludisme-5e-8.webp',
+  },
   // ── Community — School Kits Distribution ─────────────────────────
   {
     id: 'philantropie-1',
