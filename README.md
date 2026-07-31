@@ -6,8 +6,8 @@ Portfolio of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, d
 
 ```bash
 npm run dev      # dev server on :3000
-npm run build    # typecheck, bundle, then prerender 42 urls + sitemap + 404
-npm test         # build, then 97 tests (node --test)
+npm run build    # typecheck, bundle, then prerender 42 urls + sitemap + 404 + send the newsletter digest on Vercel production
+npm test         # build, then 95 tests (node --test)
 npm run lint
 npm run images   # one-off: convert public/ photos to WebP (see below)
 npm run gen:og   # one-off: regenerate og-image.jpg
@@ -23,6 +23,8 @@ contact form to work at all.
 | `RESEND_API_KEY` | yes | sending mail through Resend |
 | `CONTACT_TO_EMAIL` | yes | where contact messages are delivered |
 | `CONTACT_FROM_EMAIL` | no | sender identity, defaults to `Portfolio <admin@seynudedagnon.com>` |
+| `NEWSLETTER_TO_EMAIL` | yes (newsletter) | the owner's inbox — receives every digest, and is used for the unsubscribe link |
+| `NEWSLETTER_FROM_EMAIL` | no | newsletter sender identity, defaults to the same address |
 | `VERIFY_SECRET` | recommended | signs the phone-verification tokens; falls back to `RESEND_API_KEY` |
 | `CONTACT_PHONE` | yes (phone reveal) | the protected phone number, so it can change without a code deploy |
 | `ALLOWED_ORIGINS` | no | comma-separated origin allowlist for the API |
@@ -31,26 +33,24 @@ contact form to work at all.
 Attaching a Vercel KV store sets the `KV_*` pair automatically. Upstash's own
 `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` are read too.
 
-### Newsletter automation (GitHub Actions)
+### Newsletter automation (Vercel build)
 
-`.github/workflows/newsletter.yml` sends the newsletter digest on every push
-to `main` that touches the publications or tribunes data. The sender
-(`scripts/send-newsletter.mjs`) reads the subscriber list
+The newsletter digest goes out automatically at the end of every Vercel
+**production** deploy — the `build` script ends with
+`scripts/send-newsletter.mjs`, which reads the subscriber list
 (`newsletter:emails`, written by `/api/newsletter`) and the sent-state
-(`newsletter:last-sent`) from the KV store, then mails the new items via
-Resend, owner in `to` and subscribers in `bcc` batches of 50. The first run
-establishes a baseline and sends nothing, so the archive is never re-mailed.
-Store the same credentials as GitHub repository secrets:
+(`newsletter:last-sent`) from the KV store, then mails the new publications
+and tribunes via Resend, owner in `to` and subscribers in `bcc` batches of
+50. The first run establishes a baseline and sends nothing, so the archive is
+never re-mailed.
 
-| Secret | Purpose |
+| Variable | Purpose |
 |---|---|
-| `RESEND_API_KEY` | sending the digest through Resend |
-| `NEWSLETTER_TO_EMAIL` | the owner's inbox — receives every digest as `to`, and is used for the unsubscribe link |
 | `NEWSLETTER_FROM_EMAIL` | optional sender identity |
-| `KV_REST_API_URL` + `KV_REST_API_TOKEN` | subscriber list and sent-state |
 
-The job skips cleanly (exit 0) until the secrets are configured, and a failed
-send leaves the state untouched so the next push retries it.
+The script skips cleanly on preview deployments and local builds (guarded by
+`VERCEL_ENV`), and a failed send leaves the state untouched so the next
+deploy retries it.
 
 ## Things that are not obvious
 

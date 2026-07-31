@@ -1,5 +1,6 @@
-/* Sends the newsletter digest — run by the GitHub Action on every push to
- * main (see .github/workflows/newsletter.yml).
+/* Sends the newsletter digest — run at the end of the Vercel production
+ * build (appended to the `build` script), i.e. on every deploy that ships
+ * new content. Nothing runs on preview deployments or local builds.
  *
  * What it does:
  *   1. compiles the publication/tribune data files to plain JS (same trick
@@ -10,13 +11,13 @@
  *   4. emails the digest to the owner with the subscribers in bcc, in
  *      batches of 50 recipients
  *   5. records the sent ids in KV — only after every batch went out, so a
- *      failed send is retried by the next push
+ *      failed send is retried by the next deploy
  *
  * First run with no state establishes a baseline (everything already on the
  * site counts as sent) so nobody gets spammed with the whole archive.
  *
- * Nothing is sent when the secrets are missing — the Action skips cleanly
- * until they are configured.
+ * Nothing is sent when the environment is not a Vercel production build or
+ * when the secrets are missing — the build skips cleanly.
  */
 
 import { execFileSync } from 'node:child_process';
@@ -240,6 +241,12 @@ function compileData() {
 /* ── main ───────────────────────────────────────────────────────── */
 
 async function main() {
+  /* the digest goes out only from a real production deploy — preview
+     deployments (staging, PRs) would otherwise mail drafts to everyone */
+  if (process.env.VERCEL_ENV !== 'production') {
+    console.warn('[newsletter] skipped: not a Vercel production build');
+    return;
+  }
   const apiKey = process.env.RESEND_API_KEY;
   const owner = process.env.NEWSLETTER_TO_EMAIL;
   if (!apiKey || !owner) {

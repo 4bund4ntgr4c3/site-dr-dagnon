@@ -49,11 +49,13 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
     return (
       <div
         role="status"
-        className={`flex items-center justify-center gap-2 rounded-full border border-pine-900/10 bg-white text-sm font-semibold text-pine-900 shadow-sm ${
-          compact ? 'h-11 px-6' : 'px-6 py-3.5'
+        className={`flex items-center justify-center gap-2 rounded-full border text-sm font-semibold ${
+          compact
+            ? 'h-11 border-white/10 bg-white/5 px-6 text-pine-100/85 backdrop-blur'
+            : 'border-pine-900/10 bg-white px-6 py-3.5 text-pine-900 shadow-sm'
         }`}
       >
-        <CheckCircle2 size={18} className="shrink-0 text-gold-500" />
+        <CheckCircle2 size={18} className={`shrink-0 ${compact ? 'text-gold-400' : 'text-gold-500'}`} />
         <span className="text-center">{t['newsletter.success']}</span>
       </div>
     );
@@ -90,8 +92,10 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
           placeholder={t['newsletter.placeholder']}
           aria-required="true"
           aria-invalid={status === 'error'}
-          className={`w-full rounded-full border border-pine-900/15 bg-white text-sm text-pine-900 placeholder:text-pine-900/65 outline-none transition-colors focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 ${
-            compact ? 'h-11 px-5' : 'px-6 py-3.5'
+          className={`w-full rounded-full border text-sm outline-none transition-colors focus:ring-2 ${
+            compact
+              ? 'h-11 border-white/10 bg-white/5 px-5 text-ivory placeholder:text-pine-100/45 backdrop-blur focus:border-gold-400/50 focus:ring-gold-400/10'
+              : 'border-pine-900/10 bg-white px-6 py-3.5 text-pine-900 placeholder:text-pine-900/50 focus:border-gold-500 focus:ring-gold-500/10'
           }`}
         />
         <button
