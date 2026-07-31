@@ -170,7 +170,7 @@ export default function Contact() {
           <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr]">
             {/* contact info */}
             <Reveal delay={0.1}>
-              <div className="rounded-2xl border border-pine-900/10 bg-ivory/60 p-6 lg:sticky lg:top-8">
+              <div className="rounded-2xl border border-pine-900/10 bg-ivory/60 p-6 lg:sticky lg:top-28">
                 <h2 className="font-display text-xl font-semibold text-pine-900">{t['contact.infoTitle']}</h2>
 
                 <ul className="mt-6 space-y-4">
