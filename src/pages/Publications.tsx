@@ -11,7 +11,7 @@ const pill = (active: boolean) =>
   `whitespace-nowrap rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
     active
       ? 'bg-pine-950 text-gold-400 shadow'
-      : 'bg-white text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+      : 'bg-pine-900/5 text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
   }`;
 
 export default function PublicationsPage() {

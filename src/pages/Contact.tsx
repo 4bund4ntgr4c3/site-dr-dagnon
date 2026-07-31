@@ -383,7 +383,7 @@ export default function Contact() {
                               className={`inline-flex items-center gap-2 whitespace-nowrap rounded-xl border px-3 py-2.5 text-[13px] font-semibold transition-all ${
                                 active
                                   ? 'border-gold-500 bg-pine-950 text-gold-400 shadow'
-                                  : 'border-pine-900/15 bg-white text-pine-900/75 hover:border-gold-500/50 hover:text-pine-900'
+                                  : 'border-pine-900/15 bg-pine-900/5 text-pine-900/75 hover:border-gold-500/50 hover:text-pine-900'
                               }`}
                             >
                               <Icon size={15} className={`shrink-0 ${active ? 'text-gold-400' : 'text-pine-900/60'}`} />
