@@ -28,6 +28,14 @@ const ROUTES = [
   '/publications',
   '/tribunes',
   '/tribunes/from-malaria-control-to-elimination',
+  '/projets',
+  '/projets/digitalisation-milda-benin',
+  '/projets/recherche-cps-smc',
+  '/projets/malariya-pi-burundi',
+  '/projets/arm3-systeme-information-benin',
+  '/projets/irs-nord-benin',
+  '/projets/reponse-epidemies-benin',
+  '/projets/contrat-g2g-pnlp-benin',
   '/agenda',
 ];
 
@@ -177,7 +185,7 @@ test('JSON-LD parses and cannot break out of its script tag', () => {
     }
     const breadcrumb = blocks.find(([, i]) => i === 'breadcrumb-jsonld');
     const items = JSON.parse(breadcrumb[2]).itemListElement;
-    const depth = route === '/' ? 1 : route.startsWith('/media/') || route.startsWith('/tribunes/') ? 3 : 2;
+    const depth = route === '/' ? 1 : route.startsWith('/media/') || route.startsWith('/tribunes/') || route.startsWith('/projets/') ? 3 : 2;
     assert.equal(items.length, depth, `${id} breadcrumb depth`);
     assert.equal(items.at(-1).item, absUrl(lang, route), `${id} breadcrumb tail`);
     assert.equal(items[0].item, absUrl(lang, '/'), `${id} breadcrumb root is not localized`);
@@ -242,7 +250,11 @@ test('the server-rendered body has substantial, page-specific text', () => {
   const seen = new Map();
   eachPage(({ id, lang, route, html }) => {
     const text = textOf(html);
-    const key = `${lang} ${text.length}`;
+    /* compared in full, not by length — two different pages can legitimately
+       come out the same length (Burundi and IRS case studies did, at 2,043
+       chars of French body text) while the <Suspense> fallback bug makes two
+       pages byte-identical */
+    const key = `${lang} ${text}`;
     const dupe = seen.get(key);
     assert.ok(!dupe || dupe.route === route, `${id} rendered identically to ${dupe?.id} — likely the <Suspense> fallback again`);
     seen.set(key, { id, route });
@@ -539,5 +551,109 @@ test('every tribune article page renders the full body in both languages', () =>
     }
     /* the reprint must attribute its source in the body */
     assert.ok(bodyText.includes('Africa Health Watch'), `${lang}: no source attribution on the article page`);
+  }
+});
+
+test('every case study is a complete, bilingual, non-generic entry', () => {
+  const source = fs.readFileSync(path.resolve('src/data/projects.ts'), 'utf-8').replace(/\r\n/g, '\n');
+  const unescape = (s) => s.replace(/\\(.)/g, '$1');
+
+  const slugFieldRe = /slug: '([a-z0-9-]+)'/;
+  const dateFieldRe = /date: '(\d{4}-\d{2}-\d{2})'/;
+  const pairFieldRe = (name) => new RegExp(`${name}: \\{\\s*fr: '((?:[^'\\\\]|\\\\.)*)',\\s*en: '((?:[^'\\\\]|\\\\.)*)'\\s*,?\\s*\\}`);
+  const titleFieldRe = pairFieldRe('title');
+  const descFieldRe = pairFieldRe('description');
+  const contextFieldRe = pairFieldRe('context');
+  const approachFieldRe = /approach:\s*\{\s*fr: \[([\s\S]*?)\],\s*en: \[([\s\S]*?)\]\s*,?\s*\}/;
+  const resultLineRe = /value: '([^']+)', label: \{ fr: '((?:[^'\\]|\\.)*)', en: '((?:[^'\\]|\\.)*)' \}/g;
+  const evidenceLineRe = /label: \{ fr: '((?:[^'\\]|\\.)*)', en: '((?:[^'\\]|\\.)*)' \}, url: '(https:\/\/[^']+)'/g;
+
+  const blocks = source.split(/\n {2}\{\n/).slice(1);
+  const entries = [];
+  for (const [i, block] of blocks.entries()) {
+    const slug = block.match(slugFieldRe)?.[1];
+    assert.ok(slug, `project #${i}: no slug field`);
+    const date = block.match(dateFieldRe)?.[1];
+    assert.match(date, /^\d{4}-\d{2}-\d{2}$/, `${slug}: bad date — must be an ISO yyyy-mm-dd string`);
+    const title = block.match(titleFieldRe);
+    assert.ok(title, `${slug}: no title field`);
+    assert.ok(title[1].length >= 15 && title[2].length >= 15, `${slug}: title too short`);
+    const desc = block.match(descFieldRe);
+    assert.ok(desc, `${slug}: no description field`);
+    assert.ok(desc[1].length >= 40, `${slug}: French description too short (${desc[1].length} chars)`);
+    assert.ok(desc[2].length >= 40, `${slug}: English description too short (${desc[2].length} chars)`);
+    assert.notEqual(desc[1], desc[2], `${slug}: French and English descriptions are identical`);
+    const context = block.match(contextFieldRe);
+    assert.ok(context, `${slug}: no context field`);
+    assert.ok(context[1].length >= 80 && context[2].length >= 80, `${slug}: context too short`);
+    assert.notEqual(context[1], context[2], `${slug}: French and English contexts are identical`);
+    const approach = block.match(approachFieldRe);
+    assert.ok(approach, `${slug}: no approach field`);
+    const countBullets = (s) => (s.match(/'((?:[^'\\]|\\.)*)'/g) || []).length;
+    assert.ok(countBullets(approach[1]) >= 3, `${slug}: fewer than 3 French approach steps`);
+    assert.ok(countBullets(approach[2]) >= 3, `${slug}: fewer than 3 English approach steps`);
+    const resultsBlock = block.match(/results: \[([\s\S]*?)\]/)?.[1];
+    assert.ok(resultsBlock, `${slug}: no results field`);
+    const results = [...resultsBlock.matchAll(resultLineRe)];
+    assert.ok(results.length >= 2, `${slug}: fewer than 2 results`);
+    for (const r of results) {
+      assert.ok(r[1].length > 0, `${slug}: an empty result value`);
+      assert.notEqual(r[2], r[3], `${slug}: a result label is identical in both languages`);
+    }
+    const evidenceBlock = block.match(/evidence: \[([\s\S]*?)\]/)?.[1] ?? '';
+    for (const ev of [...evidenceBlock.matchAll(evidenceLineRe)]) {
+      assert.ok(ev[1].length >= 5 && ev[2].length >= 5, `${slug}: an evidence label is too short`);
+      assert.notEqual(ev[1], ev[2], `${slug}: an evidence label is identical in both languages`);
+    }
+    entries.push({ slug, title: [title[1], title[2]], desc: [desc[1], desc[2]], context: [context[1], context[2]], block });
+  }
+  assert.ok(entries.length >= 7, `expected 7 case studies, found ${entries.length}`);
+
+  for (const lang of LANGS) {
+    const listHtml = pages.get(`${lang} /projets`);
+    const listText = decodeEntities((listHtml.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? '').replace(/<[^>]*>/g, ' '));
+    for (const e of entries) {
+      const text = unescape(lang === 'fr' ? e.desc[0] : e.desc[1]).slice(0, 40);
+      assert.ok(listText.includes(text), `${lang} /projets: ${e.slug}'s description is not rendered on its card`);
+    }
+  }
+});
+
+test('every case study page renders its full case study in both languages', () => {
+  const source = fs.readFileSync(path.resolve('src/data/projects.ts'), 'utf-8').replace(/\r\n/g, '\n');
+  const unescape = (s) => s.replace(/\\(.)/g, '$1');
+
+  const slugFieldRe = /slug: '([a-z0-9-]+)'/;
+  const contextFieldRe = /context:\s*\{\s*fr: '((?:[^'\\]|\\.)*)',\s*en: '((?:[^'\\]|\\.)*)'\s*,?\s*\}/;
+  const approachFieldRe = /approach:\s*\{\s*fr: \[([\s\S]*?)\],\s*en: \[([\s\S]*?)\]\s*,?\s*\}/;
+  const resultLineRe = /value: '([^']+)', label: \{ fr: '((?:[^'\\]|\\.)*)', en: '((?:[^'\\]|\\.)*)' \}/g;
+  const evidenceLineRe = /label: \{ fr: '((?:[^'\\]|\\.)*)', en: '((?:[^'\\]|\\.)*)' \}, url: '(https:\/\/[^']+)'/g;
+  const firstOf = (s) => {
+    const m = s.match(/'((?:[^'\\]|\\.)*)'/);
+    return m ? unescape(m[1]) : '';
+  };
+
+  const blocks = source.split(/\n {2}\{\n/).slice(1);
+  for (const [i, block] of blocks.entries()) {
+    const slug = block.match(slugFieldRe)[1];
+    const context = block.match(contextFieldRe);
+    const approach = block.match(approachFieldRe);
+    const results = [...(block.match(/results: \[([\s\S]*?)\]/)?.[1] ?? '').matchAll(resultLineRe)];
+    const evidence = [...(block.match(/evidence: \[([\s\S]*?)\]/)?.[1] ?? '').matchAll(evidenceLineRe)];
+    for (const lang of LANGS) {
+      const html = pages.get(`${lang} /projets/${slug}`);
+      const bodyText = decodeEntities((html.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? '').replace(/<[^>]*>/g, ' '));
+      const idx = lang === 'fr' ? 1 : 2;
+      assert.ok(bodyText.includes(unescape(context[idx]).slice(0, 60)), `${lang} /projets/${slug}: context is not rendered`);
+      assert.ok(bodyText.includes(firstOf(approach[idx]).slice(0, 40)), `${lang} /projets/${slug}: first approach step is not rendered`);
+      for (const r of results) {
+        assert.ok(bodyText.includes(r[1]), `${lang} /projets/${slug}: result value "${r[1]}" is not rendered`);
+        assert.ok(bodyText.includes(unescape(r[idx === 1 ? 2 : 3]).slice(0, 30)), `${lang} /projets/${slug}: result label is not rendered`);
+      }
+      for (const ev of evidence) {
+        assert.ok(bodyText.includes(unescape(ev[idx === 1 ? 1 : 2]).slice(0, 30)), `${lang} /projets/${slug}: evidence label is not rendered`);
+      }
+      assert.ok(bodyText.includes(lang === 'fr' ? 'Tous les projets' : 'All projects'), `${lang} /projets/${slug}: missing back link`);
+    }
   }
 });

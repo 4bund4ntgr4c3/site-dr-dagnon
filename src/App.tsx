@@ -24,6 +24,8 @@ export interface AppPages {
   Agenda: ComponentType
   Tribunes: ComponentType
   TribuneArticle: ComponentType
+  Projects: ComponentType
+  ProjectArticle: ComponentType
 }
 
 function Loading() {
@@ -48,6 +50,8 @@ const routesFor = (Pages: AppPages) => [
   <Route key="publications" path="publications" element={<Pages.Publications />} />,
   <Route key="tribunes" path="tribunes" element={<Pages.Tribunes />} />,
   <Route key="tribune-article" path="tribunes/:slug" element={<Pages.TribuneArticle />} />,
+  <Route key="projets" path="projets" element={<Pages.Projects />} />,
+  <Route key="project-article" path="projets/:slug" element={<Pages.ProjectArticle />} />,
   <Route key="agenda" path="agenda" element={<Pages.Agenda />} />,
 ]
 

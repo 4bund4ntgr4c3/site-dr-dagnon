@@ -73,6 +73,14 @@
     { "source": "/publications", "destination": "/publications/index.html" },
     { "source": "/tribunes", "destination": "/tribunes/index.html" },
     { "source": "/tribunes/from-malaria-control-to-elimination", "destination": "/tribunes/from-malaria-control-to-elimination/index.html" },
+    { "source": "/projets", "destination": "/projets/index.html" },
+    { "source": "/projets/digitalisation-milda-benin", "destination": "/projets/digitalisation-milda-benin/index.html" },
+    { "source": "/projets/recherche-cps-smc", "destination": "/projets/recherche-cps-smc/index.html" },
+    { "source": "/projets/malariya-pi-burundi", "destination": "/projets/malariya-pi-burundi/index.html" },
+    { "source": "/projets/arm3-systeme-information-benin", "destination": "/projets/arm3-systeme-information-benin/index.html" },
+    { "source": "/projets/irs-nord-benin", "destination": "/projets/irs-nord-benin/index.html" },
+    { "source": "/projets/reponse-epidemies-benin", "destination": "/projets/reponse-epidemies-benin/index.html" },
+    { "source": "/projets/contrat-g2g-pnlp-benin", "destination": "/projets/contrat-g2g-pnlp-benin/index.html" },
     { "source": "/agenda", "destination": "/agenda/index.html" },
 
     { "source": "/fr", "destination": "/fr/index.html" },
@@ -86,6 +94,14 @@
     { "source": "/fr/publications", "destination": "/fr/publications/index.html" },
     { "source": "/fr/tribunes", "destination": "/fr/tribunes/index.html" },
     { "source": "/fr/tribunes/from-malaria-control-to-elimination", "destination": "/fr/tribunes/from-malaria-control-to-elimination/index.html" },
+    { "source": "/fr/projets", "destination": "/fr/projets/index.html" },
+    { "source": "/fr/projets/digitalisation-milda-benin", "destination": "/fr/projets/digitalisation-milda-benin/index.html" },
+    { "source": "/fr/projets/recherche-cps-smc", "destination": "/fr/projets/recherche-cps-smc/index.html" },
+    { "source": "/fr/projets/malariya-pi-burundi", "destination": "/fr/projets/malariya-pi-burundi/index.html" },
+    { "source": "/fr/projets/arm3-systeme-information-benin", "destination": "/fr/projets/arm3-systeme-information-benin/index.html" },
+    { "source": "/fr/projets/irs-nord-benin", "destination": "/fr/projets/irs-nord-benin/index.html" },
+    { "source": "/fr/projets/reponse-epidemies-benin", "destination": "/fr/projets/reponse-epidemies-benin/index.html" },
+    { "source": "/fr/projets/contrat-g2g-pnlp-benin", "destination": "/fr/projets/contrat-g2g-pnlp-benin/index.html" },
     { "source": "/fr/agenda", "destination": "/fr/agenda/index.html" }
   ]
 }

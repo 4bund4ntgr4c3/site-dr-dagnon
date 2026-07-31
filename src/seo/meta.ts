@@ -7,6 +7,7 @@ import { UI } from '@/i18n/translations';
 import { DEFAULT_LANG, localePath } from '@/i18n/routing';
 import { SUPPORTED, type Lang } from '@/i18n/lang';
 import { TRIBUNES } from '@/data/tribunes';
+import { PROJECTS } from '@/data/projects';
 
 export const SITE_URL = 'https://seynudedagnon.com';
 
@@ -141,11 +142,33 @@ export const TRIBUNES_SEO: Record<Lang, { title: string; description: string; ke
   },
 };
 
+export const PROJETS_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Projets & Études de cas — Dr. Dagnon',
+    description: 'Études de cas du Dr. Seynudé Dagnon : campagnes MILDA digitalisées, données paludisme au Burundi, CPS, IRS au nord du Bénin — avec résultats.',
+    keywords: 'projets Dr Dagnon, études de cas paludisme, digitalisation campagnes MILDA, données paludisme Burundi, CPS SMC, IRS Bénin, résultats',
+  },
+  en: {
+    title: 'Projects & Case Studies — Seynudé Dagnon',
+    description: 'Case studies by Dr. Seynudé Dagnon: digitalized LLIN campaigns, malaria data in Burundi, SMC scale-up, IRS in northern Benin — with measurable results.',
+    keywords: 'Dr Dagnon projects, malaria case studies, LLIN campaign digitization, malaria data Burundi, SMC scale-up, IRS Benin, results',
+  },
+};
+
 /** Short headline for the <title> budget: whatever comes after a colon is
     treated as a subtitle and dropped (a French colon has a space before it,
     hence the trim). */
 const tribuneShortTitle = (lang: Lang, entry: (typeof TRIBUNES)[number]) =>
   `${entry.title[lang].split(':')[0].trim()} — ${shortName(lang)}`;
+
+/* Case study titles: a colon only separates a meaningful prefix when that
+   prefix is more than a single word (e.g. "ARM3 : ..." would truncate too
+   far), so the split is applied only in that case. */
+const projectShortTitle = (lang: Lang, entry: (typeof PROJECTS)[number]) => {
+  const [head, ...rest] = entry.title[lang].split(':');
+  const truncated = rest.length > 0 && head.trim().split(' ').length > 1;
+  return `${(truncated ? head : entry.title[lang]).trim()} — ${shortName(lang)}`;
+};
 
 const fullName = (lang: Lang) => (lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD, MPH');
 
@@ -254,6 +277,11 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
     const tribuneSlug = path.split('/tribunes/')[1]?.split('/')[0];
     const tribune = tribuneSlug ? TRIBUNES.find((t) => t.slug === tribuneSlug) : null;
     if (tribune) items.push({ name: tribune.title[lang], url: absUrl(lang, `/tribunes/${tribune.slug}`) });
+  } else if (path.startsWith('/projets')) {
+    items.push({ name: lang === 'fr' ? 'Projets' : 'Projects', url: absUrl(lang, '/projets') });
+    const projectSlug = path.split('/projets/')[1]?.split('/')[0];
+    const project = projectSlug ? PROJECTS.find((p) => p.slug === projectSlug) : null;
+    if (project) items.push({ name: project.title[lang], url: absUrl(lang, `/projets/${project.slug}`) });
   } else if (path.startsWith('/agenda')) {
     items.push({ name: 'Agenda', url: absUrl(lang, '/agenda') });
   }
@@ -279,6 +307,22 @@ export function articleJsonLd(lang: Lang, entry: (typeof TRIBUNES)[number], url:
       { '@type': 'Person', name: 'Seynudé Jean-Fortuné Dagnon' },
     ],
     publisher: { '@type': 'Organization', name: entry.source.name, url: entry.source.url },
+    url,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    image: `${SITE_URL}/og-image.jpg`,
+  };
+}
+
+export function projectJsonLd(lang: Lang, entry: (typeof PROJECTS)[number], url: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: entry.title[lang],
+    description: entry.description[lang],
+    datePublished: entry.date,
+    inLanguage: [lang],
+    author: { '@type': 'Person', name: fullName(lang) },
+    about: { '@type': 'Thing', name: entry.tag[lang] },
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     image: `${SITE_URL}/og-image.jpg`,
@@ -317,6 +361,10 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isTribuneArticle = route.startsWith('/tribunes/') && !isTribunes;
   const tribuneSlug = isTribuneArticle ? route.split('/tribunes/')[1]?.split('/')[0] || null : null;
   const tribune = tribuneSlug ? TRIBUNES.find((t) => t.slug === tribuneSlug) || null : null;
+  const isProjects = route === '/projets';
+  const isProjectArticle = route.startsWith('/projets/') && !isProjects;
+  const projectSlug = isProjectArticle ? route.split('/projets/')[1]?.split('/')[0] || null : null;
+  const project = projectSlug ? PROJECTS.find((p) => p.slug === projectSlug) || null : null;
   const notFound = !PRERENDER_ROUTES.includes(route);
 
   const catName = mediaCategory ? CAT_NAMES[mediaCategory] : null;
@@ -336,6 +384,14 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
         }
       : isTribunes
         ? TRIBUNES_SEO[lang]
+        : project
+      ? {
+          title: projectShortTitle(lang, project),
+          description: project.description[lang],
+          keywords: PROJETS_SEO[lang].keywords,
+        }
+      : isProjects
+        ? PROJETS_SEO[lang]
         : isPub
     ? PUB_SEO[lang]
     : isMedia && catName
@@ -380,9 +436,11 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
           ? contactPageJsonLd(lang)
           : tribune
             ? articleJsonLd(lang, tribune, url)
-            : isMedia || isPub || isAgenda || isTribunes
-              ? collectionPageJsonLd(lang, data.title, data.description, url)
-              : null,
+            : project
+              ? projectJsonLd(lang, project, url)
+              : isMedia || isPub || isAgenda || isTribunes || isProjects
+                ? collectionPageJsonLd(lang, data.title, data.description, url)
+                : null,
     },
   };
 }
@@ -402,6 +460,8 @@ export const PRERENDER_ROUTES = [
   '/publications',
   '/tribunes',
   ...TRIBUNES.map((t) => `/tribunes/${t.slug}`),
+  '/projets',
+  ...PROJECTS.map((p) => `/projets/${p.slug}`),
   '/agenda',
 ];
 
@@ -414,9 +474,13 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/media': { priority: '0.9', changefreq: 'weekly' },
   '/publications': { priority: '0.9', changefreq: 'weekly' },
   '/tribunes': { priority: '0.8', changefreq: 'weekly' },
+  '/projets': { priority: '0.8', changefreq: 'weekly' },
   '/agenda': { priority: '0.8', changefreq: 'weekly' },
   ...Object.fromEntries(
     TRIBUNES.map((t) => [`/tribunes/${t.slug}`, { priority: '0.7', changefreq: 'monthly' }]),
+  ),
+  ...Object.fromEntries(
+    PROJECTS.map((p) => [`/projets/${p.slug}`, { priority: '0.7', changefreq: 'monthly' }]),
   ),
 };
 export const DEFAULT_ROUTE_PRIORITY = { priority: '0.8', changefreq: 'monthly' };
