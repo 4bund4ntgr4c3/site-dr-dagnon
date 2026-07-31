@@ -99,12 +99,13 @@ export default function PublicationsPage() {
               </div>
 
               {/* year + sort */}
-              <div className="flex flex-nowrap items-center gap-x-6 overflow-x-auto py-1 no-scrollbar lg:shrink-0 lg:py-0 lg:overflow-visible">
-                <div className="flex items-center gap-2">
-                  <p className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">
+              <div className="flex flex-col gap-3 lg:flex-row lg:shrink-0 lg:items-center lg:gap-x-6">
+                {/* year — slides on mobile */}
+                <div className="flex flex-nowrap items-center gap-2 overflow-x-auto py-1 no-scrollbar">
+                  <p className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">
                     {t['pubPage.filterYear']}
                   </p>
-                  <div role="group" aria-label={t['pubPage.filterYear']} className="flex gap-2">
+                  <div role="group" aria-label={t['pubPage.filterYear']} className="flex shrink-0 gap-2">
                     <button type="button" onClick={() => setYear('all')} className={pill(year === 'all')}>
                       {t['pubPage.all']}
                     </button>
@@ -116,7 +117,8 @@ export default function PublicationsPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
+                {/* sort — its own line on mobile */}
+                <div className="flex shrink-0 items-center gap-2">
                   <p className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">
                     {t['pubPage.filterSort']}
                   </p>
