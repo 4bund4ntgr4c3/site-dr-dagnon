@@ -164,6 +164,7 @@ test('injected markup cannot become live HTML in the emails', async () => {
   const out = await call(contact, {
     name: '<a href="https://phish.example">Click me</a>',
     email: 'evil"onmouseover="alert(1)@example.test',
+    phone: '+229 01 02 03 04',
     subject: '<img src=x onerror=alert(1)>',
     message: '<script>alert(1)</script>',
   }, { ip: '10.2.0.1' });
@@ -188,6 +189,7 @@ test('the auto-reply is escaped as well as the admin notification', async () => 
   await call(contact, {
     name: '<b>bold</b>',
     email: 'visitor@example.test',
+    phone: '+229 01 02 03 04',
     subject: '<i>subject</i>',
     message: 'hello',
   }, { ip: '10.2.0.2' });
@@ -197,11 +199,54 @@ test('the auto-reply is escaped as well as the admin notification', async () => 
   assert.match(autoReply.html, /&lt;b&gt;bold&lt;\/b&gt;/);
 });
 
+test('a recognized request type prefixes the subject and is labelled in the email', async () => {
+  const before = sent.length;
+  const out = await call(contact, {
+    name: 'Reporter',
+    email: 'press@example.test',
+    phone: '+229 01 02 03 04',
+    subject: 'Press inquiry about the campaign',
+    message: 'Hello',
+    type: 'press',
+    typeLabel: 'Press',
+  }, { ip: '10.2.0.4' });
+  assert.equal(out.code, 200);
+  const admin = sent.slice(before).find((m) => m.subject?.startsWith('Website contact'));
+  assert.ok(admin, 'no admin notification was sent');
+  assert.match(admin.subject, /\[Press\]/, 'the request type should prefix the subject');
+  assert.match(admin.html, /Request type/, 'the admin email should label the request type');
+  assert.match(admin.html, />Press</);
+});
+
+test('an unknown request type falls back to a general message', async () => {
+  const before = sent.length;
+  await call(contact, {
+    name: 'A',
+    email: 'a@example.test',
+    phone: '+229 01 02 03 04',
+    message: 'hi',
+    type: 'not-a-real-type',
+    typeLabel: 'Impostor',
+  }, { ip: '10.2.0.5' });
+  const admin = sent.slice(before).find((m) => m.subject?.startsWith('Website contact'));
+  assert.ok(admin, 'no admin notification was sent');
+  assert.doesNotMatch(admin.subject, /Impostor/);
+  assert.doesNotMatch(admin.html, /Request type/);
+});
+
 test('missing required fields are refused', async () => {
   const before = sent.length;
   const out = await call(contact, { name: 'A', email: 'a@example.test' }, { ip: '10.2.0.3' });
   assert.equal(out.code, 400);
   assert.equal(sent.length, before);
+});
+
+test('an invalid phone number is refused', async () => {
+  const before = sent.length;
+  const out = await call(contact, { name: 'A', email: 'a@example.test', phone: 'not-a-phone', message: 'hi' }, { ip: '10.2.0.6' });
+  assert.equal(out.code, 400);
+  assert.equal(out.body.error, 'Invalid phone');
+  assert.equal(sent.length, before, 'no email should have been sent');
 });
 
 /* ── rate limiting — last, because the counters are module state ──────── */
@@ -219,7 +264,7 @@ test('send is capped per email address', async () => {
 test('contact is capped per IP', async () => {
   const results = [];
   for (let i = 0; i < 8; i++) {
-    results.push(await call(contact, { name: 'A', email: 'a@example.test', message: 'hi' }, { ip: '10.3.0.2' }));
+    results.push(await call(contact, { name: 'A', email: 'a@example.test', phone: '+229 01 02 03 04', message: 'hi' }, { ip: '10.3.0.2' }));
   }
   assert.ok(results.some((r) => r.code === 429), 'expected at least one 429');
 });
@@ -247,7 +292,7 @@ test('a request from another site is refused', async () => {
 
 test('a lookalike origin does not slip through', async () => {
   for (const origin of ['https://seynudedagnon.com.evil.example', 'http://seynudedagnon.com', 'https://notseynudedagnon.com']) {
-    const out = await call(contact, { name: 'A', email: 'a@example.test', message: 'hi' }, { origin, ip: '10.4.0.3' });
+    const out = await call(contact, { name: 'A', email: 'a@example.test', phone: '+229 01 02 03 04', message: 'hi' }, { origin, ip: '10.4.0.3' });
     assert.equal(out.code, 403, `${origin} should be refused`);
   }
 });
@@ -264,20 +309,20 @@ test('previews and local development are allowed', async () => {
     'https://sd.studio26.online',
     'https://any-project.studio26.online',
   ]) {
-    const out = await call(contact, { name: 'A', email: 'a@example.test', message: 'hi' }, { origin, ip: `10.4.1.${origin.length}` });
+    const out = await call(contact, { name: 'A', email: 'a@example.test', phone: '+229 01 02 03 04', message: 'hi' }, { origin, ip: `10.4.1.${origin.length}` });
     assert.notEqual(out.code, 403, `${origin} should be allowed`);
   }
 });
 
 test('a studio26.online lookalike does not slip through', async () => {
   for (const origin of ['https://studio26.online.evil.example', 'http://sd.studio26.online', 'https://sd.studio26.online.evil.example']) {
-    const out = await call(contact, { name: 'A', email: 'a@example.test', message: 'hi' }, { origin, ip: '10.4.1.9' });
+    const out = await call(contact, { name: 'A', email: 'a@example.test', phone: '+229 01 02 03 04', message: 'hi' }, { origin, ip: '10.4.1.9' });
     assert.equal(out.code, 403, `${origin} should be refused`);
   }
 });
 
 test('the Referer header is accepted when Origin is absent', async () => {
-  const out = await call(contact, { name: 'A', email: 'a@example.test', message: 'hi' }, {
+  const out = await call(contact, { name: 'A', email: 'a@example.test', phone: '+229 01 02 03 04', message: 'hi' }, {
     headers: { 'x-forwarded-for': '10.4.2.1', referer: 'https://seynudedagnon.com/contact' },
   });
   assert.notEqual(out.code, 403);
@@ -299,7 +344,7 @@ test('a filled honeypot is dropped silently, without sending anything', async ()
 
 test('an empty honeypot field does not block a real visitor', async () => {
   const before = sent.length;
-  const out = await call(contact, { name: 'Real Person', email: 'real@example.test', message: 'hello', website: '' }, { ip: '10.5.0.2' });
+  const out = await call(contact, { name: 'Real Person', email: 'real@example.test', phone: '+229 01 02 03 04', message: 'hello', website: '' }, { ip: '10.5.0.2' });
   assert.equal(out.code, 200);
   assert.ok(sent.length > before, 'a genuine message should still be sent');
 });

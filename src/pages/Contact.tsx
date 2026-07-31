@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Send, CheckCircle2, AlertCircle, Lock, ShieldCheck } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Send, CheckCircle2, AlertCircle, Lock, ShieldCheck, Mic, Mic2, Handshake, Newspaper } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
@@ -12,13 +12,23 @@ type VerifyStatus = 'idle' | 'sending' | 'code-sent' | 'verifying' | 'verified' 
 const fieldClass =
   'w-full rounded-xl border border-pine-900/15 bg-white px-4 py-3 text-sm text-pine-900 placeholder:text-pine-900/65 outline-none transition-colors focus:border-gold-500 focus:bg-pine-50';
 
+/* Every type pre-fills the subject with a relevant default (editable) and is
+   sent to the API so the message is easy to route. */
+const REQUEST_TYPES: { value: string; icon: typeof Mail; labelKey: string; subjectKey: string }[] = [
+  { value: 'general', icon: Mail, labelKey: 'contact.type.general', subjectKey: '' },
+  { value: 'speaking', icon: Mic, labelKey: 'contact.type.speaking', subjectKey: 'contact.subject.speaking' },
+  { value: 'interview', icon: Mic2, labelKey: 'contact.type.interview', subjectKey: 'contact.subject.interview' },
+  { value: 'press', icon: Newspaper, labelKey: 'contact.type.press', subjectKey: 'contact.subject.press' },
+  { value: 'partnership', icon: Handshake, labelKey: 'contact.type.partnership', subjectKey: 'contact.subject.partnership' },
+];
+
 export default function Contact() {
   const { lang } = useLang();
   const t = UI[lang];
 
   /* `website` is the honeypot — never shown, never filled by a person.
      The API silently drops any submission that carries it. */
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', website: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '', website: '', type: 'general' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>('idle');
   const [submittedEmail, setSubmittedEmail] = useState('');
@@ -37,11 +47,23 @@ export default function Contact() {
     setErrors((e) => ({ ...e, [k]: '' }));
   };
 
+  const selectType = (value: string) => {
+    const rt = REQUEST_TYPES.find((r) => r.value === value);
+    setForm((f) => ({
+      ...f,
+      type: value,
+      subject: rt?.subjectKey ? t[rt.subjectKey as keyof typeof t] : '',
+    }));
+  };
+
   const validate = () => {
     const e: Record<string, string> = {};
     if (!form.name.trim()) e.name = t['contact.required'];
     if (!form.email.trim()) e.email = t['contact.required'];
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = t['contact.emailInvalid'];
+    const digits = (form.phone.match(/\d/g) || []).length;
+    if (!form.phone.trim()) e.phone = t['contact.required'];
+    else if (!/^[+\d][\d\s().-]*$/.test(form.phone.trim()) || digits < 6 || digits > 15) e.phone = t['contact.phoneInvalid'];
     if (!form.message.trim()) e.message = t['contact.required'];
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -52,15 +74,16 @@ export default function Contact() {
     if (!validate()) return;
     setStatus('sending');
     try {
+      const rt = REQUEST_TYPES.find((r) => r.value === form.type) ?? REQUEST_TYPES[0];
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, typeLabel: t[rt.labelKey as keyof typeof t] }),
       });
       if (!res.ok) throw new Error('failed');
       setSubmittedEmail(form.email);
       setStatus('success');
-      setForm({ name: '', email: '', subject: '', message: '', website: '' });
+      setForm({ name: '', email: '', phone: '', subject: '', message: '', website: '', type: 'general' });
     } catch {
       setStatus('error');
     }
@@ -141,11 +164,11 @@ export default function Contact() {
 
       {/* content — light */}
       <section className="bg-pine-50 py-20 lg:py-24">
-        <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr]">
             {/* contact info */}
             <Reveal delay={0.1}>
-              <div className="rounded-2xl border border-pine-900/10 bg-ivory/60 p-6">
+              <div className="rounded-2xl border border-pine-900/10 bg-ivory/60 p-6 lg:sticky lg:top-8">
                 <h2 className="font-display text-xl font-semibold text-pine-900">{t['contact.infoTitle']}</h2>
 
                 <ul className="mt-6 space-y-4">
@@ -339,7 +362,7 @@ export default function Contact() {
                     <p className="max-w-sm text-sm text-pine-900/60">{t['contact.sentText']}</p>
                     <button
                       type="button"
-                      onClick={() => { setStatus('idle'); setSubmittedEmail(''); setForm({ name: '', email: '', subject: '', message: '', website: '' }); setVerifyStatus('idle'); setVerifyCode(''); setVerifyToken(''); setVerifyError(''); setPhone(''); }}
+                      onClick={() => { setStatus('idle'); setSubmittedEmail(''); setForm({ name: '', email: '', phone: '', subject: '', message: '', website: '', type: 'general' }); setVerifyStatus('idle'); setVerifyCode(''); setVerifyToken(''); setVerifyError(''); setPhone(''); }}
                       className="mt-4 inline-flex items-center gap-2 rounded-full border border-pine-900/15 px-6 py-2.5 text-sm font-medium text-pine-900 transition-colors hover:border-gold-500 hover:text-gold-700"
                     >
                       {lang === 'fr' ? 'Envoyer un autre message' : 'Send another message'}
@@ -347,6 +370,35 @@ export default function Contact() {
                   </div>
                 ) : (
                   <form onSubmit={onSubmit} noValidate className="space-y-5">
+                    <div>
+                      <p className="mb-2 text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                        {t['contact.requestType']}
+                      </p>
+                      <div role="radiogroup" aria-label={t['contact.requestType']} className="flex flex-wrap gap-2">
+                        {REQUEST_TYPES.map((rt) => {
+                          const Icon = rt.icon;
+                          const active = form.type === rt.value;
+                          return (
+                            <button
+                              key={rt.value}
+                              type="button"
+                              role="radio"
+                              aria-checked={active}
+                              onClick={() => selectType(rt.value)}
+                              className={`inline-flex items-center gap-2 whitespace-nowrap rounded-xl border px-3 py-2.5 text-[13px] font-semibold transition-all ${
+                                active
+                                  ? 'border-gold-500 bg-pine-950 text-gold-400 shadow'
+                                  : 'border-pine-900/15 bg-white text-pine-900/75 hover:border-gold-500/50 hover:text-pine-900'
+                              }`}
+                            >
+                              <Icon size={15} className={`shrink-0 ${active ? 'text-gold-400' : 'text-pine-900/60'}`} />
+                              {t[rt.labelKey as keyof typeof t]}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
                     <div>
                       <label htmlFor="contact-name" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
                         {t['contact.name']}
@@ -364,21 +416,42 @@ export default function Contact() {
                       {errors.name && <p role="alert" className="mt-1 text-xs text-red-500">{errors.name}</p>}
                     </div>
 
-                    <div>
-                      <label htmlFor="contact-email" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
-                        {t['contact.emailField']}
-                      </label>
-                      <input
-                        id="contact-email"
-                        type="email"
-                        value={form.email}
-                        onChange={(e) => update('email', e.target.value)}
-                        className={fieldClass}
-                        placeholder="name@email.com"
-                        aria-required="true"
-                        aria-invalid={!!errors.email}
-                      />
-                      {errors.email && <p role="alert" className="mt-1 text-xs text-red-500">{errors.email}</p>}
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <div>
+                        <label htmlFor="contact-email" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                          {t['contact.emailField']}
+                        </label>
+                        <input
+                          id="contact-email"
+                          type="email"
+                          value={form.email}
+                          onChange={(e) => update('email', e.target.value)}
+                          className={fieldClass}
+                          placeholder="name@email.com"
+                          aria-required="true"
+                          aria-invalid={!!errors.email}
+                        />
+                        {errors.email && <p role="alert" className="mt-1 text-xs text-red-500">{errors.email}</p>}
+                      </div>
+
+                      <div>
+                        <label htmlFor="contact-phone" className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">
+                          {t['contact.phoneField']}
+                        </label>
+                        <input
+                          id="contact-phone"
+                          type="tel"
+                          inputMode="tel"
+                          autoComplete="tel"
+                          value={form.phone}
+                          onChange={(e) => update('phone', e.target.value)}
+                          className={fieldClass}
+                          placeholder={t['contact.phoneField']}
+                          aria-required="true"
+                          aria-invalid={!!errors.phone}
+                        />
+                        {errors.phone && <p role="alert" className="mt-1 text-xs text-red-500">{errors.phone}</p>}
+                      </div>
                     </div>
 
                     <div>

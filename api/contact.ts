@@ -22,9 +22,11 @@ function ftr(): string {
   return `<tr><td style="background:${C.pine900};padding:20px 32px"><p style="margin:0;font-size:11px;color:rgba(255,255,255,.5);text-align:center">Public Health &amp; Malaria Program Leader &middot; <a href="${SITE_URL}" style="color:${C.gold400};text-decoration:none">Website</a></p></td></tr>`;
 }
 
-function adminHtml(name: string, email: string, subject: string, message: string): string {
+function adminHtml(name: string, email: string, phone: string, subject: string, message: string, typeLabel: string): string {
   const subCard = subject ? `<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px"><tr><td style="padding:10px 14px;background:${C.ivory};border-radius:8px;border-left:3px solid ${C.gold500}"><p style="margin:0;font-size:11px;font-weight:600;color:${C.muted};text-transform:uppercase;letter-spacing:.08em">Subject</p><p style="margin:2px 0 0;font-size:14px;font-weight:600;color:${C.ink}">${esc(subject)}</p></td></tr></table>` : '';
-  return wrap(hdr('New message received') + `<tr><td style="padding:28px 32px"><table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px"><tr><td style="padding:10px 14px;background:${C.ivory};border-radius:8px;border-left:3px solid ${C.gold500}"><p style="margin:0;font-size:11px;font-weight:600;color:${C.muted};text-transform:uppercase;letter-spacing:.08em">From</p><p style="margin:2px 0 0;font-size:14px;font-weight:600;color:${C.ink}">${esc(name)}</p><p style="margin:2px 0 0;font-size:13px;color:${C.muted}">${esc(email)}</p></td></tr></table>${subCard}<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:14px;background:${C.ivory};border-radius:8px"><p style="margin:0;font-size:11px;font-weight:600;color:${C.muted};text-transform:uppercase;letter-spacing:.08em">Message</p><p style="margin:6px 0 0;font-size:14px;line-height:1.65;color:${C.ink};white-space:pre-wrap">${esc(message)}</p></td></tr></table><table width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px"><tr><td align="center"><a href="mailto:${esc(email)}?subject=Re:%20${encodeURIComponent(subject || 'Your message')}" style="display:inline-block;background:${C.gold500};color:${C.pine950};font-size:13px;font-weight:600;padding:12px 28px;border-radius:999px;text-decoration:none">Reply to ${esc(name)}</a></td></tr></table></td></tr>` + ftr());
+  const typeCard = typeLabel ? `<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px"><tr><td style="padding:10px 14px;background:${C.pine950};border-radius:8px"><p style="margin:0;font-size:11px;font-weight:600;color:${C.gold400};text-transform:uppercase;letter-spacing:.08em">Request type</p><p style="margin:2px 0 0;font-size:14px;font-weight:600;color:${C.white}">${esc(typeLabel)}</p></td></tr></table>` : '';
+  const contactLine = `${esc(email)}${phone ? ` &middot; ${esc(phone)}` : ''}`;
+  return wrap(hdr('New message received') + `<tr><td style="padding:28px 32px">${typeCard}<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px"><tr><td style="padding:10px 14px;background:${C.ivory};border-radius:8px;border-left:3px solid ${C.gold500}"><p style="margin:0;font-size:11px;font-weight:600;color:${C.muted};text-transform:uppercase;letter-spacing:.08em">From</p><p style="margin:2px 0 0;font-size:14px;font-weight:600;color:${C.ink}">${esc(name)}</p><p style="margin:2px 0 0;font-size:13px;color:${C.muted}">${contactLine}</p></td></tr></table>${subCard}<table width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:14px;background:${C.ivory};border-radius:8px"><p style="margin:0;font-size:11px;font-weight:600;color:${C.muted};text-transform:uppercase;letter-spacing:.08em">Message</p><p style="margin:6px 0 0;font-size:14px;line-height:1.65;color:${C.ink};white-space:pre-wrap">${esc(message)}</p></td></tr></table><table width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px"><tr><td align="center"><a href="mailto:${esc(email)}?subject=Re:%20${encodeURIComponent(subject || 'Your message')}" style="display:inline-block;background:${C.gold500};color:${C.pine950};font-size:13px;font-weight:600;padding:12px 28px;border-radius:999px;text-decoration:none">Reply to ${esc(name)}</a></td></tr></table></td></tr>` + ftr());
 }
 
 function autoReplyHtml(name: string, subject: string): string {
@@ -35,14 +37,20 @@ function autoReplyHtml(name: string, subject: string): string {
 
 const MAX_NAME = 200;
 const MAX_EMAIL = 254;
+const MAX_PHONE = 30;
 const MAX_SUBJECT = 500;
 const MAX_MESSAGE = 5000;
 const sanitize = (s: string) => s.replace(/[\r\n\t]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, MAX_MESSAGE);
+const validPhone = (s: string) => {
+  const digits = (s.match(/\d/g) || []).length;
+  return /^[+\d][\d\s().-]*$/.test(s) && digits >= 6 && digits <= 15;
+};
 
 const WINDOW_MS = 60_000;
 const MAX_HITS = 5;
+const ALLOWED_TYPES = ['general', 'speaking', 'interview', 'partnership', 'press'];
 
-interface Req { method: string; headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string }; body?: { name?: string; email?: string; subject?: string; message?: string; website?: string } }
+interface Req { method: string; headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string }; body?: { name?: string; email?: string; phone?: string; subject?: string; message?: string; website?: string; type?: string; typeLabel?: string } }
 interface Res { status(c: number): Res; json(d: unknown): void }
 
 export default async function handler(req: Req, res: Res) {
@@ -53,27 +61,35 @@ export default async function handler(req: Req, res: Res) {
   if (!(await rateLimit(`contact:ip:${ip}`, MAX_HITS, WINDOW_MS))) { res.status(429).json({ error: 'Too many requests' }); return; }
 
   try {
-    const { name, email, subject, message, website } = req.body || {};
+    const { name, email, phone, subject, message, website, type, typeLabel } = req.body || {};
 
     /* Honeypot: `website` is hidden from people and invisible to assistive
        tech, so anything in it came from a bot filling every field. Answer 200
        so the bot cannot tell it was caught and start probing around it. */
     if (website) { res.status(200).json({ ok: true }); return; }
 
-    if (!name || !email || !message) { res.status(400).json({ error: 'Missing required fields' }); return; }
+    if (!name || !email || !phone || !message) { res.status(400).json({ error: 'Missing required fields' }); return; }
 
     const cleanName = sanitize(String(name)).slice(0, MAX_NAME);
     const cleanEmail = sanitize(String(email)).slice(0, MAX_EMAIL);
+    const cleanPhone = sanitize(String(phone)).slice(0, MAX_PHONE);
     const cleanSubject = sanitize(String(subject || '')).slice(0, MAX_SUBJECT);
     const cleanMessage = sanitize(String(message)).slice(0, MAX_MESSAGE);
+    /* a recognized request type from our own list only — anything else is
+       treated as a general message; the label is display-only and escaped */
+    const cleanType = ALLOWED_TYPES.includes(String(type || 'general')) ? String(type) : 'general';
+    const cleanTypeLabel = cleanType !== 'general' ? sanitize(String(typeLabel || '')).slice(0, 60) : '';
 
-    if (!cleanName || !cleanEmail || !cleanMessage) { res.status(400).json({ error: 'Missing required fields' }); return; }
+    if (!cleanName || !cleanEmail || !cleanPhone || !cleanMessage) { res.status(400).json({ error: 'Missing required fields' }); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) { res.status(400).json({ error: 'Invalid email' }); return; }
+    if (!validPhone(cleanPhone)) { res.status(400).json({ error: 'Invalid phone' }); return; }
 
     const apiKey = process.env.RESEND_API_KEY;
     const to = process.env.CONTACT_TO_EMAIL;
     const from = process.env.CONTACT_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
     if (!apiKey || !to) { res.status(500).json({ error: 'Email service not configured' }); return; }
+
+    const subjectLine = `Website contact — ${cleanTypeLabel ? `[${cleanTypeLabel}] ` : ''}${cleanSubject || cleanName}`;
 
     // 1) admin notification
     const r = await fetch('https://api.resend.com/emails', {
@@ -81,9 +97,9 @@ export default async function handler(req: Req, res: Res) {
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from, to: [to], reply_to: cleanEmail,
-        subject: `Website contact — ${cleanSubject || cleanName}`,
-        html: adminHtml(cleanName, cleanEmail, cleanSubject, cleanMessage),
-        text: `New message from ${cleanName} <${cleanEmail}>${cleanSubject ? `\nSubject: ${cleanSubject}` : ''}\n\n${cleanMessage}`,
+        subject: subjectLine,
+        html: adminHtml(cleanName, cleanEmail, cleanPhone, cleanSubject, cleanMessage, cleanTypeLabel),
+        text: `New message from ${cleanName} <${cleanEmail}>\nPhone: ${cleanPhone}${cleanTypeLabel ? `\nRequest type: ${cleanTypeLabel}` : ''}${cleanSubject ? `\nSubject: ${cleanSubject}` : ''}\n\n${cleanMessage}`,
       }),
     });
     if (!r.ok) { const err = await r.text(); console.error('Resend error', err); res.status(500).json({ error: 'Failed to send' }); return; }
