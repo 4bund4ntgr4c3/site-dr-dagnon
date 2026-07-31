@@ -117,7 +117,7 @@ export function Navbar() {
                 aria-haspopup="true"
                 aria-expanded={homeOpen}
                 aria-controls="nav-home-menu"
-                className={`inline-flex items-center gap-1 rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
+                className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
                   homeOpen ? 'bg-gold-500 text-pine-950' : 'text-ivory'
                 }`}
               >
@@ -155,7 +155,7 @@ export function Navbar() {
               <Link
                 key={item.id}
                 to={navHref(lang, item.id)}
-                className="rounded-full px-4 py-1.5 text-[13px] font-medium text-pine-100/85 transition-colors hover:bg-gold-500 hover:text-pine-950"
+                className="whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-medium text-pine-100/85 transition-colors hover:bg-gold-500 hover:text-pine-950"
               >
                 {item.label}
               </Link>
