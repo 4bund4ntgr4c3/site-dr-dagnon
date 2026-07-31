@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
-import { Printer } from 'lucide-react';
+import { Printer, FileText } from 'lucide-react';
 import { Link } from 'react-router';
+import { Reveal } from '@/components/Reveal';
+import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
 import { UI, IDENTITY, EXPERIENCE, EDUCATION, TEACHING_LIST, TRAINING_LIST, AWARDS } from '@/i18n/translations';
 import { PUB_ITEMS } from '@/data/publications';
@@ -33,32 +35,56 @@ export default function Cv() {
     .slice(0, 8);
 
   return (
-    <main id="main-content" className="min-h-screen bg-pine-50 pb-16 pt-24 lg:pt-28 print:bg-white print:pb-0 print:pt-0">
-      {/* action bar — screen only, never printed */}
-      <div className="mx-auto mb-6 max-w-4xl px-5 print:hidden">
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-pine-900/10 bg-white p-4 shadow-lg shadow-pine-900/8">
-          <p className="text-sm font-semibold text-pine-900">{t['cvPage.title']}</p>
-          <div className="flex flex-wrap items-center gap-3">
-            <Link
-              to={localePath(otherLang, '/cv')}
-              className="rounded-full border border-pine-900/15 px-4 py-2 text-[13px] font-semibold text-pine-900 transition-colors hover:border-gold-500 hover:text-gold-700"
-            >
-              {t['cvPage.otherLang']}
-            </Link>
-            <button
-              type="button"
-              onClick={() => window.print()}
-              className="inline-flex items-center gap-2 rounded-full bg-gold-500 px-5 py-2.5 text-[13px] font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
-            >
-              <Printer size={15} /> {t['cvPage.print']}
-            </button>
-          </div>
-        </div>
-        <p className="mt-2 text-xs text-pine-900/55">{t['cvPage.printHint']}</p>
-      </div>
+    <main id="main-content" className="min-h-screen">
+      {/* hero — same pattern as every other page, hidden when printing */}
+      <section className="relative overflow-hidden bg-pine-950 print:hidden">
+        <div className="absolute inset-0 texture-net" />
+        <div className="absolute -top-40 -right-40 h-[560px] w-[560px] rounded-full bg-pine-600/25 blur-[130px]" />
+        <div className="absolute bottom-0 -left-40 h-[460px] w-[460px] rounded-full bg-gold-600/12 blur-[120px]" />
 
-      {/* the document — one white sheet */}
-      <article className="cv-sheet mx-auto max-w-4xl rounded-3xl bg-white px-6 py-10 text-pine-900 shadow-[0_24px_80px_-50px_rgba(2,36,32,0.55)] sm:px-12 lg:px-16 print:max-w-none print:rounded-none print:px-0 print:py-0 print:shadow-none">
+        <div className="relative mx-auto max-w-6xl px-5 pb-24 pt-32 lg:px-8 lg:pt-36">
+          <Reveal>
+            <span className="inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-300">
+              <FileText size={13} />
+              {t['cvPage.badge']}
+            </span>
+            <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl lg:text-[4.4rem]">
+              {t['cvPage.badge']} — <NameHighlight />
+            </h1>
+            <p className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
+              {t['cvPage.intro']}
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-pine-50 py-16 lg:py-20 print:bg-white print:py-0">
+        <div className="relative mx-auto max-w-4xl px-5 lg:px-0">
+          {/* action bar — screen only, never printed */}
+          <div className="mb-6 print:hidden">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-pine-900/10 bg-white p-4 shadow-lg shadow-pine-900/8">
+              <p className="text-sm font-semibold text-pine-900">{t['cvPage.title']}</p>
+              <div className="flex flex-wrap items-center gap-3">
+                <Link
+                  to={localePath(otherLang, '/cv')}
+                  className="rounded-full border border-pine-900/15 px-4 py-2 text-[13px] font-semibold text-pine-900 transition-colors hover:border-gold-500 hover:text-gold-700"
+                >
+                  {t['cvPage.otherLang']}
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="inline-flex items-center gap-2 rounded-full bg-gold-500 px-5 py-2.5 text-[13px] font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
+                >
+                  <Printer size={15} /> {t['cvPage.print']}
+                </button>
+              </div>
+            </div>
+            <p className="mt-2 text-xs text-pine-900/55">{t['cvPage.printHint']}</p>
+          </div>
+
+          {/* the document — one white sheet */}
+          <article className="cv-sheet mx-auto rounded-3xl bg-white px-6 py-10 text-pine-900 shadow-[0_24px_80px_-50px_rgba(2,36,32,0.55)] sm:px-12 lg:px-16 print:max-w-none print:rounded-none print:px-0 print:py-0 print:shadow-none">
         <header className="border-b-2 border-pine-900 pb-6">
           <h1 className="font-display text-3xl font-semibold tracking-tight">{t['cvPage.title']}</h1>
           <p className="mt-2 font-display text-xl font-semibold">{t['name.full']}</p>
@@ -213,7 +239,9 @@ export default function Cv() {
         <p className="mt-8 border-t border-pine-900/15 pt-4 text-[11.5px] italic text-pine-900/55">
           {t['cvPage.refs']}
         </p>
-      </article>
+          </article>
+        </div>
+      </section>
     </main>
   );
 }

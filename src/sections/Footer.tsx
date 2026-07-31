@@ -1,11 +1,10 @@
 import { Link } from 'react-router';
-import { Linkedin, Youtube, Mail, ArrowUpRight, FileText } from 'lucide-react';
+import { Linkedin, Youtube, FileText } from 'lucide-react';
 import { AfricaMap } from '@/components/AfricaMap';
 import { Reveal } from '@/components/Reveal';
 import { LINKS } from '@/data/content';
 import { useLang } from '@/i18n/useLang';
-import { NAV, UI } from '@/i18n/translations';
-import { navHref } from '@/lib/nav';
+import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
 
 export function Footer() {
@@ -37,7 +36,6 @@ export function Footer() {
                   className="inline-flex items-center gap-2.5 rounded-full bg-gold-500 px-7 py-3.5 text-sm font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400"
                 >
                   <Linkedin size={17} /> {t['footer.linkedin']}
-                  <ArrowUpRight size={15} />
                 </a>
                 <a
                   href={LINKS.youtube}
@@ -46,14 +44,7 @@ export function Footer() {
                   className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
                 >
                   <Youtube size={17} /> {t['footer.youtube']}
-                  <ArrowUpRight size={15} />
                 </a>
-                <Link
-                  to={localePath(lang, '/contact')}
-                  className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
-                >
-                  <Mail size={17} /> {t['footer.contact']}
-                </Link>
                 <Link
                   to={localePath(lang, '/cv')}
                   className="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
@@ -81,27 +72,12 @@ export function Footer() {
           </div>
 
           <nav aria-label={t['footerNav.ariaLabel']} className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            {NAV[lang].map((item) => {
-              const href = navHref(lang, item.id);
-              const isInternal = href.startsWith('/');
-              return isInternal ? (
-                <Link
-                  key={item.id}
-                  to={href}
-                  className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <a
-                  key={item.id}
-                  href={href}
-                  className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
-                >
-                  {item.label}
-                </a>
-              );
-            })}
+            <Link
+              to={localePath(lang, '/')}
+              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+            >
+              {t['nav.home']}
+            </Link>
           </nav>
 
           <p className="text-[12px] text-pine-100/40">
