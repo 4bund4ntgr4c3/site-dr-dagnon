@@ -568,9 +568,20 @@ function CommunityView({
 
           {/* photo caption */}
           {albumPhotos.length > 0 && (
-            <p className="mt-4 max-w-2xl text-center text-[13px] text-white/60">
-              {albumPhotos[slideshowIndex].title[lang]}
-            </p>
+            <div className="mt-4 flex max-w-2xl flex-col items-center gap-2">
+              <p className="text-center text-[13px] text-white/60">
+                {albumPhotos[slideshowIndex].title[lang]}
+              </p>
+              {/* every photo has its own page — the lightbox is not the only
+                  way to reach it, and the page is what gets shared and indexed */}
+              <Link
+                to={localePath(lang, `/media/community/${albumPhotos[slideshowIndex].id}`)}
+                className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-400 transition-colors hover:text-gold-300"
+              >
+                {lang === 'fr' ? 'Ouvrir la photo dans sa page' : 'Open the photo on its own page'}
+                <ArrowUpRight size={13} />
+              </Link>
+            </div>
           )}
         </div>
       )}

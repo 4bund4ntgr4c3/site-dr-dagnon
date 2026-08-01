@@ -70,13 +70,6 @@ const shortName = (lang: Lang) => (lang === 'fr' ? 'Dr. Dagnon' : 'Seynudé Dagn
 
 /* ── Community photo pages ─────────────────────────────────────── */
 
-export const SUBTYPE_SEO_NAME: Record<string, { fr: string; en: string }> = {
-  'malaria-night': { fr: 'Nuit du Paludisme', en: 'Night Against Malaria' },
-  'nuit-paludisme-5e': { fr: '5e Nuit du Paludisme', en: '5th Night Against Malaria' },
-  'school-kits': { fr: 'Fournitures scolaires', en: 'School kits' },
-  genies: { fr: 'Génies en Herbe', en: 'Génies en Herbe' },
-};
-
 const PHOTO_DESC_SUFFIX: Record<Lang, string> = {
   fr: 'Galerie communautaire du Dr. Seynudé Dagnon — Bénin.',
   en: 'Community gallery of Dr. Seynudé Dagnon — Benin.',
