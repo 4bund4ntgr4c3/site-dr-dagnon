@@ -12,7 +12,7 @@ type Status = 'idle' | 'sending' | 'success' | 'error';
 type VerifyStatus = 'idle' | 'sending' | 'code-sent' | 'verifying' | 'verified' | 'error';
 
 const fieldClass =
-  'w-full rounded-xl border border-pine-900/15 bg-white px-4 py-3 text-sm text-pine-900 placeholder:text-pine-900/65 outline-none transition-colors focus:border-gold-500 focus:bg-pine-50 focus:ring-2 focus:ring-gold-500/20';
+  'w-full rounded-xl border border-pine-900/15 bg-white px-4 py-3 text-sm text-pine-900 placeholder:text-pine-900/65 outline-none transition-colors focus:border-gold-500/40 focus:bg-pine-50 focus:ring-1 focus:ring-gold-500/10';
 
 /* Every type pre-fills the subject with a relevant default (editable) and is
    sent to the API so the message is easy to route. */
@@ -285,7 +285,7 @@ export default function Contact() {
                             aria-label={lang === 'fr' ? 'Code de vérification' : 'Verification code'}
                             maxLength={6}
                             autoComplete="one-time-code"
-                            className="w-full rounded-xl border border-pine-900/15 bg-white px-3 py-2 text-sm uppercase tracking-[0.2em] text-pine-900 placeholder:normal-case placeholder:tracking-normal placeholder:text-pine-900/65 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
+                            className="w-full rounded-xl border border-pine-900/15 bg-white px-3 py-2 text-sm uppercase tracking-[0.2em] text-pine-900 placeholder:normal-case placeholder:tracking-normal placeholder:text-pine-900/65 outline-none focus:border-gold-500/40 focus:ring-1 focus:ring-gold-500/10"
                           />
                           <button
                             type="button"

@@ -659,7 +659,7 @@ function CategoryView({
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder={t['mediaPage.search'] || 'Rechercher...'}
-                  className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/65 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
+                  className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/65 focus:border-gold-500/40 focus:ring-1 focus:ring-gold-500/10"
                 />
               </div>
 

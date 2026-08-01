@@ -96,7 +96,7 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
           className={`w-full rounded-full border text-sm outline-none transition-colors focus:ring-2 ${
             compact
               ? 'h-11 border-white/10 bg-white/5 px-5 text-ivory placeholder:text-pine-100/55 backdrop-blur focus:border-gold-400/50 focus:ring-gold-400/10'
-              : 'border-pine-900/10 bg-white px-6 py-3.5 text-pine-900 placeholder:text-pine-900/65 focus:border-gold-500 focus:ring-gold-500/10'
+              : 'border-pine-900/10 bg-white px-6 py-3.5 text-pine-900 placeholder:text-pine-900/65 focus:border-gold-500/40 focus:ring-gold-500/10'
           }`}
         />
         <button
