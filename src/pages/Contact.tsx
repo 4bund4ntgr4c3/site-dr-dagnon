@@ -199,9 +199,9 @@ export default function Contact() {
       {/* content — light */}
       <section className="bg-pine-50 py-20 lg:py-24">
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr]">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)]">
             {/* contact info */}
-            <Reveal delay={0.1}>
+            <Reveal delay={0.1} className="min-w-0">
               <div className="rounded-2xl border border-pine-900/10 bg-ivory/60 p-6 lg:sticky lg:top-28">
                 <h2 className="font-display text-xl font-semibold text-pine-900">{t['contact.infoTitle']}</h2>
 
@@ -215,7 +215,7 @@ export default function Contact() {
                       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/75">
                         {t['contact.emailLabel']}
                       </p>
-                      <a href={`mailto:${t['contact.email']}`} className="text-sm font-medium text-pine-900 transition-colors hover:text-gold-600">
+                      <a href={`mailto:${t['contact.email']}`} className="text-sm font-medium text-pine-900 transition-colors hover:text-gold-600 break-words">
                         {t['contact.email']}
                       </a>
                     </div>
@@ -232,7 +232,7 @@ export default function Contact() {
                           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/75">
                             {t['contact.phoneLabel']}
                           </p>
-                          <a href={`tel:${p.replace(/\s/g, '')}`} className="text-sm font-medium text-pine-900 transition-colors hover:text-gold-600">
+                          <a href={`tel:${p.replace(/\s/g, '')}`} className="text-sm font-medium text-pine-900 transition-colors hover:text-gold-600 break-words">
                             {p}
                           </a>
                         </div>
@@ -263,7 +263,7 @@ export default function Contact() {
                       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pine-900/75">
                         {t['contact.locationLabel']}
                       </p>
-                      <p className="text-sm font-medium text-pine-900">{t['contact.location']}</p>
+                      <p className="text-sm font-medium text-pine-900 break-words">{t['contact.location']}</p>
                     </div>
                   </li>
                 </ul>
@@ -381,8 +381,8 @@ export default function Contact() {
             </Reveal>
 
             {/* form */}
-            <Reveal delay={0.18}>
-              <div className="rounded-3xl border border-pine-900/10 bg-white p-8 shadow-card">
+            <Reveal delay={0.18} className="min-w-0">
+              <div className="rounded-3xl border border-pine-900/10 bg-white p-6 shadow-card sm:p-8">
                 {status === 'success' ? (
                   <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
                     <CheckCircle2 size={48} className="text-gold-500" />
