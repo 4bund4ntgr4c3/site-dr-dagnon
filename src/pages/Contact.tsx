@@ -186,7 +186,7 @@ export default function Contact() {
               <span className="h-1.5 w-1.5 rounded-full bg-gold-400" />
               {t['contact.title']}
             </span>
-            <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl lg:text-[4.4rem]">
+            <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl lg:text-[4.4rem] break-words">
               {t['contact.title']} — <NameHighlight />
             </h1>
             <p className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
@@ -276,7 +276,7 @@ export default function Contact() {
                         <p className="text-[13px] font-medium text-pine-900">
                           {lang === 'fr' ? 'Un code a été envoyé à votre adresse e-mail.' : 'A code has been sent to your email address.'}
                         </p>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col gap-2 sm:flex-row">
                           <input
                             type="text"
                             value={verifyCode}
@@ -285,7 +285,7 @@ export default function Contact() {
                             aria-label={lang === 'fr' ? 'Code de vérification' : 'Verification code'}
                             maxLength={6}
                             autoComplete="one-time-code"
-                            className="w-full rounded-xl border border-pine-900/15 bg-white px-3 py-2 text-sm uppercase tracking-[0.2em] text-pine-900 placeholder:normal-case placeholder:tracking-normal placeholder:text-pine-900/65 outline-none focus:border-gold-500/40 focus:ring-1 focus:ring-gold-500/10"
+                            className="w-full min-w-0 rounded-xl border border-pine-900/15 bg-white px-3 py-2 text-sm uppercase tracking-[0.2em] text-pine-900 placeholder:normal-case placeholder:tracking-normal placeholder:text-pine-900/65 outline-none focus:border-gold-500/40 focus:ring-1 focus:ring-gold-500/10"
                           />
                           <button
                             type="button"
