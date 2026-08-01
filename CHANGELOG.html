@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Changelog — site-dr-dagnon</title>
+<style>
+  :root {
+    --pine-950: #04251f;
+    --pine-900: #0a352e;
+    --pine-800: #12443b;
+    --pine-100: #b8d4cc;
+    --ivory: #f6f3ec;
+    --gold: #c9a24b;
+    --gold-soft: rgba(201, 162, 75, 0.14);
+    --muted: #9db8b0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--pine-950);
+    color: var(--ivory);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px 96px; }
+  header.hero { text-align: center; padding: 40px 0 8px; }
+  .badge {
+    display: inline-block;
+    border: 1px solid rgba(201, 162, 75, 0.5);
+    background: var(--gold-soft);
+    color: var(--gold);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  h1 { font-size: 2.4rem; margin: 18px 0 6px; font-weight: 600; }
+  .sub { color: var(--muted); margin: 0 0 8px; }
+  .stats { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 20px 0 8px; }
+  .stat {
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-size: 12.5px;
+    color: var(--pine-100);
+  }
+  .stat strong { color: var(--gold); font-weight: 700; }
+  .rule { height: 1px; margin: 36px 0; background: linear-gradient(90deg, transparent, var(--gold) 18%, var(--gold) 82%, transparent); }
+  section.version { margin: 0 0 48px; }
+  .vhead { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .vnum {
+    font-size: 13px; font-weight: 700; letter-spacing: 0.12em;
+    color: var(--pine-950); background: var(--gold);
+    border-radius: 8px; padding: 3px 10px;
+  }
+  .vdate { font-size: 12.5px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+  .vtitle { font-size: 1.35rem; font-weight: 600; margin: 10px 0 4px; }
+  .vsummary { color: var(--pine-100); margin: 0 0 14px; font-size: 15px; }
+  ul { margin: 0; padding-left: 20px; }
+  li { margin: 7px 0; font-size: 14.5px; color: #ddeae6; }
+  li::marker { color: var(--gold); }
+  li strong { color: var(--ivory); }
+  code, .mono {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-size: 12.5px;
+    color: var(--gold);
+    font-family: Consolas, "Cascadia Mono", monospace;
+  }
+  footer { text-align: center; color: var(--muted); font-size: 12.5px; margin-top: 64px; }
+  footer a { color: var(--gold); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="badge">Changelog</span>
+    <h1>Site Dr. Seynude Dagnon</h1>
+    <p class="sub">Portfolio &amp; site vitrine — <code>site-dr-dagnon</code></p>
+    <div class="stats">
+      <span class="stat"><strong>202</strong> commits</span>
+      <span class="stat"><strong>12</strong> versions</span>
+      <span class="stat"><strong>97</strong> tests automatisés</span>
+      <span class="stat"><strong>48</strong> pages prédéfinies</span>
+      <span class="stat">16 juil → 1 août 2026</span>
+    </div>
+  </header>
+
+  <div class="rule"></div>
+
+  <!-- ============ v1.2 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v1.2</span><span class="vdate">31 juillet – 1 août 2026</span></div>
+    <h2 class="vtitle">Recherche étendue, polissage visuel &amp; stabilité</h2>
+    <p class="vsummary">La recherche couvre désormais tout le site, les accents dorés sont adoucis, et une erreur de chargement ne produit plus jamais de page blanche.</p>
+    <ul>
+      <li><strong>Recherche étendue à tout le site</strong> — auteurs de publications, photos de la médiathèque (avec miniatures dans les résultats), CV complet (expérience, formation, distinctions, chiffres clés), sections de l'accueil (liens ancrés) et textes intégraux des projets : « tout est cherchable ».</li>
+      <li><strong>Accents dorés adoucis</strong> — l'état actif des résultats, les anneaux de focus des boutons et les champs de recherche/formulaires passent d'un halo or épais à un fin liseré discret.</li>
+      <li><strong>Fermeture de la recherche</strong> au clic à l'extérieur du panneau (en plus d'Échap et Ctrl+K).</li>
+      <li><strong>Correctif sous-menu mobile</strong> — le menu « Accueil » du menu mobile semblait inerte : un conflit d'événements <code>mousedown</code>/<code>click</code> l'annulait à chaque tap.</li>
+      <li><strong>Correctif page Contact mobile</strong> — la ligne de vérification du téléphone et le titre du hero dépassaient la largeur d'écran et provoquaient un défilement horizontal.</li>
+      <li><strong>Plus de page blanche</strong> — un chunk de page qui échoue à se télécharger (réseau instable) est retenté automatiquement, et un <code>ErrorBoundary</code> affiche un écran « Une erreur est survenue » avec bouton Recharger au lieu de planter tout le site.</li>
+    </ul>
+  </section>
+
+  <!-- ============ v1.1 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v1.1</span><span class="vdate">31 juillet 2026</span></div>
+    <h2 class="vtitle">Les 8 fonctionnalités</h2>
+    <p class="vsummary">La grosse livraison : partage, calendrier, flux RSS, recherche, kit presse, invitation, newsletter et pré-remplissage du contact.</p>
+    <ul>
+      <li><strong>Boutons de partage</strong> sur les tribunes et études de cas — X, LinkedIn, WhatsApp et copie du lien avec confirmation accessible.</li>
+      <li><strong>Export iCal de l'agenda</strong> — un bouton « Ajouter au calendrier » télécharge un fichier <code>.ics</code> (échappement, UID, fuseau gérés).</li>
+      <li><strong>Flux RSS</strong> — <code>feed.xml</code> listant tribunes, projets, agenda et presse, annoncé par un <code>&lt;link rel="alternate"&gt;</code> dans chaque page.</li>
+      <li><strong>Recherche globale</strong> — modal accessible au clavier via Ctrl+K / Cmd+K ou la loupe de la barre, navigation clavier, résultats classés par type.</li>
+      <li><strong>Page Kit de presse</strong> (<code>/presse</code>) — bio, chiffres clés, photo téléchargeable et contact dédié.</li>
+      <li><strong>Page « Inviter le Dr »</strong> (<code>/inviter</code>) — quatre formats d'intervention qui pré-remplissent le formulaire de contact.</li>
+      <li><strong>Page « Archives de la newsletter »</strong> (<code>/newsletter</code>).</li>
+      <li><strong>Pré-remplissage du formulaire de contact</strong> via les paramètres <code>?type=</code>, <code>?subject=</code>, <code>?message=</code> — utilisé par les pages presse et invitation.</li>
+    </ul>
+  </section>
+
+  <!-- ============ v1.0 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v1.0</span><span class="vdate">28 – 31 juillet 2026</span></div>
+    <h2 class="vtitle">CV imprimable, newsletter &amp; thème sombre</h2>
+    <p class="vsummary">Le site devient « complet » : CV, newsletter avec digest automatisé, thème sombre soigné et filtres de publications repensés.</p>
+    <ul>
+      <li><strong>Page CV imprimable</strong> (<code>/cv</code>) — profil complet, travail scientifique, CSS d'impression et barre « Imprimer / Enregistrer en PDF », liens depuis le footer et le contact.</li>
+      <li><strong>Newsletter</strong> — formulaire d'inscription (footer et accueil), API <code>/api/newsletter</code> avec stockage KV et email de bienvenue bilingue, puis <strong>digest automatisé</strong> envoyé depuis le build de production Vercel (état persistant, aucun doublon).</li>
+      <li><strong>Thème sombre</strong> — sélecteur système / clair / sombre dans la barre, suit les préférences du navigateur, passage contraste AA sur toutes les surfaces, bordures et chips visibles, erreurs rouges lisibles, ombres profondes et accents or, fondu au changement de thème.</li>
+      <li><strong>Publications</strong> — filtres déplacés en barre du haut, pastilles qui défilent horizontalement sur mobile (scrollbar cachée), tri sur sa propre ligne.</li>
+      <li><strong>Contact</strong> — bouton TikTok retiré, bouton « Télécharger le CV » intégré aux réseaux sociaux, survol des types de demande en teinte or.</li>
+    </ul>
+  </section>
+
+  <!-- ============ v0.9 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v0.9</span><span class="vdate">28 – 29 juillet 2026</span></div>
+    <h2 class="vtitle">Contenu &amp; navigation — Agenda, Tribunes, Projets</h2>
+    <p class="vsummary">Le site gagne ses sections éditoriales et une navigation repensée autour d'un menu « Accueil ».</p>
+    <ul>
+      <li><strong>Agenda</strong> — page des engagements à venir et passés (conférences, prises de parole, communauté, interviews, presse).</li>
+      <li><strong>Tribunes</strong> — réimpressions hébergées d'éditoriaux avec pages dédiées complètes, bilingues, reprises intégrales.</li>
+      <li><strong>Projets</strong> — études de cas détaillées avec pages dédiées (contexte, approche, résultats) et cartes entièrement cliquables.</li>
+      <li><strong>Menu « Accueil »</strong> — les sections de la page d'accueil (À propos, Expertise, Parcours, Formation, Réalisations, Publications, Médias) sont regroupées sous un menu avec ancres et navigation clavier.</li>
+      <li><strong>Contact</strong> — routage par type de demande (conférence, interview, presse, partenariat…) avec objet pré-rempli, et champ téléphone obligatoire.</li>
+      <li><strong>Page 404 designée</strong> aux couleurs du site, descriptions réelles pour chaque publication et article de presse.</li>
+    </ul>
+  </section>
+
+  <!-- ============ v0.8 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v0.8</span><span class="vdate">27 – 28 juillet 2026</span></div>
+    <h2 class="vtitle">URLs par langue, WebP, suite de tests &amp; SSR du body</h2>
+    <p class="vsummary">Tournant technique : le français passe sous <code>/fr</code>, les photos sont optimisées, et le site devient testable et mieux indexé.</p>
+    <ul>
+      <li><strong>Une URL par langue</strong> — le français est servi sous <code>/fr/*</code> (l'anglais garde les chemins nus pour préserver les liens existants), avec redirection automatique au premier passage pour les visiteurs francophones, et <strong>prerendu bilingue</strong> : 48 pages HTML statiques.</li>
+      <li><strong>Photos en WebP</strong> avec miniatures dédiées aux cartes — la page d'accueil et les médias chargent nettement moins.</li>
+      <li><strong>Suite de tests automatisée</strong> (4 suites, 95 tests puis 97) : sécurité des API, routage, SEO, contenu — exécutée à chaque build.</li>
+      <li><strong>SSR du corps de page</strong> — le HTML prédéfini contient désormais le contenu, pas seulement le <code>&lt;head&gt;</code> ; H1 distincts par page, longueurs SERP maîtrisées, schémas JSON-LD inventés supprimés.</li>
+      <li><strong>API durcies</strong> — échappement HTML des emails, numéro de téléphone protégé (échec sécurisé), limites de débit renforcées.</li>
+      <li><strong>Performance</strong> — framer-motion sorti du bundle principal (il ne charge qu'avec la page d'accueil), focus trap corrigé, redirections 301 pour les anciennes URL médias.</li>
+    </ul>
+  </section>
+
+  <!-- ============ v0.7 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v0.7</span><span class="vdate">26 – 27 juillet 2026</span></div>
+    <h2 class="vtitle">Emails brandés &amp; vérification du téléphone</h2>
+    <p class="vsummary">Le contact passe à un vrai parcours sécurisé : le numéro de téléphone n'est révélé qu'après vérification par email.</p>
+    <ul>
+      <li><strong>Vérification du téléphone par code</strong> — après soumission du formulaire, un code à 6 caractères est envoyé par email ; seul un code valide (token signé, expirant) débloque le numéro. Le numéro n'existe jamais côté navigateur avant cette étape.</li>
+      <li><strong>Emails HTML brandés</strong> — confirmation auto-réponse et notifications reprennent le design du site (couleurs, polices), templates inlinés dans les fichiers API pour contourner la limitation des fonctions serverless.</li>
+      <li><strong>Scroll to top à chaque changement de route</strong> et audits répétés : types corrigés, code mort supprimé, aria-labels traduits, YouTube en <code>youtube-nocookie</code>.</li>
+      <li><strong>Sitemap corrigé</strong> — Content-Type XML enfin servi correctement après plusieurs tentatives (fichier statique direct avec les bons headers).</li>
+    </ul>
+  </section>
+
+  <!-- ============ v0.6 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v0.6</span><span class="vdate">24 – 26 juillet 2026</span></div>
+    <h2 class="vtitle">Albums photos, articles de presse &amp; popups formation</h2>
+    <p class="vsummary">La médiathèque s'enrichit de vrais albums avec diaporama, et le CV devient consultable en modales.</p>
+    <ul>
+      <li><strong>Albums photos</strong> — « Génies en Herbe » (6 photos) et les albums communauté (Nuit du Paludisme, Icône 360°, ONG Reel Concept) avec descriptions, <strong>diaporama</strong> à transitions douces, lecture auto et bouton pause/lecture explicite.</li>
+      <li><strong>Articles de presse</strong> — 3 nouvelles parutions avec miniatures (Lebledparle, StopBlaBlaCam, Minsante, Bluesquare, SMC Alliance), triées du plus récent, libellé « Lire la suite ».</li>
+      <li><strong>Popup Formation</strong> — timeline structurée (date, institution, détail) dans un design partagé avec les récompenses (en-tête dégradé, cartes ivoire) ; <strong>carte Enseignement</strong> ajoutée aux diplômes avec la même modale réutilisée.</li>
+      <li><strong>Hero de catégorie média</strong> — icône, titre, sous-titre et bouton retour alignés sur une seule ligne (empilés sur mobile).</li>
+      <li>Divers : favicon corrigé pour les résultats de recherche, bouton « Voir plus » sur les prises de parole, expéditeur des emails <code>admin@seynudedagnon.com</code>.</li>
+    </ul>
+  </section>
+
+  <!-- ============ v0.5 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v0.5</span><span class="vdate">22 – 23 juillet 2026</span></div>
+    <h2 class="vtitle">Médias repensés — landing, 5 catégories &amp; photos communauté</h2>
+    <p class="vsummary">La médiathèque passe à une navigation à deux niveaux et accueille les premières photos d'événements communautaires.</p>
+    <ul>
+      <li><strong>Landing médias à deux niveaux</strong> — cartes de catégories d'abord, puis vue par catégorie avec barre de filtres, recherche, sous-catégories et timeline chronologique.</li>
+      <li><strong>5 catégories</strong> — interviews, conférences, prises de parole, presse et communauté ; thème clair pour la page (cartes blanches, sidebar ivoire).</li>
+      <li><strong>Photos communautaires</strong> — 7 photos ONG Reel Concept &amp; Plus, 5 photos Nuit du Paludisme / Gala Icône 360°.</li>
+      <li><strong>Correctif page blanche sur les sous-routes</strong> — la base Vite passe de <code>./</code> à <code>/</code> pour que les assets se résolvent partout.</li>
+      <li><strong>SEO étendu</strong> — sitemap 10 pages avec hreflang, JSON-LD par page, en-têtes de cache, <code>og:site_name</code>.</li>
+      <li><strong>Nom harmonisé</strong> — « Dr. DAGNON » en français, « MD, MPH » en anglais, sur tout le site (héros, barre, footer, SEO, JSON-LD).</li>
+      <li>Modales d'expérience et de récompenses : date collante, bouton de fermeture en haut, z-index corrigé.</li>
+    </ul>
+  </section>
+
+  <!-- ============ v0.4 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v0.4</span><span class="vdate">21 – 22 juillet 2026</span></div>
+    <h2 class="vtitle">Audit complet &amp; récompenses</h2>
+    <p class="vsummary">Une passe qualité massive (SEO, accessibilité, sécurité, performance) et la première vraie section « Récompenses ».</p>
+    <ul>
+      <li><strong>Audit complet</strong> — SEO (<code>og:image</code>, <code>twitter:card</code>), accessibilité WCAG (contrastes, aria-labels traduits, lien d'évitement), sécurité (HSTS, CSP durcie), performance (découpage de code, chargement différé), route 404, suppression du code mort.</li>
+      <li><strong>Récompenses &amp; honneurs</strong> — la carte PAMCA laisse place à une section récompenses cliquable : 8 prix en timeline (y compris le Prix spécial 2025 pour l'élimination du paludisme avec photo, et la cérémonie LES 2019 en vidéo), en thème clair assorti au site.</li>
+      <li><strong>Modale d'expérience</strong> — chaque poste du parcours ouvre un détail complet (responsabilités, projets, réalisations) avec barre de défilement dorée fine intégrée aux coins arrondis.</li>
+      <li><strong>Héros vidéo</strong> — la photo du Dr se transforme en vidéo YouTube avec fondu croisé au clic (pas d'autoplay), bouton de contact en remplacement.</li>
+      <li><strong>Presse</strong> — premières parutions ajoutées à la médiathèque.</li>
+      <li><strong>SEO Knowledge Panel</strong> — JSON-LD enrichi, profils sociaux, <code>twitter:site</code>, dimensions d'image Open Graph.</li>
+    </ul>
+  </section>
+
+  <!-- ============ v0.3 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v0.3</span><span class="vdate">20 – 21 juillet 2026</span></div>
+    <h2 class="vtitle">Page Contact, API &amp; pages Médias / Publications</h2>
+    <p class="vsummary">Le site devient fonctionnel : un vrai formulaire de contact serveurless et deux grandes pages de contenu.</p>
+    <ul>
+      <li><strong>Page Contact dédiée</strong> — en-tête sombre style héros, section claire, formulaire envoyé via une fonction serverless (Resend), <strong>coordonnées réelles révélées uniquement après soumission</strong> (le téléphone reste masqué).</li>
+      <li><strong>Réseaux sociaux</strong> — LinkedIn, YouTube, Facebook, X (logo SVG), et un bouton Contact ajouté au footer.</li>
+      <li><strong>Page Médias</strong> — vidéos, images et documents avec filtres par type/catégorie/année/tri, sidebar de filtres collante, et les 15 vidéos de la chaîne YouTube du Dr.</li>
+      <li><strong>Page Publications</strong> — 18 publications avec sidebar de filtres, recherche et design aligné sur les médias.</li>
+      <li><strong>Vidéos YouTube</strong> — lues en ligne via l'embed <code>youtube-nocookie</code> (respect de la vie privée) ou en popup avec lecture automatique au clic.</li>
+      <li><strong>Analytics</strong> — Google Analytics (gtag), sections suivies comme pages virtuelles (IntersectionObserver), clics LinkedIn/YouTube et changements de langue tracés ; domaine définitif <code>seynudedagnon.com</code>.</li>
+    </ul>
+  </section>
+
+  <!-- ============ v0.2 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v0.2</span><span class="vdate">17 – 18 juillet 2026</span></div>
+    <h2 class="vtitle">SEO avancé &amp; pré-rendu statique</h2>
+    <p class="vsummary">Le site passe de « jolie page » à « site indexable » : HTML pré-rendu pour chaque route, données structurées, image Open Graph dédiée.</p>
+    <ul>
+      <li><strong>Pré-rendu statique</strong> — chaque route est générée en HTML complet à la construction (plus besoin de JavaScript pour le référencement), avec <code>hreflang</code> FR/EN et image <code>og:image</code> 1200×630 dédiée.</li>
+      <li><strong>JSON-LD statique</strong> — schéma Person (avec coordonnées géographiques), <code>twitter:image:alt</code>, manifest PWA, icône apple-touch-icon.</li>
+      <li><strong>Anglais par défaut</strong> — le HTML statique, le JSON-LD et les meta sont en EN (la langue française reste un choix explicite).</li>
+      <li><strong>Badges du héros</strong> — « 17+ ans d'expérience » et « 27 pays » repositionnés sur la photo, plus petits et translucides.</li>
+      <li><strong>Sécurité de base</strong> — en-têtes HTTP de sécurité dans <code>vercel.json</code>, suppression du code shadcn/ui inutilisé, icône PWA.</li>
+    </ul>
+  </section>
+
+  <!-- ============ v0.1 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v0.1</span><span class="vdate">16 – 17 juillet 2026</span></div>
+    <h2 class="vtitle">Fondations</h2>
+    <p class="vsummary">Le tout premier socle : un portfolio React moderne avec navigation flottante et support bilingue immédiat.</p>
+    <ul>
+      <li><strong>Projet Vite + React + TypeScript</strong> avec Tailwind, palette maison (pin vert, or, ivoire) et polices display/sans.</li>
+      <li><strong>Barre de navigation flottante</strong> — transparente en haut de page, elle se solidifie au défilement ; liens en pastilles dans une barre arrondie, logo complet y compris sur mobile.</li>
+      <li><strong>i18n FR/EN dès le départ</strong> — détection automatique de la langue du navigateur, sélecteur toujours visible (même sur mobile), nom du Dr traduit (« Dr. » en FR, « PhD » puis « MD, MPH » en EN), « DAGNON » en majuscules partout.</li>
+      <li><strong>SEO de base</strong> — meta, Open Graph, Twitter Cards, JSON-LD Person, <code>robots.txt</code> et premier sitemap.</li>
+      <li><strong>Photo du Dr dans le héros</strong> — carte visuelle remplacée par la photo réelle avec bordure dorée.</li>
+      <li><strong>Bouton retour en haut</strong> et premiers ajustements responsives (marges égales, titres tronqués proprement).</li>
+    </ul>
+  </section>
+
+  <footer>
+    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>574fb65</code> (v1.2)<br>
+    Repo : <a href="https://github.com/1wxxhktop/site-dr-dagnon">github.com/1wxxhktop/site-dr-dagnon</a>
+  </footer>
+
+</div>
+</body>
+</html>
