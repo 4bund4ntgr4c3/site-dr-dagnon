@@ -1,10 +1,11 @@
 import { useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Link } from 'react-router';
-import { Search, FileText, Newspaper, FolderKanban, Clapperboard, CalendarDays, ArrowUpRight, CornerDownLeft } from 'lucide-react';
+import { Search, FileText, Newspaper, FolderKanban, Clapperboard, CalendarDays, ArrowUpRight, CornerDownLeft, House } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
-import { UI, NAV } from '@/i18n/translations';
+import { UI, NAV, IDENTITY, EXPERTISE, EXPERIENCE, EDUCATION, AWARDS, ACHIEVEMENTS } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { CAT_NAMES } from '@/seo/meta';
 import { TRIBUNES } from '@/data/tribunes';
 import { PROJECTS } from '@/data/projects';
 import { PUB_ITEMS } from '@/data/publications';
@@ -14,24 +15,32 @@ import type { Lang } from '@/i18n/lang';
 
 interface SearchEntry {
   id: string;
-  kind: 'page' | 'tribune' | 'project' | 'publication' | 'media' | 'agenda';
+  kind: 'page' | 'section' | 'tribune' | 'project' | 'publication' | 'media' | 'agenda';
   title: string;
+  /** one-line context shown under the title */
   description: string;
+  /** extra searchable tokens not displayed (dates, locations, full text…) */
+  keywords?: string;
+  /** overrides the kind badge label (e.g. "Parcours" for career entries) */
+  badge?: string;
   href: string;
   external?: boolean;
+  thumb?: string;
 }
 
 const KIND_ORDER: Record<SearchEntry['kind'], number> = {
   page: 0,
-  tribune: 1,
-  project: 2,
-  publication: 3,
-  media: 4,
-  agenda: 5,
+  section: 1,
+  tribune: 2,
+  project: 3,
+  publication: 4,
+  media: 5,
+  agenda: 6,
 };
 
 const KIND_ICON: Record<SearchEntry['kind'], typeof FileText> = {
   page: FileText,
+  section: House,
   tribune: Newspaper,
   project: FolderKanban,
   publication: FileText,
@@ -56,9 +65,28 @@ const PAGE_ROUTES: { labelKey: string; path: string }[] = [
   { labelKey: 'newsletterPage.title', path: '/newsletter' },
 ];
 
+/* Home-page sections, searchable by their nav label and anchored to the
+   section itself. */
+const HOME_SECTIONS: { navId: string; anchor: string }[] = [
+  { navId: 'apropos', anchor: 'apropos' },
+  { navId: 'expertise', anchor: 'expertise' },
+  { navId: 'parcours', anchor: 'parcours' },
+  { navId: 'formation', anchor: 'formation' },
+  { navId: 'realisations', anchor: 'realisations' },
+];
+
+const AGENDA_TYPE_KEY: Record<string, string> = {
+  conference: 'agendaPage.type.conference',
+  speaking: 'agendaPage.type.speaking',
+  community: 'agendaPage.type.community',
+  interview: 'agendaPage.type.interview',
+  press: 'agendaPage.type.press',
+};
+
 function buildIndex(lang: Lang): SearchEntry[] {
   const t = UI[lang];
   const entries: SearchEntry[] = [];
+  const sectionLabel = (navId: string) => NAV[lang].find((n) => n.id === navId)?.label ?? navId;
 
   for (const r of PAGE_ROUTES) {
     const nav = NAV[lang].find((n) => n.id === r.labelKey);
@@ -67,17 +95,97 @@ function buildIndex(lang: Lang): SearchEntry[] {
       id: `page-${r.path}`,
       kind: 'page',
       title: label,
-      description: '',
+      description: r.path,
       href: localePath(lang, r.path),
     });
   }
-  for (const t of TRIBUNES) {
+
+  for (const s of HOME_SECTIONS) {
+    const label = sectionLabel(s.navId);
     entries.push({
-      id: `tribune-${t.slug}`,
+      id: `section-${s.anchor}`,
+      kind: 'section',
+      title: label,
+      description: '',
+      badge: label,
+      href: `${localePath(lang, '/')}#${s.anchor}`,
+    });
+  }
+  for (const item of IDENTITY[lang]) {
+    entries.push({
+      id: `identity-${item.title}`,
+      kind: 'section',
+      title: item.title,
+      description: item.text,
+      badge: sectionLabel('apropos'),
+      href: `${localePath(lang, '/')}#apropos`,
+    });
+  }
+  for (const item of EXPERTISE[lang]) {
+    entries.push({
+      id: `expertise-${item.title}`,
+      kind: 'section',
+      title: item.title,
+      description: item.text,
+      badge: sectionLabel('expertise'),
+      href: `${localePath(lang, '/')}#expertise`,
+    });
+  }
+  for (const item of EXPERIENCE[lang]) {
+    entries.push({
+      id: `experience-${item.role}`,
+      kind: 'section',
+      title: item.role,
+      description: item.org,
+      keywords: `${item.period} ${item.text} ${item.details.responsibilities.join(' ')} ${
+        item.details.achievement ?? ''
+      } ${(item.details.projects ?? []).map((p) => `${p.name} ${p.scope} ${p.budget}`).join(' ')}`,
+      badge: sectionLabel('parcours'),
+      href: `${localePath(lang, '/')}#parcours`,
+    });
+  }
+  for (const item of EDUCATION[lang]) {
+    entries.push({
+      id: `education-${item.degree}`,
+      kind: 'section',
+      title: item.degree,
+      description: `${item.school} — ${item.detail}`,
+      keywords: item.tag,
+      badge: sectionLabel('formation'),
+      href: `${localePath(lang, '/')}#formation`,
+    });
+  }
+  for (const award of AWARDS[lang]) {
+    entries.push({
+      id: `award-${award.year}-${award.title}`,
+      kind: 'section',
+      title: award.title,
+      description: `${award.year} — ${award.description}`,
+      badge: sectionLabel('realisations'),
+      href: `${localePath(lang, '/')}#realisations`,
+      thumb: award.image,
+    });
+  }
+  for (const item of ACHIEVEMENTS[lang]) {
+    entries.push({
+      id: `achievement-${item.title}`,
+      kind: 'section',
+      title: item.title,
+      description: item.text,
+      keywords: item.metric,
+      badge: sectionLabel('realisations'),
+      href: `${localePath(lang, '/')}#realisations`,
+    });
+  }
+
+  for (const tribune of TRIBUNES) {
+    entries.push({
+      id: `tribune-${tribune.slug}`,
       kind: 'tribune',
-      title: t.title[lang],
-      description: t.description[lang],
-      href: localePath(lang, `/tribunes/${t.slug}`),
+      title: tribune.title[lang],
+      description: tribune.description[lang],
+      keywords: `${tribune.source.name} ${tribune.date}`,
+      href: localePath(lang, `/tribunes/${tribune.slug}`),
     });
   }
   for (const p of PROJECTS) {
@@ -85,7 +193,10 @@ function buildIndex(lang: Lang): SearchEntry[] {
       id: `project-${p.slug}`,
       kind: 'project',
       title: p.title[lang],
-      description: p.description[lang],
+      description: `${p.tag[lang]} · ${p.location[lang]}`,
+      keywords: `${p.period[lang]} ${p.role[lang]} ${p.description[lang]} ${p.context[lang]} ${p.approach[lang].join(' ')} ${p.results
+        .map((r) => `${r.value} ${r.label[lang]}`)
+        .join(' ')}`,
       href: localePath(lang, `/projets/${p.slug}`),
     });
   }
@@ -94,26 +205,32 @@ function buildIndex(lang: Lang): SearchEntry[] {
       id: `pub-${p.id}`,
       kind: 'publication',
       title: p.title[lang],
-      description: `${p.journal[lang]} — ${p.year}`,
+      description: `${p.authors[lang]} · ${p.journal[lang]} (${p.year})`,
+      keywords: `${p.description[lang]} ${p.year}`,
       href: p.url ?? localePath(lang, '/publications'),
       external: !!p.url,
     });
   }
   for (const m of MEDIA_ITEMS) {
+    const cat = CAT_NAMES[m.category]?.[lang] ?? m.category;
     entries.push({
       id: `media-${m.id}`,
       kind: 'media',
       title: m.title[lang],
-      description: m.description?.[lang] ?? '',
+      description: `${cat} · ${m.date}`,
+      keywords: `${m.date} ${cat} ${m.subType ?? ''} ${m.description?.[lang] ?? ''}`,
       href: localePath(lang, `/media/${m.category}`),
+      thumb: m.thumb ?? m.src,
     });
   }
   for (const a of AGENDA_ITEMS) {
+    const typeLabel = t[AGENDA_TYPE_KEY[a.type] as keyof typeof t] ?? a.type;
     entries.push({
       id: `agenda-${a.id}`,
       kind: 'agenda',
       title: a.title[lang],
-      description: a.description[lang],
+      description: `${typeLabel} · ${a.location[lang]}`,
+      keywords: `${a.location[lang]} ${typeLabel} ${a.description[lang]}`,
       href: localePath(lang, '/agenda'),
     });
   }
@@ -138,17 +255,15 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
+    const score = (e: SearchEntry) => {
+      if (e.title.toLowerCase().includes(q)) return 0;
+      if ((e.keywords ?? '').toLowerCase().includes(q)) return 1;
+      return 2;
+    };
     return index
-      .filter((e) => {
-        const hay = `${e.title} ${e.description}`.toLowerCase();
-        return hay.includes(q);
-      })
-      .sort((a, b) => {
-        const aTitle = a.title.toLowerCase().includes(q) ? 0 : 1;
-        const bTitle = b.title.toLowerCase().includes(q) ? 0 : 1;
-        return aTitle - bTitle || KIND_ORDER[a.kind] - KIND_ORDER[b.kind];
-      })
-      .slice(0, 12);
+      .filter((e) => `${e.title} ${e.description} ${e.keywords ?? ''}`.toLowerCase().includes(q))
+      .sort((a, b) => score(a) - score(b) || KIND_ORDER[a.kind] - KIND_ORDER[b.kind])
+      .slice(0, 15);
   }, [index, query]);
 
   const onKeyDown = (e: ReactKeyboardEvent) => {
@@ -212,19 +327,31 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
 
           {results.map((r, i) => {
             const Icon = KIND_ICON[r.kind];
+            /* the highlighted row stays quiet — a faint wash and a hairline
+               ring, not a solid block */
             const cls = `flex items-start gap-3 rounded-2xl px-4 py-3 transition-colors ${
-              i === active ? 'bg-white/10' : 'hover:bg-white/5'
+              i === active ? 'bg-white/5 ring-1 ring-inset ring-gold-500/25' : 'hover:bg-white/5'
             }`;
             const inner = (
               <>
-                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gold-500/10 text-gold-400">
-                  <Icon size={15} />
-                </span>
+                {r.thumb ? (
+                  <img
+                    src={r.thumb}
+                    alt=""
+                    className={`h-10 w-14 shrink-0 rounded-lg object-cover ${
+                      i === active ? 'ring-1 ring-inset ring-gold-500/40' : ''
+                    }`}
+                  />
+                ) : (
+                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gold-500/10 text-gold-400">
+                    <Icon size={15} />
+                  </span>
+                )}
                 <span className="min-w-0 flex-1">
                   <span className="flex items-center gap-2">
                     <span className="truncate text-[13.5px] font-semibold text-ivory">{r.title}</span>
                     <span className="shrink-0 rounded-full bg-white/5 px-2 py-0.5 text-[9.5px] font-semibold uppercase tracking-[0.14em] text-pine-100/55">
-                      {t[`search.kind.${r.kind}`]}
+                      {r.badge ?? t[`search.kind.${r.kind}`]}
                     </span>
                   </span>
                   {r.description && (
