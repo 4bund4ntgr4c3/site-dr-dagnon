@@ -37,9 +37,13 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [homeOpen, setHomeOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  /* the modal stays mounted for a short fade-out after closing; searchMounted
+     tracks that, so the lazy chunk is still only fetched on first use */
+  const [searchMounted, setSearchMounted] = useState(false);
   /* remounts SearchModal on every open so a finished session's query never
      leaks into the next one */
   const [searchSession, setSearchSession] = useState(0);
+  const searchCloseTimer = useRef<number | null>(null);
   const { lang } = useLang();
   const t = UI[lang];
   const headerRef = useRef<HTMLDivElement>(null);
@@ -70,8 +74,20 @@ export function Navbar() {
   }, [lang, logoLines]);
 
   const openSearch = () => {
+    /* a pending fade-out from a previous close is cancelled: the modal stays
+       mounted and animates straight back in */
+    if (searchCloseTimer.current !== null) window.clearTimeout(searchCloseTimer.current);
+    searchCloseTimer.current = null;
+    setSearchMounted(true);
     setSearchOpen(true);
     setSearchSession((s) => s + 1);
+  };
+
+  const closeSearch = () => {
+    setSearchOpen(false);
+    if (searchCloseTimer.current !== null) window.clearTimeout(searchCloseTimer.current);
+    /* longer than the 200ms fade-out, so the transition is visible */
+    searchCloseTimer.current = window.setTimeout(() => setSearchMounted(false), 250);
   };
 
   /* Cmd/Ctrl+K toggles the global search, from anywhere on the site */
@@ -83,13 +99,21 @@ export function Navbar() {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        setSearchOpen((v) => !v);
-        if (!searchOpenRef.current) setSearchSession((s) => s + 1);
+        if (searchOpenRef.current) closeSearch();
+        else openSearch();
       }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, []);
+
+  /* never leave a pending unmount behind on navigation away */
+  useEffect(
+    () => () => {
+      if (searchCloseTimer.current !== null) window.clearTimeout(searchCloseTimer.current);
+    },
+    [],
+  );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -168,9 +192,9 @@ export function Navbar() {
     <>
       {/* mounted only on open so the lazy chunk (and the whole-site content
           index it builds) is fetched at first use, not on page load */}
-      {searchOpen && (
+      {searchMounted && (
         <Suspense fallback={null}>
-          <SearchModal key={searchSession} open onClose={() => setSearchOpen(false)} />
+          <SearchModal key={searchSession} open={searchOpen} onClose={closeSearch} />
         </Suspense>
       )}
       <header className="fixed inset-x-0 top-0 z-50 transition-all duration-500">
@@ -280,7 +304,7 @@ export function Navbar() {
               onClick={openSearch}
               aria-label={t['search.open']}
               title={`${t['search.open']} — Ctrl+K`}
-              className="text-pine-100/80 transition-colors hover:text-gold-400 p-2 outline-none focus-visible:ring-1 focus-visible:ring-white/20 rounded-lg"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-pine-100/85 backdrop-blur-sm transition-all duration-200 outline-none focus-visible:ring-1 focus-visible:ring-white/20 hover:text-gold-300 active:scale-90"
             >
               <Search size={19} />
             </button>

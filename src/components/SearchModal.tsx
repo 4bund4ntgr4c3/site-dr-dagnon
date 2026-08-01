@@ -292,20 +292,24 @@ function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) 
     listRef.current?.querySelectorAll<HTMLAnchorElement>('a')[next]?.focus();
   };
 
-  if (!open) return null;
-
   return (
     <div
       ref={containerRef}
       role="dialog"
       aria-modal="true"
       aria-label={t['search.open']}
+      aria-hidden={!open}
+      inert={!open}
       onClick={onClose}
-      className="fixed inset-0 z-[60] flex items-start justify-center bg-pine-950/80 px-4 pt-[12vh] backdrop-blur-sm"
+      className={`fixed inset-0 z-[60] flex items-start justify-center bg-pine-950/80 px-4 pt-[12vh] backdrop-blur-sm animate-search-backdrop-in transition-opacity duration-200 ${
+        open ? 'opacity-100' : 'pointer-events-none opacity-0'
+      }`}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-pine-950 shadow-2xl shadow-pine-950/60"
+        className={`w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-pine-950 shadow-2xl shadow-pine-950/60 animate-search-panel-in transition-all duration-200 ${
+          open ? 'translate-y-0 scale-100 opacity-100' : '-translate-y-2 scale-[0.98] opacity-0'
+        }`}
       >
         <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
           <Search size={18} className="shrink-0 text-gold-400" />

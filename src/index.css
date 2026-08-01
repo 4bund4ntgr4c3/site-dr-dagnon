@@ -63,6 +63,30 @@
   }
 }
 
+/* Search modal entrance — the backdrop and panel fade in with a slight drop
+   and settle, matching the rounded language of the rest of the site. The exit
+   is a plain opacity/transform transition driven by state, so both directions
+   are smooth. Off for reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes search-backdrop-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes search-panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(-10px) scale(0.98);
+    }
+  }
+  .animate-search-backdrop-in {
+    animation: search-backdrop-in 200ms ease-out both;
+  }
+  .animate-search-panel-in {
+    animation: search-panel-in 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
