@@ -85,15 +85,31 @@
     <h1>Site Dr. Seynude Dagnon</h1>
     <p class="sub">Portfolio &amp; site vitrine — <code>site-dr-dagnon</code></p>
     <div class="stats">
-      <span class="stat"><strong>202</strong> commits</span>
-      <span class="stat"><strong>12</strong> versions</span>
-      <span class="stat"><strong>97</strong> tests automatisés</span>
-      <span class="stat"><strong>48</strong> pages prédéfinies</span>
+      <span class="stat"><strong>212</strong> commits</span>
+      <span class="stat"><strong>13</strong> versions</span>
+      <span class="stat"><strong>98</strong> tests automatisés</span>
+      <span class="stat"><strong>100</strong> pages prédéfinies</span>
       <span class="stat">16 juil → 1 août 2026</span>
     </div>
   </header>
 
   <div class="rule"></div>
+
+  <!-- ============ v1.3 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v1.3</span><span class="vdate">1 août 2026</span></div>
+    <h2 class="vtitle">Photos indexées, médias repensés &amp; finitions</h2>
+    <p class="vsummary">Chaque photo de la médiathèque devient une page indexable, le diaporama grandit avec un fond flou, et le site passe sous react-router 8.</p>
+    <ul>
+      <li><strong>Une page par photo</strong> — les 26 photos communautaires ont leur page individuelle indexable (titre, description, <code>og:image</code> aux dimensions réelles, navigation précédent/suivant dans l'album, retour à l'album) : le site passe de 50 à <strong>100 pages HTML pré-rendues</strong>.</li>
+      <li><strong>Diaporama repensé</strong> — photo centrée et fidèle à son ratio dans un cadre de 75 % de la hauteur d'écran, flou d'arrière-plan derrière les zones non couvertes, lien « Ouvrir la photo dans sa page » sous la légende, albums triés du plus récent au plus ancien.</li>
+      <li><strong>Bouton recherche harmonisé</strong> — même design que le sélecteur de thème (rond, bordure, fond translucide) ; le modal s'ouvre et se ferme en fondu avec un léger glissement, et reste monté le temps de l'animation de sortie.</li>
+      <li><strong>Logo progressif</strong> — quand l'espace manque, la ligne de rôle disparaît d'abord, puis le texte entier ne laisse que l'icône « SD » (le libellé reste présent pour l'accessibilité et le référencement).</li>
+      <li><strong>Agenda</strong> — le jour, le mois et l'année s'empilent sur trois lignes dans les cartes d'événements.</li>
+      <li><strong>Performance</strong> — les corps des tribunes et études de cas sortent du bundle principal (chunk chargé à la demande), et les cartes de contact ne débordent plus sur mobile.</li>
+      <li><strong>Sécurité</strong> — react-router 8.3.0 (correctif d'une vulnérabilité CSRF haute), vérifié par un audit complet : 5 300 références analysées, zéro lien cassé, zéro vulnérabilité restante.</li>
+    </ul>
+  </section>
 
   <!-- ============ v1.2 ============ -->
   <section class="version">
@@ -274,7 +290,7 @@
   </section>
 
   <footer>
-    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>574fb65</code> (v1.2)<br>
+    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>0623d73</code> (v1.3)<br>
     Repo : <a href="https://github.com/1wxxhktop/site-dr-dagnon">github.com/1wxxhktop/site-dr-dagnon</a>
   </footer>
 
