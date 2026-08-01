@@ -1,4 +1,4 @@
-import { lazy, StrictMode } from 'react'
+import { lazy, StrictMode, type ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
 import './index.css'
@@ -19,20 +19,33 @@ import App, { type AppPages } from './App.tsx'
   }
 })();
 
+/* A failed chunk download (flaky mobile network, CDN hiccup) used to reject
+   the lazy import and — with no error boundary — blank the whole page until
+   a manual refresh. Retry once after a short pause before giving up; the
+   error boundary in App.tsx is the fallback that never leaves a blank page. */
+const lazyLoad = <T extends ComponentType<unknown>>(importer: () => Promise<{ default: T }>) =>
+  lazy(() =>
+    importer().catch(() =>
+      new Promise<{ default: T }>((resolve, reject) => {
+        window.setTimeout(() => importer().then(resolve, reject), 1000);
+      }),
+    ),
+  );
+
 const pages: AppPages = {
-  Home: lazy(() => import('./pages/Home')),
-  Contact: lazy(() => import('./pages/Contact')),
-  Media: lazy(() => import('./pages/Media')),
-  Publications: lazy(() => import('./pages/Publications')),
-  Agenda: lazy(() => import('./pages/Agenda')),
-  Tribunes: lazy(() => import('./pages/Tribunes')),
-  TribuneArticle: lazy(() => import('./pages/TribuneArticle')),
-  Projects: lazy(() => import('./pages/Projects')),
-  ProjectArticle: lazy(() => import('./pages/ProjectArticle')),
-  Cv: lazy(() => import('./pages/Cv')),
-  PressKit: lazy(() => import('./pages/PressKit')),
-  Invite: lazy(() => import('./pages/Invite')),
-  NewsletterArchive: lazy(() => import('./pages/NewsletterArchive')),
+  Home: lazyLoad(() => import('./pages/Home')),
+  Contact: lazyLoad(() => import('./pages/Contact')),
+  Media: lazyLoad(() => import('./pages/Media')),
+  Publications: lazyLoad(() => import('./pages/Publications')),
+  Agenda: lazyLoad(() => import('./pages/Agenda')),
+  Tribunes: lazyLoad(() => import('./pages/Tribunes')),
+  TribuneArticle: lazyLoad(() => import('./pages/TribuneArticle')),
+  Projects: lazyLoad(() => import('./pages/Projects')),
+  ProjectArticle: lazyLoad(() => import('./pages/ProjectArticle')),
+  Cv: lazyLoad(() => import('./pages/Cv')),
+  PressKit: lazyLoad(() => import('./pages/PressKit')),
+  Invite: lazyLoad(() => import('./pages/Invite')),
+  NewsletterArchive: lazyLoad(() => import('./pages/NewsletterArchive')),
 }
 
 createRoot(document.getElementById('root')!).render(

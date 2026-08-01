@@ -5,6 +5,7 @@ import { Footer } from '@/sections/Footer'
 import { ScrollToTop } from '@/components/ScrollToTop'
 import { Seo } from '@/components/Seo'
 import { NotFoundView } from '@/components/NotFoundView'
+import { PageErrorBoundary } from '@/components/PageErrorBoundary'
 import { LanguageProvider } from '@/i18n/LanguageContext'
 import { useLang } from '@/i18n/useLang'
 import { UI } from '@/i18n/translations'
@@ -84,11 +85,13 @@ export default function App({ pages }: { pages: AppPages }) {
       <Seo />
       <Navbar />
       <Suspense fallback={<Loading />}>
-        <Routes>
-          <Route path="/">{routesFor(pages)}</Route>
-          <Route path="/fr">{routesFor(pages)}</Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <PageErrorBoundary>
+          <Routes>
+            <Route path="/">{routesFor(pages)}</Route>
+            <Route path="/fr">{routesFor(pages)}</Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </PageErrorBoundary>
       </Suspense>
       <Footer />
       <ScrollToTop />
