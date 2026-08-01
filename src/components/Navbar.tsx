@@ -45,10 +45,29 @@ export function Navbar() {
   const headerRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const homeRef = useRef<HTMLDivElement>(null);
+  const logoNameRef = useRef<HTMLSpanElement>(null);
+  /* how many lines the logo name wraps onto — when the header is squeezed the
+     name grows, so the role line is dropped first, then the whole text */
+  const [logoLines, setLogoLines] = useState(1);
 
   /* the open mobile menu is a dialog: Escape closes it, Tab stays inside,
      the page behind stops scrolling */
   useFocusTrap(headerRef, toggleRef, open, () => setOpen(false));
+
+  useEffect(() => {
+    const el = logoNameRef.current;
+    if (!el) return;
+    const measure = () => {
+      const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || 20;
+      setLogoLines(Math.max(1, Math.round(el.offsetHeight / lineHeight)));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+    /* the span unmounts when the text is squeezed out; re-attach the observer
+       whenever it comes back so the logo can recover when space returns */
+  }, [lang, logoLines]);
 
   const openSearch = () => {
     setSearchOpen(true);
@@ -164,13 +183,26 @@ export function Navbar() {
           }`}
         >
           <Link to={localePath(lang, '/')} className="flex min-w-0 items-center gap-3 group">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gold-500 font-display text-sm font-semibold text-pine-950 transition-transform group-hover:scale-105">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gold-500 font-display text-sm font-semibold text-pine-950 transition-transform group-hover:scale-105">
               SD
             </span>
-            <span className="leading-tight min-w-0">
-              <span className="block font-display text-[15px] font-medium text-ivory">{t['name.short']}</span>
-              <span className="block truncate text-[10px] uppercase tracking-[0.22em] text-gold-400">{t['nav.subtitle']}</span>
-            </span>
+            {logoLines < 4 && (
+              <span className="leading-tight min-w-0">
+                <span ref={logoNameRef} className="block font-display text-[15px] font-medium text-ivory">
+                  {t['name.short']}
+                </span>
+                {logoLines < 2 && (
+                  <span className="block truncate text-[10px] uppercase tracking-[0.22em] text-gold-400">
+                    {t['nav.subtitle']}
+                  </span>
+                )}
+              </span>
+            )}
+            {logoLines >= 4 && (
+              /* the text is squeezed out, but the link keeps its meaning for
+                 assistive tech and crawlers */
+              <span className="sr-only">{t['name.short']} — {t['nav.subtitle']}</span>
+            )}
           </Link>
 
           <nav aria-label={t['nav.ariaLabel']} className="hidden lg:flex items-center gap-1 rounded-full border border-white/10 bg-white/5 py-1.5 px-1.5 backdrop-blur-sm">
