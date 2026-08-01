@@ -69,12 +69,14 @@ export default function Agenda() {
     };
   }, []);
 
-  const fmtMonthYear = (e: AgendaEntry) => {
+  const fmtMonth = (e: AgendaEntry) => {
     const { y, m } = parts(e.date);
-    return new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : 'en-US', { month: 'short', year: 'numeric' }).format(
+    return new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : 'en-US', { month: 'short' }).format(
       new Date(y, m - 1, 1),
     );
   };
+
+  const fmtYear = (e: AgendaEntry) => String(parts(e.date).y);
 
   return (
     <main id="main-content" className="min-h-screen">
@@ -133,7 +135,7 @@ export default function Agenda() {
               <div className="mt-6 grid gap-5 lg:grid-cols-2">
                 {upcoming.map((e, i) => (
                   <Reveal key={e.id} delay={Math.min(i * 0.05, 0.3)}>
-                    <EventCard e={e} lang={lang} t={t} fmtMonthYear={fmtMonthYear} upcoming />
+                    <EventCard e={e} lang={lang} t={t} fmtMonth={fmtMonth} fmtYear={fmtYear} upcoming />
                   </Reveal>
                 ))}
               </div>
@@ -167,7 +169,7 @@ export default function Agenda() {
               <div className="mt-6 space-y-4">
                 {past.map((e, i) => (
                   <Reveal key={e.id} delay={Math.min(i * 0.03, 0.3)}>
-                    <EventCard e={e} lang={lang} t={t} fmtMonthYear={fmtMonthYear} />
+                    <EventCard e={e} lang={lang} t={t} fmtMonth={fmtMonth} fmtYear={fmtYear} />
                   </Reveal>
                 ))}
               </div>
@@ -189,13 +191,15 @@ function EventCard({
   e,
   lang,
   t,
-  fmtMonthYear,
+  fmtMonth,
+  fmtYear,
   upcoming = false,
 }: {
   e: AgendaEntry;
   lang: 'fr' | 'en';
   t: typeof UI['fr'];
-  fmtMonthYear: (e: AgendaEntry) => string;
+  fmtMonth: (e: AgendaEntry) => string;
+  fmtYear: (e: AgendaEntry) => string;
   upcoming?: boolean;
 }) {
   const meta = TYPE_META[e.type];
@@ -208,11 +212,14 @@ function EventCard({
         upcoming ? 'border-gold-500/50' : 'border-pine-900/10'
       }`}
     >
-      {/* date block */}
+      {/* date block — day, month and year each on their own line */}
       <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-pine-950 text-center">
-        <span className="font-display text-[1.6rem] leading-none font-semibold text-gold-400">{d}</span>
-        <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-pine-100/70">
-          {fmtMonthYear(e)}
+        <span className="font-display text-[1.4rem] leading-none font-semibold text-gold-400">{d}</span>
+        <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-pine-100/70">
+          {fmtMonth(e)}
+        </span>
+        <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-pine-100/70">
+          {fmtYear(e)}
         </span>
       </div>
 
