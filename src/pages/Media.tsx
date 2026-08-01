@@ -472,8 +472,12 @@ function CommunityView({
                   </button>
                 )}
 
-                {/* photo */}
-                <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+                {/* photo — a tall frame (75% of the screen height, capped
+                    so the header, dots and caption still fit) with the blurred
+                    zoomed backdrop filling any uncovered area; the photo stays
+                    centered at its own proportions, as big as the frame
+                    allows, never cropped and never invading the screen */}
+                <div className="relative h-[min(75vh,calc(100vh-130px))] w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
                   {/* only the current slide and its neighbours are mounted —
                       an album used to pull every photo down at once */}
                   {albumPhotos.map((photo, i) => {
@@ -486,12 +490,11 @@ function CommunityView({
                     return (
                       <div
                         key={photo.id}
-                        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-700 ease-in-out ${
+                        className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
                           i === slideshowIndex ? 'opacity-100' : 'opacity-0'
                         }`}
                       >
-                        {/* blurred zoomed backdrop fills the blank space
-                            around small or differently-shaped photos */}
+                        {/* blurred zoomed backdrop covers the whole frame */}
                         <img
                           src={photo.src}
                           alt=""
@@ -500,23 +503,17 @@ function CommunityView({
                           decoding="async"
                           className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-2xl"
                         />
-                        {/* the photo itself, centered at its own size */}
+                        {/* the photo itself — centered, own ratio, biggest fit */}
                         <img
                           src={photo.src}
                           alt={photo.title[lang]}
                           loading={i === slideshowIndex ? 'eager' : 'lazy'}
                           decoding="async"
-                          className="relative z-10 max-h-[75vh] w-auto max-w-full object-contain"
+                          className="absolute inset-0 m-auto max-h-full max-w-full object-contain"
                         />
                       </div>
                     );
                   })}
-                  {/* placeholder to maintain aspect ratio */}
-                  <img
-                    src={albumPhotos[0].src}
-                    alt=""
-                    className="w-full object-contain max-h-[75vh] invisible"
-                  />
                 </div>
 
                 {/* next button */}
