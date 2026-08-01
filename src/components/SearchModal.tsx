@@ -293,9 +293,13 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
       role="dialog"
       aria-modal="true"
       aria-label={t['search.open']}
+      onClick={onClose}
       className="fixed inset-0 z-[60] flex items-start justify-center bg-pine-950/80 px-4 pt-[12vh] backdrop-blur-sm"
     >
-      <div className="w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-pine-950 shadow-2xl shadow-pine-950/60">
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-pine-950 shadow-2xl shadow-pine-950/60"
+      >
         <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
           <Search size={18} className="shrink-0 text-gold-400" />
           <input
@@ -327,10 +331,10 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
 
           {results.map((r, i) => {
             const Icon = KIND_ICON[r.kind];
-            /* the highlighted row stays quiet — a faint wash and a hairline
-               ring, not a solid block */
+            /* the highlighted row stays quiet — no gold glow, just a soft
+               fill and a hairline neutral ring */
             const cls = `flex items-start gap-3 rounded-2xl px-4 py-3 transition-colors ${
-              i === active ? 'bg-white/5 ring-1 ring-inset ring-gold-500/25' : 'hover:bg-white/5'
+              i === active ? 'bg-white/5 ring-1 ring-inset ring-white/10' : 'hover:bg-white/5'
             }`;
             const inner = (
               <>
@@ -338,9 +342,7 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
                   <img
                     src={r.thumb}
                     alt=""
-                    className={`h-10 w-14 shrink-0 rounded-lg object-cover ${
-                      i === active ? 'ring-1 ring-inset ring-gold-500/40' : ''
-                    }`}
+                    className="h-10 w-14 shrink-0 rounded-lg object-cover"
                   />
                 ) : (
                   <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gold-500/10 text-gold-400">

@@ -76,10 +76,15 @@ export function Navbar() {
   }, []);
 
   /* the Home menu closes on a click outside and on Escape (which returns
-     focus to the trigger) */
+     focus to the trigger). On mobile the toggle button lives inside the
+     mobile panel, not in homeRef, so a tap would first fire this mousedown
+     (closing the menu) and then the click (reopening it) — the toggle ends
+     up doing nothing. Skip the outside-close while the mobile menu is open;
+     its own button toggles the submenu. */
   useEffect(() => {
     if (!homeOpen) return;
     const onDown = (e: MouseEvent) => {
+      if (open) return;
       if (homeRef.current && !homeRef.current.contains(e.target as Node)) setHomeOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
@@ -94,7 +99,7 @@ export function Navbar() {
       document.removeEventListener('mousedown', onDown);
       document.removeEventListener('keydown', onKey);
     };
-  }, [homeOpen]);
+  }, [homeOpen, open]);
 
   const solid = scrolled || open;
   const closeAll = () => {
@@ -233,7 +238,7 @@ export function Navbar() {
               onClick={openSearch}
               aria-label={t['search.open']}
               title={`${t['search.open']} — Ctrl+K`}
-              className="text-pine-100/80 transition-colors hover:text-gold-400 p-2"
+              className="text-pine-100/80 transition-colors hover:text-gold-400 p-2 outline-none focus-visible:ring-1 focus-visible:ring-gold-500/40 rounded-lg"
             >
               <Search size={19} />
             </button>
@@ -252,7 +257,7 @@ export function Navbar() {
 
             <button
               ref={toggleRef}
-              className="lg:hidden text-ivory p-2"
+              className="lg:hidden text-ivory p-2 outline-none focus-visible:ring-1 focus-visible:ring-gold-500/40 rounded-lg"
               onClick={() => setOpen(!open)}
               aria-label={open ? t['nav.close'] : t['nav.toggle']}
               aria-expanded={open}
