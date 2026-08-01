@@ -26,6 +26,32 @@ const ROUTES = [
   '/media/speaking',
   '/media/press',
   '/media/community',
+  '/media/community/nuit-paludisme-1',
+  '/media/community/nuit-paludisme-2',
+  '/media/community/nuit-paludisme-3',
+  '/media/community/nuit-paludisme-4',
+  '/media/community/nuit-paludisme-5',
+  '/media/community/nuit-paludisme-5e-1',
+  '/media/community/nuit-paludisme-5e-2',
+  '/media/community/nuit-paludisme-5e-3',
+  '/media/community/nuit-paludisme-5e-4',
+  '/media/community/nuit-paludisme-5e-5',
+  '/media/community/nuit-paludisme-5e-6',
+  '/media/community/nuit-paludisme-5e-7',
+  '/media/community/nuit-paludisme-5e-8',
+  '/media/community/philantropie-1',
+  '/media/community/philantropie-2',
+  '/media/community/philantropie-3',
+  '/media/community/philantropie-4',
+  '/media/community/philantropie-5',
+  '/media/community/philantropie-6',
+  '/media/community/philantropie-7',
+  '/media/community/genies-1',
+  '/media/community/genies-2',
+  '/media/community/genies-3',
+  '/media/community/genies-4',
+  '/media/community/genies-5',
+  '/media/community/genies-6',
   '/publications',
   '/tribunes',
   '/tribunes/from-malaria-control-to-elimination',
@@ -189,7 +215,9 @@ test('JSON-LD parses and cannot break out of its script tag', () => {
     }
     const breadcrumb = blocks.find(([, i]) => i === 'breadcrumb-jsonld');
     const items = JSON.parse(breadcrumb[2]).itemListElement;
-    const depth = route === '/' ? 1 : route.startsWith('/media/') || route.startsWith('/tribunes/') || route.startsWith('/projets/') ? 3 : 2;
+    /* a photo page has its own rung: Home → Media → Community → Photo */
+    const depth =
+      route === '/' ? 1 : /^\/media\/community\/[\w-]+$/.test(route) ? 4 : route.startsWith('/media/') || route.startsWith('/tribunes/') || route.startsWith('/projets/') ? 3 : 2;
     assert.equal(items.length, depth, `${id} breadcrumb depth`);
     assert.equal(items.at(-1).item, absUrl(lang, route), `${id} breadcrumb tail`);
     assert.equal(items[0].item, absUrl(lang, '/'), `${id} breadcrumb root is not localized`);
@@ -721,6 +749,58 @@ test('every case study page renders its full case study in both languages', () =
         assert.ok(bodyText.includes(unescape(ev[idx === 1 ? 1 : 2]).slice(0, 30)), `${lang} /projets/${slug}: evidence label is not rendered`);
       }
       assert.ok(bodyText.includes(lang === 'fr' ? 'Tous les projets' : 'All projects'), `${lang} /projets/${slug}: missing back link`);
+    }
+  }
+});
+
+test('every community photo has its own page, indexed and shareable', () => {
+  /* photos used to live only in a client-side lightbox — their captions were
+     invisible to Google. Each one now has a prerendered page whose caption is
+     an <h1>, whose <img> carries real dimensions, and whose og:image is the
+     photo itself. */
+  const source = fs.readFileSync(path.resolve('src/data/media.ts'), 'utf-8').replace(/\r\n/g, '\n');
+  const photoBlocks = source.split(/\n {2}\{\n/).slice(1).filter((b) => b.includes("category: 'community'") && b.includes("type: 'image'"));
+  assert.equal(photoBlocks.length, 26, 'expected exactly 26 community photos');
+
+  const titleFieldRe = /title:\s*\{\s*fr: '((?:[^'\\]|\\.)*)',\s*en: '((?:[^'\\]|\\.)*)'\s*,?\s*\}/;
+  const srcFieldRe = /src: '((?:\/[^']+?))'/;
+  const unescape = (s) => s.replace(/\\(.)/g, '$1');
+
+  for (const [i, block] of photoBlocks.entries()) {
+    const id = block.match(/id: '([\w-]+)'/)?.[1];
+    assert.ok(id, `photo #${i}: no id field`);
+    const title = block.match(titleFieldRe);
+    assert.ok(title, `${id}: no title field`);
+    const src = block.match(srcFieldRe)?.[1];
+    assert.ok(src, `${id}: no src field`);
+    const route = `/media/community/${id}`;
+    for (const lang of LANGS) {
+      const html = pages.get(`${lang} ${route}`);
+      const bodyText = decodeEntities((html.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? '').replace(/<[^>]*>/g, ' '));
+      const caption = unescape(lang === 'fr' ? title[1] : title[2]);
+
+      /* the caption is real text a crawler can read — in an <h1>, not a title attribute */
+      assert.ok(bodyText.includes(caption.slice(0, 60)), `${lang} ${route}: caption is not rendered in the body`);
+      const h1 = decodeEntities((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? '').replace(/<[^>]*>/g, '').trim());
+      assert.ok(h1.length > 0, `${lang} ${route}: no h1 on the photo page`);
+      assert.ok(h1.includes(caption.slice(0, 30)), `${lang} ${route}: h1 is not the caption`);
+
+      /* the shareable image is the photo itself, with real dimensions */
+      assert.equal(attr(html, /<meta property="og:image" content="([^"]+)"/), SITE + src, `${lang} ${route} og:image`);
+      assert.match(attr(html, /<meta property="og:image:width" content="([^"]+)"/), /^\d+$/, `${lang} ${route} og:image:width`);
+      assert.match(attr(html, /<meta property="og:image:height" content="([^"]+)"/), /^\d+$/, `${lang} ${route} og:image:height`);
+      assert.match(attr(html, /<meta property="og:image:type" content="([^"]+)"/), /^image\/webp$/, `${lang} ${route} og:image:type`);
+
+      /* the server-rendered <img> must declare its dimensions (no CLS, no reflow) */
+      assert.match(html, /<img [^>]*src="\/community\/[^"]+\.webp"[^>]*width="\d+"[^>]*height="\d+"/, `${lang} ${route}: image without width/height`);
+
+      /* and an ImageObject must be part of the structured data */
+      const jsonLd = (html.match(/<script id="([a-z-]+)" type="application\/ld\+json">([\s\S]*?)<\/script>/g) ?? []).join('\n');
+      assert.ok(jsonLd.includes('ImageObject'), `${lang} ${route}: no ImageObject in JSON-LD`);
+      assert.ok(jsonLd.includes(`${SITE}${src}`), `${lang} ${route}: ImageObject does not point at the photo`);
+
+      /* the album this photo belongs to must be one click away */
+      assert.match(html, new RegExp(`href="${localePath(lang, '/media/community')}"`), `${lang} ${route}: missing back link to the gallery`);
     }
   }
 });

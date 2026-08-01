@@ -8,6 +8,7 @@ import { DEFAULT_LANG, localePath } from '@/i18n/routing';
 import { SUPPORTED, type Lang } from '@/i18n/lang';
 import { TRIBUNES } from '@/data/tribunes';
 import { PROJECTS } from '@/data/projects';
+import { MEDIA_ITEMS, type MediaEntry } from '@/data/media';
 
 export const SITE_URL = 'https://seynudedagnon.com';
 
@@ -66,6 +67,70 @@ export const MEDIA_SEO: Record<Lang, { title: string; description: string; keywo
 /** Short brand suffix for titles that need to stay under ~60 chars —
     "Seynudé Jean-Fortuné DAGNON, MD, MPH" alone eats most of that budget. */
 const shortName = (lang: Lang) => (lang === 'fr' ? 'Dr. Dagnon' : 'Seynudé Dagnon');
+
+/* ── Community photo pages ─────────────────────────────────────── */
+
+export const SUBTYPE_SEO_NAME: Record<string, { fr: string; en: string }> = {
+  'malaria-night': { fr: 'Nuit du Paludisme', en: 'Night Against Malaria' },
+  'nuit-paludisme-5e': { fr: '5e Nuit du Paludisme', en: '5th Night Against Malaria' },
+  'school-kits': { fr: 'Fournitures scolaires', en: 'School kits' },
+  genies: { fr: 'Génies en Herbe', en: 'Génies en Herbe' },
+};
+
+const PHOTO_DESC_SUFFIX: Record<Lang, string> = {
+  fr: 'Galerie communautaire du Dr. Seynudé Dagnon — Bénin.',
+  en: 'Community gallery of Dr. Seynudé Dagnon — Benin.',
+};
+
+/** Real pixel dimensions of the community photos (public/community/*.webp),
+    used for the og:image size tags and the <img> attributes on photo pages. */
+export const PHOTO_DIMS: Record<string, { width: number; height: number }> = {
+  'nuit-paludisme-1': { width: 1280, height: 852 },
+  'nuit-paludisme-2': { width: 1280, height: 853 },
+  'nuit-paludisme-3': { width: 1280, height: 913 },
+  'nuit-paludisme-4': { width: 1280, height: 853 },
+  'nuit-paludisme-5': { width: 1280, height: 867 },
+  'nuit-paludisme-5e-1': { width: 972, height: 1280 },
+  'nuit-paludisme-5e-2': { width: 1280, height: 824 },
+  'nuit-paludisme-5e-3': { width: 984, height: 1092 },
+  'nuit-paludisme-5e-4': { width: 716, height: 1071 },
+  'nuit-paludisme-5e-5': { width: 1280, height: 913 },
+  'nuit-paludisme-5e-6': { width: 1280, height: 891 },
+  'nuit-paludisme-5e-7': { width: 1280, height: 717 },
+  'nuit-paludisme-5e-8': { width: 1280, height: 660 },
+  'philantropie-1': { width: 1280, height: 853 },
+  'philantropie-2': { width: 1178, height: 652 },
+  'philantropie-3': { width: 960, height: 1280 },
+  'philantropie-4': { width: 960, height: 1280 },
+  'philantropie-5': { width: 960, height: 1280 },
+  'philantropie-6': { width: 853, height: 1280 },
+  'philantropie-7': { width: 1280, height: 853 },
+  'genies-1': { width: 960, height: 1280 },
+  'genies-2': { width: 960, height: 1280 },
+  'genies-3': { width: 960, height: 1280 },
+  'genies-4': { width: 960, height: 1280 },
+  'genies-5': { width: 960, height: 1280 },
+  'genies-6': { width: 960, height: 1280 },
+};
+
+/** Captions read "Album — detail" ("5e Nuit du Paludisme — Remise
+    d'attestation à …"). For the <title> keep only the detail — the album
+    context already lives in the URL and the breadcrumb — and cut it at a
+    word boundary so the ~60-char SERP budget is never exceeded. When the
+    detail is too generic to identify the photo on its own (an org name, a
+    brand — "ONG Reel Concept & Plus" turns up on several pictures), fall
+    back to the full caption, which still fits the budget and stays unique. */
+const photoTitleShort = (lang: Lang, photo: MediaEntry) => {
+  const caption = photo.title[lang];
+  const parts = caption.split(' — ');
+  const candidate = parts.length > 1 && parts.slice(1).join(' — ').length >= 25 ? parts.slice(1).join(' — ') : caption;
+  if (candidate.length <= 58) return candidate;
+  const cut = candidate.slice(0, 58).lastIndexOf(' ');
+  return `${candidate.slice(0, cut > 40 ? cut : 58)}…`;
+};
+
+const photoDescription = (lang: Lang, photo: MediaEntry) =>
+  `${photo.title[lang]} — ${PHOTO_DESC_SUFFIX[lang]}`;
 
 export const CAT_NAMES: Record<string, { fr: string; en: string }> = {
   interview: { fr: 'Interviews', en: 'Interviews' },
@@ -311,6 +376,27 @@ export function collectionPageJsonLd(lang: Lang, pageTitle: string, pageDesc: st
   };
 }
 
+/** One page per community photo, so every caption is crawlable text and
+    every image has its own addressable, shareable URL. */
+export function imageObjectJsonLd(lang: Lang, photo: MediaEntry, url: string) {
+  const caption = photo.title[lang];
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ImageObject',
+    name: caption,
+    caption,
+    description: caption,
+    contentUrl: `${SITE_URL}${photo.src}`,
+    url,
+    datePublished: photo.date,
+    encodingFormat: 'image/webp',
+    representativeOfPage: true,
+    inLanguage: [lang],
+    author: { '@type': 'Person', name: fullName(lang) },
+    creator: { '@type': 'Person', name: fullName(lang) },
+  };
+}
+
 export function breadcrumbJsonLd(lang: Lang, path: string) {
   const items: { name: string; url: string }[] = [
     { name: lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Dagnon', url: homeUrl(lang) },
@@ -323,6 +409,9 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
     items.push({ name: lang === 'fr' ? 'Médias' : 'Media', url: absUrl(lang, '/media') });
     const cat = path.split('/media/')[1]?.split('/')[0];
     if (cat && CAT_NAMES[cat]) items.push({ name: CAT_NAMES[cat][lang], url: absUrl(lang, `/media/${cat}`) });
+    const photoId = path.split('/media/community/')[1];
+    const photo = photoId ? MEDIA_ITEMS.find((m) => m.id === photoId && m.category === 'community') : null;
+    if (photo) items.push({ name: photoTitleShort(lang, photo), url: absUrl(lang, path) });
   } else if (path.startsWith('/publications')) {
     items.push({ name: 'Publications', url: absUrl(lang, '/publications') });
   } else if (path.startsWith('/tribunes')) {
@@ -454,6 +543,12 @@ export interface PageMeta {
   notFound: boolean;
   /** Real per-language URLs — this is what makes the hreflang tags useful. */
   alternates: { hreflang: string; href: string }[];
+  /** Per-page share image: the actual photo on photo pages, the generic
+      og-image.jpg everywhere else. */
+  ogImage: string;
+  ogImageWidth: number;
+  ogImageHeight: number;
+  ogImageType: string;
   ogLocale: string;
   ogLocaleAlternate: string;
   siteName: string;
@@ -483,6 +578,8 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isProjectArticle = route.startsWith('/projets/') && !isProjects;
   const projectSlug = isProjectArticle ? route.split('/projets/')[1]?.split('/')[0] || null : null;
   const project = projectSlug ? PROJECTS.find((p) => p.slug === projectSlug) || null : null;
+  const photoId = route.split('/media/community/')[1] || null;
+  const photo = photoId ? MEDIA_ITEMS.find((m) => m.id === photoId && m.category === 'community') || null : null;
   const notFound = !PRERENDER_ROUTES.includes(route);
 
   const catName = mediaCategory ? CAT_NAMES[mediaCategory] : null;
@@ -512,7 +609,13 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
         ? PROJETS_SEO[lang]
         : isPub
     ? PUB_SEO[lang]
-    : isMedia && catName
+    : photo
+      ? {
+          title: photoTitleShort(lang, photo),
+          description: photoDescription(lang, photo),
+          keywords: CAT_DESCRIPTIONS.community.keywords,
+        }
+      : isMedia && catName
       ? {
           /* the brand name, not the generic "Media"/"Médias" suffix every
              category used to share — that gave /media/press a 15-char title
@@ -539,6 +642,11 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
 
   const url = absUrl(lang, route);
 
+  const ogImage = photo ? `${SITE_URL}${photo.src}` : `${SITE_URL}/og-image.jpg`;
+  const ogImageWidth = photo ? PHOTO_DIMS[photo.id]?.width || 1200 : 1200;
+  const ogImageHeight = photo ? PHOTO_DIMS[photo.id]?.height || 630 : 630;
+  const ogImageType = photo ? 'image/webp' : 'image/jpeg';
+
   return {
     title: data.title,
     description: data.description,
@@ -549,6 +657,10 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
       ...SUPPORTED.map((l) => ({ hreflang: l, href: absUrl(l, route) })),
       { hreflang: 'x-default', href: absUrl(DEFAULT_LANG, route) },
     ],
+    ogImage,
+    ogImageWidth,
+    ogImageHeight,
+    ogImageType,
     ogLocale: SEO[lang].ogLocale,
     ogLocaleAlternate: SEO[lang === 'fr' ? 'en' : 'fr'].ogLocale,
     siteName: fullName(lang),
@@ -564,9 +676,11 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
             ? articleJsonLd(lang, tribune, url)
             : project
               ? projectJsonLd(lang, project, url)
-              : isMedia || isPub || isAgenda || isTribunes || isProjects || isPresse || isInvite || isNewsletter
-                ? collectionPageJsonLd(lang, data.title, data.description, url)
-                : null,
+              : photo
+                ? imageObjectJsonLd(lang, photo, url)
+                : isMedia || isPub || isAgenda || isTribunes || isProjects || isPresse || isInvite || isNewsletter
+                  ? collectionPageJsonLd(lang, data.title, data.description, url)
+                  : null,
     },
   };
 }
@@ -584,6 +698,7 @@ export const PRERENDER_ROUTES = [
   '/media/speaking',
   '/media/press',
   '/media/community',
+  ...MEDIA_ITEMS.filter((m) => m.category === 'community').map((m) => `/media/community/${m.id}`),
   '/publications',
   '/tribunes',
   ...TRIBUNES.map((t) => `/tribunes/${t.slug}`),
@@ -615,6 +730,14 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   ),
   ...Object.fromEntries(
     PROJECTS.map((p) => [`/projets/${p.slug}`, { priority: '0.7', changefreq: 'monthly' }]),
+  ),
+  /* individual photos: leaf pages, crawled from the album page and the
+     sitemap — low priority by design */
+  ...Object.fromEntries(
+    MEDIA_ITEMS.filter((m) => m.category === 'community').map((m) => [
+      `/media/community/${m.id}`,
+      { priority: '0.4', changefreq: 'monthly' },
+    ]),
   ),
 };
 export const DEFAULT_ROUTE_PRIORITY = { priority: '0.8', changefreq: 'monthly' };

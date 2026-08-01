@@ -66,6 +66,7 @@ const routesFor = (Pages: AppPages) => [
   <Route key="contact" path="contact" element={<Pages.Contact />} />,
   <Route key="media" path="media" element={<Pages.Media />} />,
   <Route key="media-category" path="media/:category" element={<Pages.Media />} />,
+  <Route key="media-photo" path="media/community/:photoId" element={<Pages.Media />} />,
   <Route key="publications" path="publications" element={<Pages.Publications />} />,
   <Route key="tribunes" path="tribunes" element={<Pages.Tribunes />} />,
   <Route key="tribune-article" path="tribunes/:slug" element={<Pages.TribuneArticle />} />,

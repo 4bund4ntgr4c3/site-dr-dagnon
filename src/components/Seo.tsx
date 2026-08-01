@@ -59,17 +59,17 @@ export function Seo() {
     upsertMeta('meta[property="og:locale"]', meta.ogLocale);
     upsertMeta('meta[property="og:locale:alternate"]', meta.ogLocaleAlternate);
     upsertMeta('meta[property="og:site_name"]', meta.siteName);
-    upsertMeta('meta[property="og:image"]', image);
+    upsertMeta('meta[property="og:image"]', meta.ogImage || image);
     upsertMeta('meta[property="og:image:alt"]', meta.title);
-    upsertMeta('meta[property="og:image:width"]', '1200');
-    upsertMeta('meta[property="og:image:height"]', '630');
-    upsertMeta('meta[property="og:image:type"]', 'image/jpeg');
+    upsertMeta('meta[property="og:image:width"]', String(meta.ogImageWidth || 1200));
+    upsertMeta('meta[property="og:image:height"]', String(meta.ogImageHeight || 630));
+    upsertMeta('meta[property="og:image:type"]', meta.ogImageType || 'image/jpeg');
     upsertMeta('meta[name="twitter:card"]', 'summary_large_image');
     upsertMeta('meta[name="twitter:site"]', '@SeynudeD');
     upsertMeta('meta[name="twitter:creator"]', '@SeynudeD');
     upsertMeta('meta[name="twitter:title"]', meta.title);
     upsertMeta('meta[name="twitter:description"]', meta.description);
-    upsertMeta('meta[name="twitter:image"]', image);
+    upsertMeta('meta[name="twitter:image"]', meta.ogImage || image);
     upsertMeta('meta[name="twitter:image:alt"]', meta.title);
 
     /* Reasserted on every navigation so a noindex cannot outlive the page

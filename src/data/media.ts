@@ -446,8 +446,8 @@ export const MEDIA_ITEMS: MediaEntry[] = [
     subType: 'nuit-paludisme-5e',
     date: '2025-07-15',
     title: {
-      fr: '5e Nuit du Paludisme — Remise d\'attestation à Dr. Christiane Lokossou Dossouho',
-      en: '5th Night Against Malaria — Attestation presented to Dr. Christiane Lokossou Dossouho',
+      fr: '5e Nuit du Paludisme — Remise d\'attestation à Dr. Enagnon Ghislaine LOKO Ep/se DJIDJOHO',
+      en: '5th Night Against Malaria — Attestation presented to Dr. Enagnon Ghislaine LOKO Ep/se DJIDJOHO',
     },
     src: '/community/nuit-paludisme-5e-5.webp',
   },

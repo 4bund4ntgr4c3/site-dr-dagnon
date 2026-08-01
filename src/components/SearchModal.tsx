@@ -216,13 +216,17 @@ function buildIndex(lang: Lang): SearchEntry[] {
   }
   for (const m of MEDIA_ITEMS) {
     const cat = CAT_NAMES[m.category]?.[lang] ?? m.category;
+    const isPhoto = m.category === 'community' && m.type === 'image';
     entries.push({
       id: `media-${m.id}`,
       kind: 'media',
       title: m.title[lang],
       description: `${cat} · ${m.date}`,
       keywords: `${m.date} ${cat} ${m.subType ?? ''} ${m.description?.[lang] ?? ''}`,
-      href: localePath(lang, `/media/${m.category}`),
+      /* community photos have their own page — search lands directly on it */
+      href: isPhoto
+        ? localePath(lang, `/media/community/${m.id}`)
+        : localePath(lang, `/media/${m.category}`),
       thumb: m.thumb ?? m.src,
     });
   }

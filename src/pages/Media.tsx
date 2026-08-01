@@ -26,6 +26,7 @@ import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { localePath } from '@/i18n/routing';
+import { PHOTO_DIMS } from '@/seo/meta';
 import {
   MEDIA_ITEMS,
   type MediaEntry,
@@ -109,6 +110,13 @@ function formatDate(iso: string, lang: 'fr' | 'en') {
     month: 'short',
     day: 'numeric',
   });
+}
+
+/* media ids end with a numeric suffix (nuit-paludisme-5e-5): when entries
+   share the same date, the higher suffix is the more recently added photo */
+function photoOrder(id: string): number {
+  const m = id.match(/(\d+)$/);
+  return m ? Number(m[1]) : 0;
 }
 
 const TYPE_FILTERS: { value: MediaType | 'all'; key: string }[] = [
@@ -253,17 +261,25 @@ function CommunityView({
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const albumKeys = useMemo(() => {
-    const set = new Set(
-      MEDIA_ITEMS.filter((m) => m.category === 'community' && m.subType).map((m) => m.subType!),
-    );
-    return Array.from(set);
+    const latest = new Map<string, string>();
+    for (const m of MEDIA_ITEMS) {
+      if (m.category !== 'community' || !m.subType) continue;
+      const prev = latest.get(m.subType);
+      if (!prev || m.date > prev) latest.set(m.subType, m.date);
+    }
+    return Array.from(latest.entries())
+      .sort((a, b) => b[1].localeCompare(a[1]))
+      .map(([key]) => key);
   }, []);
 
   const albumPhotos = useMemo(() => {
     if (!activeAlbum) return [];
     return MEDIA_ITEMS.filter(
       (m) => m.category === 'community' && m.subType === activeAlbum,
-    ).sort((a, b) => a.date.localeCompare(b.date));
+    ).sort(
+      (a, b) =>
+        b.date.localeCompare(a.date) || photoOrder(b.id) - photoOrder(a.id),
+    );
   }, [activeAlbum]);
 
   const albumCounts = useMemo(() => {
@@ -468,16 +484,31 @@ function CommunityView({
                       (slideshowIndex === last && i === 0);
                     if (!adjacent) return null;
                     return (
-                      <img
+                      <div
                         key={photo.id}
-                        src={photo.src}
-                        alt={photo.title[lang]}
-                        loading={i === slideshowIndex ? 'eager' : 'lazy'}
-                        decoding="async"
-                        className={`w-full object-contain max-h-[75vh] absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-700 ease-in-out ${
                           i === slideshowIndex ? 'opacity-100' : 'opacity-0'
                         }`}
-                      />
+                      >
+                        {/* blurred zoomed backdrop fills the blank space
+                            around small or differently-shaped photos */}
+                        <img
+                          src={photo.src}
+                          alt=""
+                          aria-hidden="true"
+                          loading={i === slideshowIndex ? 'eager' : 'lazy'}
+                          decoding="async"
+                          className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-2xl"
+                        />
+                        {/* the photo itself, centered at its own size */}
+                        <img
+                          src={photo.src}
+                          alt={photo.title[lang]}
+                          loading={i === slideshowIndex ? 'eager' : 'lazy'}
+                          decoding="async"
+                          className="relative z-10 max-h-[75vh] w-auto max-w-full object-contain"
+                        />
+                      </div>
                     );
                   })}
                   {/* placeholder to maintain aspect ratio */}
@@ -756,6 +787,162 @@ function CategoryView({
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   PHOTO PAGE — one crawlable page per community photo, so every caption
+   is indexable text and every image has its own shareable URL
+   ═══════════════════════════════════════════════════════════════════ */
+
+function PhotoView({
+  photo,
+  lang,
+  t,
+}: {
+  photo: MediaEntry;
+  lang: 'fr' | 'en';
+  t: (typeof UI)['fr'];
+}) {
+  const albumPhotos = useMemo(
+    () =>
+      MEDIA_ITEMS.filter((m) => m.category === 'community' && m.subType === photo.subType).sort(
+        (a, b) => b.date.localeCompare(a.date) || photoOrder(b.id) - photoOrder(a.id),
+      ),
+    [photo.subType],
+  );
+  const position = albumPhotos.findIndex((p) => p.id === photo.id);
+  const prev = position > 0 ? albumPhotos[position - 1] : null;
+  const next = position >= 0 && position < albumPhotos.length - 1 ? albumPhotos[position + 1] : null;
+  const dims = PHOTO_DIMS[photo.id] || { width: 1280, height: 853 };
+  const albumLabel = subtypeLabel(t, photo.subType || '');
+  const albumDesc = subtypeDesc(t, photo.subType || '');
+  const photoUrl = (id: string) => localePath(lang, `/media/community/${id}`);
+
+  return (
+    <main id="main-content" className="min-h-screen overflow-x-hidden">
+      {/* header — hero background */}
+      <section className="relative overflow-hidden bg-pine-950">
+        <div className="absolute inset-0 texture-net" />
+        <div className="absolute -top-40 -right-40 h-[560px] w-[560px] rounded-full bg-pine-600/25 blur-[130px]" />
+        <div className="absolute bottom-0 -left-40 h-[460px] w-[460px] rounded-full bg-gold-600/12 blur-[120px]" />
+
+        <div className="relative mx-auto max-w-6xl px-5 pb-24 pt-32 lg:px-8 lg:pt-36">
+          <Reveal>
+            <nav aria-label={lang === 'fr' ? 'Fil d\'Ariane' : 'Breadcrumb'} className="flex flex-wrap items-center gap-2 text-[12.5px] text-pine-200/70">
+              <Link to={localePath(lang, '/media')} className="transition-colors hover:text-gold-300">
+                {t['mediaPage.badge']}
+              </Link>
+              <ChevronRight size={13} className="text-pine-200/40" />
+              <Link to={localePath(lang, '/media/community')} className="transition-colors hover:text-gold-300">
+                {t['mediaPage.catCommunity']}
+              </Link>
+              <ChevronRight size={13} className="text-pine-200/40" />
+              <span className="font-medium text-gold-300">{albumLabel}</span>
+            </nav>
+            <h1 className="mt-6 max-w-4xl font-display text-2xl leading-[1.15] font-medium text-pine-100 sm:text-4xl">
+              {photo.title[lang]}
+            </h1>
+            <p className="mt-3 text-[13px] text-pine-200/70">
+              {albumLabel} · {formatDate(photo.date, lang)}
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* content — light */}
+      <section className="bg-pine-50 py-16 lg:py-20">
+        <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
+          <figure className="mx-auto max-w-5xl">
+            <div className="overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-2xl">
+              <img
+                src={photo.src}
+                alt={photo.title[lang]}
+                width={dims.width}
+                height={dims.height}
+                decoding="async"
+                className="mx-auto max-h-[80vh] w-auto max-w-full object-contain"
+              />
+            </div>
+            <figcaption className="mx-auto mt-5 max-w-3xl text-center font-display text-lg font-medium text-pine-900">
+              {photo.title[lang]}
+            </figcaption>
+          </figure>
+
+          {albumDesc && (
+            <p className="mx-auto mt-4 max-w-3xl text-center text-[14px] leading-relaxed text-ink/70">
+              {albumDesc}
+            </p>
+          )}
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              to={localePath(lang, '/media/community')}
+              className="inline-flex items-center gap-2 rounded-full border border-pine-900/15 bg-white px-5 py-2.5 text-[13px] font-semibold text-pine-900/75 shadow-sm transition-all hover:text-pine-900 hover:ring-gold-500/50"
+            >
+              <ArrowLeft size={15} />
+              {lang === 'fr' ? `Retour à l'album ${albumLabel}` : `Back to ${albumLabel} album`}
+            </Link>
+            <span className="text-[12.5px] font-medium text-pine-900/60">
+              {position + 1} / {albumPhotos.length}
+            </span>
+          </div>
+
+          {/* prev / next — real links, crawlable both ways */}
+          {(prev || next) && (
+            <nav aria-label={lang === 'fr' ? 'Navigation entre photos' : 'Photo navigation'} className="mx-auto mt-8 grid max-w-2xl gap-4 sm:grid-cols-2">
+              {prev ? (
+                <Link
+                  to={photoUrl(prev.id)}
+                  className="inline-flex items-center gap-2 justify-self-start rounded-full border border-pine-900/15 bg-white px-5 py-2.5 text-[13px] font-semibold text-pine-900/75 shadow-sm transition-all hover:text-pine-900 hover:ring-gold-500/50"
+                >
+                  <ChevronLeft size={15} />
+                  <span className="line-clamp-1">{lang === 'fr' ? 'Photo précédente' : 'Previous photo'}</span>
+                </Link>
+              ) : (
+                <span />
+              )}
+              {next ? (
+                <Link
+                  to={photoUrl(next.id)}
+                  className="inline-flex items-center gap-2 justify-self-end rounded-full border border-pine-900/15 bg-white px-5 py-2.5 text-[13px] font-semibold text-pine-900/75 shadow-sm transition-all hover:text-pine-900 hover:ring-gold-500/50"
+                >
+                  <span className="line-clamp-1">{lang === 'fr' ? 'Photo suivante' : 'Next photo'}</span>
+                  <ChevronRight size={15} />
+                </Link>
+              ) : (
+                <span />
+              )}
+            </nav>
+          )}
+
+          {/* the album's photos — every photo links to its own page */}
+          <h2 className="mt-14 text-center font-display text-xl font-semibold text-pine-900">
+            {lang === 'fr' ? `Photos de l'album ${albumLabel}` : `Photos from the album ${albumLabel}`}
+          </h2>
+          <div className="mt-6 grid gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {albumPhotos.map((p) => (
+              <Link
+                key={p.id}
+                to={photoUrl(p.id)}
+                aria-label={p.title[lang]}
+                className={`group overflow-hidden rounded-xl border bg-white shadow-card transition-all hover:-translate-y-1 ${
+                  p.id === photo.id ? 'border-gold-500 ring-2 ring-gold-500/40' : 'border-pine-900/10'
+                }`}
+              >
+                <img
+                  src={p.src}
+                  alt={p.title[lang]}
+                  loading="lazy"
+                  decoding="async"
+                  className="aspect-[4/3] h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    MAIN PAGE
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -770,14 +957,21 @@ const VALID_CATEGORIES: MediaCategory[] = [
 export default function MediaPage() {
   const { lang } = useLang();
   const t = UI[lang];
-  const { category: urlCategory } = useParams<{ category?: string }>();
+  const { category: urlCategory, photoId } = useParams<{ category?: string; photoId?: string }>();
 
   const selectedCategory: MediaCategory | null =
     urlCategory && VALID_CATEGORIES.includes(urlCategory as MediaCategory)
       ? (urlCategory as MediaCategory)
       : null;
 
-  const invalidCategory = urlCategory && !selectedCategory;
+  const invalidCategory = urlCategory && !selectedCategory && !photoId;
+
+  /* a photo page — /media/community/:photoId — renders its own layout */
+  if (photoId) {
+    const photo = MEDIA_ITEMS.find((m) => m.id === photoId && m.category === 'community');
+    if (!photo) return <NotFoundView backHref="/media/community" />;
+    return <PhotoView photo={photo} lang={lang} t={t} />;
+  }
 
   /* No title/robots handling here: an unknown category is a path outside the
      route list, so <Seo /> already marks it noindex and gives it a translated
