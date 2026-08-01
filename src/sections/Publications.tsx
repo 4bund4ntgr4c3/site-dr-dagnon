@@ -3,7 +3,8 @@ import { Search, ExternalLink, FileText, Star } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
-import { PUBLICATIONS, UI, publicationsCount } from '@/i18n/translations';
+import { UI } from '@/i18n/translations';
+import { PUBLICATIONS, publicationsCount } from '@/data/site';
 
 export function Publications() {
   const { lang } = useLang();

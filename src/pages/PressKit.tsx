@@ -4,7 +4,7 @@ import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
-import { STATS } from '@/i18n/translations';
+import { STATS } from '@/data/site';
 
 export default function PressKit() {
   const { lang } = useLang();

@@ -18,14 +18,16 @@ import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
 import { absUrl } from '@/seo/meta';
 import { PROJECTS } from '@/data/projects';
+import { PROJECT_DETAILS } from '@/data/project-details';
 
 export default function ProjectArticle() {
   const { lang } = useLang();
   const { slug } = useParams<{ slug: string }>();
   const entry = PROJECTS.find((p) => p.slug === slug);
+  const details = entry ? PROJECT_DETAILS[entry.slug] : null;
   const t = UI[lang];
 
-  if (!entry) {
+  if (!entry || !details) {
     return <NotFoundView />;
   }
 
@@ -77,13 +79,13 @@ export default function ProjectArticle() {
             <article className="space-y-10">
               <div>
                 <SectionLabel icon={<FileText size={15} />} label={t['projetsPage.context']} />
-                <p className="mt-4 text-[15px] leading-[1.85] text-pine-900/85">{entry.context[lang]}</p>
+                <p className="mt-4 text-[15px] leading-[1.85] text-pine-900/85">{details.context[lang]}</p>
               </div>
 
               <div>
                 <SectionLabel icon={<ListChecks size={15} />} label={t['projetsPage.approach']} />
                 <ul className="mt-4 space-y-3">
-                  {entry.approach[lang].map((step, i) => (
+                  {details.approach[lang].map((step, i) => (
                     <li key={i} className="flex gap-3 text-[14.5px] leading-relaxed text-pine-900/80">
                       <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" />
                       {step}
@@ -95,7 +97,7 @@ export default function ProjectArticle() {
               <div>
                 <SectionLabel icon={<Target size={15} />} label={t['projetsPage.results']} />
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                  {entry.results.map((r, i) => (
+                  {details.results.map((r, i) => (
                     <div key={i} className="rounded-2xl border border-gold-500/30 bg-gold-500/10 p-5">
                       <p className="font-display text-[1.7rem] leading-tight font-semibold text-gold-700">
                         {r.value}
@@ -106,11 +108,11 @@ export default function ProjectArticle() {
                 </div>
               </div>
 
-              {entry.evidence.length > 0 && (
+              {details.evidence.length > 0 && (
                 <div>
                   <SectionLabel icon={<ExternalLink size={15} />} label={t['projetsPage.evidence']} />
                   <ul className="mt-4 space-y-2.5">
-                    {entry.evidence.map((ev, i) => (
+                    {details.evidence.map((ev, i) => (
                       <li key={i}>
                         <a
                           href={ev.url}

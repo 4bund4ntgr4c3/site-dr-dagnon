@@ -8,6 +8,7 @@ import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
 import { absUrl } from '@/seo/meta';
 import { TRIBUNES, type TribuneBlock } from '@/data/tribunes';
+import { TRIBUNE_BODIES } from '@/data/tribune-bodies';
 
 const parts = (iso: string) => {
   const [y, m, d] = iso.split('-').map(Number);
@@ -18,9 +19,10 @@ export default function TribuneArticle() {
   const { lang } = useLang();
   const { slug } = useParams<{ slug: string }>();
   const entry = TRIBUNES.find((t) => t.slug === slug);
+  const body = entry ? TRIBUNE_BODIES[entry.slug] : null;
   const t = UI[lang];
 
-  if (!entry) {
+  if (!entry || !body) {
     return <NotFoundView />;
   }
 
@@ -77,7 +79,7 @@ export default function TribuneArticle() {
         <div className="mx-auto max-w-3xl px-5 lg:px-8">
           <Reveal>
             <article className="space-y-6">
-              {entry.body[lang].map((block, i) => (
+              {body[lang].map((block, i) => (
                 <TribuneBlockView key={i} block={block} />
               ))}
             </article>

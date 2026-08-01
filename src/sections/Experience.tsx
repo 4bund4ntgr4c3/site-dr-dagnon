@@ -3,7 +3,8 @@ import { X, Briefcase, Target, Award, ChevronRight } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
-import { EXPERIENCE, UI } from '@/i18n/translations';
+import { UI } from '@/i18n/translations';
+import { EXPERIENCE } from '@/data/site';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 type ExperienceItem = (typeof EXPERIENCE)['fr'][number];

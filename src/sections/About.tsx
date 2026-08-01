@@ -2,7 +2,8 @@ import { Briefcase, Target, Globe2, Languages, Quote } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
-import { IDENTITY, UI } from '@/i18n/translations';
+import { UI } from '@/i18n/translations';
+import { IDENTITY } from '@/data/site';
 
 const ICONS: Record<string, typeof Briefcase> = {
   briefcase: Briefcase,

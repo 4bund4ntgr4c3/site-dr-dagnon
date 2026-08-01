@@ -2,12 +2,14 @@ import { useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } f
 import { Link } from 'react-router';
 import { Search, FileText, Newspaper, FolderKanban, Clapperboard, CalendarDays, ArrowUpRight, CornerDownLeft, House } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
-import { UI, NAV, IDENTITY, EXPERTISE, EXPERIENCE, EDUCATION, AWARDS, ACHIEVEMENTS } from '@/i18n/translations';
+import { UI, NAV } from '@/i18n/translations';
+import { IDENTITY, EXPERTISE, EXPERIENCE, EDUCATION, AWARDS, ACHIEVEMENTS } from '@/data/site';
 import { localePath } from '@/i18n/routing';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { CAT_NAMES } from '@/seo/meta';
 import { TRIBUNES } from '@/data/tribunes';
 import { PROJECTS } from '@/data/projects';
+import { PROJECT_DETAILS } from '@/data/project-details';
 import { PUB_ITEMS } from '@/data/publications';
 import { MEDIA_ITEMS } from '@/data/media';
 import { AGENDA_ITEMS } from '@/data/agenda';
@@ -189,12 +191,13 @@ function buildIndex(lang: Lang): SearchEntry[] {
     });
   }
   for (const p of PROJECTS) {
+    const details = PROJECT_DETAILS[p.slug];
     entries.push({
       id: `project-${p.slug}`,
       kind: 'project',
       title: p.title[lang],
       description: `${p.tag[lang]} · ${p.location[lang]}`,
-      keywords: `${p.period[lang]} ${p.role[lang]} ${p.description[lang]} ${p.context[lang]} ${p.approach[lang].join(' ')} ${p.results
+      keywords: `${p.period[lang]} ${p.role[lang]} ${p.description[lang]} ${details.context[lang]} ${details.approach[lang].join(' ')} ${details.results
         .map((r) => `${r.value} ${r.label[lang]}`)
         .join(' ')}`,
       href: localePath(lang, `/projets/${p.slug}`),
@@ -237,7 +240,7 @@ function buildIndex(lang: Lang): SearchEntry[] {
   return entries;
 }
 
-export function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { lang } = useLang();
   const t = UI[lang];
   const [query, setQuery] = useState('');
@@ -390,3 +393,5 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
     </div>
   );
 }
+
+export default SearchModal;

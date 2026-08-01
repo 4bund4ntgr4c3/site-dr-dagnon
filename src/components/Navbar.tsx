@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Link } from 'react-router';
 import { Menu, X, Linkedin, ChevronDown, Search } from 'lucide-react';
 import { LINKS } from '@/data/content';
@@ -6,12 +6,16 @@ import { NAV, UI } from '@/i18n/translations';
 import { useLang } from '@/i18n/useLang';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { SearchModal } from '@/components/SearchModal';
 import { track } from '@/lib/analytics';
 import { navHref } from '@/lib/nav';
 import { localePath } from '@/i18n/routing';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import type { Lang } from '@/i18n/lang';
+
+/* the search modal carries the whole-site content index (tribunes, projects,
+   publications, photos, agenda…); splitting it keeps that data out of the
+   initial bundle and loads it only when the user opens the search */
+const SearchModal = lazy(() => import('@/components/SearchModal'));
 
 /* Every anchored home-page section lives inside a single "Home" menu as one
    plain link per section (À propos, Expertise, Parcours, Formation,
@@ -143,7 +147,13 @@ export function Navbar() {
 
   return (
     <>
-      <SearchModal key={searchSession} open={searchOpen} onClose={() => setSearchOpen(false)} />
+      {/* mounted only on open so the lazy chunk (and the whole-site content
+          index it builds) is fetched at first use, not on page load */}
+      {searchOpen && (
+        <Suspense fallback={null}>
+          <SearchModal key={searchSession} open onClose={() => setSearchOpen(false)} />
+        </Suspense>
+      )}
       <header className="fixed inset-x-0 top-0 z-50 transition-all duration-500">
       <div ref={headerRef} className="mx-auto max-w-7xl px-3 pt-2 lg:px-4 lg:pt-3">
         <div

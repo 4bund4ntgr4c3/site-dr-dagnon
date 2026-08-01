@@ -3,7 +3,8 @@ import { Link } from 'react-router';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
-import { EXPERTISE, UI } from '@/i18n/translations';
+import { UI } from '@/i18n/translations';
+import { EXPERTISE } from '@/data/site';
 import { localePath } from '@/i18n/routing';
 
 const ICONS: Record<string, typeof ShieldCheck> = {

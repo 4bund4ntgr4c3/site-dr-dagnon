@@ -4,7 +4,8 @@ import { Link } from 'react-router';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
-import { MEDIA, UI } from '@/i18n/translations';
+import { UI } from '@/i18n/translations';
+import { MEDIA } from '@/data/site';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { localePath } from '@/i18n/routing';
 

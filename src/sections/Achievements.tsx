@@ -3,7 +3,8 @@ import { Trophy, Award, X, Quote, Play } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
-import { ACHIEVEMENTS, AWARDS, PORTFOLIO, UI } from '@/i18n/translations';
+import { UI } from '@/i18n/translations';
+import { ACHIEVEMENTS, AWARDS, PORTFOLIO } from '@/data/site';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 export function Achievements() {

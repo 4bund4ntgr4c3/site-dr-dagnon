@@ -414,7 +414,7 @@ test('sitemap.xml is exempt from the CSP applied to every other path', () => {
 test('every local image referenced by the app exists in dist/', () => {
   /* catches a renamed or forgotten asset — a 404 image is invisible in a
      build log and only shows up as a hole on the page */
-  const sources = ['src/data/media.ts', 'src/i18n/translations.ts', 'src/pages/Media.tsx', 'src/sections/Hero.tsx']
+  const sources = ['src/data/media.ts', 'src/data/site.ts', 'src/i18n/translations.ts', 'src/pages/Media.tsx', 'src/sections/Hero.tsx']
     .map((f) => fs.readFileSync(path.resolve(f), 'utf-8'))
     .join('\n');
   const refs = [...sources.matchAll(/'(\/[\w/-]+\.(?:webp|jpe?g|png|mp4))'/g)].map((m) => m[1]);
@@ -548,12 +548,17 @@ test('the agenda page separates upcoming from past and can show an empty upcomin
 
 test('every hosted tribune is a complete, bilingual, non-generic reprint', () => {
   const source = fs.readFileSync(path.resolve('src/data/tribunes.ts'), 'utf-8').replace(/\r\n/g, '\n');
+  const bodiesSource = fs.readFileSync(path.resolve('src/data/tribune-bodies.ts'), 'utf-8').replace(/\r\n/g, '\n');
   const unescape = (s) => s.replace(/\\(.)/g, '$1');
 
   const slugFieldRe = /slug: '([a-z0-9-]+)'/;
   const dateFieldRe = /date: '(\d{4}-\d{2}-\d{2})'/;
   const titleFieldRe = /title:\s*\{\s*fr: '((?:[^'\\]|\\.)*)',\s*en: '((?:[^'\\]|\\.)*)'\s*,?\s*\}/;
   const descFieldRe = /description:\s*\{\s*fr: '((?:[^'\\]|\\.)*)',\s*en: '((?:[^'\\]|\\.)*)'\s*,?\s*\}/;
+  const bodyBlocks = new Map();
+  for (const m of bodiesSource.matchAll(/'([a-z0-9-]+)': \{([\s\S]*?)\n {2}\},/g)) {
+    bodyBlocks.set(m[1], m[2]);
+  }
 
   const blocks = source.split(/\n {2}\{\n/).slice(1);
   const entries = [];
@@ -570,7 +575,11 @@ test('every hosted tribune is a complete, bilingual, non-generic reprint', () =>
     assert.ok(desc[1].length >= 40, `${slug}: French description too short (${desc[1].length} chars)`);
     assert.ok(desc[2].length >= 40, `${slug}: English description too short (${desc[2].length} chars)`);
     assert.notEqual(desc[1], desc[2], `${slug}: French and English descriptions are identical`);
-    assert.ok(block.match(/body: \{/), `${slug}: no body field`);
+    const body = bodyBlocks.get(slug);
+    assert.ok(body, `${slug}: no body entry in tribune-bodies.ts`);
+    assert.ok(body.includes('en: [') && body.includes('fr: ['), `${slug}: body must be bilingual (en + fr)`);
+    const blockCount = (body.match(/kind: '(?:byline|h2|p|quote)'/g) || []).length;
+    assert.ok(blockCount >= 8, `${slug}: body too short (${blockCount} blocks)`);
     entries.push({ slug, title: [title[1], title[2]], desc: [desc[1], desc[2]], block });
   }
   assert.ok(entries.length >= 1, 'expected at least one tribune');
@@ -606,6 +615,7 @@ test('every tribune article page renders the full body in both languages', () =>
 
 test('every case study is a complete, bilingual, non-generic entry', () => {
   const source = fs.readFileSync(path.resolve('src/data/projects.ts'), 'utf-8').replace(/\r\n/g, '\n');
+  const detailsSource = fs.readFileSync(path.resolve('src/data/project-details.ts'), 'utf-8').replace(/\r\n/g, '\n');
   const unescape = (s) => s.replace(/\\(.)/g, '$1');
 
   const slugFieldRe = /slug: '([a-z0-9-]+)'/;
@@ -617,6 +627,10 @@ test('every case study is a complete, bilingual, non-generic entry', () => {
   const approachFieldRe = /approach:\s*\{\s*fr: \[([\s\S]*?)\],\s*en: \[([\s\S]*?)\]\s*,?\s*\}/;
   const resultLineRe = /value: '([^']+)', label: \{ fr: '((?:[^'\\]|\\.)*)', en: '((?:[^'\\]|\\.)*)' \}/g;
   const evidenceLineRe = /label: \{ fr: '((?:[^'\\]|\\.)*)', en: '((?:[^'\\]|\\.)*)' \}, url: '(https:\/\/[^']+)'/g;
+  const detailBlocks = new Map();
+  for (const m of detailsSource.matchAll(/'([a-z0-9-]+)': \{([\s\S]*?)\n {2}\},/g)) {
+    detailBlocks.set(m[1], m[2]);
+  }
 
   const blocks = source.split(/\n {2}\{\n/).slice(1);
   const entries = [];
@@ -633,16 +647,18 @@ test('every case study is a complete, bilingual, non-generic entry', () => {
     assert.ok(desc[1].length >= 40, `${slug}: French description too short (${desc[1].length} chars)`);
     assert.ok(desc[2].length >= 40, `${slug}: English description too short (${desc[2].length} chars)`);
     assert.notEqual(desc[1], desc[2], `${slug}: French and English descriptions are identical`);
-    const context = block.match(contextFieldRe);
+    const detail = detailBlocks.get(slug);
+    assert.ok(detail, `${slug}: no detail entry in project-details.ts`);
+    const context = detail.match(contextFieldRe);
     assert.ok(context, `${slug}: no context field`);
     assert.ok(context[1].length >= 80 && context[2].length >= 80, `${slug}: context too short`);
     assert.notEqual(context[1], context[2], `${slug}: French and English contexts are identical`);
-    const approach = block.match(approachFieldRe);
+    const approach = detail.match(approachFieldRe);
     assert.ok(approach, `${slug}: no approach field`);
     const countBullets = (s) => (s.match(/'((?:[^'\\]|\\.)*)'/g) || []).length;
     assert.ok(countBullets(approach[1]) >= 3, `${slug}: fewer than 3 French approach steps`);
     assert.ok(countBullets(approach[2]) >= 3, `${slug}: fewer than 3 English approach steps`);
-    const resultsBlock = block.match(/results: \[([\s\S]*?)\]/)?.[1];
+    const resultsBlock = detail.match(/results: \[([\s\S]*?)\]/)?.[1];
     assert.ok(resultsBlock, `${slug}: no results field`);
     const results = [...resultsBlock.matchAll(resultLineRe)];
     assert.ok(results.length >= 2, `${slug}: fewer than 2 results`);
@@ -650,7 +666,7 @@ test('every case study is a complete, bilingual, non-generic entry', () => {
       assert.ok(r[1].length > 0, `${slug}: an empty result value`);
       assert.notEqual(r[2], r[3], `${slug}: a result label is identical in both languages`);
     }
-    const evidenceBlock = block.match(/evidence: \[([\s\S]*?)\]/)?.[1] ?? '';
+    const evidenceBlock = detail.match(/evidence: \[([\s\S]*?)\]/)?.[1] ?? '';
     for (const ev of [...evidenceBlock.matchAll(evidenceLineRe)]) {
       assert.ok(ev[1].length >= 5 && ev[2].length >= 5, `${slug}: an evidence label is too short`);
       assert.notEqual(ev[1], ev[2], `${slug}: an evidence label is identical in both languages`);
@@ -670,10 +686,9 @@ test('every case study is a complete, bilingual, non-generic entry', () => {
 });
 
 test('every case study page renders its full case study in both languages', () => {
-  const source = fs.readFileSync(path.resolve('src/data/projects.ts'), 'utf-8').replace(/\r\n/g, '\n');
+  const detailsSource = fs.readFileSync(path.resolve('src/data/project-details.ts'), 'utf-8').replace(/\r\n/g, '\n');
   const unescape = (s) => s.replace(/\\(.)/g, '$1');
 
-  const slugFieldRe = /slug: '([a-z0-9-]+)'/;
   const contextFieldRe = /context:\s*\{\s*fr: '((?:[^'\\]|\\.)*)',\s*en: '((?:[^'\\]|\\.)*)'\s*,?\s*\}/;
   const approachFieldRe = /approach:\s*\{\s*fr: \[([\s\S]*?)\],\s*en: \[([\s\S]*?)\]\s*,?\s*\}/;
   const resultLineRe = /value: '([^']+)', label: \{ fr: '((?:[^'\\]|\\.)*)', en: '((?:[^'\\]|\\.)*)' \}/g;
@@ -683,9 +698,11 @@ test('every case study page renders its full case study in both languages', () =
     return m ? unescape(m[1]) : '';
   };
 
-  const blocks = source.split(/\n {2}\{\n/).slice(1);
-  for (const [i, block] of blocks.entries()) {
-    const slug = block.match(slugFieldRe)[1];
+  const detailBlocks = new Map();
+  for (const m of detailsSource.matchAll(/'([a-z0-9-]+)': \{([\s\S]*?)\n {2}\},/g)) {
+    detailBlocks.set(m[1], m[2]);
+  }
+  for (const [slug, block] of detailBlocks) {
     const context = block.match(contextFieldRe);
     const approach = block.match(approachFieldRe);
     const results = [...(block.match(/results: \[([\s\S]*?)\]/)?.[1] ?? '').matchAll(resultLineRe)];
