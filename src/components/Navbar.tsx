@@ -238,7 +238,7 @@ export function Navbar() {
               onClick={openSearch}
               aria-label={t['search.open']}
               title={`${t['search.open']} — Ctrl+K`}
-              className="text-pine-100/80 transition-colors hover:text-gold-400 p-2 outline-none focus-visible:ring-1 focus-visible:ring-gold-500/40 rounded-lg"
+              className="text-pine-100/80 transition-colors hover:text-gold-400 p-2 outline-none focus-visible:ring-1 focus-visible:ring-white/20 rounded-lg"
             >
               <Search size={19} />
             </button>
@@ -257,7 +257,7 @@ export function Navbar() {
 
             <button
               ref={toggleRef}
-              className="lg:hidden text-ivory p-2 outline-none focus-visible:ring-1 focus-visible:ring-gold-500/40 rounded-lg"
+              className="lg:hidden text-ivory p-2 outline-none focus-visible:ring-1 focus-visible:ring-white/20 rounded-lg"
               onClick={() => setOpen(!open)}
               aria-label={open ? t['nav.close'] : t['nav.toggle']}
               aria-expanded={open}
