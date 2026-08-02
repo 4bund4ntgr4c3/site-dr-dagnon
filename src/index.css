@@ -40,6 +40,13 @@
   body {
     @apply bg-ivory text-ink font-sans antialiased;
   }
+  /* Reading mode: the A−/A+ control in the article pages sets
+     --reader-scale on <html>; this rule applies it to the article body only,
+     whose text sizes are written in em so they follow the container. The
+     header, cards, share buttons and the rest of the site stay untouched. */
+  [data-reader] {
+    font-size: calc(1rem * var(--reader-scale, 1));
+  }
   ::selection {
     @apply bg-gold-500/30 text-pine-950;
   }

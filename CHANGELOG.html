@@ -107,7 +107,7 @@
       <li><strong>Deep-links agenda</strong> — « Ajouter à Google Calendar » (date de fin exclusive, calculée en UTC) et « Ajouter à Outlook » (fin inclusive) sur chaque événement à venir, URLs construites par <code>URLSearchParams</code> dans <code>src/lib/calendar-links.ts</code> pour que titre, description et lieu ne puissent pas casser la requête.</li>
       <li><strong>Analytics d'événements</strong> — partages sociaux (X, LinkedIn, WhatsApp) et copie de lien, recherche du site (débouncée à 800 ms), export et abonnement iCal, taille du texte, en plus des changements de langue et de thème déjà suivis ; <code>print_article</code> arrive sur les boutons d'impression.</li>
       <li><strong>theme-color adaptatif</strong> — la balise <code>meta theme-color</code> suit le thème clair (<code>#f6f3ec</code>) ou sombre (<code>#0c2e2a</code>), appliquée dès le pre-paint dans <code>main.tsx</code> et à chaque changement ; les changements de thème système re-skinent maintenant réellement la page (bogue corrigé au passage).</li>
-      <li><strong>Mode lecture</strong> — contrôle A−/A+ persistant (<code>localStorage</code>, 90 % → 125 %) sur les articles : il met à l'échelle la taille de police racine pour que tout le texte en <code>rem</code> suive, sans toucher au zoom navigateur.</li>
+      <li><strong>Mode lecture</strong> — contrôle A−/A+ persistant (<code>localStorage</code>, 90 % → 125 %) sur les articles : il met à l'échelle le corps de l'article seul — le texte est écrit en <code>em</code> et suit la taille du conteneur — sans toucher ni au reste du site ni au zoom navigateur.</li>
     </ul>
   </section>
 

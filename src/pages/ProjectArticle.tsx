@@ -132,17 +132,17 @@ export default function ProjectArticle() {
             </p>
           </div>
           <Reveal>
-            <article className="space-y-10">
+            <article data-reader className="space-y-10">
               <div>
                 <SectionLabel icon={<FileText size={15} />} label={t['projetsPage.context']} />
-                <p className="mt-4 text-[15px] leading-[1.85] text-pine-900/85">{details.context[lang]}</p>
+                <p className="mt-4 text-[0.9375em] leading-[1.85] text-pine-900/85">{details.context[lang]}</p>
               </div>
 
               <div>
                 <SectionLabel icon={<ListChecks size={15} />} label={t['projetsPage.approach']} />
                 <ul className="mt-4 space-y-3">
                   {details.approach[lang].map((step, i) => (
-                    <li key={i} className="flex gap-3 text-[14.5px] leading-relaxed text-pine-900/80">
+                    <li key={i} className="flex gap-3 text-[0.90625em] leading-relaxed text-pine-900/80">
                       <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" />
                       {step}
                     </li>
@@ -155,10 +155,10 @@ export default function ProjectArticle() {
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
                   {details.results.map((r, i) => (
                     <div key={i} className="rounded-2xl border border-gold-500/30 bg-gold-500/10 p-5">
-                      <p className="font-display text-[1.7rem] leading-tight font-semibold text-gold-700">
+                      <p className="font-display text-[1.7em] leading-tight font-semibold text-gold-700">
                         {r.value}
                       </p>
-                      <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink/70">{r.label[lang]}</p>
+                      <p className="mt-1.5 text-[0.78125em] leading-relaxed text-ink/70">{r.label[lang]}</p>
                     </div>
                   ))}
                 </div>
@@ -174,7 +174,7 @@ export default function ProjectArticle() {
                           href={ev.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-2 rounded-xl border border-pine-900/10 bg-white px-4 py-3 text-[13px] font-semibold text-pine-900 transition-all hover:border-gold-500/40 hover:text-gold-600"
+                          className="inline-flex items-center gap-2 rounded-xl border border-pine-900/10 bg-white px-4 py-3 text-[0.8125em] font-semibold text-pine-900 transition-all hover:border-gold-500/40 hover:text-gold-600"
                         >
                           <ExternalLink size={13} className="shrink-0 text-gold-600" />
                           {ev.label[lang]}
@@ -234,7 +234,7 @@ export default function ProjectArticle() {
 
 function SectionLabel({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-pine-900/75">
+    <div className="flex items-center gap-2 text-[0.875em] font-semibold uppercase tracking-wider text-pine-900/75">
       <span className="text-gold-500">{icon}</span>
       {label}
     </div>

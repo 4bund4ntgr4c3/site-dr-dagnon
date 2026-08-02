@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { track } from '@/lib/analytics';
 
-/* Reading-mode text size: scales the root font-size (so every rem-based
-   measurement follows) and persists the choice. Clamped between 0.9x and
-   1.25x so the layout cannot break — the browser zoom is deliberately not
-   used, it would fight the fixed-ratio OG screenshots and grid columns. */
+/* Reading-mode text size: sets the --reader-scale CSS variable, which the
+   [data-reader] rule in index.css applies to the article text only — the
+   rest of the site (nav, hero, cards, share buttons…) keeps its exact sizes.
+   Clamped between 0.9x and 1.25x so the layout cannot break. */
 
 const STORAGE_KEY = 'reader-scale';
 const MIN = 0.9;
@@ -25,7 +25,7 @@ const readScale = (): number => {
 };
 
 const applyScale = (scale: number) => {
-  document.documentElement.style.fontSize = `${16 * scale}px`;
+  document.documentElement.style.setProperty('--reader-scale', String(scale));
   try {
     localStorage.setItem(STORAGE_KEY, String(scale));
   } catch {
@@ -37,6 +37,14 @@ export function FontSizeControl({ dark = false }: { dark?: boolean }) {
   const { lang } = useLang();
   const t = UI[lang];
   const [scale, setScale] = useState<number>(() => (typeof document !== 'undefined' ? readScale() : 1));
+
+  /* apply the saved scale as soon as the control mounts — the article body
+     must render at the visitor's chosen size on arrival, not only after a
+     click on A−/A+ */
+  useEffect(() => {
+    applyScale(scale);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const change = (delta: number) => {
     const next = Math.min(MAX, Math.max(MIN, Math.round((scale + delta) * 100) / 100));

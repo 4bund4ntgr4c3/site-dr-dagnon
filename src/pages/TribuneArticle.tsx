@@ -125,7 +125,7 @@ export default function TribuneArticle() {
             </p>
           </div>
           <Reveal>
-            <article className="space-y-6">
+            <article data-reader className="space-y-6">
               {body[lang].map((block, i) => (
                 <TribuneBlockView key={i} block={block} />
               ))}
@@ -192,25 +192,27 @@ export default function TribuneArticle() {
 }
 
 function TribuneBlockView({ block }: { block: TribuneBlock }) {
+  /* text sizes in em, not rem: the [data-reader] font-size on the <article>
+     then scales the whole body when the visitor uses the A−/A+ control */
   switch (block.kind) {
     case 'byline':
       return (
-        <p className="border-l-2 border-gold-500/50 pl-4 text-[13px] leading-relaxed text-pine-900/70 italic">
+        <p className="border-l-2 border-gold-500/50 pl-4 text-[0.8125em] leading-relaxed text-pine-900/70 italic">
           {block.text}
         </p>
       );
     case 'h2':
       return (
-        <h2 className="pt-4 font-display text-[1.6rem] leading-snug font-semibold text-pine-900">{block.text}</h2>
+        <h2 className="pt-4 font-display text-[1.6em] leading-snug font-semibold text-pine-900">{block.text}</h2>
       );
     case 'quote':
       return (
-        <blockquote className="rounded-r-xl border-l-4 border-gold-500 bg-white/70 px-5 py-4 font-display text-[15px] leading-relaxed text-pine-900">
+        <blockquote className="rounded-r-xl border-l-4 border-gold-500 bg-white/70 px-5 py-4 font-display text-[0.9375em] leading-relaxed text-pine-900">
           {block.text}
         </blockquote>
       );
     case 'p':
     default:
-      return <p className="text-[15px] leading-[1.85] text-pine-900/85">{block.text}</p>;
+      return <p className="text-[0.9375em] leading-[1.85] text-pine-900/85">{block.text}</p>;
   }
 }
