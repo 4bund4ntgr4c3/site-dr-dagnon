@@ -85,15 +85,31 @@
     <h1>Site Dr. Seynude Dagnon</h1>
     <p class="sub">Portfolio &amp; site vitrine — <code>site-dr-dagnon</code></p>
     <div class="stats">
-      <span class="stat"><strong>221</strong> commits</span>
-      <span class="stat"><strong>17</strong> versions</span>
-      <span class="stat"><strong>153</strong> tests automatisés</span>
+      <span class="stat"><strong>222</strong> commits</span>
+      <span class="stat"><strong>18</strong> versions</span>
+      <span class="stat"><strong>175</strong> tests automatisés</span>
       <span class="stat"><strong>100</strong> pages prédéfinies</span>
       <span class="stat">16 juil → 2 août 2026</span>
     </div>
   </header>
 
   <div class="rule"></div>
+
+  <!-- ============ v1.8 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v1.8</span><span class="vdate">2 août 2026</span></div>
+    <h2 class="vtitle">Newsletter en double opt-in, notifications push, PDF stylés &amp; FAQ</h2>
+    <p class="vsummary">L'inscription à la newsletter exige désormais une confirmation par email, chaque destinataire reçoit son lien de désabonnement en un clic, les lecteurs peuvent s'abonner aux notifications push, le press-kit et le CV existent en PDF aux couleurs du site, et la page presse gagne un bloc FAQ indexé en données structurées.</p>
+    <ul>
+      <li><strong>Double opt-in newsletter</strong> — <code>/api/newsletter</code> ne fait plus qu'annoncer l'inscription : il met l'adresse en attente (clé <code>newsletter:pending:&lt;email&gt;</code>, 7 jours) et envoie un email de confirmation bilingue. C'est le clic sur le lien signé (HMAC partagé, <code>api/_tokens.ts</code> : but, adresse, expiration, signature) qui ajoute l'adresse à <code>newsletter:emails</code> et déclenche le seul email de bienvenue — un lien expiré, falsifié, réutilisé ou détourné est refusé avant toute écriture. Une adresse déjà inscrite reçoit un message « déjà inscrit », et le service fonctionne même si le stockage KV est indisponible.</li>
+      <li><strong>Désabonnement en un clic</strong> — chaque email (confirmation, bienvenue, digest et rappels agenda) porte un lien <code>/api/newsletter-unsubscribe?email=&amp;token=</code> propre à son destinataire : plus de lots bcc partageant un unique <code>mailto:</code>. Les envois du digest et des rappels sont individualisés (propriétaire + abonnés dédupliqués, un email par personne), et un désabonnement efface l'adresse de la liste et de la file d'attente.</li>
+      <li><strong>Notifications push PWA</strong> — <code>/api/push-subscribe</code> (VAPID, clé publique distribuée au client, souscriptions stockées par hash d'endpoint avec expiration 2 ans), bouton de notification sur la page newsletter (<code>PushButton</code>), gestionnaires <code>push</code>/<code>notificationclick</code> dans le service worker (l'onglet ouvert est ciblé avant d'ouvrir une fenêtre), et le digest envoie une notification aux abonnés après chaque envoi — les souscriptions révoquées (404/410) sont purgées au passage.</li>
+      <li><strong>PDF stylés</strong> — <code>scripts/gen-pdfs.mjs</code> (Playwright, à lancer après <code>npm run build</code>) imprime les pages pré-rendues du CV (8 pages A4) et du press-kit (5 pages) en appliquant la feuille <code>@media print</code> du site : documents aux couleurs de la marque, téléchargeables depuis les pages CV et presse et pré-cachés par le service worker.</li>
+      <li><strong>FAQ de presse + FAQPage JSON-LD</strong> — six questions/réponses bilingues (bio, langues, ressources, interviews, publications, réutilisation) dans <code>src/data/faq.ts</code>, rendues en accordéon accessible sur <code>/presse</code> et sérialisées en schéma <code>FAQPage</code> — les données structurées et le bloc visible proviennent du même fichier et un test garantit qu'ils ne divergent jamais.</li>
+      <li><strong>Filtre année sur l'agenda</strong> — même barre de pastilles que les publications : <code>/agenda?y=2026</code> filtre à venir et passé, la vue se partage, les valeurs par défaut restent hors URL.</li>
+      <li><strong>Presse dans la recherche</strong> — les articles de presse quittent la catégorie « Médias » pour leur propre type (badge « Presse », icône mégaphone) et mènent directement à l'article d'origine ; recherche « seneweb » ou « AIRID » retrouve la parution exacte.</li>
+    </ul>
+  </section>
 
   <!-- ============ v1.7 ============ -->
   <section class="version">
@@ -351,7 +367,7 @@
   </section>
 
   <footer>
-    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>8effe02</code> (v1.4) → <code>056f059</code> (v1.5) → <code>c079828</code> (v1.6) → <code>24f6aab</code> (v1.7)<br>
+    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>8effe02</code> (v1.4) → <code>056f059</code> (v1.5) → <code>c079828</code> (v1.6) → <code>24f6aab</code> (v1.7) → <code>1c739ab</code> (v1.8)<br>
     Repo : <a href="https://github.com/1wxxhktop/site-dr-dagnon">github.com/1wxxhktop/site-dr-dagnon</a>
   </footer>
 
