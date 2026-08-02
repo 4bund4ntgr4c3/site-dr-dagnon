@@ -9,6 +9,7 @@ import { SUPPORTED, type Lang } from '@/i18n/lang';
 import { TRIBUNES } from '@/data/tribunes';
 import { PROJECTS } from '@/data/projects';
 import { MEDIA_ITEMS, type MediaEntry } from '@/data/media';
+import { AGENDA_ITEMS } from '@/data/agenda';
 
 export const SITE_URL = 'https://seynudedagnon.com';
 
@@ -525,6 +526,88 @@ export function buildRss(): string {
   ].join('\n');
 }
 
+/* ── Agenda events (JSON-LD) ───────────────────────────────────── */
+
+/* Future events only: a listing of past appearances has no business
+   appearing in a search result as an upcoming event. Start dates are
+   compared lexically (ISO strings), the same way the agenda page splits
+   upcoming from past. Null when nothing is upcoming — an empty @graph is
+   noise, and the agenda page falls back to its contact call-to-action. */
+export function eventsJsonLd(lang: Lang): object | null {
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  const upcoming = AGENDA_ITEMS.filter((e) => e.date > todayStr)
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .map((e) => ({
+      '@type': 'Event',
+      '@id': absUrl(lang, '/agenda') + `#${e.id}`,
+      name: e.title[lang],
+      description: e.description[lang],
+      startDate: e.date,
+      location: {
+        '@type': 'Place',
+        name: e.location[lang],
+      },
+      organizer: {
+        '@type': 'Person',
+        name: fullName(lang),
+        url: absUrl(lang, '/'),
+      },
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      eventStatus: 'https://schema.org/EventScheduled',
+      url: absUrl(lang, '/agenda') + `#${e.id}`,
+    }));
+  return upcoming.length === 0 ? null : { '@context': 'https://schema.org', '@graph': upcoming };
+}
+
+/* ── iCal feed ─────────────────────────────────────────────────── */
+
+/* The subscribable calendar, one static file for the whole site in the
+   canonical (English) labels — the same convention as the RSS feed, since
+   iCal has no per-language alternates either. Consumed by
+   scripts/prerender.mjs at build time; it ships as dist/agenda.ics. */
+export function buildIcsFeed(): string {
+  const icsEscape = (s: string) =>
+    String(s).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+  /* iCal lines longer than 75 octets must be folded with a CRLF + space; the
+     continuation segment carries the leading space, so it may only hold 73
+     more characters (first segment 74) to keep every physical line at or
+     under the 75-octet limit. */
+  const fold = (line: string): string => {
+    if (line.length <= 74) return line;
+    const chunks: string[] = [line.slice(0, 74)];
+    let rest = line.slice(74);
+    while (rest.length > 73) {
+      chunks.push(rest.slice(0, 73));
+      rest = rest.slice(73);
+    }
+    chunks.push(rest);
+    return chunks.join('\r\n ');
+  };
+  const now = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//seynudedagnon.com//Agenda//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'X-WR-CALNAME:Dr Seynude Dagnon — Agenda',
+    ...AGENDA_ITEMS.sort((a, b) => a.date.localeCompare(b.date)).flatMap((e) => [
+      'BEGIN:VEVENT',
+      `UID:${e.id}@seynudedagnon.com`,
+      `DTSTAMP:${now}`,
+      `DTSTART;VALUE=DATE:${e.date.replace(/-/g, '')}`,
+      `SUMMARY:${icsEscape(e.title.en)}`,
+      `DESCRIPTION:${icsEscape(e.description.en)}`,
+      `LOCATION:${icsEscape(e.location.en)}`,
+      ...(e.link ? [`URL:${e.link}`] : []),
+      'END:VEVENT',
+    ]),
+    'END:VCALENDAR',
+  ];
+  return lines.map(fold).join('\r\n') + '\r\n';
+}
+
 /* ── Resolved metadata for one route ──────────────────────────── */
 
 export interface PageMeta {
@@ -545,7 +628,13 @@ export interface PageMeta {
   ogLocale: string;
   ogLocaleAlternate: string;
   siteName: string;
-  jsonLd: { person: object; website: object; breadcrumb: object; page: object | null };
+  jsonLd: {
+    person: object;
+    website: object;
+    breadcrumb: object;
+    page: object | null;
+    events: object | null;
+  };
 }
 
 /** `path` is the language-agnostic route ('/media/press'), never the
@@ -661,6 +750,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
       person: personJsonLd(lang),
       website: webSiteJsonLd(lang),
       breadcrumb: breadcrumbJsonLd(lang, route),
+      events: isAgenda && !notFound ? eventsJsonLd(lang) : null,
       page: notFound
         ? null
         : isContact

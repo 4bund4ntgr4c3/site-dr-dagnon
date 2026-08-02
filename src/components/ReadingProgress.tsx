@@ -30,7 +30,7 @@ export function ReadingProgress() {
   }, []);
 
   return (
-    <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[3px]">
+    <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[3px] print:hidden">
       <div
         className="h-full bg-gradient-to-r from-gold-600 via-gold-500 to-gold-300"
         style={{ width: `${pct}%` }}

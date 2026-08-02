@@ -96,6 +96,7 @@ export function Seo() {
     upsertJsonLd('website-jsonld', meta.jsonLd.website);
     upsertJsonLd('breadcrumb-jsonld', meta.jsonLd.breadcrumb);
     upsertJsonLd('page-jsonld', meta.jsonLd.page);
+    upsertJsonLd('events-jsonld', meta.jsonLd.events);
   }, [pathname]);
 
   return null;

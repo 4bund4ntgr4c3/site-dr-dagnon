@@ -227,7 +227,7 @@ test('JSON-LD parses and cannot break out of its script tag', () => {
 test('structured data does not advertise a search box that does not exist', () => {
   /* the WebSite schema used to declare a SearchAction targeting /?q=..., but
      nothing on the site reads that query param — the filters on /media and
-     /publications are client-side React state, not URL-addressable */
+     /publications are URL-addressable, not a site-wide search box */
   eachPage(({ id, html }) => {
     const websiteBlock = html.match(/<script id="website-jsonld"[^>]*>([\s\S]*?)<\/script>/)?.[1];
     assert.ok(websiteBlock, `${id}: no website-jsonld block`);
@@ -371,6 +371,65 @@ test('every page announces the RSS feed in its head', () => {
       `${id}: missing the feed <link> tag`,
     );
   });
+});
+
+test('the agenda pages carry future events as JSON-LD', () => {
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  eachPage(({ id, lang, route, html }) => {
+    const block = html.match(/<script id="events-jsonld"[^>]*>([\s\S]*?)<\/script>/)?.[1];
+    if (route === '/agenda') {
+      /* no block is valid too: with no upcoming dates the agenda page shows
+         its empty state and must not advertise events that do not exist */
+      if (!block) return;
+      const events = JSON.parse(block.replace(/\\u003c/g, '<'))['@graph'];
+      assert.ok(Array.isArray(events) && events.length > 0, `${id}: events-jsonld with an empty @graph`);
+      for (const ev of events) {
+        assert.equal(ev['@type'], 'Event', `${id}: a listed event is not typed Event`);
+        assert.ok(ev.startDate >= todayStr, `${id}: a past event (${ev.startDate}) is still listed as upcoming`);
+        assert.match(ev['@id'], /\/agenda#/, `${id}: an event is not anchored to the agenda page`);
+      }
+    } else {
+      assert.ok(!block, `${id}: events-jsonld leaks onto a non-agenda page`);
+    }
+  });
+});
+
+test('the agenda pages announce the subscribable iCal feed', () => {
+  eachPage(({ id, route, html }) => {
+    const link = /<link rel="alternate" type="text\/calendar" title="[^"]+" href="https:\/\/seynudedagnon\.com\/agenda\.ics" \/>/;
+    if (route === '/agenda') {
+      assert.match(html, link, `${id}: missing the text/calendar <link> tag`);
+    } else {
+      assert.doesNotMatch(html, link, `${id}: the iCal feed is announced outside the agenda pages`);
+    }
+  });
+});
+
+test('agenda.ics is a well-formed calendar with one event per agenda item', () => {
+  const ics = fs.readFileSync(path.join(dist, 'agenda.ics'), 'utf-8');
+  assert.match(ics, /^BEGIN:VCALENDAR\r\n/, 'agenda.ics must start with BEGIN:VCALENDAR');
+  assert.match(ics, /END:VCALENDAR\r\n$/, 'agenda.ics must end with END:VCALENDAR');
+  assert.match(ics, /VERSION:2\.0/, 'agenda.ics must declare iCal 2.0');
+  const events = ics.match(/BEGIN:VEVENT/g) ?? [];
+  const agendaData = fs.readFileSync(path.resolve('src/data/agenda.ts'), 'utf-8');
+  const ids = [...agendaData.matchAll(/id: '([\w-]+)',/g)].map((m) => m[1]);
+  assert.ok(ids.length >= 10, 'agenda data must have been read');
+  assert.equal(events.length, ids.length, `agenda.ics has ${events.length} events for ${ids.length} agenda items`);
+  /* every item gets a stable UID and a DATE (all-day) start */
+  for (const id of ids) {
+    assert.ok(ics.includes(`UID:${id}@seynudedagnon.com`), `agenda.ics lost the UID for ${id}`);
+  }
+  assert.ok(ics.includes('DTSTART;VALUE=DATE:'), 'agenda.ics must use all-day DATE starts');
+  /* every physical line stays within the 75-octet limit (74 + trailing CR),
+     including continuation lines that carry the leading fold space */
+  for (const line of ics.split('\n')) {
+    assert.ok(line.replace(/\r$/, '').length <= 75, 'a folded iCal line exceeds the 75-octet limit');
+  }
+  assert.ok(/^\s/m.test(ics), 'agenda.ics must actually contain a folded continuation line');
+  /* the service worker precaches it so the calendar works offline */
+  const sw = fs.readFileSync(path.join(dist, 'sw.js'), 'utf-8');
+  assert.ok(sw.includes('"/agenda.ics"'), 'sw.js does not precache agenda.ics');
 });
 
 test('the service worker exists, is versioned and precaches every route', () => {

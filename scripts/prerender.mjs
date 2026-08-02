@@ -55,7 +55,7 @@ const escapeAttr = (s) =>
 /* `</script>` inside JSON-LD would close the tag early */
 const jsonLdSafe = (data) => JSON.stringify(data).replace(/</g, '\\u003c');
 
-function headBlock(meta, image, { indexable = true, feedUrl = null } = {}) {
+function headBlock(meta, image, { indexable = true, feedUrl = null, icsUrl = null } = {}) {
   const tag = (n, v) => `    <meta name="${n}" content="${escapeAttr(v)}" />`;
   const prop = (p, v) => `    <meta property="${p}" content="${escapeAttr(v)}" />`;
   const ld = (id, data) =>
@@ -74,6 +74,11 @@ function headBlock(meta, image, { indexable = true, feedUrl = null } = {}) {
     ...(feedUrl
       ? [
           `    <link rel="alternate" type="application/rss+xml" title="${escapeAttr(meta.title)}" href="${escapeAttr(feedUrl)}" />`,
+        ]
+      : []),
+    ...(icsUrl
+      ? [
+          `    <link rel="alternate" type="text/calendar" title="${escapeAttr(meta.title)}" href="${escapeAttr(icsUrl)}" />`,
         ]
       : []),
     /* an error page claims no canonical URL and offers no alternates */
@@ -111,6 +116,7 @@ function headBlock(meta, image, { indexable = true, feedUrl = null } = {}) {
     ld('website-jsonld', meta.jsonLd.website),
     ld('breadcrumb-jsonld', meta.jsonLd.breadcrumb),
     ld('page-jsonld', meta.jsonLd.page),
+    ld('events-jsonld', meta.jsonLd.events),
     `    ${END}`,
   ]
     .filter((line) => line !== null)
@@ -176,10 +182,12 @@ async function run() {
     DEFAULT_ROUTE_PRIORITY,
     SITE_URL,
     buildRss,
+    buildIcsFeed,
   } = await loadMeta();
   const { renderPage } = await loadRenderer();
   const image = `${SITE_URL}/og-image.jpg`;
   const feedUrl = `${SITE_URL}/feed.xml`;
+  const icsUrl = `${SITE_URL}/agenda.ics`;
 
   const before = template.slice(0, startAt);
   const after = template.slice(endAt + END.length);
@@ -197,7 +205,10 @@ async function run() {
       const bodyHtml = renderPage(urlPath);
       /* <html lang> sits outside the SEO block but still has to follow the
          language of the page being written */
-      const html = withBody(before + headBlock(meta, image, { feedUrl }) + after, bodyHtml).replace(
+      const html = withBody(
+        before + headBlock(meta, image, { feedUrl, icsUrl: route.startsWith('/agenda') ? icsUrl : null }) + after,
+        bodyHtml,
+      ).replace(
         /<html lang="[^"]*"/,
         `<html lang="${lang}"`,
       );
@@ -249,6 +260,10 @@ async function run() {
      lists must be an actual prerendered page. */
   fs.writeFileSync(path.join(dist, 'feed.xml'), buildRss(), 'utf-8');
 
+  /* iCal — the subscribable agenda calendar, linked from the agenda pages
+     and generated from the same data file as the page itself. */
+  fs.writeFileSync(path.join(dist, 'agenda.ics'), buildIcsFeed(), 'utf-8');
+
   /* PWA service worker — regenerated from the same route list, so the
      precache can never drift from what is actually deployed. Every page and
      asset that exists in dist/ ends up in the precache list. */
@@ -261,6 +276,7 @@ async function run() {
     '/og-image.jpg',
     '/manifest.webmanifest',
     '/dr-seynude-dagnon.webp',
+    '/agenda.ics',
     ...(fs.existsSync(path.join(dist, 'assets'))
       ? fs.readdirSync(path.join(dist, 'assets')).map((f) => `/assets/${f}`)
       : []),
@@ -351,7 +367,7 @@ self.addEventListener('fetch', (event) => {
   fs.writeFileSync(path.join(dist, 'sw.js'), sw, 'utf-8');
 
   console.log(
-    `[prerender] ${written} pages + 404.html + sitemap.xml (${urls.length} urls) + feed.xml + sw.js (${precache.length} urls precached)`,
+    `[prerender] ${written} pages + 404.html + sitemap.xml (${urls.length} urls) + feed.xml + agenda.ics + sw.js (${precache.length} urls precached)`,
   );
 }
 

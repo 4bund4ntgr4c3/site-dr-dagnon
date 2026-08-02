@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/sections/Footer'
 import { ScrollToTop } from '@/components/ScrollToTop'
+import { SwUpdateToast } from '@/components/SwUpdateToast'
 import { Seo } from '@/components/Seo'
 import { NotFoundView } from '@/components/NotFoundView'
 import { PageErrorBoundary } from '@/components/PageErrorBoundary'
@@ -96,6 +97,7 @@ export default function App({ pages }: { pages: AppPages }) {
       </Suspense>
       <Footer />
       <ScrollToTop />
+      <SwUpdateToast />
     </LanguageProvider>
   )
 }

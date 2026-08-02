@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router';
 import { FileText, ArrowUpRight, X, Star, Search } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
@@ -18,12 +19,29 @@ export default function PublicationsPage() {
   const { lang } = useLang();
   const t = UI[lang];
 
-  const [year, setYear] = useState<string>('all');
-  const [sort, setSort] = useState<'desc' | 'asc'>('desc');
-  const [search, setSearch] = useState('');
+  /* the filters live in the URL (?y=&sort=&q=) so a filtered view can be
+     shared and bookmarked; defaults are left out of the URL so the canonical
+     link stays clean. replace keeps the back button useful — these are view
+     state, not pages. */
+  const [searchParams, setSearchParams] = useSearchParams();
+  const year = searchParams.get('y') ?? 'all';
+  const sort = searchParams.get('sort') === 'asc' ? 'asc' : 'desc';
+  const search = searchParams.get('q') ?? '';
   const [expanded, setExpanded] = useState<string | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+
+  const setFilter = (key: 'y' | 'sort' | 'q', value: string, default_: string) => {
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (value === '' || value === default_) next.delete(key);
+        else next.set(key, value);
+        return next;
+      },
+      { replace: true },
+    );
+  };
 
   const years = useMemo(() => {
     const set = new Set(PUB_ITEMS.map((p) => String(p.year)));
@@ -91,7 +109,7 @@ export default function PublicationsPage() {
                     id="pub-search"
                     type="text"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => setFilter('q', e.target.value, '')}
                     placeholder={t['pubPage.search']}
                     className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/65 focus:border-gold-500/40 focus:ring-1 focus:ring-gold-500/10"
                   />
@@ -106,11 +124,11 @@ export default function PublicationsPage() {
                     {t['pubPage.filterYear']}
                   </p>
                   <div role="group" aria-label={t['pubPage.filterYear']} className="flex shrink-0 gap-2">
-                    <button type="button" onClick={() => setYear('all')} className={pill(year === 'all')}>
+                    <button type="button" onClick={() => setFilter('y', 'all', 'all')} className={pill(year === 'all')}>
                       {t['pubPage.all']}
                     </button>
                     {years.map((y) => (
-                      <button key={y} type="button" onClick={() => setYear(y)} className={pill(year === y)}>
+                      <button key={y} type="button" onClick={() => setFilter('y', y, 'all')} className={pill(year === y)}>
                         {y}
                       </button>
                     ))}
@@ -123,10 +141,10 @@ export default function PublicationsPage() {
                     {t['pubPage.filterSort']}
                   </p>
                   <div role="group" aria-label={t['pubPage.filterSort']} className="flex gap-2">
-                    <button type="button" onClick={() => setSort('desc')} className={pill(sort === 'desc')}>
+                    <button type="button" onClick={() => setFilter('sort', 'desc', 'desc')} className={pill(sort === 'desc')}>
                       {t['pubPage.newest']}
                     </button>
-                    <button type="button" onClick={() => setSort('asc')} className={pill(sort === 'asc')}>
+                    <button type="button" onClick={() => setFilter('sort', 'asc', 'desc')} className={pill(sort === 'asc')}>
                       {t['pubPage.oldest']}
                     </button>
                   </div>

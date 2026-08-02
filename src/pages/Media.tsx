@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
-import { useParams, Link } from 'react-router';
+import { useParams, Link, useSearchParams } from 'react-router';
 import {
   Play,
   Pause,
@@ -599,11 +599,28 @@ function CategoryView({
   lang: 'fr' | 'en';
   t: (typeof UI)['fr'];
 }) {
-  const [type, setType] = useState<MediaType | 'all'>('all');
-  const [search, setSearch] = useState('');
+  /* the type and search filters live in the URL (?type=&q=) so a filtered
+     view can be shared and bookmarked; defaults are left out of the URL so
+     the canonical link stays clean. replace keeps the back button useful —
+     these are view state, not pages. */
+  const [searchParams, setSearchParams] = useSearchParams();
+  const type = (searchParams.get('type') as MediaType | null) ?? 'all';
+  const search = searchParams.get('q') ?? '';
   const [active, setActive] = useState<MediaEntry | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+
+  const setFilter = (key: 'type' | 'q', value: string, default_: string) => {
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (value === '' || value === default_) next.delete(key);
+        else next.set(key, value);
+        return next;
+      },
+      { replace: true },
+    );
+  };
 
   const catMeta = CATEGORY_MAP[category];
   const CatIcon = catMeta.icon;
@@ -696,7 +713,7 @@ function CategoryView({
                   id="media-search"
                   type="text"
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => setFilter('q', e.target.value, '')}
                   placeholder={t['mediaPage.search'] || 'Rechercher...'}
                   className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/65 focus:border-gold-500/40 focus:ring-1 focus:ring-gold-500/10"
                 />
@@ -708,7 +725,7 @@ function CategoryView({
                   <button
                     key={f.value}
                     type="button"
-                    onClick={() => setType(f.value)}
+                    onClick={() => setFilter('type', f.value, 'all')}
                     aria-pressed={type === f.value}
                     className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                       type === f.value

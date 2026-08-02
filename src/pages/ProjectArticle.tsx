@@ -11,6 +11,7 @@ import {
   ExternalLink,
   Clock,
   ArrowRight,
+  Printer,
 } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NotFoundView } from '@/components/NotFoundView';
@@ -51,7 +52,7 @@ export default function ProjectArticle() {
   return (
     <main id="main-content" className="min-h-screen">
       <ReadingProgress />
-      <section className="relative overflow-hidden bg-pine-950">
+      <section className="relative overflow-hidden bg-pine-950 print:hidden">
         <div className="absolute inset-0 texture-net" />
         <div className="absolute -top-40 -right-40 h-[560px] w-[560px] rounded-full bg-pine-600/25 blur-[130px]" />
         <div className="absolute bottom-0 -left-40 h-[460px] w-[460px] rounded-full bg-gold-600/12 blur-[120px]" />
@@ -86,6 +87,14 @@ export default function ProjectArticle() {
                 <Briefcase size={12} />
                 {entry.role[lang]}
               </span>
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold text-pine-100/70 transition-colors hover:text-gold-300"
+              >
+                <Printer size={12} />
+                {t['article.print']}
+              </button>
             </div>
             <h1 className="mt-7 font-display text-[2.2rem] leading-[1.08] font-medium text-pine-100 sm:text-5xl lg:text-[3.4rem]">
               {entry.title[lang]}
@@ -95,8 +104,18 @@ export default function ProjectArticle() {
         </div>
       </section>
 
-      <section className="bg-pine-50 py-14 lg:py-20">
+      <section className="bg-pine-50 py-14 lg:py-20 print:bg-white print:py-0">
         <div className="mx-auto max-w-3xl px-5 lg:px-8">
+          {/* the dark hero is hidden when printing; the title, tag and period
+              are re-printed here in ink-friendly form */}
+          <div className="hidden print:block">
+            <h1 className="font-display text-[1.7rem] leading-snug font-semibold text-pine-900">
+              {entry.title[lang]}
+            </h1>
+            <p className="mt-3 text-[12.5px] text-pine-900/70">
+              {entry.tag[lang]} · {t['projetsPage.period']} : {entry.period[lang]} · {entry.location[lang]}
+            </p>
+          </div>
           <Reveal>
             <article className="space-y-10">
               <div>
@@ -152,7 +171,7 @@ export default function ProjectArticle() {
               )}
             </article>
 
-            <footer className="mt-12 border-t border-pine-900/10 pt-6">
+            <footer className="mt-12 border-t border-pine-900/10 pt-6 print:hidden">
               <Link
                 to={localePath(lang, '/projets')}
                 className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-700 transition-colors hover:text-gold-500"
@@ -162,12 +181,12 @@ export default function ProjectArticle() {
               </Link>
             </footer>
 
-            <div className="mt-6 border-t border-pine-900/10 pt-6">
+            <div className="mt-6 border-t border-pine-900/10 pt-6 print:hidden">
               <ShareButtons title={entry.title[lang]} url={absUrl(lang, `/projets/${entry.slug}`)} />
             </div>
 
             {others.length > 0 && (
-              <div className="mt-12 border-t border-pine-900/10 pt-8">
+              <div className="mt-12 border-t border-pine-900/10 pt-8 print:hidden">
                 <h2 className="font-display text-xl font-semibold text-pine-900">{t['article.readMore']}</h2>
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
                   {others.map((o) => (

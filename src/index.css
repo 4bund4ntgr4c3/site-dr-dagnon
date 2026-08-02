@@ -166,6 +166,12 @@
   main {
     background: #fff !important;
   }
+  /* Reveal keeps its content at inline opacity 0 until the observer fires —
+     a printout cannot wait for a scroll, so force everything visible. */
+  [style*="opacity: 0"] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* Dark theme — #171d1c page background with #202a28 elevated surfaces, both
