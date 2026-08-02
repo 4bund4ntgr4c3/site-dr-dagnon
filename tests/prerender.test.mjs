@@ -373,6 +373,36 @@ test('every page announces the RSS feed in its head', () => {
   });
 });
 
+test('the service worker exists, is versioned and precaches every route', () => {
+  const sw = fs.readFileSync(path.join(dist, 'sw.js'), 'utf-8');
+  assert.match(sw, /self\.addEventListener\('install'/, 'sw.js must handle install');
+  assert.match(sw, /self\.addEventListener\('activate'/, 'sw.js must handle activate');
+  assert.match(sw, /self\.addEventListener\('fetch'/, 'sw.js must handle fetch');
+  assert.match(sw, /const CACHE = 'dagnon-v'\s*\+ VERSION/, 'sw.js must use a versioned cache name');
+  assert.doesNotMatch(sw, /const VERSION = ''/, 'sw.js version must not be empty');
+  for (const lang of LANGS) {
+    for (const route of ROUTES) {
+      const urlPath = localePath(lang, route);
+      assert.ok(sw.includes(`"${urlPath}"`), `sw.js does not precache ${urlPath}`);
+    }
+  }
+  /* the precache must cover the app shell itself, not just the pages */
+  const hashedAsset = [...fs.readdirSync(path.join(dist, 'assets'))].find((f) => /^index-.+\.js$/.test(f));
+  assert.ok(hashedAsset, 'dist/assets must contain the hashed entry chunk');
+  assert.ok(sw.includes(`/assets/${hashedAsset}`), 'sw.js does not precache the entry chunk');
+});
+
+test('vercel.json lets service worker updates propagate', () => {
+  const config = JSON.parse(fs.readFileSync(path.resolve('vercel.json'), 'utf-8'));
+  const generalIdx = config.headers.findIndex((h) => h.source === '/(.*)');
+  const swIdx = config.headers.findIndex((h) => h.source === '/sw.js');
+  assert.ok(swIdx !== -1, 'no /sw.js header rule found');
+  assert.ok(swIdx > generalIdx, '/sw.js header rule must come after /(.*) to override it');
+  const cache = config.headers[swIdx].headers.find((h) => h.key === 'Cache-Control');
+  assert.ok(cache, '/sw.js must set Cache-Control explicitly');
+  assert.match(cache.value, /max-age=0/, 'a stale service worker would never update');
+});
+
 test('404.html is a real error page, not a copy of the home page', () => {
   const html = fs.readFileSync(path.join(dist, '404.html'), 'utf-8');
   assert.match(html, /<title>404 —/, '404.html should announce itself as a 404');

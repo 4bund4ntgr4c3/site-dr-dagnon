@@ -6,8 +6,8 @@ Portfolio of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, d
 
 ```bash
 npm run dev      # dev server on :3000
-npm run build    # typecheck, bundle, then prerender 100 pages + sitemap + 404 + send the newsletter digest on Vercel production
-npm test         # build, then 98 tests (node --test)
+npm run build    # typecheck, bundle, then prerender 100 pages + sitemap + 404 + service worker + send the newsletter digest on Vercel production
+npm test         # build, then 100 tests (node --test)
 npm run lint
 npm run images   # one-off: convert public/ photos to WebP (see below)
 npm run gen:og   # one-off: regenerate og-image.jpg
@@ -77,9 +77,17 @@ also explains how to remove that behaviour.
 HTML file per route per language, with its own title, canonical, hreflang and
 JSON-LD, all from `src/seo/meta.ts` — the same module `<Seo />` uses at
 runtime. Link unfurlers do not run JavaScript, so this is where it matters.
-The sitemap and `404.html` come from the same run. The script fails the build
-rather than skipping quietly, which an earlier Playwright-based version did on
-every deploy without anyone noticing.
+The sitemap, `404.html`, the RSS feed and the service worker come from the
+same run. The script fails the build rather than skipping quietly, which an
+earlier Playwright-based version did on every deploy without anyone noticing.
+
+**The site is a PWA.** `scripts/prerender.mjs` also writes `dist/sw.js`, which
+precaches every prerendered page, the versioned `assets/*` and the community
+photos, with a cache name hashed from that list — so the cache version changes
+exactly when the content does. Navigations are network-first (fresh HTML
+online, the precached copy or the home page offline), other GETs are
+cache-first. It is registered in `src/main.tsx` in production only, and
+`vercel.json` serves it with `max-age=0` so updates propagate.
 
 **Routes are listed explicitly in `vercel.json`** rather than relying on a
 catch-all rewrite, so a URL that does not exist gets a real 404 instead of a

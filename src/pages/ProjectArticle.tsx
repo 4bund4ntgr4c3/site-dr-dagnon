@@ -9,14 +9,18 @@ import {
   ListChecks,
   Target,
   ExternalLink,
+  Clock,
+  ArrowRight,
 } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NotFoundView } from '@/components/NotFoundView';
 import { ShareButtons } from '@/components/ShareButtons';
+import { ReadingProgress } from '@/components/ReadingProgress';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
 import { absUrl } from '@/seo/meta';
+import { countWords, readingMinutes } from '@/lib/reading';
 import { PROJECTS } from '@/data/projects';
 import { PROJECT_DETAILS } from '@/data/project-details';
 
@@ -31,8 +35,22 @@ export default function ProjectArticle() {
     return <NotFoundView />;
   }
 
+  const minutes = readingMinutes(
+    countWords(
+      details.context[lang],
+      ...details.approach[lang],
+      ...details.results.map((r) => r.label[lang]),
+      ...details.evidence.map((ev) => ev.label[lang]),
+    ),
+  );
+  /* the two most recent case studies other than this one */
+  const others = PROJECTS.filter((p) => p.slug !== entry.slug)
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 2);
+
   return (
     <main id="main-content" className="min-h-screen">
+      <ReadingProgress />
       <section className="relative overflow-hidden bg-pine-950">
         <div className="absolute inset-0 texture-net" />
         <div className="absolute -top-40 -right-40 h-[560px] w-[560px] rounded-full bg-pine-600/25 blur-[130px]" />
@@ -55,6 +73,10 @@ export default function ProjectArticle() {
               <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/60">
                 <CalendarDays size={12} />
                 {t['projetsPage.period']} : {entry.period[lang]}
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/60">
+                <Clock size={12} />
+                {t['article.readingTime']} · {minutes} min
               </span>
               <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/60">
                 <MapPin size={12} />
@@ -143,6 +165,32 @@ export default function ProjectArticle() {
             <div className="mt-6 border-t border-pine-900/10 pt-6">
               <ShareButtons title={entry.title[lang]} url={absUrl(lang, `/projets/${entry.slug}`)} />
             </div>
+
+            {others.length > 0 && (
+              <div className="mt-12 border-t border-pine-900/10 pt-8">
+                <h2 className="font-display text-xl font-semibold text-pine-900">{t['article.readMore']}</h2>
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                  {others.map((o) => (
+                    <Link
+                      key={o.slug}
+                      to={localePath(lang, `/projets/${o.slug}`)}
+                      className="group flex flex-col rounded-2xl border border-pine-900/10 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:shadow-card"
+                    >
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/55">
+                        {o.tag[lang]}
+                      </span>
+                      <h3 className="mt-2 font-display text-[1.05rem] font-semibold leading-snug text-pine-900 transition-colors group-hover:text-gold-700">
+                        {o.title[lang]}
+                      </h3>
+                      <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-700">
+                        {t['projetsPage.read']}
+                        <ArrowRight size={13} />
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </Reveal>
         </div>
       </section>

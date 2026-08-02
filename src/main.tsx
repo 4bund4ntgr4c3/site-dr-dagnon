@@ -55,3 +55,14 @@ createRoot(document.getElementById('root')!).render(
     </BrowserRouter>
   </StrictMode>,
 )
+
+/* The service worker ships only from dist/ (scripts/prerender.mjs writes it
+   at build time), so there is nothing to register in dev. Prod-only keeps a
+   stale dev worker from caching old chunks or masking the live build. */
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {
+      /* registration failure is non-fatal — the site works without it */
+    });
+  });
+}
