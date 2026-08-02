@@ -35,6 +35,10 @@ const SUBS_KEY = 'newsletter:emails';
 const PUSH_KEY = 'push:subs';
 const PUSH_PREFIX = 'push:sub:';
 const LANG_KEY = 'newsletter:lang:';
+const PREFS_KEY = 'newsletter:prefs:';
+/* month (YYYY-MM) of the last digest that included monthly subscribers —
+   monthly recipients get the digest once per calendar month at most */
+const MONTHLY_KEY = 'newsletter:last-monthly';
 
 const C = { pine950: '#0c2e2a', pine900: '#133e38', gold500: '#c9a24b', gold400: '#d4b36a', ivory: '#faf8f4', white: '#ffffff', ink: '#3a3a3a', muted: '#6b7280' };
 const ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
@@ -76,18 +80,23 @@ const L = {
 const TOKEN_SECRET = () => process.env.VERIFY_SECRET || process.env.RESEND_API_KEY || '';
 const b64url = (b) => Buffer.from(b).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
-function issueToken(email) {
+function issueToken(email, purpose = 'nl-unsub') {
   const secret = TOKEN_SECRET();
   if (!secret) return null;
   const hmac = (data) => b64url(crypto.createHmac('sha256', secret).update(data).digest());
   const exp = Date.now() + 90 * 24 * 60 * 60 * 1000;
-  const payload = b64url(Buffer.from(JSON.stringify({ p: 'nl-unsub', e: email, x: exp, h: hmac(`nl-unsub|${email}|${exp}`) })));
+  const payload = b64url(Buffer.from(JSON.stringify({ p: purpose, e: email, x: exp, h: hmac(`${purpose}|${email}|${exp}`) })));
   return `${payload}.${hmac(payload)}`;
 }
 
 function unsubHref(email) {
   const token = issueToken(email) || '';
   return `${SITE_URL}/api/newsletter-unsubscribe?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+}
+
+function prefsHref(email) {
+  const token = issueToken(email, 'nl-prefs') || '';
+  return `${SITE_URL}/newsletter/preferences?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
 }
 
 /* ── pure logic (unit-tested in tests/newsletter-send.test.mjs) ─── */
@@ -194,8 +203,8 @@ function wrap(body) {
 function hdr() {
   return `<tr><td style="background:${C.pine950};padding:28px 32px"><p style="margin:0;font-size:13px;font-weight:600;letter-spacing:.12em;color:${C.gold400};text-transform:uppercase">Dr. Seynudé Dagnon</p><h1 style="margin:6px 0 0;font-size:20px;font-weight:600;color:${C.white};line-height:1.3">Les dernières actualités / Latest news</h1></td></tr>`;
 }
-function ftr(unsubHref) {
-  return `<tr><td style="background:${C.pine900};padding:20px 32px"><p style="margin:0;font-size:11px;color:rgba(255,255,255,.5);text-align:center">Public Health &amp; Malaria Program Leader &middot; <a href="${SITE_URL}" style="color:${C.gold400};text-decoration:none">Website</a> &middot; <a href="${unsubHref}" style="color:${C.gold400};text-decoration:none">Se désinscrire / Unsubscribe</a></p></td></tr>`;
+function ftr(unsubHref, prefsHref) {
+  return `<tr><td style="background:${C.pine900};padding:20px 32px"><p style="margin:0;font-size:11px;color:rgba(255,255,255,.5);text-align:center">Public Health &amp; Malaria Program Leader &middot; <a href="${SITE_URL}" style="color:${C.gold400};text-decoration:none">Website</a> &middot; <a href="${prefsHref}" style="color:${C.gold400};text-decoration:none">Préférences / Preferences</a> &middot; <a href="${unsubHref}" style="color:${C.gold400};text-decoration:none">Se désinscrire / Unsubscribe</a></p></td></tr>`;
 }
 
 /* ── KV ─────────────────────────────────────────────────────────── */
@@ -259,27 +268,77 @@ async function loadSubscriberLangs(subscribers) {
   return langs;
 }
 
+/* The frequency each subscriber chose in /newsletter/preferences
+   (`newsletter:prefs:<email>`, written by api/newsletter-prefs.ts). Missing
+   or corrupt entries default to weekly. */
+async function loadSubscriberPrefs(subscribers) {
+  const prefs = new Map();
+  if (subscribers.length === 0) return prefs;
+  const results = await kvPipeline(subscribers.map((e) => ['GET', `${PREFS_KEY}${e}`]));
+  if (!results) return prefs;
+  subscribers.forEach((e, i) => {
+    const raw = results[i]?.result;
+    if (typeof raw !== 'string') return;
+    try {
+      const parsed = JSON.parse(raw);
+      if (parsed?.frequency === 'weekly' || parsed?.frequency === 'monthly') prefs.set(e, parsed.frequency);
+    } catch {
+      /* corrupt entry — treat as weekly */
+    }
+  });
+  return prefs;
+}
+
+const currentMonth = () => new Date().toISOString().slice(0, 7);
+
+/** true when a digest may include monthly subscribers: the month recorded in
+    KV differs from the current one (or nothing was ever recorded) */
+async function monthlyDueNow() {
+  const results = await kvPipeline([['GET', MONTHLY_KEY]]);
+  const last = typeof results?.[0]?.result === 'string' ? results[0].result : '';
+  return currentMonth() !== last;
+}
+
+/** Splits subscribers into who gets this digest: weekly subscribers always,
+ *  monthly ones only when a monthly digest is due. Returns the recipients
+ *  (with their language) and whether any monthly subscriber was included —
+ *  the caller records the month in KV only then. Pure, unit-tested. */
+export function planRecipients(subscribers, langs, prefs, monthlyDue) {
+  const recipients = [];
+  let includedMonthly = false;
+  for (const email of subscribers) {
+    const frequency = prefs.get(email);
+    if (frequency === 'monthly' && !monthlyDue) continue;
+    if (frequency === 'monthly') includedMonthly = true;
+    recipients.push({ email, lang: langs.get(email) ?? 'both' });
+  }
+  return { recipients, includedMonthly };
+}
+
 /* ── sending ────────────────────────────────────────────────────── */
 
 async function sendDigest({ send, owner, apiKey }) {
   const subscribers = await loadSubscribers();
   const langs = await loadSubscriberLangs(subscribers);
+  const prefs = await loadSubscriberPrefs(subscribers);
+  const { recipients, includedMonthly } = planRecipients(subscribers, langs, prefs, await monthlyDueNow());
   /* per-recipient sends so each copy carries its own one-click unsubscribe
-     link (bcc batches used to share a single mailto:) — the owner gets a
-     copy too, they may not be in the subscriber set */
-  const recipients = [
+     and preferences links (bcc batches used to share a single mailto:) —
+     the owner gets a copy too, they may not be in the subscriber set */
+  const allRecipients = [
     { email: owner, lang: 'both' },
-    ...subscribers.map((email) => ({ email, lang: langs.get(email) ?? 'both' })),
+    ...recipients,
   ];
   const from = process.env.NEWSLETTER_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
-  for (const [i, r] of recipients.entries()) {
+  for (const [i, r] of allRecipients.entries()) {
     const href = unsubHref(r.email);
+    const prefHref = prefsHref(r.email);
     const body = {
       from,
       to: [r.email],
       subject: subjectLine(send, r.lang),
-      html: wrap(hdr() + digestHtml(send, r.lang) + ftr(href)),
-      text: `${digestText(send, r.lang)}\n\n—\nUnsubscribe: ${href}`,
+      html: wrap(hdr() + digestHtml(send, r.lang) + ftr(href, prefHref)),
+      text: `${digestText(send, r.lang)}\n\n—\nUnsubscribe: ${href}\nPreferences: ${prefHref}`,
     };
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -288,11 +347,17 @@ async function sendDigest({ send, owner, apiKey }) {
     });
     if (!response.ok) {
       const err = await response.text();
-      throw new Error(`Resend recipient ${i + 1}/${recipients.length} failed: ${err}`);
+      throw new Error(`Resend recipient ${i + 1}/${allRecipients.length} failed: ${err}`);
     }
-    console.log(`[newsletter] sent to ${i + 1}/${recipients.length}`);
+    console.log(`[newsletter] sent to ${i + 1}/${allRecipients.length}`);
   }
-  return recipients.length;
+  /* monthly subscribers are a month window, not a per-send one: record the
+     month only when the digest actually included them */
+  if (includedMonthly) {
+    await kvPipeline([['SET', MONTHLY_KEY, currentMonth()]]);
+    console.log(`[newsletter] monthly digest month recorded: ${currentMonth()}`);
+  }
+  return allRecipients.length;
 }
 
 /* ── web push ─────────────────────────────────────────────────────

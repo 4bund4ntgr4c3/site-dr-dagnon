@@ -1,6 +1,8 @@
 import { lazy, StrictMode, type ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import './index.css'
 import App, { type AppPages } from './App.tsx'
 import { registerPreload, initGlobalLinkPreload } from './lib/preload.ts'
@@ -60,6 +62,10 @@ const pages: AppPages = {
   Invite: page(() => import('./pages/Invite'), (p) => p === '/inviter'),
   NewsletterArchive: page(() => import('./pages/NewsletterArchive'), (p) => p === '/newsletter'),
   Impact: page(() => import('./pages/Impact'), (p) => p === '/impact'),
+  Legal: page(() => import('./pages/Legal'), (p) => p === '/legal'),
+  Bibliography: page(() => import('./pages/Bibliography'), (p) => p === '/bibliography'),
+  Admin: page(() => import('./pages/Admin'), (p) => p === '/admin'),
+  NewsletterPrefs: page(() => import('./pages/NewsletterPrefs'), (p) => p === '/newsletter/preferences'),
 }
 
 createRoot(document.getElementById('root')!).render(
@@ -67,6 +73,8 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <App pages={pages} />
     </BrowserRouter>
+    <Analytics />
+    <SpeedInsights />
   </StrictMode>,
 )
 

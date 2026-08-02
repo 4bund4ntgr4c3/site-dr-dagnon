@@ -73,3 +73,30 @@ test('apa omits the url when there is none', () => {
   const { url, ...noUrl } = paper;
   assert.ok(!citationApa(noUrl).includes('https://'));
 });
+
+test('bibtex includes volume, number, pages and doi when present', () => {
+  const scholarly = { ...paper, doi: '10.1000/xyz.2026.1', volume: '12', issue: '3', pages: '45-67' };
+  const out = citationBibtex(scholarly);
+  assert.match(out, /volume = \{12\},/);
+  assert.match(out, /number = \{3\},/);
+  assert.match(out, /pages = \{45-67\},/);
+  assert.match(out, /doi = \{10\.1000\/xyz\.2026\.1\},/);
+});
+
+test('ris lists VL, IS, SP and DO after PY when present', () => {
+  const scholarly = { ...paper, doi: '10.1000/xyz.2026.1', volume: '12', issue: '3', pages: '45-67' };
+  const lines = citationRis(scholarly).split('\n');
+  assert.ok(lines.includes('VL  - 12'));
+  assert.ok(lines.includes('IS  - 3'));
+  assert.ok(lines.includes('SP  - 45-67'));
+  assert.ok(lines.includes('DO  - 10.1000/xyz.2026.1'));
+  assert.equal(lines.indexOf('PY  - 2026') + 1, lines.indexOf('VL  - 12'));
+});
+
+test('apa prefers the doi over the bare url', () => {
+  const scholarly = { ...paper, doi: '10.1000/xyz.2026.1' };
+  assert.equal(
+    citationApa(scholarly),
+    'Seynude Dagnon. (2026). Eliminating Malaria in Benin: A Field Report. Journal of Tropical Medicine. https://doi.org/10.1000/xyz.2026.1',
+  );
+});

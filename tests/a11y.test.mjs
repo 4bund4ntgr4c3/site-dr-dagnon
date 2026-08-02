@@ -40,6 +40,8 @@ const ROUTES = [
   '/inviter',
   '/newsletter',
   '/impact',
+  '/legal',
+  '/bibliography',
 ];
 
 /* mime map for the few types dist/ contains */

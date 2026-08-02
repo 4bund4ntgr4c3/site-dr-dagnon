@@ -122,6 +122,18 @@ export function Footer() {
             >
               {t['footer.linkImpact']}
             </Link>
+            <Link
+              to={localePath(lang, '/legal')}
+              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+            >
+              {t['footer.linkLegal']}
+            </Link>
+            <Link
+              to={localePath(lang, '/bibliography')}
+              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+            >
+              {t['footer.linkBibliography']}
+            </Link>
           </nav>
 
           <p className="text-[12px] text-pine-100/50">

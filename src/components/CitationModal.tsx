@@ -5,6 +5,7 @@ import { UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { citationApa, citationBibtex, citationRis, type CitationSource } from '@/lib/citations';
 import type { PubEntry } from '@/data/publications';
+import type { BibEntry } from '@/data/bibliography';
 
 const FORMATS = ['bibtex', 'ris', 'apa'] as const;
 type Format = (typeof FORMATS)[number];
@@ -28,6 +29,10 @@ export function CitationModal({ p, onClose }: { p: PubEntry; onClose: () => void
     return () => document.removeEventListener('keydown', onKey);
   }, [onClose]);
 
+  /* bibliography entries are PubEntries plus scholarly metadata; carry the
+     extra fields through so BibTeX/RIS/APA include the DOI when present */
+  const bib = (p as Partial<BibEntry>).doi || (p as Partial<BibEntry>).volume ? (p as BibEntry) : null;
+
   const src: CitationSource = {
     id: p.id,
     title: p.title[lang],
@@ -35,6 +40,10 @@ export function CitationModal({ p, onClose }: { p: PubEntry; onClose: () => void
     journal: p.journal[lang],
     year: p.year,
     url: p.url,
+    doi: bib?.doi,
+    volume: bib?.volume,
+    issue: bib?.issue,
+    pages: bib?.pages,
     type: p.type === 'blog' ? 'blog' : 'paper',
   };
 

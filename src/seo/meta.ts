@@ -241,6 +241,62 @@ export const IMPACT_SEO: Record<Lang, { title: string; description: string; keyw
   },
 };
 
+export const LEGAL_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Mentions légales & RGPD — Dr. Dagnon',
+    description: 'Mentions légales, hébergement, données personnelles (RGPD), cookies et droits des visiteurs du site du Dr. Seynudé Dagnon.',
+    keywords: 'mentions légales Dr Dagnon, RGPD site santé publique, données personnelles, cookies, politique confidentialité',
+  },
+  en: {
+    title: 'Legal notice & GDPR — Seynudé Dagnon',
+    description: 'Legal notice, hosting, personal data (GDPR), cookies and visitor rights on Dr. Seynudé Dagnon\'s website.',
+    keywords: 'Dr Dagnon legal notice, GDPR public health website, personal data, cookies, privacy policy',
+  },
+};
+
+export const BIBLIOGRAPHY_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Bibliographie scientifique — Dr. Dagnon',
+    description: 'Publications de recherche du Dr. Seynudé Dagnon indexées par DOI : paludisme, moustiquaires imprégnées, pulvérisation intradomiciliaire.',
+    keywords: 'bibliographie Dr Dagnon, publications paludisme DOI, chimioprévention, MILDA, IRS Bénin, entomologie, citations BibTeX',
+  },
+  en: {
+    title: 'Scientific bibliography — Seynudé Dagnon',
+    description: 'DOI-indexed research publications by Dr. Seynudé Dagnon: malaria, insecticide-treated nets, indoor residual spraying, insecticide resistance.',
+    keywords: 'Dr Dagnon bibliography, malaria publications DOI, chemoprevention, LLIN, IRS Benin, entomology, BibTeX citations',
+  },
+};
+
+/** The admin dashboard is a real page (it must never look like a 404) but is
+    deliberately noindex and never prerendered or sitemapped. */
+export const ADMIN_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Administration — Dr. Seynudé Dagnon',
+    description: 'Tableau de bord privé du site du Dr. Seynudé Dagnon.',
+    keywords: '',
+  },
+  en: {
+    title: 'Administration — Seynudé Dagnon',
+    description: 'Private dashboard of Dr. Seynudé Dagnon\'s website.',
+    keywords: '',
+  },
+};
+
+/** Newsletter preferences center — same status as /admin: a real page that
+    must not look like a 404, noindex, never prerendered. */
+export const PREFERENCES_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Préférences de newsletter — Dr. Seynudé Dagnon',
+    description: 'Gérez la fréquence de votre newsletter.',
+    keywords: '',
+  },
+  en: {
+    title: 'Newsletter preferences — Seynudé Dagnon',
+    description: 'Manage your newsletter frequency.',
+    keywords: '',
+  },
+};
+
 export const TRIBUNES_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Tribunes & Analyses — Dr. Dagnon',
@@ -442,6 +498,10 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
     items.push({ name: 'Newsletter', url: absUrl(lang, '/newsletter') });
   } else if (path === '/impact') {
     items.push({ name: lang === 'fr' ? 'Impact & résultats' : 'Impact & results', url: absUrl(lang, '/impact') });
+  } else if (path === '/legal') {
+    items.push({ name: lang === 'fr' ? 'Mentions légales' : 'Legal notice', url: absUrl(lang, '/legal') });
+  } else if (path === '/bibliography') {
+    items.push({ name: lang === 'fr' ? 'Bibliographie' : 'Bibliography', url: absUrl(lang, '/bibliography') });
   }
   return {
     '@context': 'https://schema.org',
@@ -653,6 +713,8 @@ export interface PageMeta {
   url: string;
   /** true when the path matches no known route — the page must not be indexed */
   notFound: boolean;
+  /** true for private pages that exist but must not be indexed (e.g. /admin) */
+  noindex?: boolean;
   /** Real per-language URLs — this is what makes the hreflang tags useful. */
   alternates: { hreflang: string; href: string }[];
   /** Per-page share image: the actual photo on photo pages, the generic
@@ -690,6 +752,11 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isInvite = route === '/inviter';
   const isNewsletter = route === '/newsletter';
   const isImpact = route === '/impact';
+  const isLegal = route === '/legal';
+  const isBibliography = route === '/bibliography';
+  const isAdmin = route === '/admin';
+  const isPreferences = route === '/newsletter/preferences';
+  const isNoindex = isAdmin || isPreferences;
   const isTribunes = route === '/tribunes';
   const isTribuneArticle = route.startsWith('/tribunes/') && !isTribunes;
   const tribuneSlug = isTribuneArticle ? route.split('/tribunes/')[1]?.split('/')[0] || null : null;
@@ -700,7 +767,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const project = projectSlug ? PROJECTS.find((p) => p.slug === projectSlug) || null : null;
   const photoId = route.split('/media/community/')[1] || null;
   const photo = photoId ? MEDIA_ITEMS.find((m) => m.id === photoId && m.category === 'community') || null : null;
-  const notFound = !PRERENDER_ROUTES.includes(route);
+  const notFound = !PRERENDER_ROUTES.includes(route) && !isNoindex;
 
   const catName = mediaCategory ? CAT_NAMES[mediaCategory] : null;
   const catDesc = mediaCategory ? CAT_DESCRIPTIONS[mediaCategory] : null;
@@ -760,7 +827,15 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                   ? NEWSLETTER_SEO[lang]
                   : isImpact
                     ? IMPACT_SEO[lang]
-                    : SEO[lang];
+                    : isLegal
+                      ? LEGAL_SEO[lang]
+                      : isBibliography
+                        ? BIBLIOGRAPHY_SEO[lang]
+                        : isAdmin
+                          ? ADMIN_SEO[lang]
+                          : isPreferences
+                            ? PREFERENCES_SEO[lang]
+                            : SEO[lang];
 
   const url = absUrl(lang, route);
 
@@ -784,6 +859,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
     keywords: data.keywords,
     url,
     notFound,
+    noindex: isNoindex,
     alternates: [
       ...SUPPORTED.map((l) => ({ hreflang: l, href: absUrl(l, route) })),
       { hreflang: 'x-default', href: absUrl(DEFAULT_LANG, route) },
@@ -811,7 +887,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
               ? projectJsonLd(lang, project, url)
               : photo
                 ? imageObjectJsonLd(lang, photo, url)
-                : isMedia || isPub || isAgenda || isTribunes || isProjects || isPresse || isInvite || isNewsletter || isImpact
+                : isMedia || isPub || isAgenda || isTribunes || isProjects || isPresse || isInvite || isNewsletter || isImpact || isLegal || isBibliography
                   ? collectionPageJsonLd(lang, data.title, data.description, url)
                   : null,
     },
@@ -842,6 +918,8 @@ export const PRERENDER_ROUTES = [
   '/inviter',
   '/newsletter',
   '/impact',
+  '/legal',
+  '/bibliography',
 ];
 
 export const PRERENDER_LANGS: Lang[] = SUPPORTED;
@@ -860,6 +938,8 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/inviter': { priority: '0.5', changefreq: 'monthly' },
   '/newsletter': { priority: '0.5', changefreq: 'weekly' },
   '/impact': { priority: '0.7', changefreq: 'monthly' },
+  '/legal': { priority: '0.3', changefreq: 'yearly' },
+  '/bibliography': { priority: '0.7', changefreq: 'weekly' },
   ...Object.fromEntries(
     TRIBUNES.map((t) => [`/tribunes/${t.slug}`, { priority: '0.7', changefreq: 'monthly' }]),
   ),

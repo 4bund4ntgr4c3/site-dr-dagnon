@@ -33,6 +33,7 @@ async function removeSubscriber(email: string): Promise<boolean> {
         ['SREM', 'newsletter:emails', email],
         ['DEL', `newsletter:pending:${email}`],
         ['DEL', `newsletter:lang:${email}`],
+        ['DEL', `newsletter:prefs:${email}`],
       ]),
     });
     if (!response.ok) return false;

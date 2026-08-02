@@ -40,7 +40,7 @@ function compile(label, files, rootDir, outDir) {
   fs.writeFileSync(path.join(outDir, 'package.json'), '{"type":"module"}\n');
 }
 
-compile('api/', ['api/contact.ts', 'api/verify-phone.ts', 'api/newsletter.ts', 'api/newsletter-confirm.ts', 'api/newsletter-unsubscribe.ts', 'api/push-subscribe.ts', 'api/_origin.ts', 'api/_alert.ts'], 'api', path.join(tmp, 'api'));
+compile('api/', ['api/contact.ts', 'api/verify-phone.ts', 'api/newsletter.ts', 'api/newsletter-confirm.ts', 'api/newsletter-unsubscribe.ts', 'api/newsletter-prefs.ts', 'api/push-subscribe.ts', 'api/admin.ts', 'api/_origin.ts', 'api/_alert.ts'], 'api', path.join(tmp, 'api'));
 compile('src/i18n/routing.ts', ['src/i18n/routing.ts'], 'src/i18n', path.join(tmp, 'i18n'));
 compile('src/lib/citations.ts', ['src/lib/citations.ts'], 'src/lib', path.join(tmp, 'citations'));
 compile('src/lib/calendar-links.ts', ['src/lib/calendar-links.ts'], 'src/lib', path.join(tmp, 'calendar-links'));

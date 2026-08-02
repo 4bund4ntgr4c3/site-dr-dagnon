@@ -9,6 +9,11 @@ export interface CitationSource {
   journal: string;
   year: number;
   url?: string;
+  /** Digital Object Identifier (without the https://doi.org/ prefix). */
+  doi?: string;
+  volume?: string;
+  issue?: string;
+  pages?: string;
   type: 'paper' | 'blog' | 'report' | 'book';
 }
 
@@ -25,12 +30,16 @@ const yearOf = (p: CitationSource) => String(p.year);
 
 export function citationBibtex(p: CitationSource): string {
   const key = p.id.replace(/[^\w:-]/g, '');
+  const volume = p.volume ? `  volume = {${bibtexEscape(p.volume)}},\n` : '';
+  const issue = p.issue ? `  number = {${bibtexEscape(p.issue)}},\n` : '';
+  const pages = p.pages ? `  pages = {${bibtexEscape(p.pages)}},\n` : '';
+  const doi = p.doi ? `  doi = {${bibtexEscape(p.doi)}},\n` : '';
   const url = p.url ? `  url = {${p.url}},\n` : '';
   return `@${p.type === 'blog' ? 'misc' : 'article'}{${key},
   author = {${bibtexEscape(p.authors)}},
   title = {${bibtexEscape(p.title)}},
   journal = {${bibtexEscape(p.journal)}},
-  year = {${yearOf(p)}},${url ? `\n${url.trimEnd()}` : ''}
+  year = {${yearOf(p)}},${volume ? `\n${volume.trimEnd()}` : ''}${issue ? `\n${issue.trimEnd()}` : ''}${pages ? `\n${pages.trimEnd()}` : ''}${doi ? `\n${doi.trimEnd()}` : ''}${url ? `\n${url.trimEnd()}` : ''}
 }
 `;
 }
@@ -43,6 +52,10 @@ export function citationRis(p: CitationSource): string {
     `AU  - ${p.authors}`,
     `JO  - ${p.journal}`,
     `PY  - ${yearOf(p)}`,
+    ...(p.volume ? [`VL  - ${p.volume}`] : []),
+    ...(p.issue ? [`IS  - ${p.issue}`] : []),
+    ...(p.pages ? [`SP  - ${p.pages}`] : []),
+    ...(p.doi ? [`DO  - ${p.doi}`] : []),
     ...(p.url ? [`UR  - ${p.url}`] : []),
     `ER  - `,
   ].join('\n');
@@ -50,6 +63,8 @@ export function citationRis(p: CitationSource): string {
 
 export function citationApa(p: CitationSource): string {
   /* APA 7: Author. (Year). Title. Journal. URL — the author string is used
-     as written, since the data does not carry name parts to invert */
-  return `${p.authors}. (${yearOf(p)}). ${p.title}. ${p.journal}.${p.url ? ` ${p.url}` : ''}`;
+     as written, since the data does not carry name parts to invert. A DOI
+     always wins over the bare URL, per APA 7 §9.34. */
+  const locator = p.doi ? ` https://doi.org/${p.doi}` : p.url ? ` ${p.url}` : '';
+  return `${p.authors}. (${yearOf(p)}). ${p.title}. ${p.journal}.${locator}`;
 }

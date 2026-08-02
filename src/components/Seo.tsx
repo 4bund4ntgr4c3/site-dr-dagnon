@@ -77,7 +77,7 @@ export function Seo() {
        the server already answered 404. */
     upsertMeta(
       'meta[name="robots"]',
-      meta.notFound
+      meta.notFound || meta.noindex
         ? 'noindex, follow'
         : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
     );

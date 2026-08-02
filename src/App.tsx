@@ -35,6 +35,11 @@ export interface AppPages {
   Invite: ComponentType
   NewsletterArchive: ComponentType
   Impact: ComponentType
+  Legal: ComponentType
+  Bibliography: ComponentType
+  /** client-only page (never prerendered) — absent from the server's pages */
+  Admin?: ComponentType
+  NewsletterPrefs?: ComponentType
 }
 
 function Loading() {
@@ -80,6 +85,10 @@ const routesFor = (Pages: AppPages) => [
   <Route key="inviter" path="inviter" element={<Pages.Invite />} />,
   <Route key="newsletter" path="newsletter" element={<Pages.NewsletterArchive />} />,
   <Route key="impact" path="impact" element={<Pages.Impact />} />,
+  <Route key="legal" path="legal" element={<Pages.Legal />} />,
+  <Route key="bibliography" path="bibliography" element={<Pages.Bibliography />} />,
+  ...(Pages.Admin ? [<Route key="admin" path="admin" element={<Pages.Admin />} />] : []),
+  ...(Pages.NewsletterPrefs ? [<Route key="newsletter-prefs" path="newsletter/preferences" element={<Pages.NewsletterPrefs />} />] : []),
 ]
 
 export default function App({ pages }: { pages: AppPages }) {
