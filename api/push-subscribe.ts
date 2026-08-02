@@ -27,18 +27,26 @@ const hashOf = (endpoint: string) => crypto.createHash('sha256').update(endpoint
 
 interface PushSubscription { endpoint: string; keys: { p256dh: string; auth: string } }
 
+/* generous but bounded — browser push endpoints and keys never grow past
+   these, and caps keep a single subscription from bloating the store */
+const MAX_ENDPOINT_LEN = 2048;
+const MAX_KEY_LEN = 512;
+
 function validSubscription(s: unknown): s is PushSubscription {
   if (!s || typeof s !== 'object') return false;
   const sub = s as Record<string, unknown>;
   const keys = sub.keys as Record<string, unknown> | undefined;
   return (
     typeof sub.endpoint === 'string' &&
+    sub.endpoint.length <= MAX_ENDPOINT_LEN &&
     /^https:\/\/[^\s]+$/.test(sub.endpoint) &&
     !!keys &&
     typeof keys.p256dh === 'string' &&
     keys.p256dh.length > 0 &&
+    keys.p256dh.length <= MAX_KEY_LEN &&
     typeof keys.auth === 'string' &&
-    keys.auth.length > 0
+    keys.auth.length > 0 &&
+    keys.auth.length <= MAX_KEY_LEN
   );
 }
 

@@ -41,7 +41,11 @@ const PHONE = process.env.CONTACT_PHONE;
    keyed by a server-only secret, so it can be validated anywhere
    and reveals nothing about the code itself.                       */
 
-const SECRET = process.env.VERIFY_SECRET || process.env.RESEND_API_KEY || '';
+/* Dedicated secret mandatory in production — see the identical guard in
+   _tokens.ts. The Resend fallback exists for local dev and previews only. */
+const SECRET =
+  process.env.VERIFY_SECRET ||
+  (process.env.VERCEL_ENV === 'production' ? '' : process.env.RESEND_API_KEY || '');
 const CODE_TTL_MS = 5 * 60 * 1000;
 /* 31^6 ≈ 8.9e8 combinations, ambiguous glyphs (0/O/1/I/L) removed. */
 const CODE_ALPHABET = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';

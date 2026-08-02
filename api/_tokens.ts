@@ -21,7 +21,14 @@ export const TOKEN_TTL_MS: Record<TokenPurpose, number> = {
   'nl-prefs': 90 * 24 * 60 * 60 * 1000,
 };
 
-const SECRET = process.env.VERIFY_SECRET || process.env.RESEND_API_KEY || '';
+/* A dedicated secret is mandatory in production: falling back to the Resend
+   key would let anyone who ever leaks it (logs, webhooks, a compromised
+   email provider) sign confirmation/unsubscribe/preferences links and phone
+   codes. The fallback stays for local development and preview deployments,
+   where a missing VERIFY_SECRET must not block the build. */
+const SECRET =
+  process.env.VERIFY_SECRET ||
+  (process.env.VERCEL_ENV === 'production' ? '' : process.env.RESEND_API_KEY || '');
 
 const b64url = (b: Buffer) => b.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 const hmac = (data: string) => b64url(crypto.createHmac('sha256', SECRET).update(data).digest());

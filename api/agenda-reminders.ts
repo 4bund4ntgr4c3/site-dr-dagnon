@@ -2,6 +2,7 @@ import { AGENDA_ITEMS, type AgendaEntry } from '../src/data/agenda.js';
 import { daysUntil, gcalUrl, outlookUrl } from '../src/lib/calendar-links.js';
 import { issueToken } from './_tokens.js';
 import { alertOwner } from './_alert.js';
+import crypto from 'node:crypto';
 import webPush from 'web-push';
 
 /* Weekly cron endpoint: reminds newsletter subscribers of upcoming public
@@ -251,11 +252,18 @@ export async function run({ items = AGENDA_ITEMS, from = new Date(), owner, apiK
 interface Req { method: string; headers: Record<string, string | string[] | undefined> }
 interface Res { status(c: number): Res; json(d: unknown): void }
 
+function safeEqual(a: string, b: string): boolean {
+  const ab = Buffer.from(a);
+  const bb = Buffer.from(b);
+  if (ab.length !== bb.length) return false;
+  return crypto.timingSafeEqual(ab, bb);
+}
+
 export default async function handler(req: Req, res: Res) {
   if (req.method !== 'GET') { res.status(405).json({ error: 'Method not allowed' }); return; }
   const secret = process.env.CRON_SECRET;
   const auth = (req.headers['authorization'] || '').toString();
-  if (!secret || auth !== `Bearer ${secret}`) {
+  if (!secret || !safeEqual(auth, `Bearer ${secret}`)) {
     res.status(401).json({ error: 'Unauthorized' });
     return;
   }

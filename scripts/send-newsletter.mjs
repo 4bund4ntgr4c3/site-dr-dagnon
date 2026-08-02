@@ -77,7 +77,9 @@ const L = {
    so each recipient of the digest gets a link that only unsubscribes
    them, valid for 90 days. */
 
-const TOKEN_SECRET = () => process.env.VERIFY_SECRET || process.env.RESEND_API_KEY || '';
+const TOKEN_SECRET = () =>
+  process.env.VERIFY_SECRET ||
+  (process.env.VERCEL_ENV === 'production' ? '' : process.env.RESEND_API_KEY || '');
 const b64url = (b) => Buffer.from(b).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
 function issueToken(email, purpose = 'nl-unsub') {

@@ -49,6 +49,11 @@ const validPhone = (s: string) => {
 
 const WINDOW_MS = 60_000;
 const MAX_HITS = 5;
+/* the auto-reply goes to the sender's address, so per-email limiting stops
+   someone rotating IPs from using the form to mail-bomb a victim (the IP
+   limit above is per instance, the email limit below is per address) */
+const EMAIL_WINDOW_MS = 3_600_000;
+const MAX_EMAIL_HITS = 3;
 const ALLOWED_TYPES = ['general', 'speaking', 'interview', 'partnership', 'press'];
 
 interface Req { method: string; headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string }; body?: { name?: string; email?: string; phone?: string; subject?: string; message?: string; website?: string; type?: string; typeLabel?: string } }
@@ -84,6 +89,9 @@ export default async function handler(req: Req, res: Res) {
     if (!cleanName || !cleanEmail || !cleanPhone || !cleanMessage) { res.status(400).json({ error: 'Missing required fields' }); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) { res.status(400).json({ error: 'Invalid email' }); return; }
     if (!validPhone(cleanPhone)) { res.status(400).json({ error: 'Invalid phone' }); return; }
+
+    /* checked after validation so the key is always a well-formed address */
+    if (!(await rateLimit(`contact:email:${cleanEmail.toLowerCase()}`, MAX_EMAIL_HITS, EMAIL_WINDOW_MS))) { res.status(429).json({ error: 'Too many requests' }); return; }
 
     const apiKey = process.env.RESEND_API_KEY;
     const to = process.env.CONTACT_TO_EMAIL;
