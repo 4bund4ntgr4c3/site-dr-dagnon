@@ -85,15 +85,31 @@
     <h1>Site Dr. Seynude Dagnon</h1>
     <p class="sub">Portfolio &amp; site vitrine — <code>site-dr-dagnon</code></p>
     <div class="stats">
-      <span class="stat"><strong>217</strong> commits</span>
-      <span class="stat"><strong>15</strong> versions</span>
-      <span class="stat"><strong>103</strong> tests automatisés</span>
+      <span class="stat"><strong>219</strong> commits</span>
+      <span class="stat"><strong>16</strong> versions</span>
+      <span class="stat"><strong>114</strong> tests automatisés</span>
       <span class="stat"><strong>100</strong> pages prédéfinies</span>
       <span class="stat">16 juil → 2 août 2026</span>
     </div>
   </header>
 
   <div class="rule"></div>
+
+  <!-- ============ v1.6 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v1.6</span><span class="vdate">2 août 2026</span></div>
+    <h2 class="vtitle">Cartes de partage, fil d'Ariane, citations &amp; mode lecture</h2>
+    <p class="vsummary">Chaque tribune et étude de cas a sa propre carte de partage générée par un script Playwright, le fil d'Ariane JSON-LD a son pendant visible, les publications se citent en BibTeX/RIS/APA, l'agenda s'ajoute en un clic à Google Calendar ou Outlook, et les analytics couvrent partages, recherche et iCal.</p>
+    <ul>
+      <li><strong>Cartes de partage par article</strong> — <code>scripts/gen-article-og.mjs</code> (Playwright headless, exécution manuelle) rend une carte 1200×630 par tribune et par étude de cas, dans chaque langue, puis <code>og:image</code>/<code>og:image:width/height/type/alt</code> pointent vers <code>/og/&lt;slug&gt;.&lt;lang&gt;.jpg</code> sur les pages d'article ; les photos gardent leur miniature réelle, et les cartes sont pré-cachées par le service worker.</li>
+      <li><strong>Fil d'Ariane visible</strong> — composant <code>Breadcrumbs</code> (variantes clair/sombre) en tête des articles, des études de cas et des vues médias (catégorie et album photo), pendant visible du bloc <code>BreadcrumbList</code> JSON-LD ; clé <code>breadcrumb.home</code> ajoutée aux deux langues.</li>
+      <li><strong>Citations exportables</strong> — bouton « Citer » sur chaque publication (une, vedettes et régulières) : <code>src/lib/citations.ts</code> génère BibTeX (clés échappées pour le fichier <code>.bib</code>, <code>@article</code>/<code>@misc</code> selon le type), RIS et APA 7, copiables d'un clic dans une modale accessible.</li>
+      <li><strong>Deep-links agenda</strong> — « Ajouter à Google Calendar » (date de fin exclusive, calculée en UTC) et « Ajouter à Outlook » (fin inclusive) sur chaque événement à venir, URLs construites par <code>URLSearchParams</code> dans <code>src/lib/calendar-links.ts</code> pour que titre, description et lieu ne puissent pas casser la requête.</li>
+      <li><strong>Analytics d'événements</strong> — partages sociaux (X, LinkedIn, WhatsApp) et copie de lien, recherche du site (débouncée à 800 ms), export et abonnement iCal, taille du texte, en plus des changements de langue et de thème déjà suivis ; <code>print_article</code> arrive sur les boutons d'impression.</li>
+      <li><strong>theme-color adaptatif</strong> — la balise <code>meta theme-color</code> suit le thème clair (<code>#f6f3ec</code>) ou sombre (<code>#0c2e2a</code>), appliquée dès le pre-paint dans <code>main.tsx</code> et à chaque changement ; les changements de thème système re-skinent maintenant réellement la page (bogue corrigé au passage).</li>
+      <li><strong>Mode lecture</strong> — contrôle A−/A+ persistant (<code>localStorage</code>, 90 % → 125 %) sur les articles : il met à l'échelle la taille de police racine pour que tout le texte en <code>rem</code> suive, sans toucher au zoom navigateur.</li>
+    </ul>
+  </section>
 
   <!-- ============ v1.5 ============ -->
   <section class="version">
@@ -318,7 +334,7 @@
   </section>
 
   <footer>
-    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>8effe02</code> (v1.4) → <code>056f059</code> (v1.5)<br>
+    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>8effe02</code> (v1.4) → <code>056f059</code> (v1.5) → <code>c079828</code> (v1.6)<br>
     Repo : <a href="https://github.com/1wxxhktop/site-dr-dagnon">github.com/1wxxhktop/site-dr-dagnon</a>
   </footer>
 
