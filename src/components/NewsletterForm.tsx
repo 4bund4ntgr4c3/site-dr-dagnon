@@ -1,13 +1,16 @@
 import { useId, useState, type FormEvent } from 'react';
-import { CheckCircle2, AlertCircle, Send } from 'lucide-react';
+import { CheckCircle2, MailCheck, AlertCircle, Send } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 
-type Status = 'idle' | 'sending' | 'success' | 'error';
+type Status = 'idle' | 'sending' | 'pending' | 'success' | 'error';
 
 /* One form, two sizes: the section variant sits on the home page, the
    compact one in the footer. Both share the same API contract, states and
-   honeypot. */
+   honeypot. Subscribing now means "requesting an invitation": the API
+   emails a confirmation link (double opt-in), so `pending` is the normal
+   end state — `success` only appears when the address was already on the
+   list. */
 export function NewsletterForm({ compact = false }: { compact?: boolean }) {
   const { lang } = useLang();
   const t = UI[lang];
@@ -37,14 +40,38 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim(), lang, website }),
       });
+      const body = await res.json().catch(() => null);
       if (!res.ok) throw new Error('failed');
-      setStatus('success');
-      setEmail('');
+      if (body?.pending) {
+        setStatus('pending');
+      } else if (body?.already) {
+        setStatus('success');
+        setMessage(t['newsletter.already']);
+      } else {
+        setStatus('success');
+      }
+      if (body?.pending) setEmail('');
     } catch {
       setStatus('error');
       setMessage(t['newsletter.error']);
     }
   };
+
+  if (status === 'pending') {
+    return (
+      <div
+        role="status"
+        className={`flex items-center justify-center gap-2 rounded-full border text-sm font-semibold ${
+          compact
+            ? 'h-11 border-white/10 bg-white/5 px-6 text-pine-100/85 backdrop-blur'
+            : 'border-pine-900/10 bg-white px-6 py-3.5 text-pine-900 shadow-sm'
+        }`}
+      >
+        <MailCheck size={18} className={`shrink-0 ${compact ? 'text-gold-400' : 'text-gold-500'}`} />
+        <span className="text-center">{t['newsletter.pending']}</span>
+      </div>
+    );
+  }
 
   if (status === 'success') {
     return (
@@ -57,7 +84,7 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
         }`}
       >
         <CheckCircle2 size={18} className={`shrink-0 ${compact ? 'text-gold-400' : 'text-gold-500'}`} />
-        <span className="text-center">{t['newsletter.success']}</span>
+        <span className="text-center">{message || t['newsletter.success']}</span>
       </div>
     );
   }

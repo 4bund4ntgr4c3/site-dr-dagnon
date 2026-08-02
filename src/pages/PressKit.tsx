@@ -1,14 +1,17 @@
+import { useState } from 'react';
 import { Link } from 'react-router';
-import { Newspaper, Download, Mail, FileText, Image as ImageIcon, Phone } from 'lucide-react';
+import { Newspaper, Download, Mail, FileText, Image as ImageIcon, Phone, ChevronDown } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
 import { STATS } from '@/data/site';
+import { FAQ_ITEMS } from '@/data/faq';
 
 export default function PressKit() {
   const { lang } = useLang();
   const t = UI[lang];
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
     <main id="main-content" className="min-h-screen">
@@ -78,6 +81,27 @@ export default function PressKit() {
               >
                 <Download size={15} />
                 {t['pressePage.zipCta']}
+              </a>
+            </div>
+            {/* styled PDFs — scripts/gen-pdfs.mjs prints the prerendered pages
+                to public/presse/*.pdf at release time */}
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <span className="text-[12.5px] font-semibold text-pine-900/80">{t['pressePage.pdfText']}</span>
+              <a
+                href="/presse/press-kit-fr.pdf"
+                download
+                className="inline-flex items-center gap-1.5 rounded-full border border-pine-900/20 bg-white px-4 py-2 text-[12.5px] font-semibold text-pine-900 transition-all hover:-translate-y-0.5 hover:border-gold-500/50 hover:text-gold-700"
+              >
+                <FileText size={13} />
+                {t['pressePage.pdfFr']}
+              </a>
+              <a
+                href="/presse/press-kit-en.pdf"
+                download
+                className="inline-flex items-center gap-1.5 rounded-full border border-pine-900/20 bg-white px-4 py-2 text-[12.5px] font-semibold text-pine-900 transition-all hover:-translate-y-0.5 hover:border-gold-500/50 hover:text-gold-700"
+              >
+                <FileText size={13} />
+                {t['pressePage.pdfEn']}
               </a>
             </div>
           </Reveal>
@@ -152,6 +176,44 @@ export default function PressKit() {
                   <Phone size={13} />
                   {t['pressePage.contactCta']}
                 </Link>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* FAQ — answers stay in the DOM (hidden when closed) so the page
+              body and the FAQPage JSON-LD below it can never disagree; the
+              block is skipped in print so the press-kit PDF stays one clean
+              document */}
+          <Reveal>
+            <div className="print:hidden">
+              <h2 className="font-display text-2xl font-semibold text-pine-900">{t['pressePage.faqTitle']}</h2>
+              <p className="mt-1 text-[13px] text-pine-900/70">{t['pressePage.faqHint']}</p>
+              <div className="mt-6 space-y-3">
+                {FAQ_ITEMS.map((f, i) => {
+                  const open = openFaq === i;
+                  return (
+                    <div key={i} className="overflow-hidden rounded-2xl border border-pine-900/10 bg-white shadow-card">
+                      <button
+                        type="button"
+                        onClick={() => setOpenFaq(open ? null : i)}
+                        aria-expanded={open}
+                        aria-controls={`faq-answer-${i}`}
+                        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-pine-900/[0.03]"
+                      >
+                        <span className="font-display text-[1.02rem] font-semibold text-pine-900">
+                          {f.question[lang]}
+                        </span>
+                        <ChevronDown
+                          size={18}
+                          className={`shrink-0 text-gold-600 transition-transform ${open ? 'rotate-180' : ''}`}
+                        />
+                      </button>
+                      <div id={`faq-answer-${i}`} className={`px-5 ${open ? 'pb-5' : 'hidden'}`}>
+                        <p className="text-[13.5px] leading-relaxed text-pine-900/75">{f.answer[lang]}</p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </Reveal>

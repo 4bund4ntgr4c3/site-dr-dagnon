@@ -413,6 +413,59 @@ test('the agenda pages carry future events as JSON-LD', () => {
   });
 });
 
+test('the press kit pages carry FAQPage JSON-LD matching the visible FAQ', () => {
+  const faqData = fs.readFileSync(path.resolve('src/data/faq.ts'), 'utf-8');
+  const questionCount = (faqData.match(/question: \{/g) ?? []).length;
+  assert.ok(questionCount >= 4, 'the FAQ data must hold at least 4 entries');
+  /* React escapes quotes and ampersands in the text nodes — decode before
+     comparing so the schema and the rendered page are judged verbatim */
+  const decode = (html) =>
+    html
+      .replace(/&quot;/g, '"')
+      .replace(/&#x27;/g, "'")
+      .replace(/&#39;/g, "'")
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>');
+  eachPage(({ id, lang, route, html }) => {
+    const block = html.match(/<script id="faq-jsonld"[^>]*>([\s\S]*?)<\/script>/)?.[1];
+    if (route === '/presse') {
+      assert.ok(block, `${id}: missing the FAQPage JSON-LD`);
+      const faq = JSON.parse(block.replace(/\\u003c/g, '<'));
+      assert.equal(faq['@type'], 'FAQPage', `${id}: not typed FAQPage`);
+      assert.equal(faq.mainEntity.length, questionCount, `${id}: FAQPage questions differ from src/data/faq.ts`);
+      const rendered = decode(html);
+      for (const q of faq.mainEntity) {
+        assert.equal(q['@type'], 'Question', `${id}: an entry is not a Question`);
+        assert.ok(q.name, `${id}: a question without text`);
+        assert.ok(q.acceptedAnswer?.text, `${id}: a question without an answer`);
+        /* the visible block and the schema must not drift apart */
+        assert.ok(rendered.includes(q.name), `${id}: visible page does not contain the question "${q.name}"`);
+        assert.ok(
+          rendered.includes(q.acceptedAnswer.text),
+          `${id}: visible page does not contain the answer for "${q.name}"`,
+        );
+      }
+    } else {
+      assert.ok(!block, `${id}: FAQPage JSON-LD leaks onto a non-presse page`);
+    }
+  });
+});
+
+test('the styled PDFs exist, are well-formed and are precached', () => {
+  const pdfs = ['/presse/press-kit-fr.pdf', '/presse/press-kit-en.pdf', '/cv/cv-fr.pdf', '/cv/cv-en.pdf'];
+  for (const p of pdfs) {
+    const file = path.join(dist, ...p.split('/').filter(Boolean));
+    assert.ok(fs.existsSync(file), `${p} is missing from dist/ — run scripts/gen-pdfs.mjs and commit the output`);
+    const head = fs.readFileSync(file).subarray(0, 8).toString('latin1');
+    assert.match(head, /^%PDF-/, `${p} does not start with the PDF magic bytes`);
+  }
+  const sw = fs.readFileSync(path.join(dist, 'sw.js'), 'utf-8');
+  for (const p of pdfs) {
+    assert.ok(sw.includes(`"${p}"`), `sw.js does not precache ${p}`);
+  }
+});
+
 test('the agenda pages announce the subscribable iCal feed', () => {
   eachPage(({ id, route, html }) => {
     const link = /<link rel="alternate" type="text\/calendar" title="[^"]+" href="https:\/\/seynudedagnon\.com\/agenda\.ics" \/>/;

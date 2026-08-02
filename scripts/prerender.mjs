@@ -117,6 +117,7 @@ function headBlock(meta, image, { indexable = true, feedUrl = null, icsUrl = nul
     ld('breadcrumb-jsonld', meta.jsonLd.breadcrumb),
     ld('page-jsonld', meta.jsonLd.page),
     ld('events-jsonld', meta.jsonLd.events),
+    ld('faq-jsonld', meta.jsonLd.faq),
     `    ${END}`,
   ]
     .filter((line) => line !== null)
@@ -278,6 +279,10 @@ async function run() {
     '/dr-seynude-dagnon.webp',
     '/agenda.ics',
     '/presse/press-kit.zip',
+    ...(fs.existsSync(path.join(dist, 'presse'))
+      ? ['/presse/press-kit-fr.pdf', '/presse/press-kit-en.pdf']
+      : []),
+    ...(fs.existsSync(path.join(dist, 'cv')) ? ['/cv/cv-fr.pdf', '/cv/cv-en.pdf'] : []),
     ...(fs.existsSync(path.join(dist, 'assets'))
       ? fs.readdirSync(path.join(dist, 'assets')).map((f) => `/assets/${f}`)
       : []),
@@ -320,6 +325,44 @@ self.addEventListener('activate', (event) => {
       const keys = await caches.keys();
       await Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)));
       await self.clients.claim();
+    })(),
+  );
+});
+
+/* Web push — the payload comes from scripts/send-newsletter.mjs as a JSON
+   object: { title, body, url, tag }. The click handler focuses an existing
+   tab (navigating it to the article) before ever opening a new window. */
+self.addEventListener('push', (event) => {
+  let data = {};
+  try {
+    data = event.data ? JSON.parse(event.data.text()) : {};
+  } catch {
+    /* not JSON — show the bare site notification below */
+  }
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'Seynudé Dagnon', {
+      body: data.body || '',
+      icon: '/icon-512.png',
+      badge: '/favicon.png',
+      tag: data.tag || 'digest',
+      data: { url: data.url || '/' },
+    }),
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const url = new URL(event.notification.data?.url || '/', self.location.origin).href;
+  event.waitUntil(
+    (async () => {
+      const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      for (const client of clients) {
+        if ('focus' in client) {
+          client.navigate?.(url);
+          return client.focus();
+        }
+      }
+      return self.clients.openWindow(url);
     })(),
   );
 });

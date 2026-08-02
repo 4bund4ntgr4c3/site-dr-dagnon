@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
-import { Mail, ArrowUpRight, CalendarDays, BookOpen } from 'lucide-react';
+import { Mail, ArrowUpRight, CalendarDays, BookOpen, Bell } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
+import { PushButton } from '@/components/PushButton';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
@@ -90,6 +91,23 @@ export default function NewsletterArchive() {
               </div>
             </Reveal>
           )}
+
+          <Reveal>
+            <div className="mt-10 rounded-2xl border border-pine-900/10 bg-white p-6 shadow-card">
+              <div className="mb-4 flex items-center gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pine-950 text-gold-400">
+                  <Bell size={19} />
+                </span>
+                <div>
+                  <h2 className="font-display text-base font-semibold text-pine-900">{t['push.title']}</h2>
+                  <p className="text-[12px] text-pine-900/60">
+                    {t['newsletterPage.subscribe']} — {t['newsletter.privacy']}
+                  </p>
+                </div>
+              </div>
+              <PushButton />
+            </div>
+          </Reveal>
         </div>
       </section>
     </main>

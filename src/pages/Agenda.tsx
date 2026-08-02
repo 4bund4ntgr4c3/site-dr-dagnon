@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useSearchParams } from 'react-router';
 import { Calendar, MapPin, ArrowUpRight, Presentation, Mic, Users, MessagesSquare, Newspaper, CalendarDays, CalendarPlus } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
@@ -70,18 +71,38 @@ const parts = (iso: string) => {
 export default function Agenda() {
   const { lang } = useLang();
   const t = UI[lang];
+  const [searchParams, setSearchParams] = useSearchParams();
+  const year = searchParams.get('y') ?? 'all';
+
+  const years = useMemo(
+    () => Array.from(new Set(AGENDA_ITEMS.map((e) => String(parts(e.date).y)))).sort((a, b) => b.localeCompare(a)),
+    [],
+  );
+
+  const setYear = (value: string) => {
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (value === 'all') next.delete('y');
+        else next.set('y', value);
+        return next;
+      },
+      { replace: true },
+    );
+  };
 
   const { upcoming, past } = useMemo(() => {
     /* compare the ISO strings lexically — parsing dates would drag timezones
        into the cutoff and mislabel an event dated today */
     const today = new Date();
     const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    const matchesYear = (e: AgendaEntry) => year === 'all' || String(parts(e.date).y) === year;
     const sorted = [...AGENDA_ITEMS].sort((a, b) => b.date.localeCompare(a.date));
     return {
-      upcoming: sorted.filter((e) => e.date > todayStr),
-      past: sorted.filter((e) => e.date <= todayStr),
+      upcoming: sorted.filter((e) => e.date > todayStr && matchesYear(e)),
+      past: sorted.filter((e) => e.date <= todayStr && matchesYear(e)),
     };
-  }, []);
+  }, [year]);
 
   const fmtMonth = (e: AgendaEntry) => {
     const { y, m } = parts(e.date);
@@ -119,6 +140,43 @@ export default function Agenda() {
       {/* content — light */}
       <section className="bg-pine-50 py-16 lg:py-20">
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
+          {/* year filter — same pill pattern as the publications page, bound
+              to the ?y= query parameter so a filtered view is shareable */}
+          <div className="flex flex-nowrap items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+            <p className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">
+              {t['agendaPage.filterYear']}
+            </p>
+            <div role="group" aria-label={t['agendaPage.filterYear']} className="flex shrink-0 gap-2">
+              <button
+                type="button"
+                onClick={() => setYear('all')}
+                aria-pressed={year === 'all'}
+                className={`whitespace-nowrap rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                  year === 'all'
+                    ? 'bg-pine-950 text-gold-400 shadow'
+                    : 'bg-pine-900/5 text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                }`}
+              >
+                {t['agendaPage.all']}
+              </button>
+              {years.map((y) => (
+                <button
+                  key={y}
+                  type="button"
+                  onClick={() => setYear(y)}
+                  aria-pressed={year === y}
+                  className={`whitespace-nowrap rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+                    year === y
+                      ? 'bg-pine-950 text-gold-400 shadow'
+                      : 'bg-pine-900/5 text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+                  }`}
+                >
+                  {y}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* upcoming */}
           <div>
             <div className="flex flex-wrap items-center justify-between gap-3">

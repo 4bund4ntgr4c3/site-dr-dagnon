@@ -62,6 +62,22 @@ export default function Cv() {
               >
                 <Printer size={15} /> {t['cvPage.print']}
               </button>
+              {/* styled PDFs — scripts/gen-pdfs.mjs prints the prerendered
+                  pages to public/cv/*.pdf at release time */}
+              <a
+                href="/cv/cv-fr.pdf"
+                download
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
+              >
+                <FileText size={15} /> {t['cvPage.pdfFr']}
+              </a>
+              <a
+                href="/cv/cv-en.pdf"
+                download
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
+              >
+                <FileText size={15} /> {t['cvPage.pdfEn']}
+              </a>
               <Link
                 to={localePath(otherLang, '/cv')}
                 className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"

@@ -10,6 +10,7 @@ import { TRIBUNES } from '@/data/tribunes';
 import { PROJECTS } from '@/data/projects';
 import { MEDIA_ITEMS, type MediaEntry } from '@/data/media';
 import { AGENDA_ITEMS } from '@/data/agenda';
+import { FAQ_ITEMS } from '@/data/faq';
 
 export const SITE_URL = 'https://seynudedagnon.com';
 
@@ -560,6 +561,26 @@ export function eventsJsonLd(lang: Lang): object | null {
   return upcoming.length === 0 ? null : { '@context': 'https://schema.org', '@graph': upcoming };
 }
 
+/* ── Press kit FAQ (JSON-LD) ───────────────────────────────────── */
+
+/* FAQPage structured data for the /presse page. Built from the same
+   src/data/faq.ts the visible block renders, so the schema and the page can
+   never disagree. Null everywhere else — a FAQ page is a FAQ page. */
+export function faqJsonLd(lang: Lang): object {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_ITEMS.map((f) => ({
+      '@type': 'Question',
+      name: f.question[lang],
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: f.answer[lang],
+      },
+    })),
+  };
+}
+
 /* ── iCal feed ─────────────────────────────────────────────────── */
 
 /* The subscribable calendar, one static file for the whole site in the
@@ -634,6 +655,7 @@ export interface PageMeta {
     breadcrumb: object;
     page: object | null;
     events: object | null;
+    faq: object | null;
   };
 }
 
@@ -760,6 +782,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
       website: webSiteJsonLd(lang),
       breadcrumb: breadcrumbJsonLd(lang, route),
       events: isAgenda && !notFound ? eventsJsonLd(lang) : null,
+      faq: isPresse && !notFound ? faqJsonLd(lang) : null,
       page: notFound
         ? null
         : isContact

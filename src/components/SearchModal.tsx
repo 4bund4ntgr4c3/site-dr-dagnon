@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Link } from 'react-router';
-import { Search, FileText, Newspaper, FolderKanban, Clapperboard, CalendarDays, ArrowUpRight, CornerDownLeft, House } from 'lucide-react';
+import { Search, FileText, Newspaper, FolderKanban, Clapperboard, CalendarDays, ArrowUpRight, CornerDownLeft, House, Megaphone } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI, NAV } from '@/i18n/translations';
 import { IDENTITY, EXPERTISE, EXPERIENCE, EDUCATION, AWARDS, ACHIEVEMENTS } from '@/data/site';
@@ -19,7 +19,7 @@ import type { Lang } from '@/i18n/lang';
 
 interface SearchEntry {
   id: string;
-  kind: 'page' | 'section' | 'tribune' | 'project' | 'publication' | 'media' | 'agenda';
+  kind: 'page' | 'section' | 'tribune' | 'project' | 'publication' | 'media' | 'agenda' | 'press';
   title: string;
   /** one-line context shown under the title */
   description: string;
@@ -38,8 +38,9 @@ const KIND_ORDER: Record<SearchEntry['kind'], number> = {
   tribune: 2,
   project: 3,
   publication: 4,
-  media: 5,
-  agenda: 6,
+  press: 5,
+  media: 6,
+  agenda: 7,
 };
 
 const KIND_ICON: Record<SearchEntry['kind'], typeof FileText> = {
@@ -48,6 +49,7 @@ const KIND_ICON: Record<SearchEntry['kind'], typeof FileText> = {
   tribune: Newspaper,
   project: FolderKanban,
   publication: FileText,
+  press: Megaphone,
   media: Clapperboard,
   agenda: CalendarDays,
 };
@@ -219,7 +221,22 @@ function buildIndex(lang: Lang): SearchEntry[] {
       external: !!p.url,
     });
   }
-  for (const m of MEDIA_ITEMS) {
+  /* press coverage gets its own kind and lands on the article itself — the
+     media loop below only keeps the other categories */
+  for (const m of MEDIA_ITEMS.filter((m) => m.category === 'press')) {
+    const outlet = m.fileLabel?.[lang] ?? CAT_NAMES.press?.[lang] ?? 'Press';
+    entries.push({
+      id: `press-${m.id}`,
+      kind: 'press',
+      title: m.title[lang],
+      description: `${outlet} · ${m.date}`,
+      keywords: `${m.date} ${outlet} ${m.description?.[lang] ?? ''}`,
+      href: m.url ?? localePath(lang, '/media/press'),
+      external: !!m.url,
+      thumb: m.thumb,
+    });
+  }
+  for (const m of MEDIA_ITEMS.filter((m) => m.category !== 'press')) {
     const cat = CAT_NAMES[m.category]?.[lang] ?? m.category;
     const isPhoto = m.category === 'community' && m.type === 'image';
     entries.push({

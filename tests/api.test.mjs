@@ -7,6 +7,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -250,14 +251,14 @@ test('an invalid phone number is refused', async () => {
   assert.equal(sent.length, before, 'no email should have been sent');
 });
 
-/* ── newsletter: subscribe once, welcome once ─────────────────────────── */
+/* ── newsletter: double opt-in — stage first, welcome only on confirm ── */
 
-/** sets the fake KV up and makes the SADD pipeline reply with `saddResult` */
-const withNewsletterKv = async (fn, saddResult = 1) => {
+/** sets the fake KV up and makes the SISMEMBER pipeline reply with `memberResult` */
+const withNewsletterKv = async (fn, memberResult = 0) => {
   process.env.KV_REST_API_URL = 'https://fake-kv.upstash.io/';
   process.env.KV_REST_API_TOKEN = 'fake-token';
   kvCalls.length = 0;
-  kvResponder = () => ({ ok: true, json: async () => [{ result: saddResult }] });
+  kvResponder = () => ({ ok: true, json: async () => [{ result: memberResult }, { result: 'OK' }] });
   try {
     return await fn();
   } finally {
@@ -267,47 +268,69 @@ const withNewsletterKv = async (fn, saddResult = 1) => {
   }
 };
 
-const saddCalls = () => kvCalls.filter((c) => c.commands?.[0]?.[0] === 'SADD');
+const pendingCalls = () => kvCalls.filter((c) => c.commands?.[0]?.[0] === 'SISMEMBER');
 const lastEmail = () => sent.at(-1);
 
-test('a valid subscription stores the address and sends a welcome email', async () => {
+/** the confirmation link inside the latest captured email */
+const lastConfirmHref = () => sent.at(-1)?.html.match(/href="(https:\/\/seynudedagnon\.com\/api\/newsletter-confirm[^"]+)"/)?.[1];
+
+const callGet = async (handler, url) => {
+  const out = { code: 0, html: null, json: null };
+  const res = {
+    status(c) { out.code = c; return res; },
+    send(d) { out.html = d; },
+    json(d) { out.json = d; },
+  };
+  await handler({ method: 'GET', headers: { 'x-forwarded-for': '10.0.0.1' }, url }, res);
+  return out;
+};
+
+test('a new address is staged for confirmation, not subscribed directly', async () => {
   await withNewsletterKv(async () => {
     const before = sent.length;
     const out = await call(newsletter, { email: 'Sub@Example.COM', lang: 'en' }, { ip: '10.6.0.1' });
     assert.equal(out.code, 200);
-    assert.deepEqual(out.body, { ok: true });
+    assert.deepEqual(out.body, { ok: true, pending: true });
 
-    const sadd = saddCalls();
-    assert.equal(sadd.length, 1, 'expected exactly one SADD pipeline');
-    assert.equal(sadd[0].url, 'https://fake-kv.upstash.io/pipeline');
-    assert.equal(sadd[0].auth, 'Bearer fake-token');
-    assert.deepEqual(sadd[0].commands[0], ['SADD', 'newsletter:emails', 'sub@example.com'], 'the address is stored lowercased');
+    const staged = pendingCalls();
+    assert.equal(staged.length, 1, 'expected exactly one staging pipeline');
+    assert.equal(staged[0].url, 'https://fake-kv.upstash.io/pipeline');
+    assert.equal(staged[0].auth, 'Bearer fake-token');
+    assert.deepEqual(staged[0].commands[0], ['SISMEMBER', 'newsletter:emails', 'sub@example.com'], 'the address is checked lowercased');
+    assert.deepEqual(staged[0].commands[1], ['SET', 'newsletter:pending:sub@example.com', 'en', 'EX', '604800'], 'the address is staged with its expiry');
+    assert.equal(kvCalls.filter((c) => c.commands?.[0]?.[0] === 'SADD').length, 0, 'nothing may be subscribed before the click');
 
     const mail = lastEmail();
-    assert.equal(sent.length, before + 1, 'expected exactly one welcome email');
-    assert.match(mail.subject, /Welcome to Dr\. Dagnon/);
-    assert.match(mail.html, /Thank you for subscribing/);
+    assert.equal(sent.length, before + 1, 'expected exactly one confirmation email');
+    assert.match(mail.subject, /Confirm your newsletter subscription/);
+    assert.match(mail.html, /Confirm my subscription/);
     assert.equal(mail.to[0], 'sub@example.com');
+
+    const href = lastConfirmHref();
+    assert.ok(href, 'the email must carry the confirmation link');
+    assert.ok(href.includes('email=sub%40example.com'), 'the link must name the address');
+    assert.ok(href.includes('token='), 'the link must carry a token');
+    assert.doesNotMatch(JSON.stringify(mail), /Welcome to Dr\. Dagnon/, 'no welcome email before confirmation');
   });
 });
 
-test('a known address is not welcomed twice', async () => {
+test('an already-subscribed address is told so and asked nothing', async () => {
   await withNewsletterKv(async () => {
     const before = sent.length;
     const out = await call(newsletter, { email: 'old@example.test', lang: 'en' }, { ip: '10.6.0.2' });
     assert.equal(out.code, 200);
     assert.deepEqual(out.body, { ok: true, already: true });
-    assert.equal(sent.length, before, 'a re-subscription must not send another welcome email');
-  }, 0);
+    assert.equal(sent.length, before, 'a re-subscription must not send any email');
+  }, 1);
 });
 
-test('the welcome email follows the visitor language', async () => {
+test('the confirmation email follows the visitor language', async () => {
   await withNewsletterKv(async () => {
     const out = await call(newsletter, { email: 'fr@example.test', lang: 'fr' }, { ip: '10.6.0.3' });
     assert.equal(out.code, 200);
     const mail = lastEmail();
-    assert.match(mail.subject, /Bienvenue/);
-    assert.match(mail.html, /Merci de votre inscription/);
+    assert.match(mail.subject, /Confirmez votre inscription/);
+    assert.match(mail.html, /Confirmer mon inscription/);
   });
 });
 
@@ -318,7 +341,7 @@ test('an invalid email is refused before anything is stored or sent', async () =
     assert.equal(out.code, 400);
     assert.equal(out.body.error, 'Invalid email');
     assert.equal(sent.length, beforeSent);
-    assert.equal(saddCalls().length, 0, 'nothing should reach the store');
+    assert.equal(pendingCalls().length, 0, 'nothing should reach the store');
   });
 });
 
@@ -334,7 +357,7 @@ test('a filled honeypot is dropped silently, without storing or sending', async 
     assert.equal(out.code, 200);
     assert.deepEqual(out.body, { ok: true });
     assert.equal(sent.length, beforeSent);
-    assert.equal(saddCalls().length, 0);
+    assert.equal(pendingCalls().length, 0);
   });
 });
 
@@ -344,7 +367,8 @@ test('subscriptions still work when the store is down', async () => {
     const before = sent.length;
     const out = await call(newsletter, { email: 'outage@example.test' }, { ip: '10.6.0.7' });
     assert.equal(out.code, 200, 'a store outage must not block the subscription');
-    assert.equal(sent.length, before + 1, 'the welcome email should still go out');
+    assert.equal(out.body.pending, true);
+    assert.equal(sent.length, before + 1, 'the confirmation email should still go out');
   });
 });
 
@@ -371,6 +395,176 @@ test('newsletter is capped per email address', async () => {
     results.push(await call(newsletter, { email: 'flood-sub@example.test' }, { ip: `10.6.2.${i}` }));
   }
   assert.ok(results.some((r) => r.code === 429), 'expected at least one 429');
+});
+
+/* ── newsletter-confirm: the click completes the subscription ──────────── */
+
+const { issueToken, checkToken } = await import(
+  pathToFileURL(path.resolve('node_modules/.tmp/api/_tokens.js')).href
+);
+const newsletterConfirm = await load('newsletter-confirm.js');
+const newsletterUnsubscribe = await load('newsletter-unsubscribe.js');
+
+/** subscribes through the full flow and returns { out, href }; the address
+ *  is treated as new, so a fresh confirmation email is always the last one */
+const subscribeAndGetHref = async (email, { lang = 'en', ip = '10.7.0.1' } = {}) => {
+  process.env.KV_REST_API_URL = 'https://fake-kv.upstash.io/';
+  process.env.KV_REST_API_TOKEN = 'fake-token';
+  kvCalls.length = 0;
+  kvResponder = () => ({ ok: true, json: async () => [{ result: 0 }, { result: 'OK' }] });
+  try {
+    const out = await call(newsletter, { email, lang }, { ip });
+    return { out, href: lastConfirmHref() };
+  } finally {
+    delete process.env.KV_REST_API_URL;
+    delete process.env.KV_REST_API_TOKEN;
+    kvResponder = null;
+  }
+};
+
+/** clicks a confirmation link against the real store contract */
+const clickConfirm = async (href, { saddResult = 1 } = {}) => {
+  const url = new URL(href);
+  process.env.KV_REST_API_URL = 'https://fake-kv.upstash.io/';
+  process.env.KV_REST_API_TOKEN = 'fake-token';
+  kvCalls.length = 0;
+  kvResponder = () => ({ ok: true, json: async () => [{ result: saddResult }, { result: 'OK' }] });
+  try {
+    return await callGet(newsletterConfirm, url.pathname + url.search);
+  } finally {
+    delete process.env.KV_REST_API_URL;
+    delete process.env.KV_REST_API_TOKEN;
+    kvResponder = null;
+  }
+};
+
+test('clicking the confirmation link subscribes the address and sends the welcome email', async () => {
+  const { out, href } = await subscribeAndGetHref('clicks@example.test');
+  assert.equal(out.code, 200);
+  assert.ok(href, 'expected a confirmation link');
+
+  const beforeSent = sent.length;
+  const clicked = await clickConfirm(href);
+  assert.equal(clicked.code, 200);
+  assert.match(clicked.html, /Subscription confirmed/);
+
+  const sadd = kvCalls.find((c) => c.commands?.[0]?.[0] === 'SADD');
+  assert.deepEqual(sadd.commands[0], ['SADD', 'newsletter:emails', 'clicks@example.test']);
+  assert.deepEqual(sadd.commands[1], ['DEL', 'newsletter:pending:clicks@example.test']);
+
+  assert.equal(sent.length, beforeSent + 1, 'the welcome email should go out on confirmation');
+  assert.match(lastEmail().subject, /Welcome to Dr\. Dagnon/);
+  assert.match(lastEmail().html, /Thank you for subscribing/);
+});
+
+test('a second click is idempotent and does not welcome twice', async () => {
+  const { href } = await subscribeAndGetHref('twice@example.test');
+  const beforeSent = sent.length;
+  const clicked = await clickConfirm(href, { saddResult: 0 });
+  assert.equal(clicked.code, 200);
+  assert.match(clicked.html, /Subscription confirmed/);
+  assert.equal(sent.length, beforeSent, 'no second welcome email');
+});
+
+test('a tampered token is refused before any store write or email', async () => {
+  const { href } = await subscribeAndGetHref('tampered@example.test');
+  const url = new URL(href);
+  url.searchParams.set('token', url.searchParams.get('token').slice(0, -1) + 'X');
+  const beforeSent = sent.length;
+  const clicked = await callGet(newsletterConfirm, url.pathname + url.search);
+  assert.equal(clicked.code, 400);
+  assert.match(clicked.html, /Invalid link/);
+  assert.equal(kvCalls.filter((c) => c.commands?.[0]?.[0] === 'SADD').length, 0, 'nothing should reach the store');
+  assert.equal(sent.length, beforeSent, 'no email should be sent');
+});
+
+test('an expired link is refused as expired', async () => {
+  const { href } = await subscribeAndGetHref('expired@example.test');
+  const url = new URL(href);
+  /* re-sign a payload with an expiry in the past, using the same scheme and
+     secret the server uses — proves the expiry check itself, not the
+     signature one */
+  const secret = process.env.VERIFY_SECRET;
+  const hmac = (data) =>
+    Buffer.from(crypto.createHmac('sha256', secret).update(data).digest()).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const exp = Date.now() - 1000;
+  const payload = Buffer.from(JSON.stringify({
+    p: 'nl-confirm', e: 'expired@example.test', x: exp,
+    h: hmac(`nl-confirm|expired@example.test|${exp}`),
+  })).toString('base64url');
+  const forged = `${payload}.${hmac(payload)}`;
+  url.searchParams.set('token', forged);
+  const beforeSent = sent.length;
+  const clicked = await callGet(newsletterConfirm, url.pathname + url.search);
+  assert.equal(clicked.code, 400);
+  assert.match(clicked.html, /Link expired/);
+  assert.equal(sent.length, beforeSent, 'no email should be sent');
+});
+
+test('a token for another address is refused', async () => {
+  const { href } = await subscribeAndGetHref('owner@example.test');
+  const url = new URL(href);
+  url.searchParams.set('email', 'attacker@example.test');
+  const clicked = await callGet(newsletterConfirm, url.pathname + url.search);
+  assert.equal(clicked.code, 400);
+});
+
+test('the confirm link cannot be reused as an unsubscribe link', async () => {
+  const { href } = await subscribeAndGetHref('mixed@example.test');
+  const url = new URL(href);
+  url.pathname = '/api/newsletter-unsubscribe';
+  const unsubbed = await callGet(newsletterUnsubscribe, url.pathname + url.search);
+  assert.equal(unsubbed.code, 400, 'the purpose-bound token must be refused');
+});
+
+/* ── newsletter-unsubscribe: one click, one address ────────────────────── */
+
+test('a valid unsubscribe link removes the address and clears its pending key', async () => {
+  const email = 'leaving@example.test';
+  const token = issueToken('nl-unsub', email);
+  await withKv(async () => {
+    const out = await callGet(newsletterUnsubscribe, `/api/newsletter-unsubscribe?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`);
+    assert.equal(out.code, 200);
+    assert.match(out.html, /Unsubscribed/);
+    const srem = kvCalls.find((c) => c.commands?.[0]?.[0] === 'SREM');
+    assert.deepEqual(srem.commands[0], ['SREM', 'newsletter:emails', email]);
+    assert.deepEqual(srem.commands[1], ['DEL', `newsletter:pending:${email}`]);
+  });
+});
+
+test('an unsubscribe token is bound to its address', async () => {
+  const token = issueToken('nl-unsub', 'real@example.test');
+  await withKv(async () => {
+    const out = await callGet(newsletterUnsubscribe, `/api/newsletter-unsubscribe?email=other@example.test&token=${encodeURIComponent(token)}`);
+    assert.equal(out.code, 400);
+    assert.equal(kvCalls.length, 0, 'no store write for a refused link');
+  });
+});
+
+test('an expired unsubscribe link is refused', async () => {
+  const email = 'old@example.test';
+  const secret = process.env.VERIFY_SECRET;
+  const hmac = (data) =>
+    Buffer.from(crypto.createHmac('sha256', secret).update(data).digest()).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const exp = Date.now() - 1000;
+  const payload = Buffer.from(JSON.stringify({
+    p: 'nl-unsub', e: email, x: exp,
+    h: hmac(`nl-unsub|${email}|${exp}`),
+  })).toString('base64url');
+  const forged = `${payload}.${hmac(payload)}`;
+  await withKv(async () => {
+    const out = await callGet(newsletterUnsubscribe, `/api/newsletter-unsubscribe?email=${email}&token=${forged}`);
+    assert.equal(out.code, 400);
+    assert.equal(kvCalls.length, 0);
+  });
+});
+
+test('unsubscribe tokens round-trip through the shared checker', () => {
+  const email = 'roundtrip@example.test';
+  const token = issueToken('nl-unsub', email);
+  assert.equal(checkToken('nl-unsub', token, email), 'ok');
+  assert.equal(checkToken('nl-unsub', token, 'other@example.test'), 'invalid');
+  assert.equal(checkToken('nl-confirm', token, email), 'invalid', 'a purpose must never cross');
 });
 
 /* ── rate limiting — last, because the counters are module state ──────── */

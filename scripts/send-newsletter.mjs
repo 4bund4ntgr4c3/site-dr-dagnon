@@ -21,20 +21,46 @@
  */
 
 import { execFileSync } from 'node:child_process';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import webPush from 'web-push';
 
 /* ── constants ──────────────────────────────────────────────────── */
 
 const SITE_URL = 'https://seynudedagnon.com';
 const STATE_KEY = 'newsletter:last-sent';
 const SUBS_KEY = 'newsletter:emails';
-const BATCH = 50;
+const PUSH_KEY = 'push:subs';
+const PUSH_PREFIX = 'push:sub:';
 
 const C = { pine950: '#0c2e2a', pine900: '#133e38', gold500: '#c9a24b', gold400: '#d4b36a', ivory: '#faf8f4', white: '#ffffff', ink: '#3a3a3a', muted: '#6b7280' };
 const ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 const esc = (s) => s.replace(/[&<>"']/g, (c) => ESCAPES[c]);
+
+/* ── one-click unsubscribe tokens ─────────────────────────────────
+   Same scheme as api/_tokens.ts (which this script cannot import — it is
+   TypeScript): a stateless HMAC payload bound to a purpose and an address,
+   so each recipient of the digest gets a link that only unsubscribes
+   them, valid for 90 days. */
+
+const TOKEN_SECRET = () => process.env.VERIFY_SECRET || process.env.RESEND_API_KEY || '';
+const b64url = (b) => Buffer.from(b).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+function issueToken(email) {
+  const secret = TOKEN_SECRET();
+  if (!secret) return null;
+  const hmac = (data) => b64url(crypto.createHmac('sha256', secret).update(data).digest());
+  const exp = Date.now() + 90 * 24 * 60 * 60 * 1000;
+  const payload = b64url(Buffer.from(JSON.stringify({ p: 'nl-unsub', e: email, x: exp, h: hmac(`nl-unsub|${email}|${exp}`) })));
+  return `${payload}.${hmac(payload)}`;
+}
+
+function unsubHref(email) {
+  const token = issueToken(email) || '';
+  return `${SITE_URL}/api/newsletter-unsubscribe?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+}
 
 /* ── pure logic (unit-tested in tests/newsletter-send.test.mjs) ─── */
 
@@ -165,18 +191,22 @@ async function loadSubscribers() {
 
 /* ── sending ────────────────────────────────────────────────────── */
 
-async function sendDigest({ items, html, text, subject, owner, apiKey }) {
+async function sendDigest({ send, subject, owner, apiKey }) {
   const subscribers = await loadSubscribers();
-  const batches = chunk(subscribers, BATCH);
-  for (const [i, batch] of batches.entries()) {
+  /* per-recipient sends so each copy carries its own one-click unsubscribe
+     link (bcc batches used to share a single mailto:) — the owner gets a
+     copy too, they may not be in the subscriber set */
+  const recipients = [...new Set([owner, ...subscribers])];
+  const from = process.env.NEWSLETTER_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
+  for (const [i, to] of recipients.entries()) {
+    const href = unsubHref(to);
     const body = {
-      from: process.env.NEWSLETTER_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>',
-      to: [owner],
+      from,
+      to: [to],
       subject,
-      html,
-      text,
+      html: wrap(hdr() + digestHtml(send) + ftr(href)),
+      text: `${digestText(send)}\n\n—\nUnsubscribe: ${href}`,
     };
-    if (batch.length) body.bcc = batch;
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -184,11 +214,65 @@ async function sendDigest({ items, html, text, subject, owner, apiKey }) {
     });
     if (!response.ok) {
       const err = await response.text();
-      throw new Error(`Resend batch ${i + 1}/${batches.length} failed: ${err}`);
+      throw new Error(`Resend recipient ${i + 1}/${recipients.length} failed: ${err}`);
     }
-    console.log(`[newsletter] batch ${i + 1}/${batches.length} sent (${batch.length} bcc)`);
+    console.log(`[newsletter] sent to ${i + 1}/${recipients.length}`);
   }
-  return subscribers.length;
+  return recipients.length;
+}
+
+/* ── web push ─────────────────────────────────────────────────────
+   Runs only when a digest actually went out, so a notification fires
+   exactly when there is genuinely new content. Dead subscriptions
+   (the push service answered 404/410) are dropped from the store. */
+
+async function sendPushNotifications(items) {
+  const pub = process.env.VAPID_PUBLIC_KEY;
+  const priv = process.env.VAPID_PRIVATE_KEY;
+  if (!pub || !priv) {
+    console.warn('[newsletter] push skipped: VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY not set');
+    return 0;
+  }
+  webPush.setVapidDetails(`mailto:${process.env.NEWSLETTER_TO_EMAIL || 'admin@seynudedagnon.com'}`, pub, priv);
+
+  const results = await kvPipeline([['SMEMBERS', PUSH_KEY]]);
+  const hashes = Array.isArray(results?.[0]?.result) ? results[0].result.filter((s) => typeof s === 'string') : [];
+
+  const first = items[0];
+  const payload = JSON.stringify({
+    title: items.length === 1 ? first.title.fr : 'Nouvelles publications sur seynudedagnon.com',
+    body: items.length === 1
+      ? first.description.fr
+      : `${items.length} nouvelles publications et tribunes / new publications and op-eds`,
+    url: first.kind === 'tribune' ? first.url : `${SITE_URL}/publications`,
+    tag: `digest-${Date.now()}`,
+  });
+
+  let sent = 0;
+  for (const hash of hashes) {
+    const subResults = await kvPipeline([['GET', `${PUSH_PREFIX}${hash}`]]);
+    const raw = subResults?.[0]?.result;
+    if (typeof raw !== 'string') continue;
+    let sub;
+    try {
+      sub = JSON.parse(raw);
+    } catch {
+      continue;
+    }
+    try {
+      await webPush.sendNotification(sub, payload);
+      sent++;
+    } catch (e) {
+      if (e?.statusCode === 404 || e?.statusCode === 410) {
+        await kvPipeline([
+          ['SREM', PUSH_KEY, hash],
+          ['DEL', `${PUSH_PREFIX}${hash}`],
+        ]);
+        console.log(`[newsletter] push subscription dropped (${e?.statusCode})`);
+      }
+    }
+  }
+  return sent;
 }
 
 /* ── data compilation ───────────────────────────────────────────── */
@@ -275,17 +359,15 @@ async function main() {
     return;
   }
 
-  const unsubHref = `mailto:${owner}?subject=${encodeURIComponent('Unsubscribe')}`;
-  const html = wrap(hdr() + digestHtml(send) + ftr(unsubHref));
-  const text = `${digestText(send)}\n\n—\nUnsubscribe: ${unsubHref}`;
-  const sent = await sendDigest({ items, html, text, subject: subjectLine(send), owner, apiKey });
+  const sent = await sendDigest({ send, subject: subjectLine(send), owner, apiKey });
+  const pushed = await sendPushNotifications(send);
 
   const known = state.ids;
   const nextIds = [...known, ...send.map(itemId)];
   if (!(await saveState(nextIds))) {
     throw new Error('digest sent but state not saved — the next push will resend it');
   }
-  console.log(`[newsletter] sent ${send.length} item(s) to ${sent} subscriber(s)`);
+  console.log(`[newsletter] sent ${send.length} item(s) to ${sent} subscriber(s), ${pushed} push notification(s)`);
 }
 
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href;

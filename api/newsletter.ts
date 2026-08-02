@@ -1,5 +1,6 @@
 import { rateLimit } from './_rate-limit.js';
 import { originAllowed } from './_origin.js';
+import { issueToken } from './_tokens.js';
 
 /* ── Shared email template helpers ────────────────────────────────
    Inline copies of the ones in contact.ts: an earlier attempt at sharing
@@ -19,31 +20,40 @@ function ftr(): string {
   return `<tr><td style="background:${C.pine900};padding:20px 32px"><p style="margin:0;font-size:11px;color:rgba(255,255,255,.5);text-align:center">Public Health &amp; Malaria Program Leader &middot; <a href="${SITE_URL}" style="color:${C.gold400};text-decoration:none">Website</a></p></td></tr>`;
 }
 
-function welcomeHtml(lang: 'fr' | 'en'): string {
+const ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ESCAPES[c]);
+
+function confirmHtml(lang: 'fr' | 'en', href: string): string {
   const isFr = lang === 'fr';
-  const title = isFr ? 'Bienvenue dans la newsletter' : 'Welcome to the newsletter';
+  const title = isFr ? 'Confirmez votre inscription' : 'Confirm your subscription';
   const p1 = isFr
-    ? 'Merci de votre inscription. Vous recevrez de temps en temps les publications, tribunes et actualités du Dr. Seynudé Dagnon sur la lutte contre le paludisme et les systèmes de santé.'
-    : 'Thank you for subscribing. From time to time, you will receive publications, op-eds and news from Dr. Seynudé Dagnon on malaria control and health systems.';
-  const p2 = isFr ? 'En attendant, explorez ses travaux :' : 'In the meantime, explore his work:';
-  const signoff = isFr ? 'Cordialement,' : 'Best regards,';
-  const role = isFr ? 'Leader de programme en santé publique et paludisme' : 'Public Health & Malaria Program Leader';
+    ? 'Merci pour votre intérêt pour la newsletter du Dr. Seynudé Dagnon.'
+    : 'Thank you for your interest in Dr. Seynudé Dagnon’s newsletter.';
+  const p2 = isFr ? 'Cliquez sur le bouton ci-dessous pour confirmer votre inscription :' : 'Click the button below to confirm your subscription:';
+  const cta = isFr ? 'Confirmer mon inscription' : 'Confirm my subscription';
+  const alt = isFr
+    ? 'Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :'
+    : 'If the button does not work, copy this link into your browser:';
   return wrap(
     hdr(title) +
-      `<tr><td style="padding:28px 32px"><p style="margin:0;font-size:14px;line-height:1.7;color:${C.ink}">${p1}</p><p style="margin:14px 0 0;font-size:14px;line-height:1.7;color:${C.ink}">${p2}</p><table width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0"><tr><td align="center" style="padding:4px"><a href="${SITE_URL}/publications" style="display:inline-block;background:${C.pine950};color:${C.gold400};font-size:12px;font-weight:600;padding:10px 22px;border-radius:999px;text-decoration:none;letter-spacing:.03em">Publications</a></td><td align="center" style="padding:4px"><a href="${SITE_URL}/media" style="display:inline-block;background:${C.pine950};color:${C.gold400};font-size:12px;font-weight:600;padding:10px 22px;border-radius:999px;text-decoration:none;letter-spacing:.03em">Media</a></td></tr></table><p style="margin:18px 0 0;font-size:14px;line-height:1.7;color:${C.ink}">${signoff}<br><strong>Dr. Seynudé Jean-Fortuné Dagnon</strong><br><span style="font-size:13px;color:${C.muted}">${role}</span></p></td></tr>` +
+      `<tr><td style="padding:28px 32px"><p style="margin:0;font-size:14px;line-height:1.7;color:${C.ink}">${p1}</p><p style="margin:12px 0 0;font-size:14px;line-height:1.7;color:${C.ink}">${p2}</p><table width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0"><tr><td align="center"><a href="${href}" style="display:inline-block;background:${C.gold500};color:${C.pine950};font-size:13px;font-weight:600;padding:12px 28px;border-radius:999px;text-decoration:none">${esc(cta)}</a></td></tr></table><p style="margin:0;font-size:12px;line-height:1.6;color:${C.muted}">${esc(alt)}<br><span style="word-break:break-all">${esc(href)}</span></p><p style="margin:18px 0 0;font-size:12px;color:${C.muted};text-align:center">Ce lien est valable 7 jours. / This link is valid for 7 days.</p></td></tr>` +
       ftr(),
   );
 }
 
 /* ── subscriber store ─────────────────────────────────────────────
-   Addresses go into a Redis set (`newsletter:emails`) so a re-subscription
-   is detected and does not re-send a welcome email. When no KV store is
-   configured — or it is down — the subscription still works, minus the
-   storage. */
+   Double opt-in: a new address is staged in a pending key with its
+   expiry, never added to the subscriber set itself — the confirmation
+   link in the email (api/newsletter-confirm) does that. Addresses
+   already in the set are told they are subscribed and asked nothing.
+   When no KV store is configured — or it is down — the flow still
+   works: the confirmation link itself is the gate. */
 
-type StoreVerdict = 'added' | 'exists' | 'unavailable';
+type StageVerdict = 'already' | 'staged' | 'unavailable';
 
-async function storeSubscriber(email: string): Promise<StoreVerdict> {
+const PENDING_TTL_S = 7 * 24 * 60 * 60;
+
+async function stageSubscriber(email: string, lang: string): Promise<StageVerdict> {
   const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
   if (!url || !token) return 'unavailable';
@@ -51,13 +61,16 @@ async function storeSubscriber(email: string): Promise<StoreVerdict> {
     const response = await fetch(`${url.replace(/\/$/, '')}/pipeline`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify([['SADD', 'newsletter:emails', email]]),
+      body: JSON.stringify([
+        ['SISMEMBER', 'newsletter:emails', email],
+        ['SET', `newsletter:pending:${email}`, lang, 'EX', String(PENDING_TTL_S)],
+      ]),
     });
     if (!response.ok) return 'unavailable';
     const results = (await response.json()) as { result?: unknown }[];
-    const added = Number(results?.[0]?.result);
-    if (!Number.isFinite(added)) return 'unavailable';
-    return added > 0 ? 'added' : 'exists';
+    const member = Number(results?.[0]?.result);
+    if (!Number.isFinite(member)) return 'unavailable';
+    return member === 1 ? 'already' : 'staged';
   } catch {
     return 'unavailable';
   }
@@ -103,10 +116,13 @@ export default async function handler(req: Req, res: Res) {
     const from = process.env.CONTACT_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
     if (!apiKey) { res.status(500).json({ error: 'Email service not configured' }); return; }
 
-    /* store first: an address that is already in the set is a re-subscription
-       and must not receive a second welcome email */
-    const stored = await storeSubscriber(cleanEmail);
-    if (stored === 'exists') { res.status(200).json({ ok: true, already: true }); return; }
+    const staged = await stageSubscriber(cleanEmail, cleanLang);
+    if (staged === 'already') { res.status(200).json({ ok: true, already: true }); return; }
+
+    const token = issueToken('nl-confirm', cleanEmail);
+    if (!token) { res.status(500).json({ error: 'Verification not configured' }); return; }
+
+    const href = `${SITE_URL}/api/newsletter-confirm?email=${encodeURIComponent(cleanEmail)}&token=${encodeURIComponent(token)}&lang=${cleanLang}`;
 
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -114,16 +130,16 @@ export default async function handler(req: Req, res: Res) {
       body: JSON.stringify({
         from,
         to: [cleanEmail],
-        subject: cleanLang === 'fr' ? 'Bienvenue dans la newsletter du Dr. Dagnon' : 'Welcome to Dr. Dagnon’s newsletter',
-        html: welcomeHtml(cleanLang),
+        subject: cleanLang === 'fr' ? 'Confirmez votre inscription à la newsletter' : 'Confirm your newsletter subscription',
+        html: confirmHtml(cleanLang, href),
         text: cleanLang === 'fr'
-          ? 'Merci de votre inscription à la newsletter du Dr. Seynudé Dagnon.\n\nPublications : https://seynudedagnon.com/publications\nMédias : https://seynudedagnon.com/media\n\nCordialement,\nDr. Seynudé Jean-Fortuné Dagnon'
-          : 'Thank you for subscribing to Dr. Seynudé Dagnon’s newsletter.\n\nPublications: https://seynudedagnon.com/publications\nMedia: https://seynudedagnon.com/media\n\nBest regards,\nDr. Seynudé Jean-Fortuné Dagnon',
+          ? `Merci pour votre intérêt pour la newsletter du Dr. Seynudé Dagnon.\n\nCliquez sur ce lien pour confirmer votre inscription (valable 7 jours) :\n${href}\n\nSi vous n'avez pas demandé cette inscription, ignorez cet email.`
+          : `Thank you for your interest in Dr. Seynudé Dagnon’s newsletter.\n\nClick this link to confirm your subscription (valid for 7 days):\n${href}\n\nIf you did not request this subscription, ignore this email.`,
       }),
     });
     if (!r.ok) { const err = await r.text(); console.error('Resend error', err); res.status(500).json({ error: 'Failed to send' }); return; }
 
-    res.status(200).json({ ok: true });
+    res.status(200).json({ ok: true, pending: true });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: 'Server error' });

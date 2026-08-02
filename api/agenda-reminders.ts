@@ -1,5 +1,6 @@
 import { AGENDA_ITEMS, type AgendaEntry } from '../src/data/agenda.js';
 import { daysUntil, gcalUrl, outlookUrl } from '../src/lib/calendar-links.js';
+import { issueToken } from './_tokens.js';
 
 /* Weekly cron endpoint: reminds newsletter subscribers of upcoming public
  * events. Wired in vercel.json (`crons`) — Vercel attaches
@@ -16,7 +17,6 @@ const SITE_URL = 'https://seynudedagnon.com';
 const HORIZON_DAYS = 14;
 const STATE_KEY = 'agenda:reminded';
 const SUBS_KEY = 'newsletter:emails';
-const BATCH = 50;
 
 const C = { pine950: '#0c2e2a', pine900: '#133e38', gold500: '#c9a24b', gold400: '#d4b36a', ivory: '#faf8f4', white: '#ffffff', ink: '#3a3a3a', muted: '#6b7280' };
 const ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
@@ -30,6 +30,12 @@ function hdr(): string {
 }
 function ftr(unsubHref: string): string {
   return `<tr><td style="background:${C.pine900};padding:20px 32px"><p style="margin:0;font-size:11px;color:rgba(255,255,255,.5);text-align:center">Public Health &amp; Malaria Program Leader &middot; <a href="${SITE_URL}" style="color:${C.gold400};text-decoration:none">Website</a> &middot; <a href="${unsubHref}" style="color:${C.gold400};text-decoration:none">Se désinscrire / Unsubscribe</a></p></td></tr>`;
+}
+
+/** one-click unsubscribe link bound to a single address (see _tokens.ts) */
+function unsubHref(email: string): string {
+  const token = issueToken('nl-unsub', email) || '';
+  return `${SITE_URL}/api/newsletter-unsubscribe?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
 }
 
 /* ── pure logic (unit-tested) ───────────────────────────────────── */
@@ -137,23 +143,23 @@ export async function run({ items = AGENDA_ITEMS, from = new Date(), owner, apiK
   if (!apiKey || !owner) return { skipped: true };
   const [state, subscribers] = await Promise.all([loadState(), loadSubscribers()]);
   const { send, nextIds } = plan(items, state, from);
-  if (send.length === 0) return { sent: 0, recipients: subscribers.length };
+  /* per-recipient sends: each copy carries its own one-click unsubscribe
+     link (the old bcc batches all shared a single mailto:). The owner gets
+     their own copy — they may not be in the subscriber set. */
+  const recipients = Array.from(new Set([owner, ...subscribers]));
+  if (send.length === 0) return { sent: 0, recipients: recipients.length };
 
-  const unsubHref = `mailto:${owner}?subject=${encodeURIComponent('Unsubscribe')}`;
-  const html = wrap(hdr() + reminderHtml(send) + ftr(unsubHref));
-  const text = `${reminderText(send)}\n\n—\nUnsubscribe: ${unsubHref}`;
   const subject = subjectLine(send);
-
-  const batches = chunk(subscribers, BATCH);
-  for (const [i, batch] of batches.entries()) {
-    const body: { from: string; to: string[]; subject: string; html: string; text: string; bcc?: string[] } = {
-      from: process.env.NEWSLETTER_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>',
-      to: [owner],
+  const sender = process.env.NEWSLETTER_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
+  for (const [i, to] of recipients.entries()) {
+    const href = unsubHref(to);
+    const body: { from: string; to: string[]; subject: string; html: string; text: string } = {
+      from: sender,
+      to: [to],
       subject,
-      html,
-      text,
+      html: wrap(hdr() + reminderHtml(send) + ftr(href)),
+      text: `${reminderText(send)}\n\n—\nUnsubscribe: ${href}`,
     };
-    if (batch.length) body.bcc = batch;
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -161,15 +167,15 @@ export async function run({ items = AGENDA_ITEMS, from = new Date(), owner, apiK
     });
     if (!response.ok) {
       const err = await response.text();
-      throw new Error(`Resend batch ${i + 1}/${batches.length} failed: ${err}`);
+      throw new Error(`Resend recipient ${i + 1}/${recipients.length} failed: ${err}`);
     }
-    console.log(`[agenda-reminders] batch ${i + 1}/${batches.length} sent (${batch.length} bcc)`);
+    console.log(`[agenda-reminders] sent to ${i + 1}/${recipients.length}`);
   }
 
   if (!(await saveState(nextIds))) {
     throw new Error('reminder sent but state not saved — the next cron run will resend it');
   }
-  return { sent: send.length, recipients: subscribers.length };
+  return { sent: send.length, recipients: recipients.length };
 }
 
 /* ── handler ────────────────────────────────────────────────────── */

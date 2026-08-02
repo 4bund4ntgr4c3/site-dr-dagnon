@@ -117,38 +117,56 @@ test('reminderText lists every event with the agenda link', () => {
 
 /* ── run: full send through the stubbed stores ──────────────────── */
 
-test('run sends one email per batch of subscribers and records the ids', async () => {
+test('run sends one personalized email per recipient and records the ids', async () => {
   reminded = [];
   sent.length = 0;
   kvCalls.length = 0;
   const result = await run({ items: ITEMS, from: FROM, owner: 'admin@example.test', apiKey: 'test-key' });
-  assert.deepEqual(result, { sent: 1, recipients: 1 });
+  /* owner + one subscriber, deduplicated */
+  assert.deepEqual(result, { sent: 1, recipients: 2 });
 
-  const mail = sent.at(-1);
-  assert.equal(mail.from, 'Portfolio <admin@example.test>');
-  assert.deepEqual(mail.to, ['admin@example.test']);
-  assert.deepEqual(mail.bcc, ['sub@example.test']);
-  assert.equal(mail.subject, 'Agenda — 1 événement à venir / 1 upcoming event');
-  assert.match(mail.html, /Titre A/);
-  assert.match(mail.html, /google\.com\/calendar\/render/);
-  assert.match(mail.html, /outlook\.live\.com\/calendar/);
-  assert.match(mail.text, /Agenda: https:\/\/seynudedagnon.com\/agenda/);
+  assert.equal(sent.length, 2);
+  const ownerMail = sent.find((m) => m.to[0] === 'admin@example.test');
+  const subMail = sent.find((m) => m.to[0] === 'sub@example.test');
+  assert.ok(ownerMail, 'the owner should get their own copy');
+  assert.ok(subMail, 'each subscriber should get their own copy');
+  assert.equal(subMail.from, 'Portfolio <admin@example.test>');
+  assert.equal(subMail.subject, 'Agenda — 1 événement à venir / 1 upcoming event');
+  assert.match(subMail.html, /Titre A/);
+  assert.match(subMail.html, /google\.com\/calendar\/render/);
+  assert.match(subMail.html, /outlook\.live\.com\/calendar/);
+  assert.match(subMail.text, /Agenda: https:\/\/seynudedagnon.com\/agenda/);
+
+  /* every copy carries its own one-click unsubscribe link, bound to the
+     address it was sent to */
+  for (const mail of sent) {
+    const href = mail.html.match(/href="(https:\/\/seynudedagnon\.com\/api\/newsletter-unsubscribe\?[^"]+)"/)?.[1];
+    assert.ok(href, 'expected an unsubscribe link in the email');
+    assert.ok(href.includes(`email=${encodeURIComponent(mail.to[0])}`), 'the link must be bound to the recipient');
+    assert.ok(href.includes('&token='), 'the link must carry a token');
+    assert.match(mail.text, new RegExp(`Unsubscribe: ${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
+  }
 
   const set = kvCalls.find((c) => c.commands[0]?.[0] === 'SET');
   assert.deepEqual(set.commands, [['SET', 'agenda:reminded', JSON.stringify({ ids: ['soon'] }), 'EX', '7884000']]);
   assert.equal(set.auth, 'Bearer fake-token');
 });
 
-test('run splits a large subscriber set into 50-recipient batches', async () => {
+test('run sends one email per subscriber, each with its own unsubscribe link', async () => {
   subscribers = Array.from({ length: 120 }, (_, i) => `sub${i}@example.test`);
   reminded = [];
   sent.length = 0;
   kvCalls.length = 0;
   await run({ items: ITEMS, from: FROM, owner: 'admin@example.test', apiKey: 'test-key' });
-  assert.equal(sent.length, 3);
-  assert.equal(sent[0].bcc.length, 50);
-  assert.equal(sent[1].bcc.length, 50);
-  assert.equal(sent[2].bcc.length, 20);
+  assert.equal(sent.length, 121, 'one email per recipient, no bcc batching');
+  assert.ok(sent.every((m) => !m.bcc), 'no recipient should see other addresses');
+  const links = new Set();
+  for (const mail of sent) {
+    const href = mail.html.match(/href="(https:\/\/seynudedagnon\.com\/api\/newsletter-unsubscribe\?[^"]+)"/)?.[1];
+    assert.ok(href?.includes(`email=${encodeURIComponent(mail.to[0])}`));
+    links.add(href);
+  }
+  assert.equal(links.size, sent.length, 'every recipient must get a distinct link');
   subscribers = ['sub@example.test'];
 });
 
@@ -157,7 +175,7 @@ test('run sends nothing when every due event was already reminded', async () => 
   sent.length = 0;
   kvCalls.length = 0;
   const result = await run({ items: ITEMS, from: FROM, owner: 'admin@example.test', apiKey: 'test-key' });
-  assert.deepEqual(result, { sent: 0, recipients: 1 });
+  assert.deepEqual(result, { sent: 0, recipients: 2 });
   assert.equal(sent.length, 0, 'no email should go out');
   assert.ok(!kvCalls.some((c) => c.commands[0]?.[0] === 'SET'), 'nothing should be recorded');
 });
@@ -166,13 +184,13 @@ test('run skips when the owner or the api key is missing', async () => {
   assert.deepEqual(await run({ items: ITEMS, from: FROM }), { skipped: true });
 });
 
-test('run fails loudly when Resend refuses a batch', async () => {
+test('run fails loudly when Resend refuses a send', async () => {
   reminded = [];
   resendOk = false;
   try {
     await assert.rejects(
       () => run({ items: ITEMS, from: FROM, owner: 'admin@example.test', apiKey: 'test-key' }),
-      /Resend batch 1\/1 failed: boom/,
+      /Resend recipient 1\/2 failed: boom/,
     );
   } finally {
     resendOk = true;
@@ -198,6 +216,6 @@ test('a signed request answers with what was sent', async () => {
   const out = await call(handler, { method: 'GET', authorization: 'Bearer test-cron' });
   assert.equal(out.code, 200);
   /* every real agenda entry is in the past, so a real run sends nothing */
-  assert.deepEqual(out.body, { ok: true, sent: 0, recipients: 1 });
+  assert.deepEqual(out.body, { ok: true, sent: 0, recipients: 2 });
   assert.equal(sent.length, 0);
 });
