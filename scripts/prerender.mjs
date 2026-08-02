@@ -91,7 +91,7 @@ function headBlock(meta, image, { indexable = true, feedUrl = null, icsUrl = nul
         ]
       : []),
     ``,
-    prop('og:type', 'website'),
+    prop('og:type', meta.ogType || 'website'),
     prop('og:locale', meta.ogLocale),
     prop('og:locale:alternate', meta.ogLocaleAlternate),
     prop('og:site_name', meta.siteName),

@@ -1,5 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /admin
+Disallow: /fr/admin
+Disallow: /newsletter/preferences
+Disallow: /fr/newsletter/preferences
 
 Sitemap: https://seynudedagnon.com/sitemap.xml

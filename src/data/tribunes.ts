@@ -21,7 +21,7 @@ export const TRIBUNES: TribuneEntry[] = [
   {
     slug: 'from-malaria-control-to-elimination',
     date: '2026-05-01',
-    source: { name: 'Africa Health Watch', url: 'https://www.africahealthwatch.com/p/from-malaria-control-to-elimination' },
+    source: { name: 'Africa Health Watch', url: 'https://africahealthwatch.com/from-malaria-control-to-elimination-the-turn-we-need-to-make/' },
     title: {
       fr: 'Du contrôle du paludisme à l\'élimination : le virage à prendre',
       en: 'From Malaria Control to Elimination: The Turn We Need to Make',

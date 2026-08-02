@@ -29,7 +29,7 @@ export const PUB_ITEMS: PubEntry[] = [
     authors: { fr: 'Rose Leke, Seynudé Jean Fortune Dagnon', en: 'Rose Leke, Seynudé Jean Fortune Dagnon' },
     journal: { fr: 'Africa Health Watch — Perspectives', en: 'Africa Health Watch — Perspectives' },
     description: { fr: 'Plaide pour un passage du contrôle à l\'élimination du paludisme en Afrique : viser l\'arrêt de la transmission, prioriser les zones frontalières mal desservies et renforcer le leadership des institutions locales.', en: 'Argues that African countries must move from malaria control to elimination: redefining success as ending transmission, prioritizing underserved border regions, and empowering local institutions to lead.' },
-    url: 'https://www.africahealthwatch.com/p/from-malaria-control-to-elimination?utm_source=publication-search',
+    url: 'https://africahealthwatch.com/from-malaria-control-to-elimination-the-turn-we-need-to-make/?utm_source=publication-search',
   },
   {
     id: 'frontiers-chemoprevention-2025',

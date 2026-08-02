@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
-const photo = path.join(root, 'public', 'dr-seynude-dagnon.jpeg');
+const photo = path.join(root, 'public', 'dr-seynude-dagnon.webp');
 const out = path.join(root, 'public', 'og-image.jpg');
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>
@@ -29,7 +29,7 @@ const html = `<!doctype html><html><head><meta charset="utf-8"><style>
   <img class="photo" src="file://${photo.replace(/\\/g, '/')}" alt="">
   <div class="txt">
     <div class="kicker">Public Health · Malaria</div>
-    <div class="name">Seynudé Jean-Fortuné<br><b>DAGNON</b>, PhD</div>
+    <div class="name">Seynudé Jean-Fortuné<br><b>DAGNON</b>, PhD (en cours)</div>
     <div class="role">Senior Program Officer — Malaria / Francophone Africa,<br>Gates Foundation</div>
     <div class="tag">From clinical field to global strategies</div>
   </div>

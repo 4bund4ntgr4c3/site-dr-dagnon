@@ -417,7 +417,7 @@ export function contactPageJsonLd(lang: Lang) {
     '@type': 'ContactPage',
     name: CONTACT_SEO[lang].title,
     description: CONTACT_SEO[lang].description,
-    url: `${SITE_URL}/contact`,
+    url: absUrl(lang, '/contact'),
     mainEntity: {
       '@type': 'Person',
       name: fullName(lang),
@@ -723,6 +723,9 @@ export interface PageMeta {
   ogImageWidth: number;
   ogImageHeight: number;
   ogImageType: string;
+  /** 'article' on op-ed/project pages so social platforms render a rich
+      card, 'website' elsewhere */
+  ogType: string;
   ogLocale: string;
   ogLocaleAlternate: string;
   siteName: string;
@@ -839,6 +842,10 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
 
   const url = absUrl(lang, route);
 
+  /* op-eds and project write-ups are articles for social platforms — a
+     website og:type would strip the share card of its rich formatting */
+  const ogType = tribune || project ? 'article' : 'website';
+
   /* every article gets its own social card (scripts/gen-article-og.mjs draws
      the title on the brand background); photos and everything else keep the
      site-wide card */
@@ -868,6 +875,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
     ogImageWidth,
     ogImageHeight,
     ogImageType,
+    ogType,
     ogLocale: SEO[lang].ogLocale,
     ogLocaleAlternate: SEO[lang === 'fr' ? 'en' : 'fr'].ogLocale,
     siteName: fullName(lang),

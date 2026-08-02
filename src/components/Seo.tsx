@@ -54,6 +54,7 @@ export function Seo() {
     upsertMeta('meta[name="description"]', meta.description);
     upsertMeta('meta[name="keywords"]', meta.keywords);
     upsertMeta('meta[property="og:title"]', meta.title);
+    upsertMeta('meta[property="og:type"]', meta.ogType || 'website');
     upsertMeta('meta[property="og:description"]', meta.description);
     upsertMeta('meta[property="og:url"]', meta.url);
     upsertMeta('meta[property="og:locale"]', meta.ogLocale);
