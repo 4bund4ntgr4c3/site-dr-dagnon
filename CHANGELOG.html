@@ -86,14 +86,31 @@
     <p class="sub">Portfolio &amp; site vitrine — <code>site-dr-dagnon</code></p>
     <div class="stats">
       <span class="stat"><strong>219</strong> commits</span>
-      <span class="stat"><strong>16</strong> versions</span>
-      <span class="stat"><strong>114</strong> tests automatisés</span>
+      <span class="stat"><strong>17</strong> versions</span>
+      <span class="stat"><strong>153</strong> tests automatisés</span>
       <span class="stat"><strong>100</strong> pages prédéfinies</span>
       <span class="stat">16 juil → 2 août 2026</span>
     </div>
   </header>
 
   <div class="rule"></div>
+
+  <!-- ============ v1.7 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v1.7</span><span class="vdate">2 août 2026</span></div>
+    <h2 class="vtitle">Partage natif, accessibilité auditée, recherche plein texte &amp; rappels agenda</h2>
+    <p class="vsummary">Le partage passe par la feuille native du système quand elle existe, 19 routes passent un audit axe-core, la recherche fouille le corps des tribunes, l'agenda compte les jours à venir, et un cron hebdomadaire rappelle par email les événements aux abonnés de la newsletter.</p>
+    <ul>
+      <li><strong>Partage natif (Web Share)</strong> — un bouton « Partager » s'appuie sur <code>navigator.share</code> (feuille de partage native des mobiles et PWA installées, détectée par feature) à côté des boutons sociaux ; s'il est indisponible, les boutons classiques restent le repli. Événement <code>share_click</code> (native) suivi dans les analytics.</li>
+      <li><strong>Suite d'accessibilité axe-core</strong> — 19 routes auditées par Playwright + <code>@axe-core/playwright</code> (aucune violation critique ou sérieuse). Corrections : contraste du fil d'Ariane clair et du compteur de photos (<code>text-pine-900/60</code> → <code>/75</code>), <code>aria-label</code> sur le lien document de la galerie, contraste du label des boutons de partage. Le harnais exige le <code>browser.newContext()</code> et résout les répertoires vers <code>index.html</code>.</li>
+      <li><strong>JSON-LD Article → cartes OG</strong> — le schéma <code>Article</code> des tribunes et études de cas référence désormais l'image de leur propre carte de partage (<code>/og/&lt;slug&gt;.&lt;lang&gt;.jpg</code>), couvert par un test dans <code>prerender.test.mjs</code>.</li>
+      <li><strong>Kit de presse ZIP</strong> — <code>scripts/gen-press-kit.mjs</code> (manuel, comme <code>gen-og.mjs</code>) génère <code>public/presse/press-kit.zip</code> : portrait, biographie courte et longue bilingues et coordonnées, tout en texte brut ; bloc de téléchargement en tête de la page presse, fichier pré-caché par le service worker.</li>
+      <li><strong>Recherche plein texte des tribunes</strong> — le corps entier des tribunes (<code>TRIBUNE_BODIES</code>) alimente la recherche : une phrase enfouie au milieu d'un article retrouve la tribune, dans la langue consultée.</li>
+      <li><strong>Compte à rebours agenda</strong> — badge « Aujourd'hui », « Demain » ou « Dans N jours » sur chaque événement à venir de la page agenda, compté en jours locaux (<code>daysUntil</code>, sémantique immune au fuseau) et traduit dans les deux langues.</li>
+      <li><strong>Copie d'extrait</strong> — sélectionner un passage d'au moins 20 caractères dans le corps d'une tribune ou d'une étude de cas fait apparaître un bouton flottant qui copie la citation avec sa source et son lien (<code>SelectionQuote</code>, restreint au contenu de l'article) ; événement <code>quote_copy</code> suivi.</li>
+      <li><strong>Rappels agenda par email</strong> — cron Vercel hebdomadaire <code>/api/agenda-reminders</code> (lundi 8 h UTC, authentifié par <code>Bearer CRON_SECRET</code>) : liste les événements à 14 jours et les envoie aux abonnés de la newsletter (bcc, lots de 50) avec boutons Google Agenda, Outlook et lien vers l'agenda, en bilingue. Chaque événement n'est rappelé qu'une fois (état <code>agenda:reminded</code> en KV, expirant à 91 jours), et un envoi partiel sans sauvegarde d'état est réessayé au cron suivant.</li>
+    </ul>
+  </section>
 
   <!-- ============ v1.6 ============ -->
   <section class="version">

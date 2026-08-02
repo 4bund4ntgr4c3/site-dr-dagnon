@@ -7,7 +7,7 @@ import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
 import { track } from '@/lib/analytics';
 import { AGENDA_ITEMS, type AgendaEntry, type AgendaType } from '@/data/agenda';
-import { gcalUrl, outlookUrl } from '@/lib/calendar-links';
+import { daysUntil, gcalUrl, outlookUrl } from '@/lib/calendar-links';
 import type { Lang } from '@/i18n/lang';
 
 const TYPE_META: Record<AgendaType, { icon: typeof Calendar; key: string }> = {
@@ -237,7 +237,7 @@ function EventCard({
 
   return (
     <article
-      className={`group flex gap-5 rounded-2xl border bg-white p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 sm:p-6 ${
+      className={`group relative flex gap-5 rounded-2xl border bg-white p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 sm:p-6 ${
         upcoming ? 'border-gold-500/50' : 'border-pine-900/10'
       }`}
     >
@@ -252,7 +252,18 @@ function EventCard({
         </span>
       </div>
 
-      <div className="min-w-0 flex-1">
+      {upcoming && (
+        <span className="absolute right-4 top-4 inline-flex items-center rounded-full bg-gold-500 px-2.5 py-1 text-[10.5px] font-bold text-pine-950">
+          {(() => {
+            const n = daysUntil(e.date);
+            if (n <= 0) return t['agendaPage.today'];
+            if (n === 1) return t['agendaPage.tomorrow'];
+            return t['agendaPage.inDays'].replace('{n}', String(n));
+          })()}
+        </span>
+      )}
+
+      <div className={`min-w-0 flex-1 ${upcoming ? 'pr-16' : ''}`}>
         <div className="flex flex-wrap items-center gap-2">
           <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold ${upcoming ? 'bg-gold-500 text-pine-950' : 'bg-pine-950 text-gold-400'}`}>
             <TypeIcon size={12} />

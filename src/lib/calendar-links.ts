@@ -34,6 +34,15 @@ export function gcalUrl(e: CalendarEvent): string {
   return `https://calendar.google.com/calendar/render?${q.toString()}`;
 }
 
+/* Whole days between two ISO dates, computed in UTC so no visitor timezone
+   can shift the count — "in 12 days" must mean the same on every device. */
+export function daysUntil(date: string, from = new Date()): number {
+  const [y, m, d] = date.split('-').map(Number);
+  const target = Date.UTC(y, m - 1, d);
+  const today = Date.UTC(from.getFullYear(), from.getMonth(), from.getDate());
+  return Math.round((target - today) / 86_400_000);
+}
+
 /* Outlook treats an all-day event's end date as inclusive. */
 export function outlookUrl(e: CalendarEvent): string {
   const q = new URLSearchParams({

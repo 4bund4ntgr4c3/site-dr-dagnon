@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Linkedin, Copy, Check } from 'lucide-react';
+import { Linkedin, Copy, Check, Share2 } from 'lucide-react';
 import { UI } from '@/i18n/translations';
 import { useLang } from '@/i18n/useLang';
 import { track } from '@/lib/analytics';
@@ -24,6 +24,18 @@ export function ShareButtons({ title, url }: { title: string; url: string }) {
   const { lang } = useLang();
   const t = UI[lang];
   const [copied, setCopied] = useState(false);
+  /* native share sheet (mobile browsers, installed PWAs) — feature-detected
+     so the classic buttons stay the fallback where navigator.share is absent */
+  const canShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
+
+  const nativeShare = async () => {
+    try {
+      await navigator.share({ title, url });
+      track('share_click', { event_category: 'social', event_label: 'native' });
+    } catch {
+      /* the user dismissed the sheet — nothing to track */
+    }
+  };
 
   const copy = async () => {
     try {
@@ -46,7 +58,17 @@ export function ShareButtons({ title, url }: { title: string; url: string }) {
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/60">{t['share.share']}</span>
+      <span className="text-[12px] font-semibold uppercase tracking-[0.18em] text-pine-900/75">{t['share.share']}</span>
+      {canShare && (
+        <button
+          type="button"
+          onClick={nativeShare}
+          aria-label={t['share.native']}
+          className={linkClass}
+        >
+          <Share2 size={15} />
+        </button>
+      )}
       <a
         href={`https://twitter.com/intent/tweet?text=${text}&url=${encoded}`}
         target="_blank"

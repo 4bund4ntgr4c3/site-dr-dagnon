@@ -14,6 +14,13 @@
     "moduleDetection": "force",
     "noEmit": true,
 
+    /* api/agenda-reminders.ts imports src/data/agenda.ts, which resolves
+       its `@/` specifier through this mapping (same as the frontend). */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,

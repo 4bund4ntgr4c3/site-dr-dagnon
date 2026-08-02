@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const { gcalUrl, outlookUrl } = await import(
+const { gcalUrl, outlookUrl, daysUntil } = await import(
   pathToFileURL(path.resolve('node_modules/.tmp/calendar-links/calendar-links.js')).href
 );
 
@@ -57,4 +57,24 @@ test('a single-character month and day stay zero-padded', () => {
   assert.ok(out.includes('dates=20260305%2F20260306'));
   const one = gcalUrl({ ...talk, date: '2026-01-09' });
   assert.ok(one.includes('dates=20260109%2F20260110'));
+});
+
+test('daysUntil counts whole UTC days, same-day included as zero', () => {
+  assert.equal(daysUntil('2026-08-15', new Date(2026, 7, 3, 23, 59)), 12);
+  assert.equal(daysUntil('2026-08-03', new Date('2026-08-03T00:01:00Z')), 0);
+  assert.equal(daysUntil('2026-09-01', new Date('2026-08-02T12:00:00Z')), 30);
+  assert.equal(daysUntil('2026-12-31', new Date(2026, 11, 31, 23, 59)), 0);
+});
+
+test('daysUntil crosses the year boundary correctly', () => {
+  assert.equal(daysUntil('2027-01-05', new Date('2026-12-31T00:00:00Z')), 5);
+  assert.equal(daysUntil('2026-01-01', new Date('2026-12-31T00:00:00Z')), -364);
+});
+
+test('daysUntil is immune to the local timezone', () => {
+  /* the count compares date-only values, not instants: 23:59 on the start
+     day still counts zero days — an instant-based diff would already be a
+     full day away. Local constructor keeps the local date unambiguous. */
+  assert.equal(daysUntil('2026-08-10', new Date(2026, 7, 10, 23, 59)), 0);
+  assert.equal(daysUntil('2026-08-20', new Date(2026, 7, 10, 23, 59)), 10);
 });

@@ -6,6 +6,7 @@ import { ShareButtons } from '@/components/ShareButtons';
 import { ReadingProgress } from '@/components/ReadingProgress';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { FontSizeControl } from '@/components/FontSizeControl';
+import { SelectionQuote } from '@/components/SelectionQuote';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
@@ -130,6 +131,11 @@ export default function TribuneArticle() {
                 <TribuneBlockView key={i} block={block} />
               ))}
             </article>
+            <SelectionQuote
+              source={`${entry.source.name} — seynudedagnon.com`}
+              url={absUrl(lang, `/tribunes/${entry.slug}`)}
+              container="[data-reader]"
+            />
 
             <footer className="mt-12 border-t border-pine-900/10 pt-6 print:hidden">
               <p className="text-[12.5px] leading-relaxed text-pine-900/70">

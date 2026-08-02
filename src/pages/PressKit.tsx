@@ -63,6 +63,26 @@ export default function PressKit() {
           </Reveal>
 
           <Reveal>
+            <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-gold-500/40 bg-gold-500/10 p-6">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-pine-950 text-gold-400">
+                <Download size={20} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h2 className="font-display text-lg font-semibold text-pine-900">{t['pressePage.zipCta']}</h2>
+                <p className="mt-1 text-[13px] leading-relaxed text-pine-900/70">{t['pressePage.zipText']}</p>
+              </div>
+              <a
+                href="/presse/press-kit.zip"
+                download
+                className="inline-flex items-center gap-2 rounded-full bg-pine-950 px-6 py-3 text-sm font-semibold text-gold-300 transition-all hover:-translate-y-0.5 hover:bg-pine-900"
+              >
+                <Download size={15} />
+                {t['pressePage.zipCta']}
+              </a>
+            </div>
+          </Reveal>
+
+          <Reveal>
             <h2 className="font-display text-2xl font-semibold text-pine-900">{t['pressePage.factsTitle']}</h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {STATS[lang].map((s, i) => (

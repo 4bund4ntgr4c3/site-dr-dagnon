@@ -224,8 +224,26 @@ test('JSON-LD parses and cannot break out of its script tag', () => {
   });
 });
 
-test('structured data does not advertise a search box that does not exist', () => {
-  /* the WebSite schema used to declare a SearchAction targeting /?q=..., but
+test('article pages carry Article JSON-LD pointing at their own OG card', () => {
+  eachPage(({ id, lang, route, html }) => {
+    const pageBlock = html.match(/<script id="page-jsonld"[^>]*>([\s\S]*?)<\/script>/)?.[1];
+    if (!pageBlock) return;
+    const parsed = JSON.parse(pageBlock);
+    if (parsed['@type'] !== 'Article') return;
+    /* only the article routes emit an Article — list pages use CollectionPage */
+    assert.ok(
+      /^\/tribunes\/[\w-]+$/.test(route) || /^\/projets\/[\w-]+$/.test(route),
+      `${id}: Article JSON-LD on a non-article route`,
+    );
+    const slug = route.split('/').pop();
+    assert.equal(parsed.headline.length > 10, true, `${id}: Article headline missing`);
+    assert.ok(Array.isArray(parsed.author) || parsed.author, `${id}: Article needs an author`);
+    assert.equal(parsed.image, `https://seynudedagnon.com/og/${slug}.${lang}.jpg`, `${id}: Article image is not the per-article OG card`);
+    assert.equal(parsed.mainEntityOfPage['@id'], parsed.url, `${id}: Article mainEntityOfPage does not match its url`);
+  });
+});
+
+test('structured data does not advertise a search box that does not exist', () => {  /* the WebSite schema used to declare a SearchAction targeting /?q=..., but
      nothing on the site reads that query param — the filters on /media and
      /publications are URL-addressable, not a site-wide search box */
   eachPage(({ id, html }) => {

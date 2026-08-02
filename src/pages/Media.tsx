@@ -23,11 +23,12 @@ import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { NotFoundView } from '@/components/NotFoundView';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { ShareButtons } from '@/components/ShareButtons';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { localePath } from '@/i18n/routing';
-import { PHOTO_DIMS } from '@/seo/meta';
+import { PHOTO_DIMS, absUrl } from '@/seo/meta';
 import {
   MEDIA_ITEMS,
   type MediaEntry,
@@ -894,6 +895,9 @@ function PhotoView({
             <figcaption className="mx-auto mt-5 max-w-3xl text-center font-display text-lg font-medium text-pine-900">
               {photo.title[lang]}
             </figcaption>
+            <div className="mx-auto mt-5 flex justify-center">
+              <ShareButtons title={photo.title[lang]} url={absUrl(lang, `/media/community/${photo.id}`)} />
+            </div>
           </figure>
 
           {albumDesc && (
@@ -910,7 +914,7 @@ function PhotoView({
               <ArrowLeft size={15} />
               {lang === 'fr' ? `Retour à l'album ${albumLabel}` : `Back to ${albumLabel} album`}
             </Link>
-            <span className="text-[12.5px] font-medium text-pine-900/60">
+            <span className="text-[12.5px] font-medium text-pine-900/75">
               {position + 1} / {albumPhotos.length}
             </span>
           </div>
@@ -1082,6 +1086,7 @@ function MediaCard({
           href={m.url}
           target="_blank"
           rel="noreferrer"
+          aria-label={m.title[lang]}
           className="relative flex aspect-video items-center justify-center overflow-hidden bg-gradient-to-br from-pine-800 to-pine-950"
         >
           {m.thumb ? (

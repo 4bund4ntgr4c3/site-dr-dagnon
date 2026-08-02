@@ -19,6 +19,7 @@ import { ShareButtons } from '@/components/ShareButtons';
 import { ReadingProgress } from '@/components/ReadingProgress';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { FontSizeControl } from '@/components/FontSizeControl';
+import { SelectionQuote } from '@/components/SelectionQuote';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
@@ -185,6 +186,11 @@ export default function ProjectArticle() {
                 </div>
               )}
             </article>
+            <SelectionQuote
+              source={`${t['projetsPage.badge']} — seynudedagnon.com`}
+              url={absUrl(lang, `/projets/${entry.slug}`)}
+              container="[data-reader]"
+            />
 
             <footer className="mt-12 border-t border-pine-900/10 pt-6 print:hidden">
               <Link

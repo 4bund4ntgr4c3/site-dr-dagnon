@@ -9,6 +9,7 @@ import { track } from '@/lib/analytics';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { CAT_NAMES } from '@/seo/meta';
 import { TRIBUNES } from '@/data/tribunes';
+import { TRIBUNE_BODIES } from '@/data/tribune-bodies';
 import { PROJECTS } from '@/data/projects';
 import { PROJECT_DETAILS } from '@/data/project-details';
 import { PUB_ITEMS } from '@/data/publications';
@@ -182,12 +183,15 @@ function buildIndex(lang: Lang): SearchEntry[] {
   }
 
   for (const tribune of TRIBUNES) {
+    /* the full body is part of the searchable keywords, not just the
+       headline/description — a phrase buried mid-article still finds it */
+    const body = TRIBUNE_BODIES[tribune.slug]?.[lang] ?? [];
     entries.push({
       id: `tribune-${tribune.slug}`,
       kind: 'tribune',
       title: tribune.title[lang],
       description: tribune.description[lang],
-      keywords: `${tribune.source.name} ${tribune.date}`,
+      keywords: `${tribune.source.name} ${tribune.date} ${body.map((b) => b.text).join(' ')}`,
       href: localePath(lang, `/tribunes/${tribune.slug}`),
     });
   }

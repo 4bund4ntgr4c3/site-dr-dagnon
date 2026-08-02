@@ -451,7 +451,7 @@ export function articleJsonLd(lang: Lang, entry: (typeof TRIBUNES)[number], url:
     publisher: { '@type': 'Organization', name: entry.source.name, url: entry.source.url },
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-    image: `${SITE_URL}/og-image.jpg`,
+    image: `${SITE_URL}/og/${entry.slug}.${lang}.jpg`,
   };
 }
 
@@ -467,7 +467,7 @@ export function projectJsonLd(lang: Lang, entry: (typeof PROJECTS)[number], url:
     about: { '@type': 'Thing', name: entry.tag[lang] },
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-    image: `${SITE_URL}/og-image.jpg`,
+    image: `${SITE_URL}/og/${entry.slug}.${lang}.jpg`,
   };
 }
 

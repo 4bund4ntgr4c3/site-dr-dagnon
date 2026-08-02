@@ -45,6 +45,52 @@ compile('src/i18n/routing.ts', ['src/i18n/routing.ts'], 'src/i18n', path.join(tm
 compile('src/lib/citations.ts', ['src/lib/citations.ts'], 'src/lib', path.join(tmp, 'citations'));
 compile('src/lib/calendar-links.ts', ['src/lib/calendar-links.ts'], 'src/lib', path.join(tmp, 'calendar-links'));
 
+/* api/agenda-reminders.ts imports src/data/agenda.ts and
+   src/lib/calendar-links.ts, and its emitted specifiers resolve to
+   node_modules/.tmp/src/... — so it is compiled in its own temp project
+   where `@/` maps to src/ like it does in the frontend (same trick as
+   scripts/send-newsletter.mjs). Run last: it writes into .tmp/api, which
+   the api compile above wipes. */
+function compileAgendaReminders() {
+  const proj = path.join(tmp, 'agenda-reminders');
+  fs.rmSync(proj, { recursive: true, force: true });
+  for (const f of ['api/agenda-reminders.ts', 'src/data/agenda.ts', 'src/i18n/lang.ts', 'src/lib/calendar-links.ts']) {
+    const dest = path.join(proj, f);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.copyFileSync(path.join(root, f), dest);
+  }
+  fs.writeFileSync(
+    path.join(proj, 'tsconfig.json'),
+    JSON.stringify({
+      compilerOptions: {
+        target: 'es2022',
+        module: 'esnext',
+        moduleResolution: 'bundler',
+        strict: true,
+        skipLibCheck: true,
+        types: ['node'],
+        outDir: 'out',
+        rootDir: '.',
+        baseUrl: '.',
+        paths: { '@/*': ['src/*'] },
+      },
+      include: ['api/**/*', 'src/**/*'],
+    }),
+  );
+  console.log('[test] compiling api/agenda-reminders.ts with its data');
+  execFileSync(process.execPath, [tsc, '-p', path.join(proj, 'tsconfig.json')], { cwd: root, stdio: 'inherit' });
+  const out = path.join(proj, 'out');
+  for (const rel of ['api/agenda-reminders.js', 'src/data/agenda.js', 'src/lib/calendar-links.js']) {
+    const dest = path.join(tmp, rel);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.copyFileSync(path.join(out, rel), dest);
+  }
+  for (const dir of [path.join(tmp, 'api'), path.join(tmp, 'src', 'data'), path.join(tmp, 'src', 'lib')]) {
+    fs.writeFileSync(path.join(dir, 'package.json'), '{"type":"module"}\n');
+  }
+}
+compileAgendaReminders();
+
 /* pass the files explicitly: directory arguments behave inconsistently across
    node versions, and no shell is involved here to expand a glob */
 const suites = fs

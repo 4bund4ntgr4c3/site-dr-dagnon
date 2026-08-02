@@ -277,6 +277,7 @@ async function run() {
     '/manifest.webmanifest',
     '/dr-seynude-dagnon.webp',
     '/agenda.ics',
+    '/presse/press-kit.zip',
     ...(fs.existsSync(path.join(dist, 'assets'))
       ? fs.readdirSync(path.join(dist, 'assets')).map((f) => `/assets/${f}`)
       : []),

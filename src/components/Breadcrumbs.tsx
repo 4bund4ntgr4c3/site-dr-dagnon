@@ -17,7 +17,7 @@ export function Breadcrumbs({
       aria-label="Breadcrumb"
       data-breadcrumb=""
       className={`flex flex-wrap items-center gap-1.5 text-[11.5px] font-semibold ${
-        dark ? 'text-pine-100/60' : 'text-pine-900/60'
+        dark ? 'text-pine-100/60' : 'text-pine-900/75'
       }`}
     >
       {items.map((item, i) => {
