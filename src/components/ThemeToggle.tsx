@@ -29,6 +29,8 @@ const apply = (mode: ThemeMode) => {
   const dark = mode === 'dark' || (mode === 'system' && prefersDark());
   document.documentElement.classList.toggle('dark', dark);
   document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+  /* the meta theme-color follows the theme so mobile chrome matches the page */
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0c2e2a' : '#f6f3ec');
   try {
     localStorage.setItem(STORAGE_KEY, mode);
   } catch {
@@ -48,6 +50,7 @@ export function ThemeToggle() {
       const m = readMode();
       setMode(m);
       setOpen(false);
+      apply(m);
     };
     const onStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY) sync();

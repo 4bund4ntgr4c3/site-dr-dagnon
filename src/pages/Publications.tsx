@@ -1,8 +1,9 @@
 import { useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { FileText, ArrowUpRight, X, Star, Search } from 'lucide-react';
+import { FileText, ArrowUpRight, X, Star, Search, Quote } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
+import { CitationModal } from '@/components/CitationModal';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
@@ -28,6 +29,7 @@ export default function PublicationsPage() {
   const sort = searchParams.get('sort') === 'asc' ? 'asc' : 'desc';
   const search = searchParams.get('q') ?? '';
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [citing, setCiting] = useState<PubEntry | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -169,11 +171,21 @@ export default function PublicationsPage() {
                 {/* featured */}
                 {featured.length > 0 && (
                   <div className="mt-6 space-y-4">
-                    {featured.map((p) => (
-                      <Reveal key={p.id}>
-                        <FeaturedCard p={p} lang={lang} t={t} />
-                      </Reveal>
-                    ))}
+                {featured.map((p) => (
+                  <Reveal key={p.id}>
+                    <div className="relative">
+                      <FeaturedCard p={p} lang={lang} t={t} />
+                      <button
+                        type="button"
+                        onClick={() => setCiting(p)}
+                        aria-label={`${t['pubPage.cite']} — ${p.title[lang]}`}
+                        className="absolute right-4 top-4 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-gold-500/50 bg-pine-950/80 text-gold-300 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-gold-500 hover:text-pine-950"
+                      >
+                        <Quote size={15} />
+                      </button>
+                    </div>
+                  </Reveal>
+                ))}
                   </div>
                 )}
 
@@ -181,7 +193,17 @@ export default function PublicationsPage() {
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   {regular.map((p, i) => (
                     <Reveal key={p.id} delay={Math.min(i * 0.03, 0.3)}>
-                      <PubCard p={p} lang={lang} t={t} />
+                      <div className="relative">
+                        <PubCard p={p} lang={lang} t={t} />
+                        <button
+                          type="button"
+                          onClick={() => setCiting(p)}
+                          aria-label={`${t['pubPage.cite']} — ${p.title[lang]}`}
+                          className="absolute right-3 top-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full bg-pine-950/85 text-gold-300 shadow-lg backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-gold-500 hover:text-pine-950"
+                        >
+                          <Quote size={15} />
+                        </button>
+                      </div>
                     </Reveal>
                   ))}
                 </div>
@@ -190,6 +212,9 @@ export default function PublicationsPage() {
           </div>
         </div>
       </section>
+
+      {/* citation modal */}
+      {citing && <CitationModal p={citing} onClose={() => setCiting(null)} />}
 
       {/* expanded modal */}
       {expanded && (() => {

@@ -6,7 +6,9 @@ import App, { type AppPages } from './App.tsx'
 import { registerPreload, initGlobalLinkPreload } from './lib/preload.ts'
 
 /* Apply the saved or system theme before the first paint (the strict CSP
-   forbids inline scripts, so this runs from the entry module). */
+   forbids inline scripts, so this runs from the entry module). The meta
+   theme-color follows the theme, so Android browsers tint their chrome
+   with the actual page colour instead of the static default. */
 (() => {
   try {
     const saved = localStorage.getItem('theme');
@@ -15,6 +17,7 @@ import { registerPreload, initGlobalLinkPreload } from './lib/preload.ts'
       ((saved === null || saved === 'system') && window.matchMedia('(prefers-color-scheme: dark)').matches);
     document.documentElement.classList.toggle('dark', dark);
     document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0c2e2a' : '#f6f3ec');
   } catch {
     /* storage unavailable — stay with the light theme */
   }

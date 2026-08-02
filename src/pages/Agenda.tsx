@@ -5,7 +5,9 @@ import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
+import { track } from '@/lib/analytics';
 import { AGENDA_ITEMS, type AgendaEntry, type AgendaType } from '@/data/agenda';
+import { gcalUrl, outlookUrl } from '@/lib/calendar-links';
 import type { Lang } from '@/i18n/lang';
 
 const TYPE_META: Record<AgendaType, { icon: typeof Calendar; key: string }> = {
@@ -34,8 +36,7 @@ const fold = (line: string): string => {
   return chunks.join('\r\n ');
 };
 
-const buildIcs = (lang: Lang): string => {
-  const now = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+const buildIcs = (lang: Lang): string => {  const now = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
@@ -129,6 +130,7 @@ export default function Agenda() {
                 <button
                   type="button"
                   onClick={() => {
+                    track('ical_export', { event_category: 'engagement', event_label: 'client-side' });
                     const blob = new Blob([buildIcs(lang)], { type: 'text/calendar;charset=utf-8' });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
@@ -148,6 +150,7 @@ export default function Agenda() {
                 <a
                   href="/agenda.ics"
                   download
+                  onClick={() => track('ical_subscribe', { event_category: 'engagement', event_label: '/agenda.ics' })}
                   title={t['agendaPage.subscribeIcsTitle']}
                   className="inline-flex items-center gap-2 rounded-full border border-pine-900/15 bg-white px-4 py-2 text-[12.5px] font-semibold text-pine-900 transition-all hover:-translate-y-0.5 hover:border-gold-500/50 hover:text-gold-700"
                 >
@@ -275,6 +278,28 @@ function EventCard({
             <ArrowUpRight size={13} />
           </a>
         )}
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <a
+            href={gcalUrl({ date: e.date, title: e.title[lang], description: e.description[lang], location: e.location[lang] })}
+            target="_blank"
+            rel="noreferrer"
+            title={t['agendaPage.addGcal']}
+            className="inline-flex items-center gap-1.5 rounded-full border border-pine-900/15 px-3 py-1.5 text-[11.5px] font-semibold text-pine-900/75 transition-all hover:border-gold-500/50 hover:text-gold-700"
+          >
+            <CalendarPlus size={12} />
+            {t['agendaPage.addGcal']}
+          </a>
+          <a
+            href={outlookUrl({ date: e.date, title: e.title[lang], description: e.description[lang], location: e.location[lang] })}
+            target="_blank"
+            rel="noreferrer"
+            title={t['agendaPage.addOutlook']}
+            className="inline-flex items-center gap-1.5 rounded-full border border-pine-900/15 px-3 py-1.5 text-[11.5px] font-semibold text-pine-900/75 transition-all hover:border-gold-500/50 hover:text-gold-700"
+          >
+            <CalendarDays size={12} />
+            {t['agendaPage.addOutlook']}
+          </a>
+        </div>
       </div>
     </article>
   );

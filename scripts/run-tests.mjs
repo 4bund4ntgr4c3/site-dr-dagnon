@@ -42,6 +42,8 @@ function compile(label, files, rootDir, outDir) {
 
 compile('api/', ['api/contact.ts', 'api/verify-phone.ts', 'api/newsletter.ts', 'api/_origin.ts'], 'api', path.join(tmp, 'api'));
 compile('src/i18n/routing.ts', ['src/i18n/routing.ts'], 'src/i18n', path.join(tmp, 'i18n'));
+compile('src/lib/citations.ts', ['src/lib/citations.ts'], 'src/lib', path.join(tmp, 'citations'));
+compile('src/lib/calendar-links.ts', ['src/lib/calendar-links.ts'], 'src/lib', path.join(tmp, 'calendar-links'));
 
 /* pass the files explicitly: directory arguments behave inconsistently across
    node versions, and no shell is involved here to expand a glob */

@@ -4,10 +4,13 @@ import { Reveal } from '@/components/Reveal';
 import { NotFoundView } from '@/components/NotFoundView';
 import { ShareButtons } from '@/components/ShareButtons';
 import { ReadingProgress } from '@/components/ReadingProgress';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { FontSizeControl } from '@/components/FontSizeControl';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
 import { absUrl } from '@/seo/meta';
+import { track } from '@/lib/analytics';
 import { countWords, readingMinutes } from '@/lib/reading';
 import { TRIBUNES, type TribuneBlock } from '@/data/tribunes';
 import { TRIBUNE_BODIES } from '@/data/tribune-bodies';
@@ -52,9 +55,17 @@ export default function TribuneArticle() {
 
         <div className="relative mx-auto max-w-4xl px-5 pb-20 pt-32 lg:px-8 lg:pt-36">
           <Reveal>
+            <Breadcrumbs
+              dark
+              items={[
+                { label: t['breadcrumb.home'], to: localePath(lang, '/') },
+                { label: t['tribunesPage.badge'], to: localePath(lang, '/tribunes') },
+                { label: entry.title[lang] },
+              ]}
+            />
             <Link
               to={localePath(lang, '/tribunes')}
-              className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-300 transition-colors hover:text-gold-200"
+              className="mt-5 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-300 transition-colors hover:text-gold-200"
             >
               <ArrowLeft size={13} />
               {t['tribunesPage.back']}
@@ -83,12 +94,16 @@ export default function TribuneArticle() {
               </a>
               <button
                 type="button"
-                onClick={() => window.print()}
+                onClick={() => {
+                  track('print_article', { event_category: 'engagement', event_label: 'tribune' });
+                  window.print();
+                }}
                 className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold text-pine-100/70 transition-colors hover:text-gold-300"
               >
                 <Printer size={12} />
                 {t['article.print']}
               </button>
+              <FontSizeControl dark />
             </div>
             <h1 className="mt-7 font-display text-[2.2rem] leading-[1.08] font-medium text-pine-100 sm:text-5xl lg:text-[3.4rem]">
               {entry.title[lang]}

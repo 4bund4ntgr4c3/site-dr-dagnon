@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Linkedin, Copy, Check } from 'lucide-react';
 import { UI } from '@/i18n/translations';
 import { useLang } from '@/i18n/useLang';
+import { track } from '@/lib/analytics';
 
 /* Brand icons no longer ship with lucide — X and WhatsApp get small inline
    copies. The buttons share the canonical URL, so a preview deploy or a local
@@ -28,11 +29,15 @@ export function ShareButtons({ title, url }: { title: string; url: string }) {
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
+      track('copy_link', { event_category: 'social', event_label: url });
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
       /* clipboard blocked — the other three buttons still work */
     }
   };
+
+  const share = (network: string) => () =>
+    track('share_click', { event_category: 'social', event_label: network });
 
   const text = encodeURIComponent(title);
   const encoded = encodeURIComponent(url);
@@ -47,6 +52,7 @@ export function ShareButtons({ title, url }: { title: string; url: string }) {
         target="_blank"
         rel="noreferrer"
         aria-label={t['share.x']}
+        onClick={share('x')}
         className={linkClass}
       >
         <XIcon />
@@ -56,6 +62,7 @@ export function ShareButtons({ title, url }: { title: string; url: string }) {
         target="_blank"
         rel="noreferrer"
         aria-label={t['share.linkedin']}
+        onClick={share('linkedin')}
         className={linkClass}
       >
         <Linkedin size={15} />
@@ -65,6 +72,7 @@ export function ShareButtons({ title, url }: { title: string; url: string }) {
         target="_blank"
         rel="noreferrer"
         aria-label={t['share.whatsapp']}
+        onClick={share('whatsapp')}
         className={linkClass}
       >
         <WhatsAppIcon />

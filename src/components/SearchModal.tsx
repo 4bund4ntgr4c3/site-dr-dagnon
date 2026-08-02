@@ -1,10 +1,11 @@
-import { useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Link } from 'react-router';
 import { Search, FileText, Newspaper, FolderKanban, Clapperboard, CalendarDays, ArrowUpRight, CornerDownLeft, House } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI, NAV } from '@/i18n/translations';
 import { IDENTITY, EXPERTISE, EXPERIENCE, EDUCATION, AWARDS, ACHIEVEMENTS } from '@/data/site';
 import { localePath } from '@/i18n/routing';
+import { track } from '@/lib/analytics';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { CAT_NAMES } from '@/seo/meta';
 import { TRIBUNES } from '@/data/tribunes';
@@ -273,8 +274,18 @@ function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) 
       .slice(0, 15);
   }, [index, query]);
 
-  const onKeyDown = (e: ReactKeyboardEvent) => {
-    if (results.length === 0) return;
+  /* Site-search analytics, debounced so every keystroke does not fire a hit */
+  useEffect(() => {
+    const q = query.trim();
+    if (q.length < 2) return;
+    const t = window.setTimeout(() => {
+      track('site_search', { event_category: 'engagement', event_label: q });
+    }, 800);
+    return () => window.clearTimeout(t);
+  }, [query]);
+
+    const onKeyDown = (e: ReactKeyboardEvent) => {
+      if (results.length === 0) return;
     const last = results.length - 1;
     let next = active;
     if (e.key === 'ArrowDown') next = Math.min(active + 1, last);

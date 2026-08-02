@@ -724,7 +724,16 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
 
   const url = absUrl(lang, route);
 
-  const ogImage = photo ? `${SITE_URL}${photo.src}` : `${SITE_URL}/og-image.jpg`;
+  /* every article gets its own social card (scripts/gen-article-og.mjs draws
+     the title on the brand background); photos and everything else keep the
+     site-wide card */
+  const ogImage = photo
+    ? `${SITE_URL}${photo.src}`
+    : tribune
+      ? `${SITE_URL}/og/${tribune.slug}.${lang}.jpg`
+      : project
+        ? `${SITE_URL}/og/${project.slug}.${lang}.jpg`
+        : `${SITE_URL}/og-image.jpg`;
   const ogImageWidth = photo ? PHOTO_DIMS[photo.id]?.width || 1200 : 1200;
   const ogImageHeight = photo ? PHOTO_DIMS[photo.id]?.height || 630 : 630;
   const ogImageType = photo ? 'image/webp' : 'image/jpeg';
@@ -827,3 +836,7 @@ export const DEFAULT_ROUTE_PRIORITY = { priority: '0.8', changefreq: 'monthly' }
 
 /* re-exported so scripts/prerender.mjs works from this module alone */
 export { localePath, DEFAULT_LANG } from '@/i18n/routing';
+/* re-exported so scripts/gen-article-og.mjs can render one card per article
+   from the compiled bundle instead of parsing TypeScript itself */
+export { TRIBUNES } from '@/data/tribunes';
+export { PROJECTS } from '@/data/projects';

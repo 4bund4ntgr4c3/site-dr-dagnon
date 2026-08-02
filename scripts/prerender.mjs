@@ -283,6 +283,9 @@ async function run() {
     ...(fs.existsSync(path.join(dist, 'community'))
       ? fs.readdirSync(path.join(dist, 'community')).map((f) => `/community/${f}`)
       : []),
+    ...(fs.existsSync(path.join(dist, 'og'))
+      ? fs.readdirSync(path.join(dist, 'og')).map((f) => `/og/${f}`)
+      : []),
   ];
 
   const hash = (s) => {

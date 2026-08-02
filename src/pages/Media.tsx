@@ -22,6 +22,7 @@ import {
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { NotFoundView } from '@/components/NotFoundView';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
@@ -646,6 +647,13 @@ function CategoryView({
     <>
       {/* category hero */}
       <div className="mt-10">
+        <Breadcrumbs
+          items={[
+            { label: t['breadcrumb.home'], to: localePath(lang, '/') },
+            { label: t['mediaPage.badge'], to: localePath(lang, '/media') },
+            { label: t[`mediaPage.cat${category.charAt(0).toUpperCase() + category.slice(1)}` as keyof typeof t] || category },
+          ]}
+        />
         {/* mobile: stacked */}
         <div className="flex items-center justify-between gap-4 sm:hidden">
           <span
@@ -850,17 +858,15 @@ function PhotoView({
 
         <div className="relative mx-auto max-w-6xl px-5 pb-24 pt-32 lg:px-8 lg:pt-36">
           <Reveal>
-            <nav aria-label={lang === 'fr' ? 'Fil d\'Ariane' : 'Breadcrumb'} className="flex flex-wrap items-center gap-2 text-[12.5px] text-pine-200/70">
-              <Link to={localePath(lang, '/media')} className="transition-colors hover:text-gold-300">
-                {t['mediaPage.badge']}
-              </Link>
-              <ChevronRight size={13} className="text-pine-200/40" />
-              <Link to={localePath(lang, '/media/community')} className="transition-colors hover:text-gold-300">
-                {t['mediaPage.catCommunity']}
-              </Link>
-              <ChevronRight size={13} className="text-pine-200/40" />
-              <span className="font-medium text-gold-300">{albumLabel}</span>
-            </nav>
+            <Breadcrumbs
+              dark
+              items={[
+                { label: t['breadcrumb.home'], to: localePath(lang, '/') },
+                { label: t['mediaPage.badge'], to: localePath(lang, '/media') },
+                { label: t['mediaPage.catCommunity'], to: localePath(lang, '/media/community') },
+                { label: albumLabel },
+              ]}
+            />
             <h1 className="mt-6 max-w-4xl font-display text-2xl leading-[1.15] font-medium text-pine-100 sm:text-4xl">
               {photo.title[lang]}
             </h1>
