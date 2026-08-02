@@ -101,4 +101,7 @@ const suites = fs
 if (suites.length === 0) throw new Error('no test suites found in tests/');
 
 console.log(`[test] running ${suites.length} suites`);
-execFileSync(process.execPath, ['--test', ...suites], { cwd: root, stdio: 'inherit' });
+/* the a11y and performance suites each spawn their own Chromium; with the
+   default per-CPU concurrency they compete for memory and the browser
+   crashes intermittently — two files at a time is stable and still fast */
+execFileSync(process.execPath, ['--test', '--test-concurrency=2', ...suites], { cwd: root, stdio: 'inherit' });

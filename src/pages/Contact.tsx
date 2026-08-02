@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Send, CheckCircle2, AlertCircle, Lock, ShieldCheck, Mic, Mic2, Handshake, Newspaper, FileText } from 'lucide-react';
 import { Link } from 'react-router';
 import { Reveal } from '@/components/Reveal';
@@ -48,6 +48,13 @@ export default function Contact() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>('idle');
   const [submittedEmail, setSubmittedEmail] = useState('');
+
+  /* the success panel replaces the form — move focus to it so screen-reader
+     users (and keyboard users) hear and see that the message was sent */
+  const successRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (status === 'success') successRef.current?.focus();
+  }, [status]);
 
   const [verifyStatus, setVerifyStatus] = useState<VerifyStatus>('idle');
   const [verifyCode, setVerifyCode] = useState('');
@@ -384,7 +391,12 @@ export default function Contact() {
             <Reveal delay={0.18} className="min-w-0">
               <div className="rounded-3xl border border-pine-900/10 bg-white p-6 shadow-card sm:p-8">
                 {status === 'success' ? (
-                  <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
+                  <div
+                    ref={successRef}
+                    role="status"
+                    tabIndex={-1}
+                    className="flex flex-col items-center justify-center gap-4 py-16 text-center outline-none"
+                  >
                     <CheckCircle2 size={48} className="text-gold-500" />
                     <h2 className="font-display text-2xl font-semibold text-pine-900">{t['contact.sentTitle']}</h2>
                     <p className="max-w-sm text-sm text-pine-900/60">{t['contact.sentText']}</p>

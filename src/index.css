@@ -416,3 +416,17 @@
 .bg-gold-500:focus-visible {
   outline-color: #071f1c;
 }
+
+/* Users who prefer reduced motion get the static layout: CSS animations
+   (animate-ping, spinners, …) are stopped and framer-motion handles its own
+   via MotionConfig reducedMotion="user" (see src/main.tsx). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

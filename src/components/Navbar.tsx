@@ -165,7 +165,7 @@ export function Navbar() {
 
   /* arrow keys move focus through the open Home menu (desktop) */
   const onHomeMenuKey = (e: ReactKeyboardEvent<HTMLAnchorElement>) => {
-    const items = Array.from(homeRef.current?.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]') ?? []);
+    const items = Array.from(homeRef.current?.querySelectorAll<HTMLAnchorElement>('a') ?? []);
     const idx = items.indexOf(e.currentTarget);
     const last = items.length - 1;
     switch (e.key) {
@@ -244,12 +244,11 @@ export function Navbar() {
                   if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
                   e.preventDefault();
                   setHomeOpen(true);
-                  const items = homeRef.current?.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]');
+                  const items = homeRef.current?.querySelectorAll<HTMLAnchorElement>('a');
                   if (items?.length) {
                     (e.key === 'ArrowDown' ? items[0] : items[items.length - 1]).focus();
                   }
                 }}
-                aria-haspopup="true"
                 aria-expanded={homeOpen}
                 aria-controls="nav-home-menu"
                 className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
@@ -265,14 +264,11 @@ export function Navbar() {
                 <div className="absolute top-full left-0 pt-2">
                   <div
                     id="nav-home-menu"
-                    role="menu"
-                    aria-label={t['nav.home']}
                     className="w-56 rounded-2xl border border-white/10 bg-pine-950/95 p-2 shadow-xl shadow-pine-950/40 backdrop-blur-md"
                   >
                     {HOME_SECTIONS.map((id) => (
                       <Link
                         key={id}
-                        role="menuitem"
                         to={homeHref(lang, id)}
                         onClick={() => goToSection(id)}
                         onKeyDown={onHomeMenuKey}

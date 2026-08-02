@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { X, Copy, Check, Quote } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -59,6 +59,21 @@ export function CitationModal({ p, onClose }: { p: PubEntry; onClose: () => void
     }
   };
 
+  /* roving tabindex: one tab stop on the selected tab, arrows move it */
+  const onTablistKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+    const tabs = Array.from(e.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    if (!tabs.length) return;
+    const idx = tabs.indexOf(document.activeElement as HTMLButtonElement);
+    let next = -1;
+    if (e.key === 'ArrowRight') next = (idx + 1) % tabs.length;
+    else if (e.key === 'ArrowLeft') next = (idx - 1 + tabs.length) % tabs.length;
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = tabs.length - 1;
+    else return;
+    e.preventDefault();
+    tabs[Math.max(0, next)]?.focus();
+  };
+
   return (
     <div
       className="fixed inset-0 z-[60] flex items-center justify-center bg-pine-950/90 p-4 backdrop-blur-sm"
@@ -90,13 +105,14 @@ export function CitationModal({ p, onClose }: { p: PubEntry; onClose: () => void
           {src.authors} · {src.journal} · {src.year}
         </p>
 
-        <div role="tablist" aria-label={t['cite.title']} className="mt-6 flex gap-2">
+        <div role="tablist" aria-label={t['cite.title']} onKeyDown={onTablistKeyDown} className="mt-6 flex gap-2">
           {FORMATS.map((f) => (
             <button
               key={f}
               type="button"
               role="tab"
               aria-selected={format === f}
+              tabIndex={format === f ? 0 : -1}
               onClick={() => setFormat(f)}
               className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                 format === f

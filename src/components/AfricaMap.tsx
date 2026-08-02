@@ -1,4 +1,9 @@
+import { useReducedMotion } from 'framer-motion';
+
 export function AfricaMap({ className = '' }: { className?: string }) {
+  /* the pulsing ring is SMIL animation, which CSS media queries cannot
+     reach — gate it here instead */
+  const reducedMotion = useReducedMotion();
   return (
     <svg viewBox="0 0 100 104" className={className} aria-hidden="true">
       {/* Continent silhouette */}
@@ -19,10 +24,12 @@ export function AfricaMap({ className = '' }: { className?: string }) {
       />
       {/* Benin marker */}
       <circle cx="33" cy="47" r="2.4" fill="#c9a24b" />
-      <circle cx="33" cy="47" r="5" fill="none" stroke="#c9a24b" strokeOpacity="0.5" strokeWidth="0.7">
-        <animate attributeName="r" values="3;8;3" dur="2.6s" repeatCount="indefinite" />
-        <animate attributeName="stroke-opacity" values="0.6;0;0.6" dur="2.6s" repeatCount="indefinite" />
-      </circle>
+      {!reducedMotion && (
+        <circle cx="33" cy="47" r="5" fill="none" stroke="#c9a24b" strokeOpacity="0.5" strokeWidth="0.7">
+          <animate attributeName="r" values="3;8;3" dur="2.6s" repeatCount="indefinite" />
+          <animate attributeName="stroke-opacity" values="0.6;0;0.6" dur="2.6s" repeatCount="indefinite" />
+        </circle>
+      )}
     </svg>
   );
 }

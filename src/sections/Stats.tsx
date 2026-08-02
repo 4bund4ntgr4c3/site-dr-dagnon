@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { animate, useInView } from 'framer-motion';
+import { animate, useInView, useReducedMotion } from 'framer-motion';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -8,9 +8,15 @@ import { STATS } from '@/data/site';
 function Counter({ value, locale }: { value: number; locale: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (!inView || !ref.current) return;
+    /* reduced motion: jump straight to the final number */
+    if (reducedMotion) {
+      ref.current.textContent = value.toLocaleString(locale);
+      return;
+    }
     const controls = animate(0, value, {
       duration: 1.8,
       ease: [0.22, 1, 0.36, 1],
@@ -21,7 +27,7 @@ function Counter({ value, locale }: { value: number; locale: string }) {
       },
     });
     return () => controls.stop();
-  }, [inView, value, locale]);
+  }, [inView, value, locale, reducedMotion]);
 
   return <span ref={ref}>0</span>;
 }
