@@ -19,6 +19,10 @@ jobs:
 
       - run: npm ci
 
+      # tests/a11y.test.mjs drives a real browser; npm ci does not install
+      # the Playwright browser binaries
+      - run: npx playwright install --with-deps chromium
+
       - run: npm run lint
 
       # `npm test` builds first, so this also covers the typecheck, the bundle

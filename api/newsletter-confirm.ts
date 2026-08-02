@@ -1,4 +1,5 @@
 import { checkToken } from './_tokens.js';
+import { alertOwner } from './_alert.js';
 
 /* Double opt-in confirmation endpoint — the link inside the confirmation
  * email. Clicking it moves the address from the pending key into the
@@ -54,7 +55,14 @@ function welcomeHtml(lang: 'fr' | 'en'): string {
 
 type StoreVerdict = 'added' | 'exists' | 'unavailable';
 
-async function confirmSubscriber(email: string): Promise<StoreVerdict> {
+/* Persists the language the subscriber signed up in (`newsletter:lang:<email>`),
+   read from the pending key staged at subscribe time — the digest then goes
+   out in that language only. The 90-day TTL matches the unsubscribe token's
+   lifetime: an address that stays subscribed past it re-lands on the
+   bilingual digest, which is the safe default. */
+const LANG_TTL_S = 90 * 24 * 60 * 60;
+
+async function confirmSubscriber(email: string, lang: 'fr' | 'en'): Promise<StoreVerdict> {
   const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
   if (!url || !token) return 'unavailable';
@@ -63,14 +71,28 @@ async function confirmSubscriber(email: string): Promise<StoreVerdict> {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify([
+        ['GET', `newsletter:pending:${email}`],
         ['SADD', 'newsletter:emails', email],
         ['DEL', `newsletter:pending:${email}`],
+        ['SET', `newsletter:lang:${email}`, lang, 'EX', String(LANG_TTL_S)],
       ]),
     });
     if (!response.ok) return 'unavailable';
     const results = (await response.json()) as { result?: unknown }[];
-    const added = Number(results?.[0]?.result);
+    const pendingLang = typeof results?.[0]?.result === 'string' ? results[0].result : null;
+    const added = Number(results?.[1]?.result);
     if (!Number.isFinite(added)) return 'unavailable';
+    /* the pending key is the authoritative language: it was written at
+       subscribe time from the form, the ?lang param is only its echo */
+    if (pendingLang === 'fr' || pendingLang === 'en') {
+      if (pendingLang !== lang) {
+        await fetch(`${url.replace(/\/$/, '')}/pipeline`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify([['SET', `newsletter:lang:${email}`, pendingLang, 'EX', String(LANG_TTL_S)]]),
+        }).catch(() => {});
+      }
+    }
     return added > 0 ? 'added' : 'exists';
   } catch {
     return 'unavailable';
@@ -112,7 +134,7 @@ export default async function handler(req: Req, res: Res) {
   if (!apiKey) { res.status(500).json({ error: 'Email service not configured' }); return; }
 
   try {
-    const stored = await confirmSubscriber(cleanEmail);
+    const stored = await confirmSubscriber(cleanEmail, lang);
     if (stored === 'added') {
       const from = process.env.CONTACT_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
       const r = await fetch('https://api.resend.com/emails', {
@@ -128,7 +150,7 @@ export default async function handler(req: Req, res: Res) {
             : 'Thank you for subscribing to Dr. Seynudé Dagnon’s newsletter.\n\nPublications: https://seynudedagnon.com/publications\nMedia: https://seynudedagnon.com/media\n\nBest regards,\nDr. Seynudé Jean-Fortuné Dagnon',
         }),
       });
-      if (!r.ok) { const err = await r.text(); console.error('Resend welcome error', err); res.status(500).json({ error: 'Failed to send' }); return; }
+      if (!r.ok) { const err = await r.text(); console.error('Resend welcome error', err); await alertOwner('newsletter welcome', `Resend refused the send: ${err}`); res.status(500).json({ error: 'Failed to send' }); return; }
     }
 
     const done = lang === 'fr'

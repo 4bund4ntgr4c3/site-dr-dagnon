@@ -10,6 +10,8 @@ export interface NewsletterIssue {
   title: Record<Lang, string>;
   summary: Record<Lang, string>;
   link: string;
+  /** Longer readable extract of the issue, shown inline on the archive page. */
+  excerpt?: Record<Lang, string>;
 }
 
 /* Intentionally empty until the first issue is actually sent: an archive

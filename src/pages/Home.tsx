@@ -7,6 +7,7 @@ import { Achievements } from '@/sections/Achievements';
 import { Education } from '@/sections/Education';
 import { Publications } from '@/sections/Publications';
 import { LatestTribune } from '@/sections/LatestTribune';
+import { PressQuotes } from '@/sections/PressQuotes';
 import { Media } from '@/sections/Media';
 import { Newsletter } from '@/sections/Newsletter';
 import { useSectionTracking } from '@/hooks/useSectionTracking';
@@ -24,6 +25,7 @@ export default function Home() {
       <Education />
       <Publications />
       <LatestTribune />
+      <PressQuotes />
       <Media />
       <Newsletter />
     </main>

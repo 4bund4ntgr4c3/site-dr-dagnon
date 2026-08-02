@@ -253,6 +253,10 @@
       "destination": "/newsletter/index.html"
     },
     {
+      "source": "/impact",
+      "destination": "/impact/index.html"
+    },
+    {
       "source": "/fr",
       "destination": "/fr/index.html"
     },
@@ -347,6 +351,10 @@
     {
       "source": "/fr/newsletter",
       "destination": "/fr/newsletter/index.html"
+    },
+    {
+      "source": "/fr/impact",
+      "destination": "/fr/impact/index.html"
     },
     {
       "source": "/media/community/nuit-paludisme-1",

@@ -67,6 +67,7 @@ const ROUTES = [
   '/presse',
   '/inviter',
   '/newsletter',
+  '/impact',
 ];
 
 const dist = path.resolve('dist');

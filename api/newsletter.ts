@@ -1,6 +1,7 @@
 import { rateLimit } from './_rate-limit.js';
 import { originAllowed } from './_origin.js';
 import { issueToken } from './_tokens.js';
+import { alertOwner } from './_alert.js';
 
 /* ── Shared email template helpers ────────────────────────────────
    Inline copies of the ones in contact.ts: an earlier attempt at sharing
@@ -137,7 +138,7 @@ export default async function handler(req: Req, res: Res) {
           : `Thank you for your interest in Dr. Seynudé Dagnon’s newsletter.\n\nClick this link to confirm your subscription (valid for 7 days):\n${href}\n\nIf you did not request this subscription, ignore this email.`,
       }),
     });
-    if (!r.ok) { const err = await r.text(); console.error('Resend error', err); res.status(500).json({ error: 'Failed to send' }); return; }
+    if (!r.ok) { const err = await r.text(); console.error('Resend error', err); await alertOwner('newsletter confirmation', `Resend refused the send: ${err}`); res.status(500).json({ error: 'Failed to send' }); return; }
 
     res.status(200).json({ ok: true, pending: true });
   } catch (e) {

@@ -1,11 +1,78 @@
+import { useState } from 'react';
 import { Link } from 'react-router';
-import { Mail, ArrowUpRight, CalendarDays, BookOpen, Bell } from 'lucide-react';
+import { Mail, ArrowUpRight, CalendarDays, BookOpen, Bell, ChevronDown } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { PushButton } from '@/components/PushButton';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
-import { NEWSLETTER_ISSUES } from '@/data/newsletters';
+import { NEWSLETTER_ISSUES, type NewsletterIssue } from '@/data/newsletters';
+
+function IssueCard({ issue, i }: { issue: NewsletterIssue; i: number }) {
+  const { lang } = useLang();
+  const t = UI[lang];
+  const [open, setOpen] = useState(false);
+  const excerpt = issue.excerpt?.[lang];
+
+  return (
+    <Reveal delay={Math.min(i * 0.05, 0.3)}>
+      <article className="group flex flex-col gap-4 rounded-2xl border border-pine-900/10 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-pine-950 text-gold-400">
+            <BookOpen size={22} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-900/60">
+              <CalendarDays size={12} />
+              {t['newsletterPage.issueDate']}{' '}
+              {new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : 'en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              }).format(new Date(`${issue.date}T00:00:00Z`))}
+            </p>
+            <h2 className="mt-1 font-display text-[1.15rem] font-semibold leading-snug text-pine-900">
+              {issue.title[lang]}
+            </h2>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-pine-900/70 line-clamp-2">
+              {issue.summary[lang]}
+            </p>
+          </div>
+          <a
+            href={issue.link}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-pine-900/15 px-5 py-2.5 text-[12.5px] font-semibold text-pine-900 transition-all hover:border-gold-500/50 hover:text-gold-700"
+          >
+            {t['newsletterPage.issueRead']}
+            <ArrowUpRight size={14} />
+          </a>
+        </div>
+        {excerpt && (
+          <div className="border-t border-pine-900/10 pt-4">
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-700 transition-colors hover:text-gold-500"
+            >
+              {open ? t['newsletterPage.excerptHide'] : t['newsletterPage.excerpt']}
+              <ChevronDown
+                size={14}
+                className={`transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+              />
+            </button>
+            {open && (
+              <p className="mt-3 whitespace-pre-line text-[13.5px] leading-relaxed text-pine-900/75">
+                {excerpt}
+              </p>
+            )}
+          </div>
+        )}
+      </article>
+    </Reveal>
+  );
+}
 
 export default function NewsletterArchive() {
   const { lang } = useLang();
@@ -39,39 +106,7 @@ export default function NewsletterArchive() {
           {NEWSLETTER_ISSUES.length > 0 ? (
             <div className="space-y-4">
               {NEWSLETTER_ISSUES.map((issue, i) => (
-                <Reveal key={issue.id} delay={Math.min(i * 0.05, 0.3)}>
-                  <article className="group flex flex-col gap-4 rounded-2xl border border-pine-900/10 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 sm:flex-row sm:items-center">
-                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-pine-950 text-gold-400">
-                      <BookOpen size={22} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-900/60">
-                        <CalendarDays size={12} />
-                        {t['newsletterPage.issueDate']}{' '}
-                        {new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : 'en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        }).format(new Date(`${issue.date}T00:00:00Z`))}
-                      </p>
-                      <h2 className="mt-1 font-display text-[1.15rem] font-semibold leading-snug text-pine-900">
-                        {issue.title[lang]}
-                      </h2>
-                      <p className="mt-1.5 text-[13px] leading-relaxed text-pine-900/70 line-clamp-2">
-                        {issue.summary[lang]}
-                      </p>
-                    </div>
-                    <a
-                      href={issue.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-pine-900/15 px-5 py-2.5 text-[12.5px] font-semibold text-pine-900 transition-all hover:border-gold-500/50 hover:text-gold-700"
-                    >
-                      {t['newsletterPage.issueRead']}
-                      <ArrowUpRight size={14} />
-                    </a>
-                  </article>
-                </Reveal>
+                <IssueCard key={issue.id} issue={issue} i={i} />
               ))}
             </div>
           ) : (

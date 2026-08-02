@@ -9,6 +9,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import webPush from 'web-push';
 
 process.env.RESEND_API_KEY = 'test-key';
 process.env.CRON_SECRET = 'test-cron';
@@ -44,7 +45,7 @@ globalThis.fetch = async (url, opts) => {
 
 const mod = await import(pathToFileURL(path.resolve('node_modules/.tmp/api/agenda-reminders.js')).href);
 const handler = mod.default;
-const { upcoming, plan, chunk, subjectLine, reminderText, run } = mod;
+const { upcoming, plan, chunk, subjectLine, reminderText, pushPayload, run } = mod;
 
 /* fixed "today": 2026-08-03, local time — see tests/calendar-links.test.mjs */
 const FROM = new Date(2026, 7, 3);
@@ -115,6 +116,20 @@ test('reminderText lists every event with the agenda link', () => {
   assert.match(text, /https:\/\/seynudedagnon.com\/agenda/);
 });
 
+test('pushPayload summarizes the due events and points at the agenda', () => {
+  const payload = JSON.parse(pushPayload([ITEMS[0]]));
+  assert.equal(payload.title, 'Agenda — 2026-08-10');
+  assert.equal(payload.body, '2026-08-10 — Titre A / Title A');
+  assert.equal(payload.url, 'https://seynudedagnon.com/agenda');
+  assert.equal(payload.tag, 'agenda-reminder', 'a fixed tag makes each reminder replace the previous one');
+});
+
+test('pushPayload lists up to three events with a bilingual title', () => {
+  const payload = JSON.parse(pushPayload([ITEMS[0], ITEMS[1], ITEMS[2], ITEMS[0]]));
+  assert.equal(payload.title, 'Agenda — 4 événements à venir / upcoming events');
+  assert.equal(payload.body.split('\n').length, 3, 'the body lists the soonest events, not all of them');
+});
+
 /* ── run: full send through the stubbed stores ──────────────────── */
 
 test('run sends one personalized email per recipient and records the ids', async () => {
@@ -122,8 +137,9 @@ test('run sends one personalized email per recipient and records the ids', async
   sent.length = 0;
   kvCalls.length = 0;
   const result = await run({ items: ITEMS, from: FROM, owner: 'admin@example.test', apiKey: 'test-key' });
-  /* owner + one subscriber, deduplicated */
-  assert.deepEqual(result, { sent: 1, recipients: 2 });
+  /* owner + one subscriber, deduplicated; no VAPID keys in this env,
+     so the push channel is skipped */
+  assert.deepEqual(result, { sent: 1, recipients: 2, pushed: 0 });
 
   assert.equal(sent.length, 2);
   const ownerMail = sent.find((m) => m.to[0] === 'admin@example.test');
@@ -175,9 +191,29 @@ test('run sends nothing when every due event was already reminded', async () => 
   sent.length = 0;
   kvCalls.length = 0;
   const result = await run({ items: ITEMS, from: FROM, owner: 'admin@example.test', apiKey: 'test-key' });
-  assert.deepEqual(result, { sent: 0, recipients: 2 });
+  assert.deepEqual(result, { sent: 0, recipients: 2, pushed: 0 });
   assert.equal(sent.length, 0, 'no email should go out');
   assert.ok(!kvCalls.some((c) => c.commands[0]?.[0] === 'SET'), 'nothing should be recorded');
+});
+
+test('run pushes when VAPID keys are configured, tolerating a store without subscriptions', async () => {
+  reminded = [];
+  sent.length = 0;
+  kvCalls.length = 0;
+  const keys = webPush.generateVAPIDKeys();
+  process.env.VAPID_PUBLIC_KEY = keys.publicKey;
+  process.env.VAPID_PRIVATE_KEY = keys.privateKey;
+  try {
+    const result = await run({ items: ITEMS, from: FROM, owner: 'admin@example.test', apiKey: 'test-key' });
+    assert.equal(result.pushed, 0, 'no sendable subscription in the fake store, and none may crash the run');
+    assert.ok(
+      kvCalls.some((c) => c.commands[0]?.[0] === 'SMEMBERS' && c.commands[0]?.[1] === 'push:subs'),
+      'the push set must be read when a reminder goes out',
+    );
+  } finally {
+    delete process.env.VAPID_PUBLIC_KEY;
+    delete process.env.VAPID_PRIVATE_KEY;
+  }
 });
 
 test('run skips when the owner or the api key is missing', async () => {
@@ -216,6 +252,6 @@ test('a signed request answers with what was sent', async () => {
   const out = await call(handler, { method: 'GET', authorization: 'Bearer test-cron' });
   assert.equal(out.code, 200);
   /* every real agenda entry is in the past, so a real run sends nothing */
-  assert.deepEqual(out.body, { ok: true, sent: 0, recipients: 2 });
+  assert.deepEqual(out.body, { ok: true, sent: 0, recipients: 2, pushed: 0 });
   assert.equal(sent.length, 0);
 });

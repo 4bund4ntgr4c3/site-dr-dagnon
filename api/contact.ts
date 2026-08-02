@@ -1,5 +1,6 @@
 import { rateLimit } from './_rate-limit.js';
 import { originAllowed } from './_origin.js';
+import { alertOwner } from './_alert.js';
 
 /* ── Shared email template helpers ──────────────────────────────── */
 
@@ -102,7 +103,7 @@ export default async function handler(req: Req, res: Res) {
         text: `New message from ${cleanName} <${cleanEmail}>\nPhone: ${cleanPhone}${cleanTypeLabel ? `\nRequest type: ${cleanTypeLabel}` : ''}${cleanSubject ? `\nSubject: ${cleanSubject}` : ''}\n\n${cleanMessage}`,
       }),
     });
-    if (!r.ok) { const err = await r.text(); console.error('Resend error', err); res.status(500).json({ error: 'Failed to send' }); return; }
+    if (!r.ok) { const err = await r.text(); console.error('Resend error', err); await alertOwner('contact form', `Resend refused the send: ${err}`); res.status(500).json({ error: 'Failed to send' }); return; }
 
     // 2) auto-reply
     try {
@@ -121,6 +122,7 @@ export default async function handler(req: Req, res: Res) {
     res.status(200).json({ ok: true });
   } catch (e) {
     console.error(e);
+    await alertOwner('contact form', `unexpected error: ${e instanceof Error ? e.message : String(e)}`);
     res.status(500).json({ error: 'Server error' });
   }
 }

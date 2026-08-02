@@ -34,6 +34,7 @@ export interface AppPages {
   PressKit: ComponentType
   Invite: ComponentType
   NewsletterArchive: ComponentType
+  Impact: ComponentType
 }
 
 function Loading() {
@@ -78,6 +79,7 @@ const routesFor = (Pages: AppPages) => [
   <Route key="presse" path="presse" element={<Pages.PressKit />} />,
   <Route key="inviter" path="inviter" element={<Pages.Invite />} />,
   <Route key="newsletter" path="newsletter" element={<Pages.NewsletterArchive />} />,
+  <Route key="impact" path="impact" element={<Pages.Impact />} />,
 ]
 
 export default function App({ pages }: { pages: AppPages }) {

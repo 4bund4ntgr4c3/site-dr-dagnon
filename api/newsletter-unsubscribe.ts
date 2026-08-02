@@ -6,9 +6,10 @@ import { checkToken } from './_tokens.js';
  * (see _tokens.ts), so it can only ever unsubscribe that address, and it
  * stops working after 90 days.
  *
- * The address is removed from the subscriber set; the pending key is
- * cleared too, so a stale confirmation link cannot resurrect the
- * subscription. The page is served regardless of KV being up: the token
+ * The address is removed from the subscriber set; the pending key and the
+ * per-language key are cleared too, so a stale confirmation link cannot
+ * resurrect the subscription and no language preference lingers after
+ * opting out. The page is served regardless of KV being up: the token
  * itself is the proof of intent. */
 
 const SITE_URL = 'https://seynudedagnon.com';
@@ -31,6 +32,7 @@ async function removeSubscriber(email: string): Promise<boolean> {
       body: JSON.stringify([
         ['SREM', 'newsletter:emails', email],
         ['DEL', `newsletter:pending:${email}`],
+        ['DEL', `newsletter:lang:${email}`],
       ]),
     });
     if (!response.ok) return false;

@@ -59,6 +59,7 @@ const pages: AppPages = {
   PressKit: page(() => import('./pages/PressKit'), (p) => p === '/presse'),
   Invite: page(() => import('./pages/Invite'), (p) => p === '/inviter'),
   NewsletterArchive: page(() => import('./pages/NewsletterArchive'), (p) => p === '/newsletter'),
+  Impact: page(() => import('./pages/Impact'), (p) => p === '/impact'),
 }
 
 createRoot(document.getElementById('root')!).render(

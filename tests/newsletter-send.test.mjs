@@ -82,3 +82,41 @@ test('the subject counts the kinds sent', () => {
   assert.equal(subjectLine([trib('a')]), 'Newsletter — 1 new tribune');
   assert.equal(subjectLine([trib('a'), pub('b')]), 'Newsletter — 1 new publication & 1 new tribune');
 });
+
+test('a French digest is French-only, including the escape-hatch copy', () => {
+  const html = digestHtml([pub('x'), trib('y')], 'fr');
+  assert.match(html, /Bonjour,/);
+  assert.match(html, /Nouvelles publications et tribunes/);
+  assert.match(html, /Tribune/);
+  assert.match(html, /Lire la suite/);
+  assert.doesNotMatch(html, /Hello,|Read more|Op-ed/, 'no English string may leak into the French digest');
+  const text = digestText([pub('x'), trib('y')], 'fr');
+  assert.match(text, /PUBLICATION: Titre x/);
+  assert.match(text, /TRIBUNE: Tribune y/);
+  assert.equal(subjectLine([trib('y')], 'fr'), 'Newsletter — 1 nouvelle tribune');
+  assert.equal(subjectLine([pub('x'), pub('x')], 'fr'), 'Newsletter — 2 nouvelles publications');
+});
+
+test('an English digest is English-only, including the escape-hatch copy', () => {
+  const html = digestHtml([pub('x'), trib('y')], 'en');
+  assert.match(html, /Hello,/);
+  assert.match(html, /New publications and op-eds/);
+  assert.match(html, /Op-ed/);
+  assert.match(html, /Read more/);
+  assert.doesNotMatch(html, /Bonjour,|Lire la suite|Tribune|nouvelles publications/, 'no French string may leak into the English digest');
+  const text = digestText([pub('x'), trib('y')], 'en');
+  assert.match(text, /PUBLICATION: Title x/);
+  assert.match(text, /OP-ED: Op-ed y/);
+  assert.equal(subjectLine([pub('x')], 'en'), 'Newsletter — 1 new publication');
+  assert.equal(subjectLine([trib('y'), trib('y')], 'en'), 'Newsletter — 2 new tribunes');
+  assert.equal(subjectLine([], 'en'), 'Newsletter — New content');
+});
+
+test('the bilingual default stays untouched for legacy subscribers and the owner copy', () => {
+  const html = digestHtml([pub('x')]);
+  assert.match(html, /Bonjour, \/ Hello,/);
+  assert.match(html, /Titre x \/ Title x/);
+  const text = digestText([pub('x')]);
+  assert.match(text, /PUBLICATION: Titre x \/ Title x/);
+  assert.equal(subjectLine([trib('a')]), 'Newsletter — 1 new tribune');
+});

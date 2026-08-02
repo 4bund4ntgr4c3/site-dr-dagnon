@@ -34,10 +34,38 @@ const STATE_KEY = 'newsletter:last-sent';
 const SUBS_KEY = 'newsletter:emails';
 const PUSH_KEY = 'push:subs';
 const PUSH_PREFIX = 'push:sub:';
+const LANG_KEY = 'newsletter:lang:';
 
 const C = { pine950: '#0c2e2a', pine900: '#133e38', gold500: '#c9a24b', gold400: '#d4b36a', ivory: '#faf8f4', white: '#ffffff', ink: '#3a3a3a', muted: '#6b7280' };
 const ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 const esc = (s) => s.replace(/[&<>"']/g, (c) => ESCAPES[c]);
+
+/* Per-language copy for the digest. 'both' (the legacy default, and the
+   owner's copy) keeps the old bilingual card. */
+const L = {
+  fr: {
+    publication: 'Publication',
+    tribune: 'Tribune',
+    read: 'Lire la suite',
+    hello: 'Bonjour,',
+    intro: 'Nouvelles publications et tribunes sur seynudedagnon.com :',
+    pubOne: 'nouvelle publication',
+    pubMany: 'nouvelles publications',
+    tribOne: 'nouvelle tribune',
+    tribMany: 'nouvelles tribunes',
+  },
+  en: {
+    publication: 'Publication',
+    tribune: 'Op-ed',
+    read: 'Read more',
+    hello: 'Hello,',
+    intro: 'New publications and op-eds on seynudedagnon.com:',
+    pubOne: 'new publication',
+    pubMany: 'new publications',
+    tribOne: 'new tribune',
+    tribMany: 'new tribunes',
+  },
+};
 
 /* ── one-click unsubscribe tokens ─────────────────────────────────
    Same scheme as api/_tokens.ts (which this script cannot import — it is
@@ -105,16 +133,40 @@ export function buildItems(pubs, tribunes) {
   ];
 }
 
-function itemHtml(item) {
-  const label = item.kind === 'tribune' ? 'Tribune / Op-ed' : 'Publication';
-  return `<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px"><tr><td style="padding:20px 22px;background:${C.ivory};border-radius:12px;border-left:3px solid ${C.gold500}"><p style="margin:0 0 6px;font-size:10.5px;font-weight:600;color:${C.muted};text-transform:uppercase;letter-spacing:.1em">${label}</p><p style="margin:0;font-size:16px;font-weight:600;line-height:1.4;color:${C.pine900}">${esc(item.title.fr)}</p><p style="margin:6px 0 0;font-size:13px;line-height:1.6;color:${C.ink}">${esc(item.description.fr)}</p><p style="margin:12px 0 0;padding-top:12px;border-top:1px solid rgba(12,46,42,.12);font-size:15px;font-weight:600;line-height:1.4;color:${C.pine900}">${esc(item.title.en)}</p><p style="margin:6px 0 0;font-size:13px;line-height:1.6;color:${C.ink}">${esc(item.description.en)}</p><p style="margin:12px 0 0"><a href="${item.url}" style="display:inline-block;background:${C.pine950};color:${C.gold400};font-size:12.5px;font-weight:600;padding:10px 22px;border-radius:999px;text-decoration:none">Lire la suite / Read more</a></p></td></tr></table>`;
+function itemHtml(item, lang = 'both') {
+  const label = item.kind === 'tribune' ? (lang === 'fr' ? L.fr.tribune : lang === 'en' ? L.en.tribune : 'Tribune / Op-ed') : (lang === 'fr' ? L.fr.publication : lang === 'en' ? L.en.publication : 'Publication');
+  const read = lang === 'fr' ? L.fr.read : lang === 'en' ? L.en.read : 'Lire la suite / Read more';
+  const title = lang === 'fr' ? item.title.fr : lang === 'en' ? item.title.en : `${item.title.fr} / ${item.title.en}`;
+  const description = lang === 'fr' ? item.description.fr : lang === 'en' ? item.description.en : `${item.description.fr} / ${item.description.en}`;
+  return `<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px"><tr><td style="padding:20px 22px;background:${C.ivory};border-radius:12px;border-left:3px solid ${C.gold500}"><p style="margin:0 0 6px;font-size:10.5px;font-weight:600;color:${C.muted};text-transform:uppercase;letter-spacing:.1em">${label}</p><p style="margin:0;font-size:16px;font-weight:600;line-height:1.4;color:${C.pine900}">${esc(title)}</p><p style="margin:6px 0 0;font-size:13px;line-height:1.6;color:${C.ink}">${esc(description)}</p><p style="margin:12px 0 0"><a href="${item.url}" style="display:inline-block;background:${C.pine950};color:${C.gold400};font-size:12.5px;font-weight:600;padding:10px 22px;border-radius:999px;text-decoration:none">${read}</a></p></td></tr></table>`;
 }
 
-export function digestHtml(items) {
-  return `<tr><td style="padding:28px 32px"><p style="margin:0;font-size:14px;line-height:1.7;color:${C.ink}">Bonjour, / Hello,</p><p style="margin:12px 0 0;font-size:14px;line-height:1.7;color:${C.ink}">Nouvelles publications et tribunes sur seynudedagnon.com : / New publications and op-eds on seynudedagnon.com:</p><table width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0 0">${items.map(itemHtml).join('')}</table></td></tr>`;
+export function digestHtml(items, lang = 'both') {
+  const copy = lang === 'fr' ? L.fr : lang === 'en' ? L.en : null;
+  const hello = copy ? copy.hello : 'Bonjour, / Hello,';
+  const intro = copy ? copy.intro : 'Nouvelles publications et tribunes sur seynudedagnon.com : / New publications and op-eds on seynudedagnon.com:';
+  return `<tr><td style="padding:28px 32px"><p style="margin:0;font-size:14px;line-height:1.7;color:${C.ink}">${hello}</p><p style="margin:12px 0 0;font-size:14px;line-height:1.7;color:${C.ink}">${intro}</p><table width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0 0">${items.map((i) => itemHtml(i, lang)).join('')}</table></td></tr>`;
 }
 
-export function digestText(items) {
+export function digestText(items, lang = 'both') {
+  if (lang === 'fr') {
+    const lines = ['Bonjour,', 'Nouvelles publications et tribunes sur seynudedagnon.com :', ''];
+    for (const item of items) {
+      lines.push(`${item.kind === 'tribune' ? 'TRIBUNE' : 'PUBLICATION'}: ${item.title.fr}`);
+      lines.push(item.url);
+      lines.push('');
+    }
+    return lines.join('\n');
+  }
+  if (lang === 'en') {
+    const lines = ['Hello,', 'New publications and op-eds on seynudedagnon.com:', ''];
+    for (const item of items) {
+      lines.push(`${item.kind === 'tribune' ? 'OP-ED' : 'PUBLICATION'}: ${item.title.en}`);
+      lines.push(item.url);
+      lines.push('');
+    }
+    return lines.join('\n');
+  }
   const lines = ['Hello,', 'New publications and op-eds on seynudedagnon.com:', ''];
   for (const item of items) {
     lines.push(`${item.kind === 'tribune' ? 'TRIBUNE' : 'PUBLICATION'}: ${item.title.fr} / ${item.title.en}`);
@@ -124,12 +176,15 @@ export function digestText(items) {
   return lines.join('\n');
 }
 
-export function subjectLine(items) {
+export function subjectLine(items, lang = 'both') {
   const pubs = items.filter((i) => i.kind === 'publication').length;
   const tribs = items.length - pubs;
+  const copy = lang === 'fr' ? L.fr : lang === 'en' ? L.en : null;
+  const pubWord = copy ? (pubs > 1 ? copy.pubMany : copy.pubOne) : pubs > 1 ? 'new publications' : 'new publication';
+  const tribWord = copy ? (tribs > 1 ? copy.tribMany : copy.tribOne) : tribs > 1 ? 'new tribunes' : 'new tribune';
   const parts = [];
-  if (pubs) parts.push(`${pubs} new publication${pubs > 1 ? 's' : ''}`);
-  if (tribs) parts.push(`${tribs} new tribune${tribs > 1 ? 's' : ''}`);
+  if (pubs) parts.push(`${pubs} ${pubWord}`);
+  if (tribs) parts.push(`${tribs} ${tribWord}`);
   return `Newsletter — ${parts.join(' & ') || 'New content'}`;
 }
 
@@ -189,23 +244,42 @@ async function loadSubscribers() {
   return Array.isArray(results?.[0]?.result) ? results[0].result.filter((s) => typeof s === 'string') : [];
 }
 
+/* The language each subscriber confirmed in (`newsletter:lang:<email>`,
+   written by api/newsletter-confirm.ts). Missing entries — legacy
+   subscribers, or a KV miss — fall back to the bilingual digest. */
+async function loadSubscriberLangs(subscribers) {
+  const langs = new Map();
+  if (subscribers.length === 0) return langs;
+  const results = await kvPipeline(subscribers.map((e) => ['GET', `${LANG_KEY}${e}`]));
+  if (!results) return langs;
+  subscribers.forEach((e, i) => {
+    const raw = results[i]?.result;
+    if (raw === 'fr' || raw === 'en') langs.set(e, raw);
+  });
+  return langs;
+}
+
 /* ── sending ────────────────────────────────────────────────────── */
 
-async function sendDigest({ send, subject, owner, apiKey }) {
+async function sendDigest({ send, owner, apiKey }) {
   const subscribers = await loadSubscribers();
+  const langs = await loadSubscriberLangs(subscribers);
   /* per-recipient sends so each copy carries its own one-click unsubscribe
      link (bcc batches used to share a single mailto:) — the owner gets a
      copy too, they may not be in the subscriber set */
-  const recipients = [...new Set([owner, ...subscribers])];
+  const recipients = [
+    { email: owner, lang: 'both' },
+    ...subscribers.map((email) => ({ email, lang: langs.get(email) ?? 'both' })),
+  ];
   const from = process.env.NEWSLETTER_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
-  for (const [i, to] of recipients.entries()) {
-    const href = unsubHref(to);
+  for (const [i, r] of recipients.entries()) {
+    const href = unsubHref(r.email);
     const body = {
       from,
-      to: [to],
-      subject,
-      html: wrap(hdr() + digestHtml(send) + ftr(href)),
-      text: `${digestText(send)}\n\n—\nUnsubscribe: ${href}`,
+      to: [r.email],
+      subject: subjectLine(send, r.lang),
+      html: wrap(hdr() + digestHtml(send, r.lang) + ftr(href)),
+      text: `${digestText(send, r.lang)}\n\n—\nUnsubscribe: ${href}`,
     };
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -359,7 +433,7 @@ async function main() {
     return;
   }
 
-  const sent = await sendDigest({ send, subject: subjectLine(send), owner, apiKey });
+  const sent = await sendDigest({ send, owner, apiKey });
   const pushed = await sendPushNotifications(send);
 
   const known = state.ids;

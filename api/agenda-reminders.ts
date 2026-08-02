@@ -1,6 +1,8 @@
 import { AGENDA_ITEMS, type AgendaEntry } from '../src/data/agenda.js';
 import { daysUntil, gcalUrl, outlookUrl } from '../src/lib/calendar-links.js';
 import { issueToken } from './_tokens.js';
+import { alertOwner } from './_alert.js';
+import webPush from 'web-push';
 
 /* Weekly cron endpoint: reminds newsletter subscribers of upcoming public
  * events. Wired in vercel.json (`crons`) — Vercel attaches
@@ -10,6 +12,10 @@ import { issueToken } from './_tokens.js';
  * are recorded in KV (`agenda:reminded`) after a successful send, mirroring
  * the newsletter digest's state pattern.
  *
+ * Subscribers of the web push channel (api/push-subscribe.ts) get a
+ * notification too when a reminder actually goes out — the push part is
+ * optional, so the cron keeps working when VAPID keys are missing.
+ *
  * Template helpers are inline copies of the ones in newsletter.ts /
  * send-newsletter.mjs — see the comment atop _rate-limit.ts. */
 
@@ -17,6 +23,8 @@ const SITE_URL = 'https://seynudedagnon.com';
 const HORIZON_DAYS = 14;
 const STATE_KEY = 'agenda:reminded';
 const SUBS_KEY = 'newsletter:emails';
+const PUSH_KEY = 'push:subs';
+const PUSH_PREFIX = 'push:sub:';
 
 const C = { pine950: '#0c2e2a', pine900: '#133e38', gold500: '#c9a24b', gold400: '#d4b36a', ivory: '#faf8f4', white: '#ffffff', ink: '#3a3a3a', muted: '#6b7280' };
 const ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
@@ -87,6 +95,64 @@ export function reminderText(items: AgendaEntry[]): string {
   return lines.join('\n');
 }
 
+/** notification payload for the web push channel; the fixed tag makes each
+ *  new reminder replace the previous one in the notification tray */
+export function pushPayload(items: AgendaEntry[]): string {
+  const n = items.length;
+  const first = items[0];
+  const lines = items.slice(0, 3).map((e) => `${e.date} — ${e.title.fr} / ${e.title.en}`);
+  return JSON.stringify({
+    title: n === 1 ? `Agenda — ${first.date}` : `Agenda — ${n} événements à venir / upcoming events`,
+    body: lines.join('\n'),
+    url: `${SITE_URL}/agenda`,
+    tag: 'agenda-reminder',
+  });
+}
+
+/* ── web push ─────────────────────────────────────────────────────
+   Fires only when a reminder actually went out, so a notification
+   appears exactly when there is something new. Dead subscriptions
+   (the push service answered 404/410) are dropped from the store.
+   Push is optional: missing VAPID keys skip the channel, never the
+   email reminder. */
+
+async function sendPushNotifications(items: AgendaEntry[]): Promise<number> {
+  const pub = process.env.VAPID_PUBLIC_KEY;
+  const priv = process.env.VAPID_PRIVATE_KEY;
+  if (!pub || !priv) return 0;
+  webPush.setVapidDetails(`mailto:${process.env.NEWSLETTER_TO_EMAIL || 'admin@seynudedagnon.com'}`, pub, priv);
+
+  const results = await kvPipeline([['SMEMBERS', PUSH_KEY]]);
+  const hashes = Array.isArray(results?.[0]?.result) ? results[0].result.filter((s) => typeof s === 'string') : [];
+
+  const payload = pushPayload(items);
+  let sent = 0;
+  for (const hash of hashes) {
+    const subResults = await kvPipeline([['GET', `${PUSH_PREFIX}${hash}`]]);
+    const raw = subResults?.[0]?.result;
+    if (typeof raw !== 'string') continue;
+    let sub;
+    try {
+      sub = JSON.parse(raw);
+    } catch {
+      continue;
+    }
+    try {
+      await webPush.sendNotification(sub, payload);
+      sent++;
+    } catch (e) {
+      if ((e as { statusCode?: number } | null)?.statusCode === 404 || (e as { statusCode?: number } | null)?.statusCode === 410) {
+        await kvPipeline([
+          ['SREM', PUSH_KEY, hash],
+          ['DEL', `${PUSH_PREFIX}${hash}`],
+        ]);
+        console.log(`[agenda-reminders] push subscription dropped (${(e as { statusCode?: number }).statusCode})`);
+      }
+    }
+  }
+  return sent;
+}
+
 /* ── KV ─────────────────────────────────────────────────────────── */
 
 interface ReminderState { ids?: string[] }
@@ -137,7 +203,7 @@ async function loadSubscribers(): Promise<string[]> {
 
 /* ── run ────────────────────────────────────────────────────────── */
 
-interface RunResult { skipped?: boolean; sent?: number; recipients?: number }
+interface RunResult { skipped?: boolean; sent?: number; recipients?: number; pushed?: number }
 
 export async function run({ items = AGENDA_ITEMS, from = new Date(), owner, apiKey }: { items?: AgendaEntry[]; from?: Date; owner?: string; apiKey?: string }): Promise<RunResult> {
   if (!apiKey || !owner) return { skipped: true };
@@ -147,7 +213,7 @@ export async function run({ items = AGENDA_ITEMS, from = new Date(), owner, apiK
      link (the old bcc batches all shared a single mailto:). The owner gets
      their own copy — they may not be in the subscriber set. */
   const recipients = Array.from(new Set([owner, ...subscribers]));
-  if (send.length === 0) return { sent: 0, recipients: recipients.length };
+  if (send.length === 0) return { sent: 0, recipients: recipients.length, pushed: 0 };
 
   const subject = subjectLine(send);
   const sender = process.env.NEWSLETTER_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
@@ -175,7 +241,9 @@ export async function run({ items = AGENDA_ITEMS, from = new Date(), owner, apiK
   if (!(await saveState(nextIds))) {
     throw new Error('reminder sent but state not saved — the next cron run will resend it');
   }
-  return { sent: send.length, recipients: recipients.length };
+  const pushed = await sendPushNotifications(send);
+  console.log(`[agenda-reminders] sent ${send.length} event(s) to ${recipients.length} recipient(s), ${pushed} push notification(s)`);
+  return { sent: send.length, recipients: recipients.length, pushed };
 }
 
 /* ── handler ────────────────────────────────────────────────────── */
@@ -200,9 +268,10 @@ export default async function handler(req: Req, res: Res) {
       res.status(200).json({ ok: true, skipped: true });
       return;
     }
-    res.status(200).json({ ok: true, sent: result.sent, recipients: result.recipients });
+    res.status(200).json({ ok: true, sent: result.sent, recipients: result.recipients, pushed: result.pushed ?? 0 });
   } catch (e) {
     console.error(e);
+    await alertOwner('agenda reminders cron', `unexpected error: ${e instanceof Error ? e.message : String(e)}`);
     res.status(500).json({ error: 'Server error' });
   }
 }

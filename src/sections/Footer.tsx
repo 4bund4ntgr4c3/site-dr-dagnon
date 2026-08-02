@@ -116,6 +116,12 @@ export function Footer() {
             >
               {t['footer.linkNewsletter']}
             </Link>
+            <Link
+              to={localePath(lang, '/impact')}
+              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+            >
+              {t['footer.linkImpact']}
+            </Link>
           </nav>
 
           <p className="text-[12px] text-pine-100/50">

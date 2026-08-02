@@ -228,6 +228,19 @@ export const NEWSLETTER_SEO: Record<Lang, { title: string; description: string; 
   },
 };
 
+export const IMPACT_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Impact & résultats — Dr. Dagnon',
+    description: "Résultats mesurables du Dr. Seynudé Dagnon : 1 114 centres de santé, complétude des données de 35 % à 94 %, économies de 3 M$ et portefeuille de 180 M$.",
+    keywords: 'impact Dr Dagnon, résultats paludisme, données de santé Bénin, IRS nord Bénin, digitalisation MILDA, économies G2G, portfolio Fondation Gates',
+  },
+  en: {
+    title: 'Impact & Results — Seynudé Dagnon',
+    description: "Measurable results by Dr. Seynudé Dagnon: 1,114 health facilities, data completeness from 35% to 94%, $3M in savings and a $180M portfolio.",
+    keywords: 'Dr Dagnon impact, malaria results, health data Benin, IRS northern Benin, LLIN digitization, G2G savings, Gates Foundation portfolio',
+  },
+};
+
 export const TRIBUNES_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Tribunes & Analyses — Dr. Dagnon',
@@ -427,6 +440,8 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
     items.push({ name: lang === 'fr' ? 'Inviter le Dr' : 'Invite the Dr', url: absUrl(lang, '/inviter') });
   } else if (path === '/newsletter') {
     items.push({ name: 'Newsletter', url: absUrl(lang, '/newsletter') });
+  } else if (path === '/impact') {
+    items.push({ name: lang === 'fr' ? 'Impact & résultats' : 'Impact & results', url: absUrl(lang, '/impact') });
   }
   return {
     '@context': 'https://schema.org',
@@ -674,6 +689,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isPresse = route === '/presse';
   const isInvite = route === '/inviter';
   const isNewsletter = route === '/newsletter';
+  const isImpact = route === '/impact';
   const isTribunes = route === '/tribunes';
   const isTribuneArticle = route.startsWith('/tribunes/') && !isTribunes;
   const tribuneSlug = isTribuneArticle ? route.split('/tribunes/')[1]?.split('/')[0] || null : null;
@@ -742,7 +758,9 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                 ? INVITER_SEO[lang]
                 : isNewsletter
                   ? NEWSLETTER_SEO[lang]
-                  : SEO[lang];
+                  : isImpact
+                    ? IMPACT_SEO[lang]
+                    : SEO[lang];
 
   const url = absUrl(lang, route);
 
@@ -793,7 +811,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
               ? projectJsonLd(lang, project, url)
               : photo
                 ? imageObjectJsonLd(lang, photo, url)
-                : isMedia || isPub || isAgenda || isTribunes || isProjects || isPresse || isInvite || isNewsletter
+                : isMedia || isPub || isAgenda || isTribunes || isProjects || isPresse || isInvite || isNewsletter || isImpact
                   ? collectionPageJsonLd(lang, data.title, data.description, url)
                   : null,
     },
@@ -823,6 +841,7 @@ export const PRERENDER_ROUTES = [
   '/presse',
   '/inviter',
   '/newsletter',
+  '/impact',
 ];
 
 export const PRERENDER_LANGS: Lang[] = SUPPORTED;
@@ -840,6 +859,7 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/presse': { priority: '0.5', changefreq: 'monthly' },
   '/inviter': { priority: '0.5', changefreq: 'monthly' },
   '/newsletter': { priority: '0.5', changefreq: 'weekly' },
+  '/impact': { priority: '0.7', changefreq: 'monthly' },
   ...Object.fromEntries(
     TRIBUNES.map((t) => [`/tribunes/${t.slug}`, { priority: '0.7', changefreq: 'monthly' }]),
   ),
