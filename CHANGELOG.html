@@ -85,15 +85,28 @@
     <h1>Site Dr. Seynude Dagnon</h1>
     <p class="sub">Portfolio &amp; site vitrine — <code>site-dr-dagnon</code></p>
     <div class="stats">
-      <span class="stat"><strong>212</strong> commits</span>
-      <span class="stat"><strong>13</strong> versions</span>
-      <span class="stat"><strong>98</strong> tests automatisés</span>
+      <span class="stat"><strong>213</strong> commits</span>
+      <span class="stat"><strong>14</strong> versions</span>
+      <span class="stat"><strong>100</strong> tests automatisés</span>
       <span class="stat"><strong>100</strong> pages prédéfinies</span>
       <span class="stat">16 juil → 1 août 2026</span>
     </div>
   </header>
 
   <div class="rule"></div>
+
+  <!-- ============ v1.4 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v1.4</span><span class="vdate">1 août 2026</span></div>
+    <h2 class="vtitle">Lecture immersive, contenus liés &amp; PWA installable</h2>
+    <p class="vsummary">Le site devient installable et fonctionnel hors-ligne, les articles gagnent une barre de progression et un temps de lecture, et l'accueil met en avant la dernière tribune.</p>
+    <ul>
+      <li><strong>PWA installable</strong> — un service worker généré au build (même liste de routes que le sitemap, plus un hash de version) précache les 100 pages, les assets versionnés et les photos communautaires ; navigation network-first avec repli hors-ligne, autres ressources cache-first. Inscrit en production uniquement, servi avec <code>max-age=0</code> pour que les mises à jour propagent.</li>
+      <li><strong>Lecture immersive</strong> — barre de progression dorée épinglée au-dessus de la navbar (throttlée en requestAnimationFrame) et « Temps de lecture · X min » (≈200 mots/min) sur chaque tribune et étude de cas.</li>
+      <li><strong>Contenus liés</strong> — bloc « À lire aussi » avec les deux articles les plus récents en fin de tribune et d'étude de cas, et nouvelle section « Dernière tribune » sur l'accueil avec date, source et lien de lecture.</li>
+      <li><strong>Audit des demandes</strong> — vérifié que les fonctions déjà présentes couvraient 5 des 7 features demandées (hreflang/canonical, RSS, partage, iCal, anti-spam honeypot) : rien de dupliqué.</li>
+    </ul>
+  </section>
 
   <!-- ============ v1.3 ============ -->
   <section class="version">
@@ -290,7 +303,7 @@
   </section>
 
   <footer>
-    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>0623d73</code> (v1.3)<br>
+    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>8effe02</code> (v1.4)<br>
     Repo : <a href="https://github.com/1wxxhktop/site-dr-dagnon">github.com/1wxxhktop/site-dr-dagnon</a>
   </footer>
 
