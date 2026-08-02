@@ -86,14 +86,30 @@
     <p class="sub">Portfolio &amp; site vitrine — <code>site-dr-dagnon</code></p>
     <div class="stats">
       <span class="stat"><strong>226</strong> commits</span>
-      <span class="stat"><strong>19</strong> versions</span>
-      <span class="stat"><strong>184</strong> tests automatisés</span>
-      <span class="stat"><strong>102</strong> pages prédéfinies</span>
+      <span class="stat"><strong>20</strong> versions</span>
+      <span class="stat"><strong>207</strong> tests automatisés</span>
+      <span class="stat"><strong>106</strong> pages prédéfinies</span>
       <span class="stat">16 juil → 2 août 2026</span>
     </div>
   </header>
 
   <div class="rule"></div>
+
+  <!-- ============ v2.0 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v2.0</span><span class="vdate">2 août 2026</span></div>
+    <h2 class="vtitle">Mentions légales, bibliographie, administration, préférences, audio &amp; monitoring</h2>
+    <p class="vsummary">Le site devient un produit complet : pages réglementaires et bibliographie scientifique indexées, tableau de bord d'administration protégé, abonnés maîtres de leur fréquence de newsletter, tribunes audibles, et monitoring de performance réel branché sur Vercel — le tout gardé par un budget de performance CI et une suite de 207 tests.</p>
+    <ul>
+      <li><strong>Mentions légales &amp; RGPD</strong> — nouvelle route <code>/legal</code> (et <code>/fr/legal</code>) : éditeur, hébergement (Vercel), données personnelles, cookies, sécurité, presse et droits de propriété intellectuelle, mise à jour du 2 août 2026 ; page en fil d'Ariane, JSON-LD <code>CollectionPage</code>, sitemap (priorité 0,3) et lien dans le footer.</li>
+      <li><strong>Bibliographie scientifique</strong> — nouvelle route <code>/bibliography</code> (et <code>/fr/bibliography</code>) : 24 publications avec DOI issues du même fichier que les pages projets (badge DOI), filtres par année et tri, recherche partagée par URL, export de toute la liste en BibTeX ou citation unique (APA/RIS/BibTeX) via la boîte de citation — le DOI est privilégié dans l'APA et renseigne <code>volume</code>/<code>number</code>/<code>pages</code>/<code>doi</code> en BibTeX et <code>VL/IS/SP/DO</code> en RIS.</li>
+      <li><strong>Tableau de bord d'administration</strong> — nouvelle route client-only <code>/admin</code> (et <code>/fr/admin</code>) : abonnés à la newsletter, abonnés push, dernier digest envoyé et événements rappelés, agrégés en un seul aller-retour KV ; accès par jeton porteur (secret d'administration, ou secret de cron en secours), session en <code>sessionStorage</code>, page jamais pré-rendue ni indexée (<code>noindex</code> réaffirmé au montage).</li>
+      <li><strong>Préférences de newsletter</strong> — chaque email de digest porte désormais un lien « Préférences » : le lecteur choisit la fréquence hebdomadaire ou mensuelle (route client-only <code>/newsletter/preferences</code>, lien signé 90 jours, clé <code>newsletter:prefs:&lt;email&gt;</code> avec TTL 1 an). Le sender partitionne ses envois : digest hebdomadaire aux hebdomadaires, digest mensuel aux mensuels (marqueur <code>newsletter:last-monthly</code>), et le désabonnement purge aussi les préférences.</li>
+      <li><strong>Tribunes en audio</strong> — bouton d'écoute sur chaque tribune (synthèse vocale du navigateur, langue FR/EN selon la page, débit ajusté, arrêt à la sortie) avec suivi d'événement ; la synthèse non supportée désactive simplement le bouton.</li>
+      <li><strong>Monitoring de performance réel</strong> — <code>@vercel/analytics</code> et <code>@vercel/speed-insights</code> branchés côté client, politique CSP élargie en conséquence : données Web Vitals réelles (LCP, CLS, INP) dans le tableau de bord Vercel.</li>
+      <li><strong>Budget de performance CI</strong> — nouvelle suite <code>tests/performance.test.mjs</code> : Chromium mesure LCP et CLS sur cinq routes clés (accueil, publications, tribune, impact, version anglaise) servies depuis <code>dist/</code> — budgets LCP &lt; 3,5 s et CLS &lt; 0,1 actuellement tenus avec une marge large (LCP 1,3–2,2 s, CLS ≤ 0,002).</li>
+    </ul>
+  </section>
 
   <!-- ============ v1.9 ============ -->
   <section class="version">
@@ -383,7 +399,7 @@
   </section>
 
   <footer>
-    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>8effe02</code> (v1.4) → <code>056f059</code> (v1.5) → <code>c079828</code> (v1.6) → <code>24f6aab</code> (v1.7) → <code>1c739ab</code> (v1.8) → <code>3e8405d</code> (v1.9)<br>
+    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>8effe02</code> (v1.4) → <code>056f059</code> (v1.5) → <code>c079828</code> (v1.6) → <code>24f6aab</code> (v1.7) → <code>1c739ab</code> (v1.8) → <code>3e8405d</code> (v1.9) → <code>b291ede</code> (v2.0)<br>
     Repo : <a href="https://github.com/1wxxhktop/site-dr-dagnon">github.com/1wxxhktop/site-dr-dagnon</a>
   </footer>
 
