@@ -85,15 +85,30 @@
     <h1>Site Dr. Seynude Dagnon</h1>
     <p class="sub">Portfolio &amp; site vitrine — <code>site-dr-dagnon</code></p>
     <div class="stats">
-      <span class="stat"><strong>213</strong> commits</span>
-      <span class="stat"><strong>14</strong> versions</span>
-      <span class="stat"><strong>100</strong> tests automatisés</span>
+      <span class="stat"><strong>217</strong> commits</span>
+      <span class="stat"><strong>15</strong> versions</span>
+      <span class="stat"><strong>103</strong> tests automatisés</span>
       <span class="stat"><strong>100</strong> pages prédéfinies</span>
-      <span class="stat">16 juil → 1 août 2026</span>
+      <span class="stat">16 juil → 2 août 2026</span>
     </div>
   </header>
 
   <div class="rule"></div>
+
+  <!-- ============ v1.5 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v1.5</span><span class="vdate">2 août 2026</span></div>
+    <h2 class="vtitle">Filtres partageables, agenda abonnable &amp; navigation instantanée</h2>
+    <p class="vsummary">Les filtres des publications et des médias vivent dans l'URL, l'agenda expose des événements JSON-LD et un flux iCal statique, et les pages se préchargent dès le survol d'un lien.</p>
+    <ul>
+      <li><strong>Filtres partageables</strong> — année, tri et recherche des publications (<code>?y=&amp;sort=&amp;q=</code>) et type/recherche des médias (<code>?type=&amp;q=</code>) vivent dans l'URL : une vue filtrée se partage et se met en favori, les valeurs par défaut restent hors URL pour garder le lien canonique propre.</li>
+      <li><strong>Agenda indexé et abonnable</strong> — JSON-LD <code>Event</code> (uniquement les dates à venir, jamais les passées) sur la page agenda, plus un flux iCal statique <code>/agenda.ics</code> généré au build depuis la même source de données que la page, pré-caché par le service worker, annoncé par un lien <code>text/calendar</code> dans le <code>&lt;head&gt;</code> et un bouton « S'abonner au flux iCal ».</li>
+      <li><strong>Toast de mise à jour PWA</strong> — quand le service worker installe une nouvelle version en arrière-plan, un toast propose « Recharger » (le worker saute déjà l'attente et reprend la main, le rechargement suffit) ; masqué lors de la toute première visite.</li>
+      <li><strong>Impression des articles</strong> — bouton « Imprimer / PDF » sur les tribunes et études de cas : le héros sombre disparaît, le titre/date/source sont ré-imprimés en version encre, et les blocs <code>Reveal</code> ne peuvent plus sortir à <code>opacity: 0</code> sur papier.</li>
+      <li><strong>Navigation instantanée</strong> — la prop <code>prefetch</code> de react-router étant inactive hors mode framework, un registre route→chunk alimenté par les mêmes importers que <code>React.lazy</code> précharge la page au survol ou au focus clavier de n'importe quel lien interne.</li>
+      <li><strong>iCal conforme RFC 5545</strong> — le pliage corrigé : les lignes de continuation portent l'espace de tête, les segments suivants sont limités à 73 caractères (chaque ligne physique ≤ 75 octets), dans le feed statique comme dans le fichier téléchargé.</li>
+    </ul>
+  </section>
 
   <!-- ============ v1.4 ============ -->
   <section class="version">
@@ -303,7 +318,7 @@
   </section>
 
   <footer>
-    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>8effe02</code> (v1.4)<br>
+    Généré depuis l'historique git — <code>6998143</code> (initial) → <code>8effe02</code> (v1.4) → <code>056f059</code> (v1.5)<br>
     Repo : <a href="https://github.com/1wxxhktop/site-dr-dagnon">github.com/1wxxhktop/site-dr-dagnon</a>
   </footer>
 
