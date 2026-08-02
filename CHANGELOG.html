@@ -86,14 +86,30 @@
     <p class="sub">Portfolio &amp; site vitrine — <code>site-dr-dagnon</code></p>
     <div class="stats">
       <span class="stat"><strong>222</strong> commits</span>
-      <span class="stat"><strong>18</strong> versions</span>
-      <span class="stat"><strong>175</strong> tests automatisés</span>
-      <span class="stat"><strong>100</strong> pages prédéfinies</span>
+      <span class="stat"><strong>19</strong> versions</span>
+      <span class="stat"><strong>184</strong> tests automatisés</span>
+      <span class="stat"><strong>102</strong> pages prédéfinies</span>
       <span class="stat">16 juil → 2 août 2026</span>
     </div>
   </header>
 
   <div class="rule"></div>
+
+  <!-- ============ v1.9 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v1.9</span><span class="vdate">2 août 2026</span></div>
+    <h2 class="vtitle">Page Impact, newsletter par langue, rappels push &amp; alertes d'échec</h2>
+    <p class="vsummary">Le site gagne une page Impact chiffrée, le digest de la newsletter part dans la langue de chaque abonné, le cron agenda envoie aussi des notifications push, les échecs de fournisseurs alertent le propriétaire par email, et la CI audite l'accessibilité à chaque poussée.</p>
+    <ul>
+      <li><strong>Page Impact</strong> — nouvelle route <code>/impact</code> (et <code>/fr/impact</code>) : bandeau de statistiques (1 114 centres de santé équipés, prévalence du paludisme de 44 % à 5 %, 3 M$ mobilisés, 180 M$+ de financements), six études d'impact renvoyant aux études de cas des projets, fil d'Ariane, JSON-LD <code>CollectionPage</code>, sitemap (priorité 0,7) et lien dans le footer ; réécritures Vercel ajoutées pour les deux langues.</li>
+      <li><strong>Newsletter par langue</strong> — la langue d'inscription (déjà envoyée par le formulaire) est persistée à la confirmation (clé <code>newsletter:lang:&lt;email&gt;</code>, TTL 90 jours, la clé <code>pending</code> faisant foi), puis lue par le sender pour composer un digest entièrement FR ou EN (objet, HTML et texte) ; les abonnés historiques sans clé reçoivent toujours le digest bilingue par défaut, et le désabonnement purge la clé de langue.</li>
+      <li><strong>Rappels agenda par push</strong> — le cron hebdomadaire envoie désormais une notification web push aux abonnés push (VAPID) dès qu'un rappel part : titre bilingue, les trois premiers événements, lien vers <code>/agenda</code>, tag fixe pour que chaque rappel remplace le précédent dans le centre de notification ; les souscriptions révoquées (404/410) sont purgées au passage.</li>
+      <li><strong>Alertes d'échec API</strong> — nouveau module partagé <code>api/_alert.ts</code> : quand Resend refuse un envoi (formulaire de contact, confirmation, bienvenue) ou qu'une erreur s'échappe d'un handler (dont le cron agenda), le propriétaire reçoit un email avec le détail de l'échec, l'environnement et le déploiement — limité à une alerte par sujet toutes les 15 minutes pour qu'une rafale d'erreurs ne noie pas la boîte.</li>
+      <li><strong>Citations de presse sur l'accueil</strong> — section de citations issues de parutions réelles (Airid, Seneweb, Bluesquare, StopBlaBlaCam, Minsanté) avec lien vers chaque source et CTA vers la page presse.</li>
+      <li><strong>Extraits des newsletters</strong> — chaque numéro des archives peut porter un extrait consultable « Lire l'extrait » / « Masquer » (<code>aria-expanded</code>) sans quitter la page.</li>
+      <li><strong>CI avec auditeur d'accessibilité</strong> — les binaires Chromium de Playwright sont installés dans GitHub Actions pour que la suite axe-core (19 routes) s'exécute réellement à chaque poussée ; suite complète passée à <strong>184 tests</strong>.</li>
+    </ul>
+  </section>
 
   <!-- ============ v1.8 ============ -->
   <section class="version">
