@@ -60,7 +60,7 @@ function MediaCard({ m, watchLabel, downloadLabel, onPlay }: { m: MediaItem; wat
           href={m.url}
           target="_blank"
           rel="noreferrer"
-          className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-pine-100/60 transition-colors hover:text-gold-300"
+          className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-pine-100/85 transition-colors hover:text-gold-300"
         >
           {isVideo ? watchLabel : downloadLabel}
           <ArrowUpRight size={13} />
@@ -109,7 +109,7 @@ export function Media() {
               <h3 className="mt-2 font-display text-2xl font-semibold leading-snug text-ivory lg:text-[1.7rem]">
                 {t['media.opedTitle']}
               </h3>
-              <p className="mt-2 text-sm text-pine-100/60">
+              <p className="mt-2 text-sm text-pine-100/85">
                 {t['media.opedText']}
               </p>
             </div>

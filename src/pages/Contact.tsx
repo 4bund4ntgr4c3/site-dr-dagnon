@@ -335,7 +335,7 @@ export default function Contact() {
                 )}
 
                 {status !== 'success' && !revealed && (
-                  <p className="mt-5 text-[13px] leading-relaxed text-pine-900/60">{t['contact.revealHint']}</p>
+                  <p className="mt-5 text-[13px] leading-relaxed text-pine-900/80">{t['contact.revealHint']}</p>
                 )}
 
                 <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -399,7 +399,7 @@ export default function Contact() {
                   >
                     <CheckCircle2 size={48} className="text-gold-500" />
                     <h2 className="font-display text-2xl font-semibold text-pine-900">{t['contact.sentTitle']}</h2>
-                    <p className="max-w-sm text-sm text-pine-900/60">{t['contact.sentText']}</p>
+                    <p className="max-w-sm text-sm text-pine-900/80">{t['contact.sentText']}</p>
                     <button
                       type="button"
                       onClick={() => { setStatus('idle'); setSubmittedEmail(''); setForm({ name: '', email: '', phone: '', subject: '', message: '', website: '', type: 'general' }); setVerifyStatus('idle'); setVerifyCode(''); setVerifyToken(''); setVerifyError(''); setPhone(''); }}

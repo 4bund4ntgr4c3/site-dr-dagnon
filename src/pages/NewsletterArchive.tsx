@@ -22,7 +22,7 @@ function IssueCard({ issue, i }: { issue: NewsletterIssue; i: number }) {
             <BookOpen size={22} />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-900/60">
+            <p className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-900/80">
               <CalendarDays size={12} />
               {t['newsletterPage.issueDate']}{' '}
               {new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : 'en-US', {
@@ -135,7 +135,7 @@ export default function NewsletterArchive() {
                 </span>
                 <div>
                   <h2 className="font-display text-base font-semibold text-pine-900">{t['push.title']}</h2>
-                  <p className="text-[12px] text-pine-900/60">
+                  <p className="text-[12px] text-pine-900/80">
                     {t['newsletterPage.subscribe']} — {t['newsletter.privacy']}
                   </p>
                 </div>

@@ -55,7 +55,7 @@ export function PressQuotes() {
                     <span className="flex items-center gap-2 text-[12.5px] font-semibold text-pine-950">
                       <Newspaper size={14} className="text-gold-600" />
                       {q.source}
-                      <span className="font-normal text-ink/50">· {dateLabel}</span>
+                      <span className="font-normal text-ink/70">· {dateLabel}</span>
                     </span>
                     <ArrowUpRight
                       size={15}

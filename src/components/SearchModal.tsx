@@ -360,14 +360,14 @@ function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) 
             aria-label={t['search.open']}
             className="w-full bg-transparent text-[15px] text-ivory placeholder:text-pine-100/40 outline-none"
           />
-          <kbd className="hidden shrink-0 rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-semibold text-pine-100/60 sm:block">
+          <kbd className="hidden shrink-0 rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-semibold text-pine-100/85 sm:block">
             ESC
           </kbd>
         </div>
 
         <div ref={listRef} className="max-h-[52vh] overflow-y-auto p-2">
           {query.trim() && results.length === 0 && (
-            <p className="px-4 py-8 text-center text-sm text-pine-100/60">
+            <p className="px-4 py-8 text-center text-sm text-pine-100/85">
               {t['search.empty']} «&nbsp;{query.trim()}&nbsp;»
             </p>
           )}
@@ -418,7 +418,7 @@ function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) 
           })}
         </div>
 
-        <div className="flex items-center gap-4 border-t border-white/10 px-5 py-3 text-[11px] text-pine-100/50">
+        <div className="flex items-center gap-4 border-t border-white/10 px-5 py-3 text-[11px] text-pine-100/70">
           <span className="inline-flex items-center gap-1.5">
             <kbd className="rounded-md border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px]">↑</kbd>
             <kbd className="rounded-md border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px]">↓</kbd>

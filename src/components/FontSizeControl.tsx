@@ -53,7 +53,7 @@ export function FontSizeControl({ dark = false }: { dark?: boolean }) {
     track('font_size', { event_category: 'engagement', event_label: `${next}x` });
   };
 
-  const tone = dark ? 'text-pine-100/80 hover:text-gold-300' : 'text-pine-900/60 hover:text-gold-700';
+  const tone = dark ? 'text-pine-100/80 hover:text-gold-300' : 'text-pine-900/80 hover:text-gold-700';
   const border = dark ? 'border-white/15 bg-white/5' : 'border-pine-900/15 bg-white';
   const atMin = scale <= MIN;
   const atMax = scale >= MAX;
@@ -74,7 +74,7 @@ export function FontSizeControl({ dark = false }: { dark?: boolean }) {
       >
         <Minus size={14} />
       </button>
-      <span className={`select-none text-[11px] font-bold tabular-nums ${dark ? 'text-pine-100/60' : 'text-pine-900/50'}`}>
+      <span className={`select-none text-[11px] font-bold tabular-nums ${dark ? 'text-pine-100/85' : 'text-pine-900/65'}`}>
         {scale === 1 ? 100 : Math.round(scale * 100)}%
       </span>
       <button

@@ -141,7 +141,7 @@ export function Education() {
                 type="button"
                 onClick={() => { setShowTraining(false); setShowTeaching(false); }}
                 aria-label={t['media.close']}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900/60 transition-colors hover:bg-pine-900/5 hover:text-pine-900"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900/80 transition-colors hover:bg-pine-900/5 hover:text-pine-900"
               >
                 <X size={18} />
               </button>

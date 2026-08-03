@@ -83,19 +83,19 @@ export default function ProjectArticle() {
                 <FolderKanban size={13} />
                 {entry.tag[lang]}
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/60">
+              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/85">
                 <CalendarDays size={12} />
                 {t['projetsPage.period']} : {entry.period[lang]}
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/60">
+              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/85">
                 <Clock size={12} />
                 {t['article.readingTime']} · {minutes} min
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/60">
+              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/85">
                 <MapPin size={12} />
                 {entry.location[lang]}
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/60">
+              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/85">
                 <Briefcase size={12} />
                 {entry.role[lang]}
               </span>

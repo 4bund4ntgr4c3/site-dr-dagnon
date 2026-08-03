@@ -97,7 +97,7 @@ export default function NewsletterPrefs() {
             {t['prefs.title']}
           </h1>
           {email && status !== 'invalid' && (
-            <p className="mt-3 text-sm text-pine-100/60">
+            <p className="mt-3 text-sm text-pine-100/85">
               {t['prefs.for']} <span className="font-semibold text-pine-100/90">{email}</span>
             </p>
           )}
@@ -158,7 +158,7 @@ export default function NewsletterPrefs() {
               )}
               {status === 'error' && <p className="text-[13px] font-medium text-red-300">{error}</p>}
 
-              <p className="pt-4 text-[12.5px] leading-relaxed text-pine-100/50">{t['prefs.unsubNote']}</p>
+              <p className="pt-4 text-[12.5px] leading-relaxed text-pine-100/70">{t['prefs.unsubNote']}</p>
             </form>
           )}
         </div>

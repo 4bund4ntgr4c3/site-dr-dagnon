@@ -84,7 +84,7 @@ export function Footer() {
             </span>
             <div className="leading-tight">
               <p className="font-display text-sm font-medium text-ivory">{t['name.full']}</p>
-              <p className="text-[10.5px] uppercase tracking-[0.2em] text-pine-100/50">{t['footer.tagline']}</p>
+              <p className="text-[10.5px] uppercase tracking-[0.2em] text-pine-100/70">{t['footer.tagline']}</p>
             </div>
           </div>
 
@@ -93,50 +93,50 @@ export function Footer() {
               <Link
                 key={item.id}
                 to={navHref(lang, item.id)}
-                className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+                className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
               >
                 {item.label}
               </Link>
             ))}
             <Link
               to={localePath(lang, '/presse')}
-              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
             >
               {t['footer.linkPresse']}
             </Link>
             <Link
               to={localePath(lang, '/inviter')}
-              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
             >
               {t['footer.linkInviter']}
             </Link>
             <Link
               to={localePath(lang, '/newsletter')}
-              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
             >
               {t['footer.linkNewsletter']}
             </Link>
             <Link
               to={localePath(lang, '/impact')}
-              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
             >
               {t['footer.linkImpact']}
             </Link>
             <Link
               to={localePath(lang, '/legal')}
-              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
             >
               {t['footer.linkLegal']}
             </Link>
             <Link
               to={localePath(lang, '/bibliography')}
-              className="text-[12.5px] font-medium text-pine-100/60 transition-colors hover:text-gold-400"
+              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
             >
               {t['footer.linkBibliography']}
             </Link>
           </nav>
 
-          <p className="text-[12px] text-pine-100/50">
+          <p className="text-[12px] text-pine-100/70">
             {t['footer.rights']}
           </p>
         </div>

@@ -58,7 +58,7 @@ export function Achievements() {
                   <h3 className={`mt-4 flex items-start gap-2 font-display text-[1.15rem] font-semibold leading-snug ${isAwards ? 'text-pine-900' : 'text-ivory'}`}>
                     {a.title}
                   </h3>
-                  <p className={`mt-3 flex-1 text-[13px] leading-relaxed ${isAwards ? 'text-ink/65' : 'text-pine-100/60'}`}>{a.text}</p>
+                  <p className={`mt-3 flex-1 text-[13px] leading-relaxed ${isAwards ? 'text-ink/65' : 'text-pine-100/85'}`}>{a.text}</p>
                   {isAwards && (
                     <span className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-700 transition-colors group-hover:text-gold-500">
                       {t['achievements.viewFullList']} →
@@ -80,7 +80,7 @@ export function Achievements() {
                 {t['achievements.portfolioTitle']}
               </h3>
             </div>
-            <p className="mt-3 max-w-3xl text-[13.5px] leading-relaxed text-pine-100/60">
+            <p className="mt-3 max-w-3xl text-[13.5px] leading-relaxed text-pine-100/85">
               {t['achievements.portfolioText']}
             </p>
             <div className="mt-6 flex flex-wrap gap-2.5">
@@ -127,7 +127,7 @@ export function Achievements() {
                 type="button"
                 onClick={() => setShowAwards(false)}
                 aria-label={t['media.close']}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900/60 transition-colors hover:bg-pine-900/5 hover:text-pine-900"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900/80 transition-colors hover:bg-pine-900/5 hover:text-pine-900"
               >
                 <X size={18} />
               </button>
@@ -193,7 +193,7 @@ export function Achievements() {
                                   <p className="text-[13px] font-semibold text-ivory">
                                     {award.videoLabel || (lang === 'fr' ? 'Voir la vid\u00e9o' : 'Watch video')}
                                   </p>
-                                  <p className="text-[11px] text-pine-100/50">MP4</p>
+                                  <p className="text-[11px] text-pine-100/70">MP4</p>
                                 </div>
                               </button>
                             )}

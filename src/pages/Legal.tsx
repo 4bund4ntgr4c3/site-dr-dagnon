@@ -31,7 +31,7 @@ export default function Legal() {
             <p className="mt-4 max-w-2xl font-display text-lg italic text-pine-200/90 sm:text-xl">
               {t['legalPage.intro']}
             </p>
-            <p className="mt-6 text-[12.5px] uppercase tracking-[0.2em] text-pine-100/50">
+            <p className="mt-6 text-[12.5px] uppercase tracking-[0.2em] text-pine-100/70">
               {t['legalPage.updated']} {LEGAL_LAST_UPDATED}
             </p>
           </Reveal>

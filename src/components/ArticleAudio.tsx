@@ -91,7 +91,7 @@ export function ArticleAudio({ text }: { text: string }) {
           type="button"
           onClick={stop}
           aria-label={t['article.audioStop']}
-          className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-pine-100/60 transition-colors hover:text-gold-300"
+          className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-pine-100/85 transition-colors hover:text-gold-300"
         >
           {t['article.audioStop']}
         </button>

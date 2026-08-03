@@ -99,7 +99,7 @@ export function Hero() {
             <motion.div
               {...fadeUp}
               transition={{ duration: 0.7, delay: 0.52, ease: 'easeOut' }}
-              className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-[13px] text-pine-100/60"
+              className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-[13px] text-pine-100/85"
             >
               <span className="inline-flex items-center gap-2">
                 <MapPin size={14} className="text-gold-400" /> {t['hero.based']}
@@ -213,7 +213,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
-          className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-pine-100/60 transition-colors hover:text-gold-400 md:flex"
+          className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-pine-100/85 transition-colors hover:text-gold-400 md:flex"
         >
           <span className="text-[10px] uppercase tracking-[0.3em]">{t['hero.discover']}</span>
           <motion.span animate={{ y: [0, 6, 0] }} transition={{ duration: 1.8, repeat: Infinity }}>

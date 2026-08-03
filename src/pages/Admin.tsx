@@ -124,7 +124,7 @@ export default function Admin() {
                   <div key={c.label} className="rounded-2xl border border-white/10 bg-white/5 p-6">
                     <c.icon size={18} className="text-gold-400" />
                     <p className="mt-3 font-display text-3xl font-semibold text-ivory">{c.value}</p>
-                    <p className="mt-1 text-[11.5px] font-semibold uppercase tracking-wider text-pine-100/60">{c.label}</p>
+                    <p className="mt-1 text-[11.5px] font-semibold uppercase tracking-wider text-pine-100/85">{c.label}</p>
                   </div>
                 ))}
               </div>
@@ -135,7 +135,7 @@ export default function Admin() {
                     {t['admin.subscribersSample']}
                   </h2>
                   {data.subscribersSample.length === 0 ? (
-                    <p className="mt-3 text-[13px] text-pine-100/60">{t['admin.empty']}</p>
+                    <p className="mt-3 text-[13px] text-pine-100/85">{t['admin.empty']}</p>
                   ) : (
                     <ul className="mt-3 space-y-1.5 text-[13px] text-pine-100/80">
                       {data.subscribersSample.map((email) => (
@@ -151,7 +151,7 @@ export default function Admin() {
                     {t['admin.lastDigestIds']}
                   </h2>
                   {data.lastDigest.ids.length === 0 ? (
-                    <p className="mt-3 text-[13px] text-pine-100/60">{t['admin.empty']}</p>
+                    <p className="mt-3 text-[13px] text-pine-100/85">{t['admin.empty']}</p>
                   ) : (
                     <ul className="mt-3 space-y-1.5 text-[13px] text-pine-100/80">
                       {data.lastDigest.ids.map((id) => (

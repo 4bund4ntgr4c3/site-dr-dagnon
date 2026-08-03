@@ -90,7 +90,7 @@ export default function Invite() {
                   {t['invitePage.pressLink']}
                 </Link>
               </div>
-              <p className="mt-4 text-[12.5px] text-pine-900/60">{t['invitePage.ctaNote']}</p>
+              <p className="mt-4 text-[12.5px] text-pine-900/80">{t['invitePage.ctaNote']}</p>
             </div>
           </Reveal>
         </div>

@@ -120,7 +120,7 @@ export function Experience() {
                 type="button"
                 onClick={() => setActive(null)}
                 aria-label={t['media.close']}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900/60 transition-colors hover:bg-pine-900 hover:text-ivory"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-pine-900/15 text-pine-900/80 transition-colors hover:bg-pine-900 hover:text-ivory"
               >
                 <X size={18} />
               </button>

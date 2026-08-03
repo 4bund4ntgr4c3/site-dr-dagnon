@@ -77,11 +77,11 @@ export default function TribuneArticle() {
                 <Newspaper size={13} />
                 {t['tribunesPage.badge']}
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/60">
+              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/85">
                 <CalendarDays size={12} />
                 {t['tribunesPage.published']} {dateLabel}
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/60">
+              <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-100/85">
                 <Clock size={12} />
                 {t['article.readingTime']} · {minutes} min
               </span>

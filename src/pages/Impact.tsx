@@ -45,7 +45,7 @@ export default function Impact() {
                 <p className="mt-2 text-[12.5px] font-semibold uppercase tracking-wider text-pine-100/80">
                   {s.label[lang]}
                 </p>
-                <p className="mt-1.5 text-[12px] leading-relaxed text-pine-100/50">{s.detail[lang]}</p>
+                <p className="mt-1.5 text-[12px] leading-relaxed text-pine-100/70">{s.detail[lang]}</p>
               </div>
             </Reveal>
           ))}

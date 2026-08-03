@@ -282,7 +282,7 @@ function FeaturedCard({ p, lang, t }: { p: PubEntry; lang: 'fr' | 'en'; t: typeo
         <h3 className="mt-2 font-display text-2xl font-semibold leading-snug text-ivory lg:text-[1.7rem]">
           {p.title[lang]}
         </h3>
-        <p className="mt-2 text-sm text-pine-100/60">{p.authors[lang]}</p>
+        <p className="mt-2 text-sm text-pine-100/85">{p.authors[lang]}</p>
         <p className="mt-1 text-sm font-medium text-gold-300/80">
           {p.journal[lang]} · {p.year}
         </p>

@@ -48,7 +48,7 @@ export function LatestTribune() {
                 <Newspaper size={12} />
                 {t['home.latestTribune.tag']}
               </span>
-              <span className="text-[12.5px] font-medium text-pine-900/60">
+              <span className="text-[12.5px] font-medium text-pine-900/80">
                 {dateLabel} · {latest.source.name}
               </span>
             </div>
