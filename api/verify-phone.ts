@@ -1,6 +1,8 @@
 import crypto from 'node:crypto';
 import { rateLimit } from './_rate-limit.js';
 import { originAllowed } from './_origin.js';
+import { clientIp } from './_ip.js';
+import { applyJsonHeaders } from './_headers.js';
 
 /* ── Shared email template helpers ──────────────────────────────── */
 
@@ -47,9 +49,13 @@ const SECRET =
   process.env.VERIFY_SECRET ||
   (process.env.VERCEL_ENV === 'production' ? '' : process.env.RESEND_API_KEY || '');
 const CODE_TTL_MS = 5 * 60 * 1000;
-/* 31^6 ≈ 8.9e8 combinations, ambiguous glyphs (0/O/1/I/L) removed. */
+/* 31^10 ≈ 8.2e14 combinations — ambiguous glyphs (0/O/1/I/L) removed. The
+   code lives in an HMAC the client cannot evaluate offline, but the only
+   other throttle on an online guess is per-IP and per-token counting, so the
+   code itself must carry the entropy: 2^49.5 makes even an unlimited-rate
+   brute force impractical (2^49.5 / 1000 req/s ≈ 17 years). */
 const CODE_ALPHABET = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
-const CODE_LENGTH = 6;
+const CODE_LENGTH = 10;
 
 function generateCode(): string {
   return Array.from({ length: CODE_LENGTH }, () => CODE_ALPHABET[crypto.randomInt(CODE_ALPHABET.length)]).join('');
@@ -88,20 +94,25 @@ function checkToken(token: string, email: string, code: string): 'ok' | 'expired
 }
 
 const WINDOW_MS = 10 * 60 * 1000;
-const LIMITS = { sendIp: 5, sendEmail: 3, verifyIp: 10 };
+const LIMITS = { sendIp: 5, sendEmail: 3, verifyIp: 10, verifyMail: 10 };
+/* how many guesses one token may carry — each token is only ever delivered
+   to one person, so a tight budget per token is the whole brute-force stop */
+const MAX_VERIFY_ATTEMPTS = 5;
 
 /* ── Verify handler ────────────────────────────────────────────── */
 
 interface Req { method: string; headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string }; body?: { action?: string; email?: string; code?: string; token?: string } }
-interface Res { status(c: number): Res; json(d: unknown): void }
+interface Res { status(c: number): Res; json(d: unknown): void; setHeader(k: string, v: string): void }
 
 export default async function handler(req: Req, res: Res) {
+  applyJsonHeaders(res);
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
   if (!originAllowed(req.headers)) { res.status(403).json({ error: 'Forbidden' }); return; }
   if (!SECRET) { res.status(500).json({ error: 'Verification not configured' }); return; }
-if (!PHONE) { res.status(500).json({ error: 'Phone not configured' }); return; }
+  if (!PHONE) { res.status(500).json({ error: 'Phone not configured' }); return; }
 
-  const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').toString().split(',')[0].trim();
+  const ip = clientIp(req.headers, req.socket?.remoteAddress);
+  if (!ip) { res.status(403).json({ error: 'Forbidden' }); return; }
   const { action, email, code, token } = req.body || {};
   if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { res.status(400).json({ error: 'Invalid email' }); return; }
   const cleanEmail = email.toLowerCase().trim().slice(0, 254);
@@ -135,7 +146,13 @@ if (!PHONE) { res.status(500).json({ error: 'Phone not configured' }); return; }
 
   if (action === 'verify') {
     if (!(await rateLimit(`verify:check:ip:${ip}`, LIMITS.verifyIp, WINDOW_MS))) { res.status(429).json({ error: 'Too many requests' }); return; }
+    if (!(await rateLimit(`verify:check:mail:${cleanEmail}`, LIMITS.verifyMail, WINDOW_MS))) { res.status(429).json({ error: 'Too many requests' }); return; }
     if (!code || typeof code !== 'string' || !token || typeof token !== 'string') { res.status(400).json({ error: 'Missing code' }); return; }
+    /* per-token guess budget: the token itself is the only thing a guesser
+       can hold onto (tokens are minted only by `send`, which is limited per
+       IP and per address), so the counter window matches the token lifetime */
+    const tokenKey = crypto.createHash('sha256').update(token).digest('hex');
+    if (!(await rateLimit(`verify:check:tok:${tokenKey}`, MAX_VERIFY_ATTEMPTS, CODE_TTL_MS))) { res.status(429).json({ error: 'Too many attempts' }); return; }
     const cleanCode = code.trim().toUpperCase().slice(0, CODE_LENGTH);
     const result = checkToken(token, cleanEmail, cleanCode);
     if (result === 'expired') { res.status(400).json({ error: 'Code expired' }); return; }

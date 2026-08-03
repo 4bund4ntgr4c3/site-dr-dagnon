@@ -1,6 +1,8 @@
 import { rateLimit } from './_rate-limit.js';
 import { originAllowed } from './_origin.js';
 import { alertOwner } from './_alert.js';
+import { clientIp } from './_ip.js';
+import { applyJsonHeaders } from './_headers.js';
 
 /* ── Shared email template helpers ──────────────────────────────── */
 
@@ -57,13 +59,15 @@ const MAX_EMAIL_HITS = 3;
 const ALLOWED_TYPES = ['general', 'speaking', 'interview', 'partnership', 'press'];
 
 interface Req { method: string; headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string }; body?: { name?: string; email?: string; phone?: string; subject?: string; message?: string; website?: string; type?: string; typeLabel?: string } }
-interface Res { status(c: number): Res; json(d: unknown): void }
+interface Res { status(c: number): Res; json(d: unknown): void; setHeader(k: string, v: string): void }
 
 export default async function handler(req: Req, res: Res) {
+  applyJsonHeaders(res);
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
   if (!originAllowed(req.headers)) { res.status(403).json({ error: 'Forbidden' }); return; }
 
-  const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').toString().split(',')[0].trim();
+  const ip = clientIp(req.headers, req.socket?.remoteAddress);
+  if (!ip) { res.status(403).json({ error: 'Forbidden' }); return; }
   if (!(await rateLimit(`contact:ip:${ip}`, MAX_HITS, WINDOW_MS))) { res.status(429).json({ error: 'Too many requests' }); return; }
 
   try {

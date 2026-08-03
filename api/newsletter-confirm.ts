@@ -1,5 +1,6 @@
 import { checkToken } from './_tokens.js';
 import { alertOwner } from './_alert.js';
+import { applyPageHeaders } from './_headers.js';
 
 /* Double opt-in confirmation endpoint — the link inside the confirmation
  * email. Clicking it moves the address from the pending key into the
@@ -104,9 +105,10 @@ async function confirmSubscriber(email: string, lang: 'fr' | 'en'): Promise<Stor
 const MAX_EMAIL = 254;
 
 interface Req { method: string; url?: string; headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string } }
-interface Res { status(c: number): Res; send(d: string): void; json(d: unknown): void }
+interface Res { status(c: number): Res; send(d: string): void; json(d: unknown): void; setHeader(k: string, v: string): void }
 
 export default async function handler(req: Req, res: Res) {
+  applyPageHeaders(res);
   if (req.method !== 'GET') { res.status(405).json({ error: 'Method not allowed' }); return; }
 
   const params = new URL(req.url || '/', SITE_URL).searchParams;
@@ -135,6 +137,15 @@ export default async function handler(req: Req, res: Res) {
 
   try {
     const stored = await confirmSubscriber(cleanEmail, lang);
+    if (stored === 'unavailable') {
+      /* the SADD never happened — telling the visitor they are subscribed
+         would be a false success */
+      res.status(503).send(page(
+        'Something went wrong',
+        'We could not confirm your subscription right now. Please try again in a few minutes. / Impossible de confirmer votre inscription pour le moment. Veuillez réessayer dans quelques minutes.',
+      ));
+      return;
+    }
     if (stored === 'added') {
       const from = process.env.CONTACT_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
       const r = await fetch('https://api.resend.com/emails', {
@@ -150,7 +161,21 @@ export default async function handler(req: Req, res: Res) {
             : 'Thank you for subscribing to Dr. Seynudé Dagnon’s newsletter.\n\nPublications: https://seynudedagnon.com/publications\nMedia: https://seynudedagnon.com/media\n\nBest regards,\nDr. Seynudé Jean-Fortuné Dagnon',
         }),
       });
-      if (!r.ok) { const err = await r.text(); console.error('Resend welcome error', err); await alertOwner('newsletter welcome', `Resend refused the send: ${err}`); res.status(500).json({ error: 'Failed to send' }); return; }
+      if (!r.ok) {
+        const err = await r.text();
+        console.error('Resend welcome error', err);
+        await alertOwner('newsletter welcome', `Resend refused the send: ${err}`);
+        /* roll the subscription back so a later click on the same link
+           retries cleanly — otherwise the address would be subscribed but
+           never welcomed */
+        await fetch(`${(process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || '').replace(/\/$/, '')}/pipeline`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || ''}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify([['SREM', 'newsletter:emails', cleanEmail]]),
+        }).catch(() => {});
+        res.status(500).json({ error: 'Failed to send' });
+        return;
+      }
     }
 
     const done = lang === 'fr'

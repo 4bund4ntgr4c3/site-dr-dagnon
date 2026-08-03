@@ -2,6 +2,8 @@ import { AGENDA_ITEMS, type AgendaEntry } from '../src/data/agenda.js';
 import { daysUntil, gcalUrl, outlookUrl } from '../src/lib/calendar-links.js';
 import { issueToken } from './_tokens.js';
 import { alertOwner } from './_alert.js';
+import { isSafePushEndpoint } from './_push-guard.js';
+import { applyJsonHeaders } from './_headers.js';
 import crypto from 'node:crypto';
 import webPush from 'web-push';
 
@@ -41,9 +43,12 @@ function ftr(unsubHref: string): string {
   return `<tr><td style="background:${C.pine900};padding:20px 32px"><p style="margin:0;font-size:11px;color:rgba(255,255,255,.5);text-align:center">Public Health &amp; Malaria Program Leader &middot; <a href="${SITE_URL}" style="color:${C.gold400};text-decoration:none">Website</a> &middot; <a href="${unsubHref}" style="color:${C.gold400};text-decoration:none">Se désinscrire / Unsubscribe</a></p></td></tr>`;
 }
 
-/** one-click unsubscribe link bound to a single address (see _tokens.ts) */
+/** one-click unsubscribe link bound to a single address (see _tokens.ts).
+ *  Throws when no token can be minted — run() verifies the secret before
+ *  sending anything, so an email can never go out with a dead link. */
 function unsubHref(email: string): string {
-  const token = issueToken('nl-unsub', email) || '';
+  const token = issueToken('nl-unsub', email);
+  if (!token) throw new Error('unable to mint unsubscribe token — VERIFY_SECRET missing');
   return `${SITE_URL}/api/newsletter-unsubscribe?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
 }
 
@@ -131,11 +136,33 @@ async function sendPushNotifications(items: AgendaEntry[]): Promise<number> {
   for (const hash of hashes) {
     const subResults = await kvPipeline([['GET', `${PUSH_PREFIX}${hash}`]]);
     const raw = subResults?.[0]?.result;
-    if (typeof raw !== 'string') continue;
+    if (typeof raw !== 'string') {
+      /* payload expired or never stored — the hash is an orphan, sweep it */
+      await kvPipeline([
+        ['SREM', PUSH_KEY, hash],
+        ['DEL', `${PUSH_PREFIX}${hash}`],
+      ]);
+      continue;
+    }
     let sub;
     try {
       sub = JSON.parse(raw);
     } catch {
+      await kvPipeline([
+        ['SREM', PUSH_KEY, hash],
+        ['DEL', `${PUSH_PREFIX}${hash}`],
+      ]);
+      continue;
+    }
+    /* re-validate at send time: an endpoint stored before the push guard
+       existed, or one that now resolves privately, must never receive a
+       server-side POST */
+    if (!sub?.endpoint || !(await isSafePushEndpoint(sub.endpoint))) {
+      await kvPipeline([
+        ['SREM', PUSH_KEY, hash],
+        ['DEL', `${PUSH_PREFIX}${hash}`],
+      ]);
+      console.log('[agenda-reminders] push subscription dropped (endpoint failed validation)');
       continue;
     }
     try {
@@ -193,7 +220,10 @@ async function loadState(): Promise<ReminderState> {
 }
 
 async function saveState(ids: string[]): Promise<boolean> {
-  const results = await kvPipeline([['SET', STATE_KEY, JSON.stringify({ ids }), 'EX', '7884000']]);
+  /* ids older than the horizon are semantically dead, so the array is capped
+     — it must not grow without bound on a weekly cron */
+  const capped = ids.slice(-500);
+  const results = await kvPipeline([['SET', STATE_KEY, JSON.stringify({ ids: capped }), 'EX', '7884000']]);
   return results?.[0]?.result === 'OK';
 }
 
@@ -208,6 +238,13 @@ interface RunResult { skipped?: boolean; sent?: number; recipients?: number; pus
 
 export async function run({ items = AGENDA_ITEMS, from = new Date(), owner, apiKey }: { items?: AgendaEntry[]; from?: Date; owner?: string; apiKey?: string }): Promise<RunResult> {
   if (!apiKey || !owner) return { skipped: true };
+  /* fail closed before sending anything: without VERIFY_SECRET no unsubscribe
+     link can be minted, so every email would carry a dead opt-out */
+  if (!issueToken('nl-unsub', owner)) {
+    console.error('[agenda-reminders] skipped: VERIFY_SECRET is not set, unsubscribe links would be dead');
+    await alertOwner('agenda reminders cron', 'skipped: VERIFY_SECRET is not set, unsubscribe links would be dead');
+    return { skipped: true };
+  }
   const [state, subscribers] = await Promise.all([loadState(), loadSubscribers()]);
   const { send, nextIds } = plan(items, state, from);
   /* per-recipient sends: each copy carries its own one-click unsubscribe
@@ -250,7 +287,7 @@ export async function run({ items = AGENDA_ITEMS, from = new Date(), owner, apiK
 /* ── handler ────────────────────────────────────────────────────── */
 
 interface Req { method: string; headers: Record<string, string | string[] | undefined> }
-interface Res { status(c: number): Res; json(d: unknown): void }
+interface Res { status(c: number): Res; json(d: unknown): void; setHeader(k: string, v: string): void }
 
 function safeEqual(a: string, b: string): boolean {
   const ab = Buffer.from(a);
@@ -260,6 +297,7 @@ function safeEqual(a: string, b: string): boolean {
 }
 
 export default async function handler(req: Req, res: Res) {
+  applyJsonHeaders(res);
   if (req.method !== 'GET') { res.status(405).json({ error: 'Method not allowed' }); return; }
   const secret = process.env.CRON_SECRET;
   const auth = (req.headers['authorization'] || '').toString();

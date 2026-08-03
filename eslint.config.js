@@ -20,4 +20,14 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    /* the build and test scripts run under node — linted as such, so a
+       careless console.log or a bare `process` typo surfaces at CI time */
+    files: ['**/*.mjs'],
+    extends: [js.configs.recommended],
+    languageOptions: {
+      ecmaVersion: 2022,
+      globals: { ...globals.node },
+    },
+  },
 ])

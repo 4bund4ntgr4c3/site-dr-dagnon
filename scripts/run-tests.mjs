@@ -54,7 +54,7 @@ compile('src/lib/calendar-links.ts', ['src/lib/calendar-links.ts'], 'src/lib', p
 function compileAgendaReminders() {
   const proj = path.join(tmp, 'agenda-reminders');
   fs.rmSync(proj, { recursive: true, force: true });
-  for (const f of ['api/agenda-reminders.ts', 'api/_tokens.ts', 'api/_alert.ts', 'api/_rate-limit.ts', 'src/data/agenda.ts', 'src/i18n/lang.ts', 'src/lib/calendar-links.ts']) {
+  for (const f of ['api/agenda-reminders.ts', 'api/_tokens.ts', 'api/_alert.ts', 'api/_rate-limit.ts', 'api/_push-guard.ts', 'api/_headers.ts', 'src/data/agenda.ts', 'src/i18n/lang.ts', 'src/lib/calendar-links.ts']) {
     const dest = path.join(proj, f);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.copyFileSync(path.join(root, f), dest);
@@ -80,7 +80,7 @@ function compileAgendaReminders() {
   console.log('[test] compiling api/agenda-reminders.ts with its data');
   execFileSync(process.execPath, [tsc, '-p', path.join(proj, 'tsconfig.json')], { cwd: root, stdio: 'inherit' });
   const out = path.join(proj, 'out');
-  for (const rel of ['api/agenda-reminders.js', 'api/_tokens.js', 'api/_alert.js', 'api/_rate-limit.js', 'src/data/agenda.js', 'src/lib/calendar-links.js']) {
+  for (const rel of ['api/agenda-reminders.js', 'api/_tokens.js', 'api/_alert.js', 'api/_rate-limit.js', 'api/_push-guard.js', 'api/_headers.js', 'src/data/agenda.js', 'src/lib/calendar-links.js']) {
     const dest = path.join(tmp, rel);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.copyFileSync(path.join(out, rel), dest);

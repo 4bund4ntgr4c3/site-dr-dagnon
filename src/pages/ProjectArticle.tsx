@@ -54,7 +54,7 @@ export default function ProjectArticle() {
     .slice(0, 2);
 
   return (
-    <main id="main-content" className="min-h-screen">
+    <main id="main-content" tabIndex={-1} className="min-h-screen">
       <ReadingProgress />
       <section className="relative overflow-hidden bg-pine-950 print:hidden">
         <div className="absolute inset-0 texture-net" />

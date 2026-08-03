@@ -21,7 +21,7 @@ export default function Tribunes() {
   const sorted = [...TRIBUNES].sort((a, b) => b.date.localeCompare(a.date));
 
   return (
-    <main id="main-content" className="min-h-screen">
+    <main id="main-content" tabIndex={-1} className="min-h-screen">
       <section className="relative overflow-hidden bg-pine-950">
         <div className="absolute inset-0 texture-net" />
         <div className="absolute -top-40 -right-40 h-[560px] w-[560px] rounded-full bg-pine-600/25 blur-[130px]" />

@@ -1,3 +1,4 @@
+import { MotionConfig } from 'framer-motion';
 import { Hero } from '@/sections/Hero';
 import { Stats } from '@/sections/Stats';
 import { About } from '@/sections/About';
@@ -15,19 +16,25 @@ import { useSectionTracking } from '@/hooks/useSectionTracking';
 export default function Home() {
   useSectionTracking();
   return (
-    <main id="main-content" className="min-h-screen bg-ivory">
-      <Hero />
-      <Stats />
-      <About />
-      <Expertise />
-      <Experience />
-      <Achievements />
-      <Education />
-      <Publications />
-      <LatestTribune />
-      <PressQuotes />
-      <Media />
-      <Newsletter />
-    </main>
+    /* reducedMotion="user" makes the Hero and Stats animations respect
+       prefers-reduced-motion. It lives here, in the Home chunk, so the
+       framer-motion import stays out of the main bundle (see AfricaMap —
+       the Footer's copy of the same logic cannot import framer-motion). */
+    <MotionConfig reducedMotion="user">
+      <main id="main-content" tabIndex={-1} className="min-h-screen bg-ivory">
+        <Hero />
+        <Stats />
+        <About />
+        <Expertise />
+        <Experience />
+        <Achievements />
+        <Education />
+        <Publications />
+        <LatestTribune />
+        <PressQuotes />
+        <Media />
+        <Newsletter />
+      </main>
+    </MotionConfig>
   );
 }

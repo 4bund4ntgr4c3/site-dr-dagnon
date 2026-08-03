@@ -1,4 +1,5 @@
 import { checkToken } from './_tokens.js';
+import { applyPageHeaders } from './_headers.js';
 
 /* One-click unsubscribe endpoint — the link in the footer of every
  * newsletter digest and agenda reminder email. Each recipient gets a
@@ -47,9 +48,10 @@ async function removeSubscriber(email: string): Promise<boolean> {
 const MAX_EMAIL = 254;
 
 interface Req { method: string; url?: string; headers: Record<string, string | string[] | undefined> }
-interface Res { status(c: number): Res; send(d: string): void; json(d: unknown): void }
+interface Res { status(c: number): Res; send(d: string): void; json(d: unknown): void; setHeader(k: string, v: string): void }
 
 export default async function handler(req: Req, res: Res) {
+  applyPageHeaders(res);
   if (req.method !== 'GET') { res.status(405).json({ error: 'Method not allowed' }); return; }
 
   const params = new URL(req.url || '/', SITE_URL).searchParams;

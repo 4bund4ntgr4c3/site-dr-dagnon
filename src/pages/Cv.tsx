@@ -35,7 +35,7 @@ export default function Cv() {
   const pubs = PUB_ITEMS.filter((p) => p.type === 'publication').sort((a, b) => b.year - a.year);
 
   return (
-    <main id="main-content" className="min-h-screen">
+    <main id="main-content" tabIndex={-1} className="min-h-screen">
       {/* hero — same pattern as every other page, hidden when printing */}
       <section className="relative overflow-hidden bg-pine-950 print:hidden">
         <div className="absolute inset-0 texture-net" />

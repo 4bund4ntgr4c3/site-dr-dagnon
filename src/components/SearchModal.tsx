@@ -305,8 +305,8 @@ function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) 
     return () => window.clearTimeout(t);
   }, [query]);
 
-    const onKeyDown = (e: ReactKeyboardEvent) => {
-      if (results.length === 0) return;
+  const onKeyDown = (e: ReactKeyboardEvent) => {
+    if (results.length === 0) return;
     const last = results.length - 1;
     let next = active;
     if (e.key === 'ArrowDown') next = Math.min(active + 1, last);
@@ -395,7 +395,7 @@ function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) 
                 <span className="min-w-0 flex-1">
                   <span className="flex items-center gap-2">
                     <span className="truncate text-[13.5px] font-semibold text-ivory">{r.title}</span>
-                    <span className="shrink-0 rounded-full bg-white/5 px-2 py-0.5 text-[9.5px] font-semibold uppercase tracking-[0.14em] text-pine-100/55">
+                    <span className="shrink-0 rounded-full bg-white/5 px-2 py-0.5 text-[9.5px] font-semibold uppercase tracking-[0.14em] text-pine-100/80">
                       {r.badge ?? t[`search.kind.${r.kind}`]}
                     </span>
                   </span>

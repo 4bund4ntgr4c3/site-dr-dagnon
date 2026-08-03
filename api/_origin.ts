@@ -22,12 +22,16 @@ const ALLOWED_ORIGINS = (
   .map((o) => o.trim())
   .filter(Boolean);
 
-/* Preview infrastructure that isn't worth hardcoding per project: Vercel's own
- * preview subdomains, this project's studio26.online staging domain, and
- * local development. */
+/* Preview infrastructure that isn't worth hardcoding per project — but the
+ * two wildcard forms that used to live here (`*.vercel.app`, `*.studio26.online`)
+ * are gone: anyone can register their own vercel.app subdomain, so a wildcard
+ * turns the check into an allow-all for browsers. Previews are matched by this
+ * project's own name only (`site-dr-dagnon…` deployments belong to this
+ * project), the staging domain is matched exactly, and local development stays
+ * open. Anything else goes through ALLOWED_ORIGINS. */
 const PREVIEW_PATTERNS = [
-  /^https:\/\/[a-z0-9-]+\.vercel\.app$/,
-  /^https:\/\/[a-z0-9-]+\.studio26\.online$/,
+  /^https:\/\/site-dr-dagnon(?:-[a-z0-9-]+)?\.vercel\.app$/,
+  /^https:\/\/sd\.studio26\.online$/,
   /^http:\/\/localhost(:\d+)?$/,
 ];
 

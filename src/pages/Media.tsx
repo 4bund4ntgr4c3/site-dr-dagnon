@@ -850,7 +850,7 @@ function PhotoView({
   const photoUrl = (id: string) => localePath(lang, `/media/community/${id}`);
 
   return (
-    <main id="main-content" className="min-h-screen overflow-x-hidden">
+    <main id="main-content" tabIndex={-1} className="min-h-screen overflow-x-hidden">
       {/* header — hero background */}
       <section className="relative overflow-hidden bg-pine-950">
         <div className="absolute inset-0 texture-net" />
@@ -1018,7 +1018,7 @@ export default function MediaPage() {
   }
 
   return (
-    <main id="main-content" className="min-h-screen overflow-x-hidden">
+    <main id="main-content" tabIndex={-1} className="min-h-screen overflow-x-hidden">
       {/* header — hero background */}
       <section className="relative overflow-hidden bg-pine-950">
         <div className="absolute inset-0 texture-net" />

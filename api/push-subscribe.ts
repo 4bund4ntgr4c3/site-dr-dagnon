@@ -1,6 +1,9 @@
 import crypto from 'node:crypto';
 import { rateLimit } from './_rate-limit.js';
 import { originAllowed } from './_origin.js';
+import { clientIp } from './_ip.js';
+import { applyJsonHeaders } from './_headers.js';
+import { isAllowedPushEndpoint } from './_push-guard.js';
 
 /* Web push subscription store.
  *
@@ -28,7 +31,10 @@ const hashOf = (endpoint: string) => crypto.createHash('sha256').update(endpoint
 interface PushSubscription { endpoint: string; keys: { p256dh: string; auth: string } }
 
 /* generous but bounded — browser push endpoints and keys never grow past
-   these, and caps keep a single subscription from bloating the store */
+   these, and caps keep a single subscription from bloating the store.
+   The endpoint itself is further restricted by isAllowedPushEndpoint
+   (_push-guard.ts): the senders POST to it from the server, so only
+   well-known push service hosts may be stored (SSRF guard). */
 const MAX_ENDPOINT_LEN = 2048;
 const MAX_KEY_LEN = 512;
 
@@ -39,7 +45,7 @@ function validSubscription(s: unknown): s is PushSubscription {
   return (
     typeof sub.endpoint === 'string' &&
     sub.endpoint.length <= MAX_ENDPOINT_LEN &&
-    /^https:\/\/[^\s]+$/.test(sub.endpoint) &&
+    isAllowedPushEndpoint(sub.endpoint) &&
     !!keys &&
     typeof keys.p256dh === 'string' &&
     keys.p256dh.length > 0 &&
@@ -71,9 +77,10 @@ const WINDOW_MS = 10 * 60_000;
 const MAX_IP_HITS = 20;
 
 interface Req { method: string; headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string }; body?: { subscription?: unknown; unsubscribe?: boolean; endpoint?: string } }
-interface Res { status(c: number): Res; json(d: unknown): void }
+interface Res { status(c: number): Res; json(d: unknown): void; setHeader(k: string, v: string): void }
 
 export default async function handler(req: Req, res: Res) {
+  applyJsonHeaders(res);
   if (req.method === 'GET') {
     const vapidPublicKey = process.env.VAPID_PUBLIC_KEY;
     if (!vapidPublicKey) { res.status(500).json({ error: 'Push not configured' }); return; }
@@ -84,7 +91,8 @@ export default async function handler(req: Req, res: Res) {
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
   if (!originAllowed(req.headers)) { res.status(403).json({ error: 'Forbidden' }); return; }
 
-  const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').toString().split(',')[0].trim();
+  const ip = clientIp(req.headers, req.socket?.remoteAddress);
+  if (!ip) { res.status(403).json({ error: 'Forbidden' }); return; }
   if (!(await rateLimit(`push:ip:${ip}`, MAX_IP_HITS, WINDOW_MS))) { res.status(429).json({ error: 'Too many requests' }); return; }
 
   const { subscription, unsubscribe, endpoint } = req.body || {};

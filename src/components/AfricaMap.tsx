@@ -1,4 +1,4 @@
-import { useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 export function AfricaMap({ className = '' }: { className?: string }) {
   /* the pulsing ring is SMIL animation, which CSS media queries cannot

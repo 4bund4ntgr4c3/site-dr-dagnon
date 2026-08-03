@@ -1,7 +1,6 @@
 import { lazy, StrictMode, type ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
-import { MotionConfig } from 'framer-motion'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import './index.css'
@@ -71,13 +70,9 @@ const pages: AppPages = {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {/* reducedMotion="user" makes every framer-motion animation in the app
-        (Hero floats, section reveals, …) respect prefers-reduced-motion */}
-    <MotionConfig reducedMotion="user">
-      <BrowserRouter>
-        <App pages={pages} />
-      </BrowserRouter>
-    </MotionConfig>
+    <BrowserRouter>
+      <App pages={pages} />
+    </BrowserRouter>
     <Analytics />
     <SpeedInsights />
   </StrictMode>,

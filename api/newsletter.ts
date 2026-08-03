@@ -2,6 +2,8 @@ import { rateLimit } from './_rate-limit.js';
 import { originAllowed } from './_origin.js';
 import { issueToken } from './_tokens.js';
 import { alertOwner } from './_alert.js';
+import { clientIp } from './_ip.js';
+import { applyJsonHeaders } from './_headers.js';
 
 /* ── Shared email template helpers ────────────────────────────────
    Inline copies of the ones in contact.ts: an earlier attempt at sharing
@@ -86,13 +88,15 @@ const EMAIL_WINDOW_MS = 60 * 60_000;
 const MAX_EMAIL_HITS = 3;
 
 interface Req { method: string; headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string }; body?: { email?: string; lang?: string; website?: string } }
-interface Res { status(c: number): Res; json(d: unknown): void }
+interface Res { status(c: number): Res; json(d: unknown): void; setHeader(k: string, v: string): void }
 
 export default async function handler(req: Req, res: Res) {
+  applyJsonHeaders(res);
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
   if (!originAllowed(req.headers)) { res.status(403).json({ error: 'Forbidden' }); return; }
 
-  const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').toString().split(',')[0].trim();
+  const ip = clientIp(req.headers, req.socket?.remoteAddress);
+  if (!ip) { res.status(403).json({ error: 'Forbidden' }); return; }
   if (!(await rateLimit(`newsletter:ip:${ip}`, MAX_IP_HITS, IP_WINDOW_MS))) { res.status(429).json({ error: 'Too many requests' }); return; }
 
   try {
@@ -118,7 +122,9 @@ export default async function handler(req: Req, res: Res) {
     if (!apiKey) { res.status(500).json({ error: 'Email service not configured' }); return; }
 
     const staged = await stageSubscriber(cleanEmail, cleanLang);
-    if (staged === 'already') { res.status(200).json({ ok: true, already: true }); return; }
+    /* identical body on every branch: whether the address was already on the
+       list must not be answerable by an unauthenticated probe */
+    if (staged === 'already') { res.status(200).json({ ok: true, pending: true }); return; }
 
     const token = issueToken('nl-confirm', cleanEmail);
     if (!token) { res.status(500).json({ error: 'Verification not configured' }); return; }

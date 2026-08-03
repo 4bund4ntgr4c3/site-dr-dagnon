@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { motion } from 'framer-motion';
 import { Linkedin, Mail, ArrowDown, MapPin, Award, BookOpen, Play, X } from 'lucide-react';
 import { LINKS } from '@/data/content';
+import { PUB_ITEMS } from '@/data/publications';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { NameHighlight } from '@/components/NameHighlight';
@@ -19,6 +20,10 @@ export function Hero() {
   const { lang } = useLang();
   const t = UI[lang];
   const [showVideo, setShowVideo] = useState(false);
+  /* the peer-reviewed count shown next to the book icon — the op-eds live in
+     the tribunes, only true publications are counted, so the hero cannot
+     drift from the data */
+  const pubCount = PUB_ITEMS.filter((p) => p.type === 'publication').length;
 
   /* Escape closes the video overlay even while focus sits inside the
      YouTube player */
@@ -108,7 +113,7 @@ export function Hero() {
                 <Award size={14} className="text-gold-400" /> {t['hero.award']}
               </span>
               <span className="inline-flex items-center gap-2">
-                <BookOpen size={14} className="text-gold-400" /> {t['hero.pubs']}
+                <BookOpen size={14} className="text-gold-400" /> {t['hero.pubs'].replace('{count}', String(pubCount))}
               </span>
             </motion.div>
           </div>

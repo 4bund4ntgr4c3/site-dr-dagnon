@@ -44,7 +44,8 @@ test('bibtex escapes characters that would break a .bib file', () => {
 });
 
 test('bibtex drops the url field when there is none', () => {
-  const { url, ...noUrl } = paper;
+  const noUrl = { ...paper };
+  delete noUrl.url;
   const out = citationBibtex(noUrl);
   assert.ok(!out.includes('url'));
   assert.match(out, /^@article\{example-2026,\n.*\}\n$/s);
@@ -70,7 +71,8 @@ test('apa renders author, year, title, journal and url', () => {
 });
 
 test('apa omits the url when there is none', () => {
-  const { url, ...noUrl } = paper;
+  const noUrl = { ...paper };
+  delete noUrl.url;
   assert.ok(!citationApa(noUrl).includes('https://'));
 });
 

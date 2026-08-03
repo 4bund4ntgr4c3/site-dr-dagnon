@@ -1,4 +1,5 @@
 import { checkToken } from './_tokens.js';
+import { applyJsonHeaders } from './_headers.js';
 
 /* Newsletter preferences endpoint — GET to read, POST to save. The page
  * /newsletter/preferences calls both, authenticated by the same stateless
@@ -19,7 +20,7 @@ const MAX_EMAIL = 254;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface Req { method: string; url?: string; headers: Record<string, string | string[] | undefined>; body?: string }
-interface Res { status(c: number): Res; json(d: unknown): void }
+interface Res { status(c: number): Res; json(d: unknown): void; setHeader(k: string, v: string): void }
 
 function kv() {
   const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
@@ -77,6 +78,7 @@ function authenticate(req: Req): { email: string; token: string } | null {
 }
 
 export default async function handler(req: Req, res: Res) {
+  applyJsonHeaders(res);
   if (req.method !== 'GET' && req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;

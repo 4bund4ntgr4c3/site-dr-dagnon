@@ -22,6 +22,7 @@
 
 import { execFileSync } from 'node:child_process';
 import crypto from 'node:crypto';
+import dns from 'node:dns/promises';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -92,12 +93,14 @@ function issueToken(email, purpose = 'nl-unsub') {
 }
 
 function unsubHref(email) {
-  const token = issueToken(email) || '';
+  const token = issueToken(email);
+  if (!token) throw new Error('unable to mint unsubscribe token — VERIFY_SECRET missing');
   return `${SITE_URL}/api/newsletter-unsubscribe?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
 }
 
 function prefsHref(email) {
-  const token = issueToken(email, 'nl-prefs') || '';
+  const token = issueToken(email, 'nl-prefs');
+  if (!token) throw new Error('unable to mint preferences token — VERIFY_SECRET missing');
   return `${SITE_URL}/newsletter/preferences?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
 }
 
@@ -149,7 +152,7 @@ function itemHtml(item, lang = 'both') {
   const read = lang === 'fr' ? L.fr.read : lang === 'en' ? L.en.read : 'Lire la suite / Read more';
   const title = lang === 'fr' ? item.title.fr : lang === 'en' ? item.title.en : `${item.title.fr} / ${item.title.en}`;
   const description = lang === 'fr' ? item.description.fr : lang === 'en' ? item.description.en : `${item.description.fr} / ${item.description.en}`;
-  return `<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px"><tr><td style="padding:20px 22px;background:${C.ivory};border-radius:12px;border-left:3px solid ${C.gold500}"><p style="margin:0 0 6px;font-size:10.5px;font-weight:600;color:${C.muted};text-transform:uppercase;letter-spacing:.1em">${label}</p><p style="margin:0;font-size:16px;font-weight:600;line-height:1.4;color:${C.pine900}">${esc(title)}</p><p style="margin:6px 0 0;font-size:13px;line-height:1.6;color:${C.ink}">${esc(description)}</p><p style="margin:12px 0 0"><a href="${item.url}" style="display:inline-block;background:${C.pine950};color:${C.gold400};font-size:12.5px;font-weight:600;padding:10px 22px;border-radius:999px;text-decoration:none">${read}</a></p></td></tr></table>`;
+  return `<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px"><tr><td style="padding:20px 22px;background:${C.ivory};border-radius:12px;border-left:3px solid ${C.gold500}"><p style="margin:0 0 6px;font-size:10.5px;font-weight:600;color:${C.muted};text-transform:uppercase;letter-spacing:.1em">${label}</p><p style="margin:0;font-size:16px;font-weight:600;line-height:1.4;color:${C.pine900}">${esc(title)}</p><p style="margin:6px 0 0;font-size:13px;line-height:1.6;color:${C.ink}">${esc(description)}</p><p style="margin:12px 0 0"><a href="${esc(item.url)}" style="display:inline-block;background:${C.pine950};color:${C.gold400};font-size:12.5px;font-weight:600;padding:10px 22px;border-radius:999px;text-decoration:none">${read}</a></p></td></tr></table>`;
 }
 
 export function digestHtml(items, lang = 'both') {
@@ -246,7 +249,10 @@ async function loadState() {
 }
 
 async function saveState(ids) {
-  const results = await kvPipeline([['SET', STATE_KEY, JSON.stringify({ ids }), 'EX', '7884000']]);
+  /* ids older than the last digest are semantically dead — cap the array so
+     it cannot grow without bound across deploys */
+  const capped = ids.slice(-500);
+  const results = await kvPipeline([['SET', STATE_KEY, JSON.stringify({ ids: capped }), 'EX', '7884000']]);
   return results?.[0]?.result === 'OK';
 }
 
@@ -362,6 +368,72 @@ async function sendDigest({ send, owner, apiKey }) {
   return allRecipients.length;
 }
 
+/* ── web push endpoint guard ──────────────────────────────────────
+   Compact copy of api/_push-guard.ts, which this script cannot import —
+   it is TypeScript (same reason the token helpers are copied above). The
+   subscribe endpoint stores whatever endpoint a visitor POSTs and the
+   senders POST the push payload to it from the server, so only well-known
+   push service hosts may be reached — port 443 only, no IP-literal hosts,
+   and none of the host's addresses may be private (SSRF guard, re-checked
+   here at send time against endpoints stored before the guard existed). */
+
+const ALLOWED_PUSH_HOSTS = [
+  'fcm.googleapis.com', // Chrome, Android, some Firefox builds
+  'android.googleapis.com', // legacy GCM endpoints
+  'push.apple.com', // Safari: web.push.apple.com
+  'push.services.mozilla.com', // Firefox desktop (autopush)
+  'notify.windows.com', // Edge legacy / Windows
+  'pushpad.xyz', // Pushpad hosted subscriptions
+];
+
+function isAllowedPushEndpoint(endpoint) {
+  if (!endpoint || !endpoint.startsWith('https://')) return false;
+  let url;
+  try {
+    url = new URL(endpoint);
+  } catch {
+    return false;
+  }
+  if (url.protocol !== 'https:' || url.username || url.password) return false;
+  if (url.port !== '' && url.port !== '443') return false;
+  const host = url.hostname.toLowerCase();
+  if (/^[\d.]+$/.test(host) || host.includes(':') || host.startsWith('[')) return false;
+  return ALLOWED_PUSH_HOSTS.some((h) => host === h || host.endsWith(`.${h}`));
+}
+
+function isPrivateAddress(ip) {
+  const v4 = ip.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (v4) {
+    const [a, b] = [Number(v4[1]), Number(v4[2])];
+    if (a === 0 || a === 10 || a === 127) return true;
+    if (a === 100 && b >= 64 && b <= 127) return true;
+    if (a === 169 && b === 254) return true;
+    if (a === 172 && b >= 16 && b <= 31) return true;
+    if (a === 192 && b === 168) return true;
+    if (a === 198 && (b === 18 || b === 19)) return true;
+    if (a >= 224) return true;
+    return false;
+  }
+  const lower = ip.toLowerCase();
+  if (lower === '::1') return true;
+  if (lower.startsWith('::ffff:')) return isPrivateAddress(lower.slice(7));
+  if (lower.startsWith('fc') || lower.startsWith('fd')) return true;
+  if (lower.startsWith('fe8') || lower.startsWith('fe9') || lower.startsWith('fea') || lower.startsWith('feb')) return true;
+  if (lower.startsWith('::') || lower.startsWith('2001:db8')) return true;
+  return false;
+}
+
+async function isSafePushEndpoint(endpoint) {
+  if (!isAllowedPushEndpoint(endpoint)) return false;
+  const host = new URL(endpoint).hostname.toLowerCase();
+  try {
+    const addresses = await dns.lookup(host, { all: true, verbatim: true });
+    return addresses.some(({ address }) => !isPrivateAddress(address));
+  } catch {
+    return false; // resolution failure fails closed
+  }
+}
+
 /* ── web push ─────────────────────────────────────────────────────
    Runs only when a digest actually went out, so a notification fires
    exactly when there is genuinely new content. Dead subscriptions
@@ -393,11 +465,33 @@ async function sendPushNotifications(items) {
   for (const hash of hashes) {
     const subResults = await kvPipeline([['GET', `${PUSH_PREFIX}${hash}`]]);
     const raw = subResults?.[0]?.result;
-    if (typeof raw !== 'string') continue;
+    if (typeof raw !== 'string') {
+      /* payload expired or never stored — the hash is an orphan, sweep it */
+      await kvPipeline([
+        ['SREM', PUSH_KEY, hash],
+        ['DEL', `${PUSH_PREFIX}${hash}`],
+      ]);
+      continue;
+    }
     let sub;
     try {
       sub = JSON.parse(raw);
     } catch {
+      await kvPipeline([
+        ['SREM', PUSH_KEY, hash],
+        ['DEL', `${PUSH_PREFIX}${hash}`],
+      ]);
+      continue;
+    }
+    /* re-validate at send time: an endpoint stored before the push guard
+       existed, or one that now resolves privately, must never receive a
+       server-side POST */
+    if (!sub?.endpoint || !(await isSafePushEndpoint(sub.endpoint))) {
+      await kvPipeline([
+        ['SREM', PUSH_KEY, hash],
+        ['DEL', `${PUSH_PREFIX}${hash}`],
+      ]);
+      console.log('[newsletter] push subscription dropped (endpoint failed validation)');
       continue;
     }
     try {
@@ -482,6 +576,12 @@ async function main() {
     console.warn('[newsletter] skipped: KV_REST_API_URL / KV_REST_API_TOKEN not set');
     return;
   }
+  /* fail closed before sending anything: without VERIFY_SECRET no
+     unsubscribe or preferences link can be minted */
+  if (!issueToken(owner)) {
+    console.warn('[newsletter] skipped: VERIFY_SECRET is not set, unsubscribe links would be dead');
+    return;
+  }
 
   const { pubsUrl, tribunesUrl } = compileData();
   const { PUB_ITEMS } = await import(pathToFileURL(pubsUrl).href);
@@ -504,7 +604,7 @@ async function main() {
   const pushed = await sendPushNotifications(send);
 
   const known = state.ids;
-  const nextIds = [...known, ...send.map(itemId)];
+  const nextIds = [...known, ...send.map(itemId)].slice(-500);
   if (!(await saveState(nextIds))) {
     throw new Error('digest sent but state not saved — the next push will resend it');
   }

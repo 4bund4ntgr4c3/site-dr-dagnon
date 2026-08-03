@@ -20,7 +20,7 @@ globalThis.fetch = async (url, opts) => {
   kvCalls.push({ url: String(url), commands: JSON.parse(opts.body), auth: opts.headers.Authorization });
   return kvResponder
     ? kvResponder()
-    : { ok: true, json: async () => [{ result: ['a@example.test'] }, { result: ['sub-hash'] }, { result: '{"ids":["pub:x"]}' }, { result: '{"ids":["ev-1"]}' }] };
+    : { ok: true, json: async () => [{ result: 1 }, { result: 1 }, { result: ['a@example.test'] }, { result: '{"ids":["pub:x"]}' }, { result: '{"ids":["ev-1"]}' }] };
 };
 
 const admin = (await import(pathToFileURL(path.resolve('node_modules/.tmp/api/admin.js')).href)).default;
@@ -30,6 +30,7 @@ const call = async (handler, { method = 'GET', headers = {} } = {}) => {
   const res = {
     status(c) { out.code = c; return res; },
     json(d) { out.body = d; },
+    setHeader() {},
   };
   await handler({ method, headers }, res);
   return out;
@@ -65,8 +66,9 @@ test('returns the dashboard aggregates from one KV pipeline', async () => {
   assert.equal(kvCalls.length, 1);
   const commands = kvCalls[0].commands;
   assert.deepEqual(commands, [
-    ['SMEMBERS', 'newsletter:emails'],
-    ['SMEMBERS', 'push:subs'],
+    ['SCARD', 'newsletter:emails'],
+    ['SCARD', 'push:subs'],
+    ['SRANDMEMBER', 'newsletter:emails', 20],
     ['GET', 'newsletter:last-sent'],
     ['GET', 'agenda:reminded'],
   ]);
@@ -77,8 +79,9 @@ test('tolerates missing KV state and a sample capped at 20 emails', async () => 
   kvResponder = () => ({
     ok: true,
     json: async () => [
+      { result: 30 },
+      { result: 0 },
       { result: Array.from({ length: 30 }, (_, i) => `u${i}@example.test`) },
-      { result: [] },
       { result: null },
       { result: 'not-json' },
     ],

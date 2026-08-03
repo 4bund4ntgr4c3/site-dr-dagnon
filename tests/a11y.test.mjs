@@ -15,34 +15,31 @@ import AxeBuilder from '@axe-core/playwright';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
-const PORT = 4317;
+/* ephemeral: fixed ports collide when two suites run at once */
+let PORT;
 
 /* the routes most likely to carry the defects axe catches — one language
    pair per page type rather than all 100 pages (the visual templates repeat) */
-const ROUTES = [
-  '/',
-  '/fr',
-  '/contact',
-  '/cv',
-  '/fr/cv',
-  '/media',
-  '/media/press',
-  '/media/community',
-  '/media/community/nuit-paludisme-1',
-  '/publications',
-  '/tribunes',
-  '/tribunes/from-malaria-control-to-elimination',
-  '/fr/tribunes/from-malaria-control-to-elimination',
-  '/projets',
-  '/projets/irs-nord-benin',
-  '/agenda',
-  '/presse',
-  '/inviter',
-  '/newsletter',
-  '/impact',
-  '/legal',
-  '/bibliography',
-];
+const ROUTES = (() => {
+  /* derive the audit list from dist/ itself: every directory holding an
+     index.html is a prerendered route, in every language. The hand-written
+     list used to drift from src/seo/meta.ts (missing /fr mirrors, new page
+     types) — a page that exists on disk is now always audited. */
+  const routes = [];
+  const walk = (dir, base) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.name === 'assets') continue;
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (fs.existsSync(path.join(full, 'index.html'))) routes.push(`${base}/${entry.name}`);
+        walk(full, `${base}/${entry.name}`);
+      }
+    }
+  };
+  walk(dist, '');
+  if (fs.existsSync(path.join(dist, 'index.html'))) routes.push('/');
+  return routes.sort();
+})();
 
 /* mime map for the few types dist/ contains */
 const MIME = {
@@ -80,11 +77,20 @@ before(async () => {
     res.writeHead(200, { 'Content-Type': MIME[path.extname(abs)] ?? 'application/octet-stream' });
     fs.createReadStream(abs).pipe(res);
   });
-  await new Promise((resolve) => server.listen(PORT, resolve));
+  await new Promise((resolve) => server.listen(0, resolve));
+  PORT = server.address().port;
   /* a dedicated context per browser run — AxeBuilder requires one, pages
      created directly from the browser are refused */
   browser = await chromium.launch();
   context = await browser.newContext();
+  /* the pages fetch Google Fonts, gtag and Vercel analytics at load — the
+     suite must not depend on the network, so every external origin is
+     aborted (fonts fall back to system faces, beacons fail silently) */
+  await context.route('**://fonts.googleapis.com/**', (r) => r.abort());
+  await context.route('**://fonts.gstatic.com/**', (r) => r.abort());
+  await context.route('**://www.googletagmanager.com/**', (r) => r.abort());
+  await context.route('**://www.google-analytics.com/**', (r) => r.abort());
+  await context.route('**://va.vercel-scripts.com/**', (r) => r.abort());
 });
 
 after(async () => {
@@ -111,3 +117,28 @@ for (const route of ROUTES) {
     }
   });
 }
+
+/* the search dialog only exists in the DOM once opened, so the loop above can
+   never audit it — this test mounts it the way a user would */
+test('axe: no critical or serious violations in the open search dialog', async () => {
+  const page = await context.newPage();
+  try {
+    const response = await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'domcontentloaded' });
+    assert.ok(response && response.ok());
+    await page.getByRole('button', { name: 'Search' }).click();
+    await page.getByPlaceholder('Search everything: op-eds, publications, photos, career…').fill('malaria');
+    await page.waitForTimeout(200);
+    const dialog = page.getByRole('dialog');
+    const results = await new AxeBuilder({ page }).include('[role="dialog"]').analyze();
+    const bad = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
+    assert.deepEqual(
+      bad.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`),
+      [],
+      `search dialog: ${bad.length} critical/serious violations`,
+    );
+    await page.keyboard.press('Escape');
+    await dialog.waitFor({ state: 'hidden' });
+  } finally {
+    await page.close();
+  }
+});

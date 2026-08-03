@@ -5,6 +5,8 @@
    Run manually after adding an article (the build does not regenerate
    images). Usage: node scripts/gen-article-og.mjs */
 
+/* global document */
+/* the evaluate callbacks below run inside the rendered page */
 import { chromium } from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';

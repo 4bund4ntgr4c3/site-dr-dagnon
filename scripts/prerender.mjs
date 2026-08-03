@@ -97,7 +97,7 @@ function headBlock(meta, image, { indexable = true, feedUrl = null, icsUrl = nul
     prop('og:site_name', meta.siteName),
     prop('og:title', meta.title),
     prop('og:description', meta.description),
-    prop('og:url', meta.url),
+    ...(indexable ? [prop('og:url', meta.url)] : []),
     prop('og:image', shareImage),
     prop('og:image:width', shareWidth),
     prop('og:image:height', shareHeight),
@@ -279,6 +279,9 @@ async function run() {
     '/dr-seynude-dagnon.webp',
     '/agenda.ics',
     '/presse/press-kit.zip',
+    ...(fs.existsSync(path.join(dist, 'fonts'))
+      ? fs.readdirSync(path.join(dist, 'fonts')).map((f) => `/fonts/${f}`)
+      : []),
     ...(fs.existsSync(path.join(dist, 'presse'))
       ? ['/presse/press-kit-fr.pdf', '/presse/press-kit-en.pdf']
       : []),
@@ -376,13 +379,17 @@ self.addEventListener('fetch', (event) => {
 
   if (request.mode === 'navigate') {
     /* network-first for pages: a navigation always gets the freshest HTML
-       when online, and the precached copy (or the home page) when offline. */
+       when online, and the precached copy (or the home page) when offline.
+       Only successful responses are cached — a 500 or 404 must never become
+       the offline fallback for that route. */
     event.respondWith(
       (async () => {
         try {
           const fresh = await fetch(request);
-          const cache = await caches.open(CACHE);
-          cache.put(request, fresh.clone());
+          if (fresh.ok) {
+            const cache = await caches.open(CACHE);
+            cache.put(request, fresh.clone());
+          }
           return fresh;
         } catch {
           return (await caches.match(request)) || (await caches.match('/')) || Response.error();

@@ -114,7 +114,7 @@ export default function Agenda() {
   const fmtYear = (e: AgendaEntry) => String(parts(e.date).y);
 
   return (
-    <main id="main-content" className="min-h-screen">
+    <main id="main-content" tabIndex={-1} className="min-h-screen">
       {/* header — hero background */}
       <section className="relative overflow-hidden bg-pine-950">
         <div className="absolute inset-0 texture-net" />

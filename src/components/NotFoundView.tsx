@@ -13,6 +13,7 @@ export function NotFoundView({ backHref = '/' }: { backHref?: string }) {
   return (
     <main
       id="main-content"
+      tabIndex={-1}
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-pine-950 px-5 py-28 text-center"
     >
       <div className="absolute inset-0 texture-net" />

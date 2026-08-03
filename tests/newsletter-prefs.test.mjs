@@ -34,6 +34,7 @@ const call = async (handler, { method = 'GET', url, body } = {}) => {
   const res = {
     status(c) { out.code = c; return res; },
     json(d) { out.body = d; },
+    setHeader() {},
   };
   await handler({ method, url, headers: {}, body }, res);
   return out;

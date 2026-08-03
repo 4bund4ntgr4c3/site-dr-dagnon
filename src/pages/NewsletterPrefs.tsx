@@ -83,7 +83,7 @@ export default function NewsletterPrefs() {
   ] as const;
 
   return (
-    <main id="main-content" className="min-h-screen bg-pine-950">
+    <main id="main-content" tabIndex={-1} className="min-h-screen bg-pine-950">
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 texture-net" />
         <div className="absolute -top-40 -right-40 h-[560px] w-[560px] rounded-full bg-pine-600/25 blur-[130px]" />

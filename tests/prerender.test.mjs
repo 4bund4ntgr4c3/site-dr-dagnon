@@ -397,7 +397,7 @@ test('every page announces the RSS feed in its head', () => {
 test('the agenda pages carry future events as JSON-LD', () => {
   const today = new Date();
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-  eachPage(({ id, lang, route, html }) => {
+  eachPage(({ id, route, html }) => {
     const block = html.match(/<script id="events-jsonld"[^>]*>([\s\S]*?)<\/script>/)?.[1];
     if (route === '/agenda') {
       /* no block is valid too: with no upcoming dates the agenda page shows
@@ -430,7 +430,7 @@ test('the press kit pages carry FAQPage JSON-LD matching the visible FAQ', () =>
       .replace(/&amp;/g, '&')
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>');
-  eachPage(({ id, lang, route, html }) => {
+  eachPage(({ id, route, html }) => {
     const block = html.match(/<script id="faq-jsonld"[^>]*>([\s\S]*?)<\/script>/)?.[1];
     if (route === '/presse') {
       assert.ok(block, `${id}: missing the FAQPage JSON-LD`);

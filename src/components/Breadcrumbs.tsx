@@ -1,5 +1,7 @@
 import { Link } from 'react-router';
 import { ChevronRight } from 'lucide-react';
+import { useLang } from '@/i18n/useLang';
+import { UI } from '@/i18n/translations';
 
 /* The visible counterpart of the BreadcrumbList JSON-LD block: a home → list
    → item trail on deep pages. Rendered inside the dark hero on article pages
@@ -12,9 +14,10 @@ export function Breadcrumbs({
   items: { label: string; to?: string }[];
   dark?: boolean;
 }) {
+  const { lang } = useLang();
   return (
     <nav
-      aria-label="Breadcrumb"
+      aria-label={UI[lang]['breadcrumb.ariaLabel']}
       data-breadcrumb=""
       className={`flex flex-wrap items-center gap-1.5 text-[11.5px] font-semibold ${
         dark ? 'text-pine-100/85' : 'text-pine-900/80'

@@ -8,11 +8,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import webPush from 'web-push';
 
 process.env.RESEND_API_KEY = 'test-key';
 process.env.CRON_SECRET = 'test-cron';
+process.env.VERIFY_SECRET = 'test-secret';
 process.env.NEWSLETTER_TO_EMAIL = 'admin@example.test';
 process.env.NEWSLETTER_FROM_EMAIL = 'Portfolio <admin@example.test>';
 process.env.KV_REST_API_URL = 'https://fake-kv.upstash.io/';
@@ -60,6 +62,7 @@ const call = async (handler, { method = 'GET', authorization } = {}) => {
   const res = {
     status(c) { out.code = c; return res; },
     json(d) { out.body = d; },
+    setHeader() {},
   };
   const headers = { 'x-forwarded-for': '10.0.0.1' };
   if (authorization !== undefined) headers.authorization = authorization;
@@ -218,6 +221,22 @@ test('run pushes when VAPID keys are configured, tolerating a store without subs
 
 test('run skips when the owner or the api key is missing', async () => {
   assert.deepEqual(await run({ items: ITEMS, from: FROM }), { skipped: true });
+});
+
+test('run skips when no token secret is set — dead unsubscribe links must never be mailed', () => {
+  /* _tokens.ts reads VERIFY_SECRET at module scope, so the secret must be
+     absent from a fresh module instance — a stripped child process */
+  const script = `
+    import { run } from ${JSON.stringify(pathToFileURL(path.resolve('node_modules/.tmp/api/agenda-reminders.js')).href)};
+    const out = await run({ owner: 'admin@example.test', apiKey: 'test-key' });
+    console.log(JSON.stringify(out));
+  `;
+  const child = spawnSync(process.execPath, ['--input-type=module', '-e', script], {
+    encoding: 'utf8',
+    env: { ...process.env, VERIFY_SECRET: '', RESEND_API_KEY: '' },
+  });
+  assert.equal(child.status, 0, child.stderr);
+  assert.equal(child.stdout.trim(), JSON.stringify({ skipped: true }), 'a missing VERIFY_SECRET must skip the whole send');
 });
 
 test('run fails loudly when Resend refuses a send', async () => {

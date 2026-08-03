@@ -42,15 +42,14 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
       });
       const body = await res.json().catch(() => null);
       if (!res.ok) throw new Error('failed');
+      /* the API answers identically whether the address was already on the
+         list or newly staged — no oracle for probing subscriptions */
       if (body?.pending) {
         setStatus('pending');
-      } else if (body?.already) {
-        setStatus('success');
-        setMessage(t['newsletter.already']);
+        setEmail('');
       } else {
         setStatus('success');
       }
-      if (body?.pending) setEmail('');
     } catch {
       setStatus('error');
       setMessage(t['newsletter.error']);

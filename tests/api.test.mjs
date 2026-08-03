@@ -54,6 +54,7 @@ const call = async (handler, body, { ip = '10.0.0.1', method = 'POST', origin = 
   const res = {
     status(c) { out.code = c; return res; },
     json(d) { out.body = d; },
+    setHeader() {},
   };
   const base = { 'x-forwarded-for': ip };
   if (origin !== null) base.origin = origin;
@@ -75,7 +76,7 @@ test('send issues a token and never returns the phone number', async () => {
   assert.equal(res.code, 200);
   assert.ok(res.body.token, 'expected a token');
   assert.doesNotMatch(JSON.stringify(res.body), /\d{2} \d{2} \d{2} \d{2}/, 'phone leaked in the send response');
-  assert.match(code, /^[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{6}$/, `unexpected code shape: ${code}`);
+  assert.match(code, /^[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{10}$/, `unexpected code shape: ${code}`);
   assert.ok(!res.body.token.includes(code), 'token must not carry the code in clear');
 });
 
@@ -94,10 +95,21 @@ test('the code is case-insensitive and tolerates whitespace', async () => {
 
 test('a wrong code is rejected without revealing the phone number', async () => {
   const { res } = await requestCode('wrong@example.test', '10.1.0.4');
-  const verified = await call(verifyPhone, { action: 'verify', email: 'wrong@example.test', code: 'AAAAAA', token: res.body.token }, { ip: '10.1.0.4' });
+  const verified = await call(verifyPhone, { action: 'verify', email: 'wrong@example.test', code: 'AAAAAAAAAA', token: res.body.token }, { ip: '10.1.0.4' });
   assert.equal(verified.code, 400);
   assert.equal(verified.body.error, 'Invalid code');
   assert.ok(!verified.body.phone);
+});
+
+test('a token carries a tight guess budget, then refuses further attempts', async () => {
+  const { res } = await requestCode('brute@example.test', '10.1.0.11');
+  const verdicts = [];
+  for (let i = 0; i < 8; i++) {
+    const attempt = await call(verifyPhone, { action: 'verify', email: 'brute@example.test', code: `AAAAAAAAA${i}`, token: res.body.token }, { ip: '10.1.0.11' });
+    verdicts.push(attempt.code);
+  }
+  assert.ok(verdicts.filter((c) => c === 400).length >= 5, 'the first guesses are plain refusals');
+  assert.ok(verdicts.some((c) => c === 429), 'the token must refuse further guesses');
 });
 
 test('a code without its token is rejected', async () => {
@@ -282,6 +294,7 @@ const callGet = async (handler, url) => {
     status(c) { out.code = c; return res; },
     send(d) { out.html = d; },
     json(d) { out.json = d; },
+    setHeader() {},
   };
   await handler({ method: 'GET', headers: { 'x-forwarded-for': '10.0.0.1' }, url }, res);
   return out;
@@ -321,7 +334,7 @@ test('an already-subscribed address is told so and asked nothing', async () => {
     const before = sent.length;
     const out = await call(newsletter, { email: 'old@example.test', lang: 'en' }, { ip: '10.6.0.2' });
     assert.equal(out.code, 200);
-    assert.deepEqual(out.body, { ok: true, already: true });
+    assert.deepEqual(out.body, { ok: true, pending: true }, 'the response must not reveal whether the address is subscribed');
     assert.equal(sent.length, before, 'a re-subscription must not send any email');
   }, 1);
 });
@@ -658,16 +671,29 @@ test('previews and local development are allowed', async () => {
   /* sd.studio26.online is this project's actual staging domain — a same-origin
      POST from it was rejected by an earlier version of this allowlist that
      only knew about *.vercel.app, which is the exact bug this test exists to
-     catch a second time. */
+     catch a second time. Preview origins are matched by project name only:
+     `*.vercel.app` and `*.studio26.online` would be open to anyone's project. */
   for (const origin of [
     'http://localhost:3000',
+    'https://site-dr-dagnon.vercel.app',
     'https://site-dr-dagnon-abc123.vercel.app',
     'https://www.seynudedagnon.com',
     'https://sd.studio26.online',
-    'https://any-project.studio26.online',
   ]) {
     const out = await call(contact, { name: 'A', email: 'a@example.test', phone: '+229 01 02 03 04', message: 'hi' }, { origin, ip: `10.4.1.${origin.length}` });
     assert.notEqual(out.code, 403, `${origin} should be allowed`);
+  }
+});
+
+test("anyone else's project must not pass the origin check", async () => {
+  for (const origin of [
+    'https://any-project.vercel.app',
+    'https://site-dr-dagnon.evil.example.vercel.app',
+    'https://any-project.studio26.online',
+    'https://evil.studio26.online',
+  ]) {
+    const out = await call(contact, { name: 'A', email: 'a@example.test', phone: '+229 01 02 03 04', message: 'hi' }, { origin, ip: `10.4.1.${origin.length}` });
+    assert.equal(out.code, 403, `${origin} should be refused`);
   }
 });
 
