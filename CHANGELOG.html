@@ -85,15 +85,29 @@
     <h1>Site Dr. Seynude Dagnon</h1>
     <p class="sub">Portfolio &amp; site vitrine — <code>site-dr-dagnon</code></p>
     <div class="stats">
-      <span class="stat"><strong>229</strong> commits</span>
-      <span class="stat"><strong>21</strong> versions</span>
-      <span class="stat"><strong>207</strong> tests automatisés</span>
-      <span class="stat"><strong>106</strong> pages prédéfinies</span>
-      <span class="stat">16 juil → 3 août 2026</span>
+      <span class="stat"><strong>235</strong> commits</span>
+      <span class="stat"><strong>22</strong> versions</span>
+      <span class="stat"><strong>296</strong> tests automatisés</span>
+      <span class="stat"><strong>106</strong> pages prérendues</span>
+      <span class="stat">16 juil – 3 août 2026</span>
     </div>
   </header>
 
   <div class="rule"></div>
+
+  <!-- ============ v2.1 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v2.1</span><span class="vdate">3 août 2026</span></div>
+    <h2 class="vtitle">Audit, deuxième passe — durcissement réseau, accessibilité de masse, polices auto-hébergées, suite de 296 tests</h2>
+    <p class="vsummary">Deuxième passe du même audit : le réseau est durci (limites par adresse, en-têtes de sécurité renforcés, secrets de démonstration neutralisés), l'accessibilité est vérifiée par axe sur les 106 pages et le dialogue de recherche, les polices sont auto-hébergées (zéro dépendance Google Fonts au chargement), et la suite de tests — désormais hermétique (ports éphémères, origines externes coupées) — passe à 296 tests.</p>
+    <ul>
+      <li><strong>Sécurité</strong> — codes de vérification à 10 caractères ; limite de contact par adresse destinataire (3/h) en plus de la limite par IP ; utilitaires <code>_ip</code>, <code>_headers</code>, <code>_origin</code>, <code>_push-guard</code> mutualisés ; opérations KV en <code>SCARD</code>/<code>SCARD</code>/<code>SRANDMEMBER</code> atomiques dans l'admin ; <code>SCLEAN</code> des souscriptions push à la migration ; envoi groupé <em>fail-closed</em> ; <code>Cross-Origin-Opener-Policy: same-origin</code> et <code>maxDuration: 60</code> pour le cron dans <code>vercel.json</code> ; l'échantillon admin est borné et le test du jeton-guard a été réécrit en processus enfant (secret réel au scope du module).</li>
+      <li><strong>Accessibilité</strong> — axe-core audite les 106 routes statiques (FR + EN) et le dialogue de recherche ouvert ; lien d'évitement dédoublonné (une seule version traduite) ; <code>tabIndex="-1"</code> sur les 18 <code>&lt;main id="main-content"&gt;</code> pour le focus ciblé ; fil d'Ariane traduit (aria-label) ; contraste des badges de résultats de recherche corrigé (réel défaut attrapé par le nouveau test) ; manifeste PWA complété (<code>id</code>, <code>lang</code>).</li>
+      <li><strong>Performance</strong> — Fraunces et Inter auto-hébergées en variable (<code>woff2</code> latin + latin-ext, <code>font-display: swap</code>, préchargement des deux faces critiques) ; les preconnects Google Fonts et le CSS2 bloquant disparaissent du <code>&lt;head&gt;</code> ; CSP resserré (<code>font-src 'self'</code>) ; en-têtes <code>Cache-Control</code> immuables pour <code>/fonts/*</code> ; les polices rejoignent la pré-cache du service worker ; framer-motion sorti du bundle principal (chargeur <code>useReducedMotion</code> local basé sur <code>useSyncExternalStore</code>, <code>MotionConfig</code> déplacé sur la page d'accueil) ; budget LCP du test ajusté à 5,5 s (polices réelles désormais chargées, mesuré 3,5 s à froid / 5,1 s sous charge).</li>
+      <li><strong>SEO &amp; i18n</strong> — l'édito « Aled Nature 2026 » reclassé en <em>blog</em> (dédoublonné de la liste des publications, <code>utm_source</code> retiré) ; le compteur de publications du héros devient dynamique (16, calculé depuis les données) ; <code>og:url</code> supprimé des pages 404 ; descriptions vérifiées ≤ 155 caractères ; aucune clé de traduction morte, la page 404 française confirmée.</li>
+      <li><strong>CI &amp; dépendances</strong> — bloc ESLint pour les <code>.mjs</code> (11 erreurs préexistantes corrigées) ; suites Chromium hermétiques : ports éphémères, aborts des origines externes (Google Fonts, gtag, GA, Vercel analytics), en-têtes de cache réalistes pour <code>/assets</code> et <code>/fonts</code> ; <code>engines.node &gt;= 20</code> ; dépendances mises à jour (React 19.2.8, Playwright 1.62.1 avec navigateur re-téléchargé, postcss, framer-motion, types) — 0 vulnérabilité.</li>
+    </ul>
+  </section>
 
   <!-- ============ v2.0.1 ============ -->
   <section class="version">
