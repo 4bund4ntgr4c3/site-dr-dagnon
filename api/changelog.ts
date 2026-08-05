@@ -39,8 +39,8 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '244', en: '244' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '23', en: '23' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '246', en: '246' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '24', en: '24' }, label: { fr: 'versions', en: 'versions' } },
     { value: { fr: '298', en: '298' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
     { value: { fr: '108', en: '108' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 5 août 2026', en: '16 Jul – 5 Aug 2026' } },
@@ -50,8 +50,26 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-05',
+    version: '2.2.1',
     label: { fr: '5 août 2026', en: '5 August 2026' },
+    title: { fr: 'Audit complet — corrections tests, réécritures manquantes & métadonnées', en: 'Full audit — test fixes, missing rewrites & metadata' },
+    fr: [
+      'Correctif pré-rendu — la liste de contrôle des routes du test sitemap prévoyait 106 pages alors que le site en pré-rend 108 : /accessibility manquait au check-list délibéré ; le test exige désormais les 108.',
+      'Correctif production — /accessibility et /fr/accessibility n\'avaient pas de réécriture explicite dans vercel.json : elles sont désormais servies directement (HTTP 200, sans redirection).',
+      'SEO — description FR de la page Accessibilité raccourcie de 169 à 145 caractères (budget de snippet ~160).',
+      'Statistiques — en-tête du changelog à jour (246 commits ; 24 versions) ; suite complète : 298 tests au vert.',
+    ],
+    en: [
+      'Prerender fix — the sitemap test route checklist expected 106 pages while the site prerenders 108: /accessibility was missing from the deliberate checklist; the test now requires all 108.',
+      'Production fix — /accessibility and /fr/accessibility had no explicit rewrite in vercel.json: now served directly (HTTP 200, no redirect).',
+      'SEO — FR accessibility page description trimmed from 169 to 145 characters (~160 snippet budget).',
+      'Stats — changelog header refreshed (246 commits; 24 versions); full suite: 298 tests green.',
+    ],
+  },
+  {
+    date: '2026-08-05',
     version: '2.2',
+    label: { fr: '5 août 2026', en: '5 August 2026' },
     title: { fr: 'Accessibilité documentée, contact WhatsApp & changelog protégé', en: 'Documented accessibility, WhatsApp contact & protected changelog' },
     fr: [
       'Page Accessibilité — nouvelle route /accessibility (et /fr/accessibility) : structure et navigation, utilisation au clavier (Ctrl+K, Échap, flèches), recherche globale, texte/zoom/contrastes, lecteurs d\'écran, médias et signalement des difficultés ; fil d\'Ariane, JSON-LD CollectionPage, sitemap (priorité 0,3) et lien dans le footer.',
