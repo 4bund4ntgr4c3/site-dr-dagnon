@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { FileText, ArrowUpRight, X, Star, Search, Quote } from 'lucide-react';
+import { FileText, ArrowUpRight, X, Star, Search, Quote, ExternalLink } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { CitationModal } from '@/components/CitationModal';
@@ -8,6 +8,7 @@ import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { PUB_ITEMS, type PubEntry } from '@/data/publications';
+import { LINKS } from '@/data/content';
 
 const pill = (active: boolean) =>
   `whitespace-nowrap rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
@@ -90,6 +91,30 @@ export default function PublicationsPage() {
             <p className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
               {t['pubPage.intro']}
             </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              {LINKS.orcid && (
+                <a
+                  href={LINKS.orcid}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-pine-100/20 bg-white/10 px-4 py-2 text-sm font-medium text-pine-100 backdrop-blur-sm transition-all hover:border-gold-400/50 hover:bg-gold-500/10 hover:text-gold-300"
+                >
+                  <span className="text-[11px] font-bold tracking-wider">ORCID</span>
+                  <ExternalLink size={13} />
+                </a>
+              )}
+              {LINKS.scholar && (
+                <a
+                  href={LINKS.scholar}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-pine-100/20 bg-white/10 px-4 py-2 text-sm font-medium text-pine-100 backdrop-blur-sm transition-all hover:border-gold-400/50 hover:bg-gold-500/10 hover:text-gold-300"
+                >
+                  <span className="text-[11px] font-bold tracking-wider">Google Scholar</span>
+                  <ExternalLink size={13} />
+                </a>
+              )}
+            </div>
           </Reveal>
         </div>
       </section>

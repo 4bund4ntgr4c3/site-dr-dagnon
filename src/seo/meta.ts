@@ -215,6 +215,19 @@ export const INVITER_SEO: Record<Lang, { title: string; description: string; key
   },
 };
 
+export const COLLAB_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Collaborer — Recherche, programmes & partenariats',
+    description: "Collaborez avec le Dr. Seynudé Dagnon : recherche opérationnelle, programmes de santé publique, conseil technique et partenariats stratégiques en Afrique.",
+    keywords: 'collaborer Dr Dagnon, partenariat paludisme, recherche opérationnelle Afrique, conseil technique santé publique, programme paludisme Bénin',
+  },
+  en: {
+    title: 'Collaborate — Research, Programs & Partnerships',
+    description: "Collaborate with Dr. Seynudé Dagnon: operational research, public health programs, technical advisory and strategic partnerships across Africa.",
+    keywords: 'collaborate Dr Dagnon, malaria partnership, operational research Africa, technical advisory public health, malaria program Benin',
+  },
+};
+
 export const NEWSLETTER_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Newsletter — Dr. Dagnon',
@@ -264,6 +277,19 @@ export const BIBLIOGRAPHY_SEO: Record<Lang, { title: string; description: string
     title: 'Scientific bibliography — Seynudé Dagnon',
     description: 'DOI-indexed research publications by Dr. Seynudé Dagnon: malaria, insecticide-treated nets, indoor residual spraying, insecticide resistance.',
     keywords: 'Dr Dagnon bibliography, malaria publications DOI, chemoprevention, LLIN, IRS Benin, entomology, BibTeX citations',
+  },
+};
+
+export const PUBLICATIONS_PDF_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Publications (PDF) — Dr. Seynudé Dagnon',
+    description: 'Liste complète des publications scientifiques du Dr. Seynudé Dagnon, téléchargeable en PDF. ORCID, Google Scholar, citations.',
+    keywords: 'publications Dr Dagnon PDF, liste publications paludisme, ORCID, Google Scholar, CV scientifique',
+  },
+  en: {
+    title: 'Publications (PDF) — Dr. Dagnon',
+    description: 'Complete list of scientific publications by Dr. Seynudé Dagnon, downloadable as PDF. ORCID, Google Scholar, citations.',
+    keywords: 'Dr Dagnon publications PDF, malaria publications list, ORCID, Google Scholar, academic CV',
   },
 };
 
@@ -504,6 +530,8 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
     const photoId = path.split('/media/community/')[1];
     const photo = photoId ? MEDIA_ITEMS.find((m) => m.id === photoId && m.category === 'community') : null;
     if (photo) items.push({ name: photoTitleShort(lang, photo), url: absUrl(lang, path) });
+  } else if (path === '/publications-pdf') {
+    items.push({ name: lang === 'fr' ? 'Publications (PDF)' : 'Publications (PDF)', url: absUrl(lang, '/publications-pdf') });
   } else if (path.startsWith('/publications')) {
     items.push({ name: 'Publications', url: absUrl(lang, '/publications') });
   } else if (path.startsWith('/tribunes')) {
@@ -522,6 +550,8 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
     items.push({ name: lang === 'fr' ? 'Kit de presse' : 'Press kit', url: absUrl(lang, '/presse') });
   } else if (path === '/inviter') {
     items.push({ name: lang === 'fr' ? 'Inviter le Dr' : 'Invite the Dr', url: absUrl(lang, '/inviter') });
+  } else if (path === '/collaborate') {
+    items.push({ name: lang === 'fr' ? 'Collaborer' : 'Collaborate', url: absUrl(lang, '/collaborate') });
   } else if (path === '/newsletter') {
     items.push({ name: 'Newsletter', url: absUrl(lang, '/newsletter') });
   } else if (path === '/impact') {
@@ -779,10 +809,12 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isMedia = route.startsWith('/media');
   const isMediaLanding = route === '/media';
   const mediaCategory = isMedia && !isMediaLanding ? route.split('/media/')[1]?.split('/')[0] || null : null;
-  const isPub = route.startsWith('/publications');
+  const isPublicationsPdf = route === '/publications-pdf';
+  const isPub = route.startsWith('/publications') && !isPublicationsPdf;
   const isAgenda = route.startsWith('/agenda');
   const isPresse = route === '/presse';
   const isInvite = route === '/inviter';
+  const isCollaborate = route === '/collaborate';
   const isNewsletter = route === '/newsletter';
   const isImpact = route === '/impact';
   const isLegal = route === '/legal';
@@ -858,7 +890,9 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
               ? PRESSE_SEO[lang]
               : isInvite
                 ? INVITER_SEO[lang]
-                : isNewsletter
+                : isCollaborate
+                  ? COLLAB_SEO[lang]
+                  : isNewsletter
                   ? NEWSLETTER_SEO[lang]
                   : isImpact
                     ? IMPACT_SEO[lang]
@@ -868,6 +902,8 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                         ? ACCESSIBILITY_SEO[lang]
                         : isBibliography
                           ? BIBLIOGRAPHY_SEO[lang]
+                          : isPublicationsPdf
+                            ? PUBLICATIONS_PDF_SEO[lang]
                         : isAdmin
                           ? ADMIN_SEO[lang]
                           : isPreferences
@@ -931,7 +967,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
               ? projectJsonLd(lang, project, url)
               : photo
                 ? imageObjectJsonLd(lang, photo, url)
-                : isMedia || isPub || isAgenda || isTribunes || isProjects || isPresse || isInvite || isNewsletter || isImpact || isLegal || isAccessibility || isBibliography
+                : isMedia || isPub || isAgenda || isTribunes || isProjects || isPresse || isInvite || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isBibliography
                   ? collectionPageJsonLd(lang, data.title, data.description, url)
                   : null,
     },
@@ -960,11 +996,13 @@ export const PRERENDER_ROUTES = [
   '/agenda',
   '/presse',
   '/inviter',
+  '/collaborate',
   '/newsletter',
   '/impact',
   '/legal',
   '/accessibility',
   '/bibliography',
+  '/publications-pdf',
 ];
 
 export const PRERENDER_LANGS: Lang[] = SUPPORTED;
@@ -981,11 +1019,13 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/agenda': { priority: '0.8', changefreq: 'weekly' },
   '/presse': { priority: '0.5', changefreq: 'monthly' },
   '/inviter': { priority: '0.5', changefreq: 'monthly' },
+  '/collaborate': { priority: '0.7', changefreq: 'monthly' },
   '/newsletter': { priority: '0.5', changefreq: 'weekly' },
   '/impact': { priority: '0.7', changefreq: 'monthly' },
   '/legal': { priority: '0.3', changefreq: 'yearly' },
   '/accessibility': { priority: '0.3', changefreq: 'yearly' },
   '/bibliography': { priority: '0.7', changefreq: 'weekly' },
+  '/publications-pdf': { priority: '0.6', changefreq: 'monthly' },
   ...Object.fromEntries(
     TRIBUNES.map((t) => [`/tribunes/${t.slug}`, { priority: '0.7', changefreq: 'monthly' }]),
   ),

@@ -1,8 +1,7 @@
-import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router';
 import {
   Play,
-  Pause,
   FileText,
   Image as ImageIcon,
   X,
@@ -23,6 +22,7 @@ import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { NotFoundView } from '@/components/NotFoundView';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { PhotoLightbox } from '@/components/PhotoLightbox';
 import { ShareButtons } from '@/components/ShareButtons';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -256,11 +256,6 @@ function CommunityView({
   t: (typeof UI)['fr'];
 }) {
   const [activeAlbum, setActiveAlbum] = useState<string | null>(null);
-  const [slideshowIndex, setSlideshowIndex] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const albumKeys = useMemo(() => {
     const latest = new Map<string, string>();
@@ -292,43 +287,9 @@ function CommunityView({
     return counts;
   }, []);
 
-  const goNext = useCallback(() => {
-    if (albumPhotos.length === 0) return;
-    setSlideshowIndex((prev) => (prev + 1) % albumPhotos.length);
-  }, [albumPhotos.length]);
-
-  /* resetting here rather than in an effect keyed on activeAlbum: the reset
-     belongs to the act of opening an album, not to a render pass */
   const openAlbum = (key: string) => {
     setActiveAlbum(key);
-    setSlideshowIndex(0);
-    setIsAutoPlaying(true);
   };
-
-  const goPrev = useCallback(() => {
-    if (albumPhotos.length === 0) return;
-    setSlideshowIndex((prev) => (prev - 1 + albumPhotos.length) % albumPhotos.length);
-  }, [albumPhotos.length]);
-
-  useEffect(() => {
-    if (isAutoPlaying && activeAlbum && albumPhotos.length > 1) {
-      autoPlayRef.current = setInterval(goNext, 2000);
-    }
-    return () => {
-      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-    };
-  }, [isAutoPlaying, activeAlbum, albumPhotos.length, goNext]);
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === 'Escape') setActiveAlbum(null);
-      if (e.key === 'ArrowRight') goNext();
-      if (e.key === 'ArrowLeft') goPrev();
-    },
-    [goNext, goPrev],
-  );
-
-  useFocusTrap(modalRef, closeRef, !!activeAlbum, () => setActiveAlbum(null));
 
   return (
     <>
@@ -394,195 +355,15 @@ function CommunityView({
         })}
       </div>
 
-      {/* slideshow modal */}
+      {/* lightbox */}
       {activeAlbum && (
-        <div
-          className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-pine-950/95 p-4 backdrop-blur-sm"
-          onClick={() => setActiveAlbum(null)}
-          onKeyDown={handleKeyDown}
-          role="dialog"
-          aria-modal="true"
-          aria-label={subtypeLabel(t, activeAlbum)}
-          tabIndex={-1}
-        >
-          {/* header */}
-          <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-4">
-            <div>
-              <h3 className="font-display text-lg font-semibold text-white">
-                {subtypeLabel(t, activeAlbum)}
-              </h3>
-              <p className="text-[13px] text-white/60">
-                {slideshowIndex + 1} / {albumPhotos.length}
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              {/* autoplay toggle */}
-              {albumPhotos.length > 1 && (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsAutoPlaying(!isAutoPlaying);
-                  }}
-                  className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${
-                    isAutoPlaying
-                      ? 'border-gold-500 bg-gold-500 text-pine-950 shadow-lg shadow-gold-500/30'
-                      : 'border-white/30 bg-white/10 text-white hover:bg-white/20'
-                  }`}
-                  aria-label={isAutoPlaying ? (lang === 'fr' ? 'Pause' : 'Pause') : (lang === 'fr' ? 'Lecture' : 'Play')}
-                  aria-pressed={isAutoPlaying}
-                >
-                  {isAutoPlaying ? <Pause size={16} /> : <Play size={16} className="ml-0.5" />}
-                </button>
-              )}
-              {/* close */}
-              <button
-                ref={closeRef}
-                type="button"
-                onClick={() => setActiveAlbum(null)}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/10"
-                aria-label={t['media.close']}
-              >
-                <X size={20} />
-              </button>
-            </div>
-          </div>
-
-          {/* slideshow content */}
-          <div
-            ref={modalRef}
-            className="relative flex w-full max-w-5xl items-center justify-center"
-            onClick={(e) => e.stopPropagation()}
-            onMouseEnter={() => setIsAutoPlaying(false)}
-            onMouseLeave={() => { if (activeAlbum) setIsAutoPlaying(true); }}
-          >
-            {albumPhotos.length > 0 && (
-              <>
-                {/* prev button */}
-                {albumPhotos.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      goPrev();
-                      setIsAutoPlaying(false);
-                    }}
-                    className="absolute -left-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-pine-950/60 text-white backdrop-blur-sm transition-all hover:bg-white/20 lg:-left-16"
-                    aria-label={lang === 'fr' ? 'Précédent' : 'Previous'}
-                  >
-                    <ChevronLeft size={24} />
-                  </button>
-                )}
-
-                {/* photo — a tall frame (75% of the screen height, capped
-                    so the header, dots and caption still fit) with the blurred
-                    zoomed backdrop filling any uncovered area; the photo stays
-                    centered at its own proportions, as big as the frame
-                    allows, never cropped and never invading the screen */}
-                <div className="relative h-[min(75vh,calc(100vh-130px))] w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
-                  {/* only the current slide and its neighbours are mounted —
-                      an album used to pull every photo down at once */}
-                  {albumPhotos.map((photo, i) => {
-                    const last = albumPhotos.length - 1;
-                    const adjacent =
-                      Math.abs(i - slideshowIndex) <= 1 ||
-                      (slideshowIndex === 0 && i === last) ||
-                      (slideshowIndex === last && i === 0);
-                    if (!adjacent) return null;
-                    return (
-                      <div
-                        key={photo.id}
-                        className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                          i === slideshowIndex ? 'opacity-100' : 'opacity-0'
-                        }`}
-                      >
-                        {/* blurred zoomed backdrop covers the whole frame */}
-                        <img
-                          src={photo.src}
-                          alt=""
-                          aria-hidden="true"
-                          loading={i === slideshowIndex ? 'eager' : 'lazy'}
-                          decoding="async"
-                          className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-2xl"
-                        />
-                        {/* the photo itself — centered, own ratio, biggest fit */}
-                        <img
-                          src={photo.src}
-                          alt={photo.title[lang]}
-                          loading={i === slideshowIndex ? 'eager' : 'lazy'}
-                          decoding="async"
-                          className="absolute inset-0 m-auto max-h-full max-w-full object-contain"
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* next button */}
-                {albumPhotos.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      goNext();
-                      setIsAutoPlaying(false);
-                    }}
-                    className="absolute -right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-pine-950/60 text-white backdrop-blur-sm transition-all hover:bg-white/20 lg:-right-16"
-                    aria-label={lang === 'fr' ? 'Suivant' : 'Next'}
-                  >
-                    <ChevronRight size={24} />
-                  </button>
-                )}
-              </>
-            )}
-          </div>
-
-          {/* dots — 24px hit targets around the visual dot */}
-          {albumPhotos.length > 1 && (
-            <div className="mt-6 flex items-center gap-2">
-              {albumPhotos.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSlideshowIndex(i);
-                    setIsAutoPlaying(false);
-                  }}
-                  className={`flex h-6 w-6 items-center justify-center rounded-full transition-all ${
-                    i === slideshowIndex ? '' : 'hover:bg-white/10'
-                  }`}
-                  aria-label={`${lang === 'fr' ? 'Photo' : 'Photo'} ${i + 1}${i === slideshowIndex ? (lang === 'fr' ? ', actuelle' : ', current') : ''}`}
-                  aria-current={i === slideshowIndex ? 'true' : undefined}
-                >
-                  <span
-                    className={`block h-2 rounded-full transition-all ${
-                      i === slideshowIndex ? 'w-6 bg-gold-500' : 'w-2 bg-white/30'
-                    }`}
-                  />
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* photo caption */}
-          {albumPhotos.length > 0 && (
-            <div className="mt-4 flex max-w-2xl flex-col items-center gap-2">
-              <p className="text-center text-[13px] text-white/60">
-                {albumPhotos[slideshowIndex].title[lang]}
-              </p>
-              {/* every photo has its own page — the lightbox is not the only
-                  way to reach it, and the page is what gets shared and indexed */}
-              <Link
-                to={localePath(lang, `/media/community/${albumPhotos[slideshowIndex].id}`)}
-                className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-400 transition-colors hover:text-gold-300"
-              >
-                {lang === 'fr' ? 'Ouvrir la photo dans sa page' : 'Open the photo on its own page'}
-                <ArrowUpRight size={13} />
-              </Link>
-            </div>
-          )}
-        </div>
+        <PhotoLightbox
+          photos={albumPhotos}
+          lang={lang}
+          title={subtypeLabel(t, activeAlbum)}
+          closeLabel={t['media.close']}
+          onClose={() => setActiveAlbum(null)}
+        />
       )}
     </>
   );

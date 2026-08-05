@@ -33,6 +33,34 @@ function parseJson<T>(raw: unknown, fallback: T): T {
   }
 }
 
+/** Parses a JSON array string into a string array. */
+function parseJsonArray(raw: unknown): string[] {
+  if (typeof raw !== 'string') return [];
+  try {
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr.filter((x: unknown) => typeof x === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+
+/** Converts a Redis hash result (object or array) into sorted [query, count] pairs. */
+function hashToSortedPairs(raw: unknown): [string, number][] {
+  if (!raw || typeof raw !== 'object') return [];
+  let entries: [string, number][];
+  if (Array.isArray(raw)) {
+    entries = [];
+    for (let i = 0; i < raw.length - 1; i += 2) {
+      entries.push([String(raw[i]), Number(raw[i + 1])]);
+    }
+  } else {
+    entries = Object.entries(raw as Record<string, unknown>).map(([k, v]) => [k, Number(v)]);
+  }
+  return entries
+    .filter((pair) => Number.isFinite(pair[1]) && pair[1] > 0)
+    .sort((a, b) => b[1] - a[1]);
+}
+
 interface Req { method: string; url?: string; headers: Record<string, string | string[] | undefined> }
 interface Res { status(c: number): Res; json(d: unknown): void; setHeader(k: string, v: string): void }
 
@@ -60,6 +88,9 @@ export default async function handler(req: Req, res: Res) {
         ['SRANDMEMBER', 'newsletter:emails', 20],
         ['GET', 'newsletter:last-sent'],
         ['GET', 'agenda:reminded'],
+        ['GET', 'search:total'],
+        ['HGETALL', 'search:counts'],
+        ['GET', 'search:recent'],
       ]),
     });
     if (!response.ok) { res.status(502).json({ error: 'KV unavailable' }); return; }
@@ -69,11 +100,13 @@ export default async function handler(req: Req, res: Res) {
     const sample = Array.isArray(results[2]?.result) ? results[2].result : [];
     const lastDigest = parseJson<{ ids?: unknown }>(results[3]?.result, {});
     const reminded = parseJson<{ ids?: unknown }>(results[4]?.result, {});
+    const searchTotal = Number(results[5]?.result) || 0;
+    const searchCountsRaw = results[6]?.result;
+    const topQueries = hashToSortedPairs(searchCountsRaw).slice(0, 20).map(([query, count]) => ({ query, count }));
+    const recentQueries = parseJsonArray(results[7]?.result);
     res.status(200).json({
       ok: true,
       subscribers,
-      /* SRANDMEMBER was asked for 20, but a store quirk must not enlarge
-         the response past what the client expects */
       subscribersSample: sample.slice(0, 20),
       pushSubs,
       lastDigest: {
@@ -82,6 +115,9 @@ export default async function handler(req: Req, res: Res) {
       remindedEvents: {
         ids: Array.isArray(reminded.ids) ? reminded.ids : [],
       },
+      searchTotal,
+      topQueries,
+      recentQueries,
     });
   } catch (e) {
     console.error(e);

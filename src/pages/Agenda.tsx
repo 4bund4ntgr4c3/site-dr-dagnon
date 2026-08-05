@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { Calendar, MapPin, ArrowUpRight, Presentation, Mic, Users, MessagesSquare, Newspaper, CalendarDays, CalendarPlus } from 'lucide-react';
+import { Calendar, MapPin, ArrowUpRight, Presentation, Mic, Users, MessagesSquare, Newspaper, CalendarDays, CalendarPlus, BellRing, CheckCircle2, AlertCircle } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
@@ -368,8 +368,103 @@ function EventCard({
             <CalendarDays size={12} />
             {t['agendaPage.addOutlook']}
           </a>
+          {upcoming && <RemindButton eventId={e.id} t={t} />}
         </div>
       </div>
     </article>
+  );
+}
+
+/* the "Me rappeler / Remind me" opt-in — POSTs to /api/event-remind, then
+   swaps itself for a confirmation. Matches the newsletter form's tiny fetch
+   contract (no honeypot: the crate is small, rate-limited on both sides). */
+function RemindButton({ eventId, t }: { eventId: string; t: typeof UI['fr'] }) {
+  type Status = 'idle' | 'open' | 'done';
+  const [status, setStatus] = useState<Status>('idle');
+  const [email, setEmail] = useState('');
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
+
+  if (status === 'done') {
+    return (
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-pine-900/10 bg-pine-50 px-3 py-1.5 text-[11.5px] font-semibold text-pine-800">
+        <CheckCircle2 size={12} className="text-gold-600" />
+        {t['agendaPage.remindDone']}
+      </span>
+    );
+  }
+
+  if (status === 'open') {
+    return (
+      <form
+        className="inline-flex items-center gap-1.5"
+        onSubmit={async (ev) => {
+          ev.preventDefault();
+          if (sending) return;
+          setSending(true);
+          setError(false);
+          try {
+            const res = await fetch('/api/event-remind', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ eventId, email: email.trim() }),
+            });
+            if (!res.ok) throw new Error('failed');
+            setStatus('done');
+          } catch {
+            setError(true);
+            setSending(false);
+          }
+        }}
+      >
+        <label className="sr-only" htmlFor={`remind-${eventId}`}>
+          {t['agendaPage.remindEmail']}
+        </label>
+        <input
+          id={`remind-${eventId}`}
+          type="email"
+          required
+          autoComplete="email"
+          value={email}
+          onChange={(ev) => setEmail(ev.target.value)}
+          placeholder={t['agendaPage.remindEmail']}
+          aria-invalid={error}
+          className="w-40 rounded-full border border-pine-900/15 bg-white px-3 py-1.5 text-[11.5px] text-pine-900 placeholder:text-pine-900/50 outline-none transition-colors focus:border-gold-500/50 focus:ring-2 focus:ring-gold-500/10"
+        />
+        <button
+          type="submit"
+          disabled={sending}
+          className="inline-flex items-center gap-1.5 rounded-full bg-pine-950 px-3 py-1.5 text-[11.5px] font-semibold text-gold-400 transition-all hover:bg-pine-900 disabled:opacity-60"
+        >
+          {sending ? '…' : t['agendaPage.remind']}
+        </button>
+        {error && (
+          <button
+            type="button"
+            onClick={() => {
+              setStatus('idle');
+              setError(false);
+              setEmail('');
+            }}
+            title={t['agendaPage.remindCancel']}
+            className="text-red-600"
+          >
+            <AlertCircle size={13} />
+          </button>
+        )}
+      </form>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setStatus('open')}
+      title={t['agendaPage.remindTitle']}
+      className="inline-flex items-center gap-1.5 rounded-full border border-pine-900/15 px-3 py-1.5 text-[11.5px] font-semibold text-pine-900/75 transition-all hover:border-gold-500/50 hover:text-gold-700"
+    >
+      <BellRing size={12} />
+      {t['agendaPage.remind']}
+    </button>
   );
 }

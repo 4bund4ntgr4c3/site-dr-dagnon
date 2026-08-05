@@ -95,9 +95,12 @@ test('POST saves the preference with a one-year TTL', async () => {
   assert.equal(res.code, 200);
   assert.equal(res.body.ok, true);
   assert.equal(res.body.frequency, 'monthly');
-  assert.deepEqual(kvCalls.at(-1).commands, [
-    ['SET', 'newsletter:prefs:reader@example.test', JSON.stringify({ frequency: 'monthly' }), 'EX', '31536000'],
-  ]);
+  const saved = JSON.parse(kvCalls.at(-1).commands[0][2]);
+  assert.equal(saved.frequency, 'monthly');
+  assert.ok(Array.isArray(saved.sections));
+  assert.equal(saved.sections.length, 4);
+  assert.equal(kvCalls.at(-1).commands[0][3], 'EX');
+  assert.equal(kvCalls.at(-1).commands[0][4], '31536000');
 });
 
 test('POST fails closed when KV is down', async () => {
@@ -117,19 +120,21 @@ const subs = ['a@example.test', 'b@example.test', 'c@example.test'];
 
 test('everyone gets the digest on a monthly-due send', () => {
   const langs = new Map([['b@example.test', 'fr']]);
-  const prefs = new Map([['c@example.test', 'monthly']]);
+  const prefs = new Map([['c@example.test', { frequency: 'monthly', sections: ['publications', 'tribunes'] }]]);
   const { recipients, includedMonthly } = planRecipients(subs, langs, prefs, true);
   assert.equal(recipients.length, 3);
   assert.equal(includedMonthly, true);
-  assert.deepEqual(recipients, [
-    { email: 'a@example.test', lang: 'both' },
-    { email: 'b@example.test', lang: 'fr' },
-    { email: 'c@example.test', lang: 'both' },
-  ]);
+  assert.equal(recipients[0].email, 'a@example.test');
+  assert.equal(recipients[0].lang, 'both');
+  assert.ok(recipients[0].sections.length === 4);
+  assert.equal(recipients[1].email, 'b@example.test');
+  assert.equal(recipients[1].lang, 'fr');
+  assert.equal(recipients[2].email, 'c@example.test');
+  assert.deepEqual(recipients[2].sections, ['publications', 'tribunes']);
 });
 
 test('monthly subscribers are skipped outside their window', () => {
-  const prefs = new Map([['c@example.test', 'monthly']]);
+  const prefs = new Map([['c@example.test', { frequency: 'monthly', sections: ['publications'] }]]);
   const { recipients, includedMonthly } = planRecipients(subs, new Map(), prefs, false);
   assert.equal(recipients.length, 2);
   assert.equal(includedMonthly, false);

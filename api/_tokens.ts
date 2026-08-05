@@ -11,7 +11,7 @@
 
 import crypto from 'node:crypto';
 
-export type TokenPurpose = 'nl-confirm' | 'nl-unsub' | 'nl-prefs';
+export type TokenPurpose = 'nl-confirm' | 'nl-unsub' | 'nl-prefs' | 'ev-remind';
 
 /* confirmation links are valid for 7 days, unsubscribe and preferences
    links for 90 */
@@ -19,6 +19,7 @@ export const TOKEN_TTL_MS: Record<TokenPurpose, number> = {
   'nl-confirm': 7 * 24 * 60 * 60 * 1000,
   'nl-unsub': 90 * 24 * 60 * 60 * 1000,
   'nl-prefs': 90 * 24 * 60 * 60 * 1000,
+  'ev-remind': 90 * 24 * 60 * 60 * 1000,
 };
 
 /* A dedicated secret is mandatory in production: falling back to the Resend

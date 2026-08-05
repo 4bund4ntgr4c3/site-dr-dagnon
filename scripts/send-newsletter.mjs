@@ -278,7 +278,7 @@ async function loadSubscriberLangs(subscribers) {
 
 /* The frequency each subscriber chose in /newsletter/preferences
    (`newsletter:prefs:<email>`, written by api/newsletter-prefs.ts). Missing
-   or corrupt entries default to weekly. */
+   or corrupt entries default to weekly. Sections default to all. */
 async function loadSubscriberPrefs(subscribers) {
   const prefs = new Map();
   if (subscribers.length === 0) return prefs;
@@ -289,9 +289,13 @@ async function loadSubscriberPrefs(subscribers) {
     if (typeof raw !== 'string') return;
     try {
       const parsed = JSON.parse(raw);
-      if (parsed?.frequency === 'weekly' || parsed?.frequency === 'monthly') prefs.set(e, parsed.frequency);
+      const frequency = parsed?.frequency === 'weekly' || parsed?.frequency === 'monthly' ? parsed.frequency : 'weekly';
+      const sections = Array.isArray(parsed?.sections) && parsed.sections.length > 0
+        ? parsed.sections.filter((s) => ['publications', 'tribunes', 'agenda', 'projets'].includes(s))
+        : ['publications', 'tribunes', 'agenda', 'projets'];
+      prefs.set(e, { frequency, sections });
     } catch {
-      /* corrupt entry — treat as weekly */
+      /* corrupt entry — treat as weekly, all sections */
     }
   });
   return prefs;
@@ -309,16 +313,18 @@ async function monthlyDueNow() {
 
 /** Splits subscribers into who gets this digest: weekly subscribers always,
  *  monthly ones only when a monthly digest is due. Returns the recipients
- *  (with their language) and whether any monthly subscriber was included —
- *  the caller records the month in KV only then. Pure, unit-tested. */
+ *  (with their language and sections) and whether any monthly subscriber was
+ *  included — the caller records the month in KV only then. Pure. */
 export function planRecipients(subscribers, langs, prefs, monthlyDue) {
   const recipients = [];
   let includedMonthly = false;
   for (const email of subscribers) {
-    const frequency = prefs.get(email);
+    const p = prefs.get(email);
+    const frequency = p?.frequency;
+    const sections = p?.sections ?? ['publications', 'tribunes', 'agenda', 'projets'];
     if (frequency === 'monthly' && !monthlyDue) continue;
     if (frequency === 'monthly') includedMonthly = true;
-    recipients.push({ email, lang: langs.get(email) ?? 'both' });
+    recipients.push({ email, lang: langs.get(email) ?? 'both', sections });
   }
   return { recipients, includedMonthly };
 }
@@ -330,23 +336,35 @@ async function sendDigest({ send, owner, apiKey }) {
   const langs = await loadSubscriberLangs(subscribers);
   const prefs = await loadSubscriberPrefs(subscribers);
   const { recipients, includedMonthly } = planRecipients(subscribers, langs, prefs, await monthlyDueNow());
+
+  /** Map item kind to section id for filtering */
+  const kindToSection = (kind) => {
+    if (kind === 'publication') return 'publications';
+    if (kind === 'tribune') return 'tribunes';
+    return null;
+  };
+
   /* per-recipient sends so each copy carries its own one-click unsubscribe
-     and preferences links (bcc batches used to share a single mailto:) —
-     the owner gets a copy too, they may not be in the subscriber set */
-  const allRecipients = [
-    { email: owner, lang: 'both' },
-    ...recipients,
-  ];
+     and preferences links — the owner gets a copy too, they may not be in
+     the subscriber set */
+  const ownerObj = { email: owner, lang: 'both', sections: ['publications', 'tribunes', 'agenda', 'projets'] };
+  const allRecipients = [ownerObj, ...recipients];
   const from = process.env.NEWSLETTER_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
   for (const [i, r] of allRecipients.entries()) {
+    /* filter items by recipient's sections */
+    const filtered = send.filter((item) => {
+      const section = kindToSection(item.kind);
+      return section ? r.sections.includes(section) : true;
+    });
+    if (filtered.length === 0) continue;
     const href = unsubHref(r.email);
     const prefHref = prefsHref(r.email);
     const body = {
       from,
       to: [r.email],
-      subject: subjectLine(send, r.lang),
-      html: wrap(hdr() + digestHtml(send, r.lang) + ftr(href, prefHref)),
-      text: `${digestText(send, r.lang)}\n\n—\nUnsubscribe: ${href}\nPreferences: ${prefHref}`,
+      subject: subjectLine(filtered, r.lang),
+      html: wrap(hdr() + digestHtml(filtered, r.lang) + ftr(href, prefHref)),
+      text: `${digestText(filtered, r.lang)}\n\n—\nUnsubscribe: ${href}\nPreferences: ${prefHref}`,
     };
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -357,7 +375,7 @@ async function sendDigest({ send, owner, apiKey }) {
       const err = await response.text();
       throw new Error(`Resend recipient ${i + 1}/${allRecipients.length} failed: ${err}`);
     }
-    console.log(`[newsletter] sent to ${i + 1}/${allRecipients.length}`);
+    console.log(`[newsletter] sent to ${i + 1}/${allRecipients.length} (${filtered.length} items)`);
   }
   /* monthly subscribers are a month window, not a per-send one: record the
      month only when the digest actually included them */

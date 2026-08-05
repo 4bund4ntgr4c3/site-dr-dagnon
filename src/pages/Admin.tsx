@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { Lock, Users, BellRing, Mail, CalendarClock, LogOut } from 'lucide-react';
+import { Lock, Users, BellRing, Mail, CalendarClock, LogOut, Send, CheckCircle2, AlertCircle, Search, BarChart3 } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 
@@ -14,6 +14,9 @@ interface Dashboard {
   pushSubs: number;
   lastDigest: { ids: string[] };
   remindedEvents: { ids: string[] };
+  searchTotal: number;
+  topQueries: { query: string; count: number }[];
+  recentQueries: string[];
 }
 
 const AUTH_KEY = 'admin-auth';
@@ -25,6 +28,13 @@ export default function Admin() {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [data, setData] = useState<Dashboard | null>(null);
+
+  /* push composer state */
+  const [pushTitle, setPushTitle] = useState('');
+  const [pushBody, setPushBody] = useState('');
+  const [pushUrl, setPushUrl] = useState('');
+  const [pushStatus, setPushStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+  const [pushResult, setPushResult] = useState<{ sent: number; failed: number } | null>(null);
 
   useEffect(() => {
     document.title = t['admin.title'];
@@ -72,6 +82,7 @@ export default function Admin() {
         { icon: BellRing, label: t['admin.pushSubs'], value: data.pushSubs },
         { icon: Mail, label: t['admin.lastDigest'], value: String(data.lastDigest.ids.length) },
         { icon: CalendarClock, label: t['admin.reminded'], value: String(data.remindedEvents.ids.length) },
+        { icon: Search, label: t['admin.searchTotal'], value: data.searchTotal },
       ]
     : [];
 
@@ -162,6 +173,146 @@ export default function Admin() {
                     </ul>
                   )}
                 </div>
+              </div>
+
+              {/* push notification composer */}
+              <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6">
+                <h2 className="font-display text-sm font-semibold uppercase tracking-[0.18em] text-gold-300">
+                  {t['admin.pushComposer']}
+                </h2>
+                <p className="mt-2 text-[13px] text-pine-100/70">
+                  {t['admin.pushComposerDesc']}
+                </p>
+                {pushStatus === 'done' && pushResult ? (
+                  <div className="mt-4 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-pine-100/85">
+                    <CheckCircle2 size={16} className="text-gold-400" />
+                    {t['admin.pushDone'].replace('{sent}', String(pushResult.sent)).replace('{failed}', String(pushResult.failed))}
+                  </div>
+                ) : (
+                  <form
+                    className="mt-4 space-y-3"
+                    onSubmit={async (ev) => {
+                      ev.preventDefault();
+                      if (pushStatus === 'sending') return;
+                      setPushStatus('sending');
+                      setPushResult(null);
+                      try {
+                        const res = await fetch('/api/push-send', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                          body: JSON.stringify({ title: pushTitle, body: pushBody, url: pushUrl || undefined }),
+                        });
+                        const body = (await res.json().catch(() => null)) as { sent?: number; failed?: number; error?: string } | null;
+                        if (!res.ok) throw new Error(body?.error || 'failed');
+                        setPushResult({ sent: body?.sent ?? 0, failed: body?.failed ?? 0 });
+                        setPushStatus('done');
+                        setPushTitle('');
+                        setPushBody('');
+                        setPushUrl('');
+                      } catch {
+                        setPushStatus('error');
+                      }
+                    }}
+                  >
+                    <div>
+                      <label htmlFor="push-title" className="sr-only">{t['admin.pushTitle']}</label>
+                      <input
+                        id="push-title"
+                        type="text"
+                        required
+                        maxLength={200}
+                        value={pushTitle}
+                        onChange={(e) => setPushTitle(e.target.value)}
+                        placeholder={t['admin.pushTitle']}
+                        className="w-full rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm text-ivory outline-none transition-colors placeholder:text-pine-100/40 focus:border-gold-500/50"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="push-body" className="sr-only">{t['admin.pushBody']}</label>
+                      <textarea
+                        id="push-body"
+                        required
+                        maxLength={500}
+                        rows={3}
+                        value={pushBody}
+                        onChange={(e) => setPushBody(e.target.value)}
+                        placeholder={t['admin.pushBody']}
+                        className="w-full rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm text-ivory outline-none transition-colors placeholder:text-pine-100/40 focus:border-gold-500/50 resize-none"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="push-url" className="sr-only">{t['admin.pushUrl']}</label>
+                      <input
+                        id="push-url"
+                        type="url"
+                        value={pushUrl}
+                        onChange={(e) => setPushUrl(e.target.value)}
+                        placeholder={t['admin.pushUrlOptional']}
+                        className="w-full rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm text-ivory outline-none transition-colors placeholder:text-pine-100/40 focus:border-gold-500/50"
+                      />
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="submit"
+                        disabled={pushStatus === 'sending' || !pushTitle.trim() || !pushBody.trim()}
+                        className="inline-flex items-center gap-2 rounded-full bg-gold-500 px-6 py-2.5 text-sm font-semibold text-pine-950 transition-all hover:-translate-y-0.5 hover:bg-gold-400 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {pushStatus === 'sending' ? '…' : t['admin.pushSend']}
+                        <Send size={14} />
+                      </button>
+                      {pushStatus === 'error' && (
+                        <span className="flex items-center gap-1.5 text-[13px] text-red-300">
+                          <AlertCircle size={14} />
+                          {t['admin.pushError']}
+                        </span>
+                      )}
+                    </div>
+                  </form>
+                )}
+              </div>
+
+              {/* search analytics */}
+              <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6">
+                <h2 className="font-display text-sm font-semibold uppercase tracking-[0.18em] text-gold-300">
+                  {t['admin.searchAnalytics']}
+                </h2>
+                {data.topQueries.length === 0 && data.recentQueries.length === 0 ? (
+                  <p className="mt-3 text-[13px] text-pine-100/85">{t['admin.searchEmpty']}</p>
+                ) : (
+                  <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                    {data.topQueries.length > 0 && (
+                      <div>
+                        <h3 className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wider text-pine-100/70">
+                          <BarChart3 size={13} />
+                          {t['admin.searchTop']}
+                        </h3>
+                        <ul className="mt-2 space-y-1">
+                          {data.topQueries.map(({ query, count }) => (
+                            <li key={query} className="flex items-center justify-between text-[13px] text-pine-100/80">
+                              <span className="truncate">«&nbsp;{query}&nbsp;»</span>
+                              <span className="ml-2 shrink-0 rounded-full bg-white/5 px-2 py-0.5 text-[11px] font-semibold text-gold-400">
+                                {count}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {data.recentQueries.length > 0 && (
+                      <div>
+                        <h3 className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wider text-pine-100/70">
+                          <Search size={13} />
+                          {t['admin.searchRecent']}
+                        </h3>
+                        <ul className="mt-2 space-y-1 text-[13px] text-pine-100/80">
+                          {data.recentQueries.slice(0, 10).map((q, i) => (
+                            <li key={`${q}-${i}`} className="truncate">«&nbsp;{q}&nbsp;»</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               <button

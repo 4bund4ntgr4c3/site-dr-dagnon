@@ -20,7 +20,7 @@ globalThis.fetch = async (url, opts) => {
   kvCalls.push({ url: String(url), commands: JSON.parse(opts.body), auth: opts.headers.Authorization });
   return kvResponder
     ? kvResponder()
-    : { ok: true, json: async () => [{ result: 1 }, { result: 1 }, { result: ['a@example.test'] }, { result: '{"ids":["pub:x"]}' }, { result: '{"ids":["ev-1"]}' }] };
+    : { ok: true, json: async () => [{ result: 1 }, { result: 1 }, { result: ['a@example.test'] }, { result: '{"ids":["pub:x"]}' }, { result: '{"ids":["ev-1"]}' }, { result: 42 }, { result: { expertise: 5, dagnon: 3 } }, { result: '["dagnon","expertise"]' }] };
 };
 
 const admin = (await import(pathToFileURL(path.resolve('node_modules/.tmp/api/admin.js')).href)).default;
@@ -62,6 +62,9 @@ test('returns the dashboard aggregates from one KV pipeline', async () => {
   assert.equal(res.body.pushSubs, 1);
   assert.deepEqual(res.body.lastDigest.ids, ['pub:x']);
   assert.deepEqual(res.body.remindedEvents.ids, ['ev-1']);
+  assert.equal(res.body.searchTotal, 42);
+  assert.deepEqual(res.body.topQueries, [{ query: 'expertise', count: 5 }, { query: 'dagnon', count: 3 }]);
+  assert.deepEqual(res.body.recentQueries, ['dagnon', 'expertise']);
 
   assert.equal(kvCalls.length, 1);
   const commands = kvCalls[0].commands;
@@ -71,6 +74,9 @@ test('returns the dashboard aggregates from one KV pipeline', async () => {
     ['SRANDMEMBER', 'newsletter:emails', 20],
     ['GET', 'newsletter:last-sent'],
     ['GET', 'agenda:reminded'],
+    ['GET', 'search:total'],
+    ['HGETALL', 'search:counts'],
+    ['GET', 'search:recent'],
   ]);
   assert.equal(kvCalls[0].auth, 'Bearer kv-token');
 });
@@ -84,6 +90,9 @@ test('tolerates missing KV state and a sample capped at 20 emails', async () => 
       { result: Array.from({ length: 30 }, (_, i) => `u${i}@example.test`) },
       { result: null },
       { result: 'not-json' },
+      { result: 0 },
+      { result: null },
+      { result: null },
     ],
   });
   const res = await call(admin, { headers: { authorization: 'Bearer admin-test-secret' } });
@@ -93,6 +102,9 @@ test('tolerates missing KV state and a sample capped at 20 emails', async () => 
   assert.equal(res.body.pushSubs, 0);
   assert.deepEqual(res.body.lastDigest.ids, []);
   assert.deepEqual(res.body.remindedEvents.ids, []);
+  assert.equal(res.body.searchTotal, 0);
+  assert.deepEqual(res.body.topQueries, []);
+  assert.deepEqual(res.body.recentQueries, []);
 });
 
 test('answers 502 when KV is down and 500 on a network failure', async () => {

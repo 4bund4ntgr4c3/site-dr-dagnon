@@ -8,12 +8,15 @@ import { applyJsonHeaders } from './_headers.js';
  * because the preferences page is a SPA, unlike the plain HTML the confirm
  * and unsubscribe pages serve.
  *
- * Stored value: newsletter:prefs:<email> = { "frequency": "weekly" | "monthly" }
- * (default weekly — the sender only reads the key when it exists).
+ * Stored value: newsletter:prefs:<email> = { "frequency": "weekly" | "monthly", "sections": ["publications", "tribunes", ...] }
+ * (default weekly, all sections — the sender only reads the key when it exists).
  * The key lives 365 days and is refreshed on every save. */
 
 const FREQUENCIES = ['weekly', 'monthly'] as const;
 type Frequency = (typeof FREQUENCIES)[number];
+
+const VALID_SECTIONS = ['publications', 'tribunes', 'agenda', 'projets'] as const;
+type Section = (typeof VALID_SECTIONS)[number];
 
 const PREFS_TTL_S = 365 * 24 * 60 * 60;
 const MAX_EMAIL = 254;
@@ -28,27 +31,35 @@ function kv() {
   return url && token ? { url: url.replace(/\/$/, ''), token } : null;
 }
 
-async function loadPrefs(email: string): Promise<Frequency> {
+interface StoredPrefs { frequency?: Frequency; sections?: Section[] }
+
+async function loadPrefs(email: string): Promise<StoredPrefs> {
   const store = kv();
-  if (!store) return 'weekly';
+  const defaults: StoredPrefs = { frequency: 'weekly', sections: [...VALID_SECTIONS] };
+  if (!store) return defaults;
   try {
     const response = await fetch(`${store.url}/pipeline`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${store.token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify([['GET', `newsletter:prefs:${email}`]]),
     });
-    if (!response.ok) return 'weekly';
+    if (!response.ok) return defaults;
     const results = (await response.json()) as { result?: unknown }[];
     const raw = results[0]?.result;
-    if (typeof raw !== 'string') return 'weekly';
-    const parsed = JSON.parse(raw) as { frequency?: unknown };
-    return parsed.frequency === 'monthly' ? 'monthly' : 'weekly';
+    if (typeof raw !== 'string') return defaults;
+    const parsed = JSON.parse(raw) as StoredPrefs;
+    return {
+      frequency: parsed.frequency === 'monthly' ? 'monthly' : 'weekly',
+      sections: Array.isArray(parsed.sections) && parsed.sections.length > 0
+        ? parsed.sections.filter((s): s is Section => VALID_SECTIONS.includes(s as Section))
+        : [...VALID_SECTIONS],
+    };
   } catch {
-    return 'weekly';
+    return defaults;
   }
 }
 
-async function savePrefs(email: string, frequency: Frequency): Promise<boolean> {
+async function savePrefs(email: string, frequency: Frequency, sections: Section[]): Promise<boolean> {
   const store = kv();
   if (!store) return false;
   try {
@@ -56,7 +67,7 @@ async function savePrefs(email: string, frequency: Frequency): Promise<boolean> 
       method: 'POST',
       headers: { Authorization: `Bearer ${store.token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify([
-        ['SET', `newsletter:prefs:${email}`, JSON.stringify({ frequency }), 'EX', String(PREFS_TTL_S)],
+        ['SET', `newsletter:prefs:${email}`, JSON.stringify({ frequency, sections }), 'EX', String(PREFS_TTL_S)],
       ]),
     });
     if (!response.ok) return false;
@@ -91,15 +102,15 @@ export default async function handler(req: Req, res: Res) {
   }
 
   if (req.method === 'GET') {
-    const frequency = await loadPrefs(auth.email);
-    res.status(200).json({ email: auth.email, frequency });
+    const prefs = await loadPrefs(auth.email);
+    res.status(200).json({ email: auth.email, frequency: prefs.frequency, sections: prefs.sections });
     return;
   }
 
-  /* POST — save a preference */
-  let body: { frequency?: unknown };
+  /* POST — save preferences */
+  let body: { frequency?: unknown; sections?: unknown };
   try {
-    body = JSON.parse(req.body ?? '') as { frequency?: unknown };
+    body = JSON.parse(req.body ?? '') as { frequency?: unknown; sections?: unknown };
   } catch {
     res.status(400).json({ error: 'Invalid request' });
     return;
@@ -109,10 +120,13 @@ export default async function handler(req: Req, res: Res) {
     res.status(400).json({ error: 'Invalid frequency' });
     return;
   }
-  const saved = await savePrefs(auth.email, frequency as Frequency);
+  const sections: Section[] = Array.isArray(body.sections) && body.sections.length > 0
+    ? (body.sections as unknown[]).filter((s): s is Section => VALID_SECTIONS.includes(s as Section))
+    : [...VALID_SECTIONS];
+  const saved = await savePrefs(auth.email, frequency as Frequency, sections);
   if (!saved) {
     res.status(502).json({ error: 'Storage unavailable' });
     return;
   }
-  res.status(200).json({ ok: true, email: auth.email, frequency });
+  res.status(200).json({ ok: true, email: auth.email, frequency, sections });
 }

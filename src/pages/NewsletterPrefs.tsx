@@ -1,14 +1,15 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useSearchParams } from 'react-router';
-import { SlidersHorizontal, Check, CalendarClock, MailWarning } from 'lucide-react';
+import { SlidersHorizontal, Check, CalendarClock, MailWarning, Layers } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
+import { NEWSLETTER_SECTIONS, ALL_SECTIONS, type NewsletterSection } from '@/data/newsletters';
 
 /* Client-only page, reached from the "Préférences / Preferences" link in
    every digest email. The email+token pair in the URL authenticates the
    subscriber (purpose 'nl-prefs', see api/_tokens.ts); the page reads and
-   saves the frequency via /api/newsletter-prefs. Never prerendered or
-   indexed (rewritten to the SPA shell in vercel.json). */
+   saves the frequency + sections via /api/newsletter-prefs. Never prerendered
+   or indexed (rewritten to the SPA shell in vercel.json). */
 
 export default function NewsletterPrefs() {
   const { lang } = useLang();
@@ -18,6 +19,7 @@ export default function NewsletterPrefs() {
   const token = searchParams.get('token') ?? '';
 
   const [frequency, setFrequency] = useState<'weekly' | 'monthly' | null>(null);
+  const [sections, setSections] = useState<NewsletterSection[]>(ALL_SECTIONS);
   const [status, setStatus] = useState<'loading' | 'ready' | 'invalid' | 'saving' | 'saved' | 'error'>(
     () => (email && token ? 'loading' : 'invalid'),
   );
@@ -40,9 +42,14 @@ export default function NewsletterPrefs() {
           if (!cancelled) setStatus('invalid');
           return;
         }
-        const body = (await response.json()) as { frequency?: 'weekly' | 'monthly' };
+        const body = (await response.json()) as { frequency?: 'weekly' | 'monthly'; sections?: NewsletterSection[] };
         if (!cancelled) {
           setFrequency(body.frequency ?? 'weekly');
+          setSections(
+            Array.isArray(body.sections) && body.sections.length > 0
+              ? body.sections
+              : ALL_SECTIONS,
+          );
           setStatus('ready');
         }
       } catch {
@@ -55,6 +62,17 @@ export default function NewsletterPrefs() {
     };
   }, [email, token]);
 
+  const toggleSection = (id: NewsletterSection) => {
+    setSections((prev) => {
+      if (prev.includes(id)) return prev.filter((s) => s !== id);
+      return [...prev, id];
+    });
+  };
+
+  const toggleAll = () => {
+    setSections((prev) => (prev.length === ALL_SECTIONS.length ? [] : [...ALL_SECTIONS]));
+  };
+
   const save = async (e: FormEvent) => {
     e.preventDefault();
     if (!frequency) return;
@@ -63,7 +81,7 @@ export default function NewsletterPrefs() {
       const response = await fetch(`/api/newsletter-prefs?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ frequency }),
+        body: JSON.stringify({ frequency, sections }),
       });
       if (!response.ok) {
         setError(response.status === 400 ? t['prefs.errorInvalid'] : t['prefs.errorServer']);
@@ -81,6 +99,8 @@ export default function NewsletterPrefs() {
     { value: 'weekly', icon: MailWarning, title: t['prefs.weekly'], detail: t['prefs.weeklyDetail'] },
     { value: 'monthly', icon: CalendarClock, title: t['prefs.monthly'], detail: t['prefs.monthlyDetail'] },
   ] as const;
+
+  const allSelected = sections.length === ALL_SECTIONS.length;
 
   return (
     <main id="main-content" tabIndex={-1} className="min-h-screen bg-pine-950">
@@ -111,35 +131,96 @@ export default function NewsletterPrefs() {
           )}
 
           {status !== 'loading' && status !== 'invalid' && (
-            <form onSubmit={save} className="mt-10 space-y-4">
-              <div role="radiogroup" aria-label={t['prefs.title']} className="space-y-3">
-                {options.map((o) => (
+            <form onSubmit={save} className="mt-10 space-y-6">
+              {/* Frequency */}
+              <div>
+                <h2 className="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-gold-400">
+                  {t['prefs.frequencyTitle']}
+                </h2>
+                <div role="radiogroup" aria-label={t['prefs.frequencyTitle']} className="space-y-3">
+                  {options.map((o) => (
+                    <label
+                      key={o.value}
+                      className={`flex cursor-pointer items-start gap-4 rounded-2xl border p-5 transition-colors ${
+                        frequency === o.value
+                          ? 'border-gold-500/60 bg-gold-500/10'
+                          : 'border-white/10 bg-white/5 hover:border-white/25'
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="frequency"
+                        value={o.value}
+                        checked={frequency === o.value}
+                        onChange={() => setFrequency(o.value)}
+                        disabled={status === 'saving' || status === 'saved'}
+                        className="mt-1 h-4 w-4 accent-gold-500"
+                      />
+                      <span>
+                        <span className="flex items-center gap-2 font-display text-base font-semibold text-ivory">
+                          <o.icon size={15} className="text-gold-400" />
+                          {o.title}
+                        </span>
+                        <span className="mt-1 block text-[13px] leading-relaxed text-pine-100/65">{o.detail}</span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sections */}
+              <div>
+                <h2 className="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-gold-400">
+                  {t['prefs.sectionsTitle']}
+                </h2>
+                <p className="mb-4 text-[13px] text-pine-100/65">{t['prefs.sectionsDesc']}</p>
+                <div className="space-y-2">
                   <label
-                    key={o.value}
-                    className={`flex cursor-pointer items-start gap-4 rounded-2xl border p-5 transition-colors ${
-                      frequency === o.value
+                    className={`flex cursor-pointer items-center gap-4 rounded-2xl border p-4 transition-colors ${
+                      allSelected
                         ? 'border-gold-500/60 bg-gold-500/10'
                         : 'border-white/10 bg-white/5 hover:border-white/25'
                     }`}
                   >
                     <input
-                      type="radio"
-                      name="frequency"
-                      value={o.value}
-                      checked={frequency === o.value}
-                      onChange={() => setFrequency(o.value)}
+                      type="checkbox"
+                      checked={allSelected}
+                      onChange={toggleAll}
                       disabled={status === 'saving' || status === 'saved'}
-                      className="mt-1 h-4 w-4 accent-gold-500"
+                      className="h-4 w-4 accent-gold-500"
                     />
-                    <span>
-                      <span className="flex items-center gap-2 font-display text-base font-semibold text-ivory">
-                        <o.icon size={15} className="text-gold-400" />
-                        {o.title}
-                      </span>
-                      <span className="mt-1 block text-[13px] leading-relaxed text-pine-100/65">{o.detail}</span>
+                    <span className="flex items-center gap-2 font-display text-sm font-semibold text-ivory">
+                      <Layers size={14} className="text-gold-400" />
+                      {t['prefs.sectionsAll']}
                     </span>
                   </label>
-                ))}
+                  {NEWSLETTER_SECTIONS.map((s) => (
+                    <label
+                      key={s.id}
+                      className={`flex cursor-pointer items-start gap-4 rounded-2xl border p-4 transition-colors ${
+                        sections.includes(s.id)
+                          ? 'border-gold-500/60 bg-gold-500/10'
+                          : 'border-white/10 bg-white/5 hover:border-white/25'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={sections.includes(s.id)}
+                        onChange={() => toggleSection(s.id)}
+                        disabled={status === 'saving' || status === 'saved'}
+                        className="mt-1 h-4 w-4 accent-gold-500"
+                      />
+                      <span>
+                        <span className="font-display text-sm font-semibold text-ivory">
+                          {s.label[lang]}
+                        </span>
+                        <span className="mt-0.5 block text-[12.5px] leading-relaxed text-pine-100/60">
+                          {s.description[lang]}
+                        </span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
               </div>
 
               {status === 'saved' ? (

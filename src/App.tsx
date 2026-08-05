@@ -33,11 +33,13 @@ export interface AppPages {
   Cv: ComponentType
   PressKit: ComponentType
   Invite: ComponentType
+  Collaborate: ComponentType
   NewsletterArchive: ComponentType
   Impact: ComponentType
   Legal: ComponentType
   Accessibility: ComponentType
   Bibliography: ComponentType
+  PublicationsPdf: ComponentType
   /** client-only page (never prerendered) — absent from the server's pages */
   Admin?: ComponentType
   NewsletterPrefs?: ComponentType
@@ -85,11 +87,13 @@ const routesFor = (Pages: AppPages) => [
   <Route key="cv" path="cv" element={<Pages.Cv />} />,
   <Route key="presse" path="presse" element={<Pages.PressKit />} />,
   <Route key="inviter" path="inviter" element={<Pages.Invite />} />,
+  <Route key="collaborate" path="collaborate" element={<Pages.Collaborate />} />,
   <Route key="newsletter" path="newsletter" element={<Pages.NewsletterArchive />} />,
   <Route key="impact" path="impact" element={<Pages.Impact />} />,
   <Route key="legal" path="legal" element={<Pages.Legal />} />,
   <Route key="accessibility" path="accessibility" element={<Pages.Accessibility />} />,
   <Route key="bibliography" path="bibliography" element={<Pages.Bibliography />} />,
+  <Route key="publications-pdf" path="publications-pdf" element={<Pages.PublicationsPdf />} />,
   ...(Pages.Admin ? [<Route key="admin" path="admin" element={<Pages.Admin />} />] : []),
   ...(Pages.Changelog ? [<Route key="changelog" path="changelog" element={<Pages.Changelog />} />] : []),
   ...(Pages.NewsletterPrefs ? [<Route key="newsletter-prefs" path="newsletter/preferences" element={<Pages.NewsletterPrefs />} />] : []),

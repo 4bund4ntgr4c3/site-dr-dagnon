@@ -66,11 +66,13 @@ const ROUTES = [
   '/agenda',
   '/presse',
   '/inviter',
+  '/collaborate',
   '/newsletter',
   '/impact',
   '/legal',
   '/accessibility',
   '/bibliography',
+  '/publications-pdf',
 ];
 
 const dist = path.resolve('dist');
@@ -457,7 +459,7 @@ test('the press kit pages carry FAQPage JSON-LD matching the visible FAQ', () =>
 });
 
 test('the styled PDFs exist, are well-formed and are precached', () => {
-  const pdfs = ['/presse/press-kit-fr.pdf', '/presse/press-kit-en.pdf', '/cv/cv-fr.pdf', '/cv/cv-en.pdf'];
+  const pdfs = ['/presse/press-kit-fr.pdf', '/presse/press-kit-en.pdf', '/cv/cv-fr.pdf', '/cv/cv-en.pdf', '/publications/publications-fr.pdf', '/publications/publications-en.pdf'];
   for (const p of pdfs) {
     const file = path.join(dist, ...p.split('/').filter(Boolean));
     assert.ok(fs.existsSync(file), `${p} is missing from dist/ — run scripts/gen-pdfs.mjs and commit the output`);

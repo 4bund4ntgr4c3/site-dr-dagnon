@@ -13,15 +13,17 @@ import ProjectArticle from './pages/ProjectArticle';
 import Cv from './pages/Cv';
 import PressKit from './pages/PressKit';
 import Invite from './pages/Invite';
+import Collaborate from './pages/Collaborate';
 import NewsletterArchive from './pages/NewsletterArchive';
 import Impact from './pages/Impact';
 import Legal from './pages/Legal';
 import Accessibility from './pages/Accessibility';
 import Bibliography from './pages/Bibliography';
+import PublicationsPdf from './pages/PublicationsPdf';
 
 /* Plain imports, not React.lazy() — see the comment on AppPages in App.tsx
    for why renderToStaticMarkup needs this. */
-const pages: AppPages = { Home, Contact, Media, Publications, Agenda, Tribunes, TribuneArticle, Projects, ProjectArticle, Cv, PressKit, Invite, NewsletterArchive, Impact, Legal, Accessibility, Bibliography };
+const pages: AppPages = { Home, Contact, Media, Publications, Agenda, Tribunes, TribuneArticle, Projects, ProjectArticle, Cv, PressKit, Invite, Collaborate, NewsletterArchive, Impact, Legal, Accessibility, Bibliography, PublicationsPdf };
 
 /* Renders a route to plain HTML for scripts/prerender.mjs to embed in each
    generated dist/.../index.html — this is what a crawler sees before any

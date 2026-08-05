@@ -26,6 +26,8 @@ const jobs = [
   { lang: 'fr', route: '/cv', out: 'public/cv/cv-fr.pdf' },
   { lang: 'en', route: '/presse', out: 'public/presse/press-kit-en.pdf' },
   { lang: 'fr', route: '/presse', out: 'public/presse/press-kit-fr.pdf' },
+  { lang: 'en', route: '/publications-pdf', out: 'public/publications/publications-en.pdf' },
+  { lang: 'fr', route: '/publications-pdf', out: 'public/publications/publications-fr.pdf' },
 ];
 
 const htmlFile = (job) => path.join(dist, ...job.route.split('/').filter(Boolean), 'index.html');

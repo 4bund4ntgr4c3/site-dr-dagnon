@@ -68,6 +68,7 @@ const PAGE_ROUTES: { labelKey: string; path: string }[] = [
   { labelKey: 'cvPage.badge', path: '/cv' },
   { labelKey: 'pressePage.title', path: '/presse' },
   { labelKey: 'invitePage.title', path: '/inviter' },
+  { labelKey: 'collab.title', path: '/collaborate' },
   { labelKey: 'newsletterPage.title', path: '/newsletter' },
 ];
 
@@ -301,9 +302,14 @@ function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) 
     if (q.length < 2) return;
     const t = window.setTimeout(() => {
       track('site_search', { event_category: 'engagement', event_label: q });
+      fetch('/api/search-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q, results: results.length }),
+      }).catch(() => {});
     }, 800);
     return () => window.clearTimeout(t);
-  }, [query]);
+  }, [query, results.length]);
 
   const onKeyDown = (e: ReactKeyboardEvent) => {
     if (results.length === 0) return;

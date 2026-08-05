@@ -39,15 +39,39 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '246', en: '246' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '24', en: '24' }, label: { fr: 'versions', en: 'versions' } },
-    { value: { fr: '298', en: '298' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
-    { value: { fr: '108', en: '108' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
+    { value: { fr: '252', en: '252' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '25', en: '25' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '342', en: '342' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
+    { value: { fr: '112', en: '112' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 5 août 2026', en: '16 Jul – 5 Aug 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-08-05',
+    version: '2.3',
+    label: { fr: '5 août 2026', en: '5 August 2026' },
+    title: { fr: 'Push composer, analytique de recherche, publications enrichies, collaboration, rubriques newsletter & lightbox', en: 'Push composer, search analytics, enriched publications, collaboration, newsletter sections & lightbox' },
+    fr: [
+      'Push composer — onglet « Notifications push » dans /admin : titre, corps, URL optionnelle, envoi via /api/push-send (SMEMBERS push:subs, nettoyage des endpoints morts 404/410).',
+      'Analytique de recherche — endpoint /api/search-log (POST, rate-limité 30/min/IP) : compteurs globaux, top queries, historique récent (max 20) ; dashboard admin enrichi.',
+      'Publications enrichies — liens ORCID et Google Scholar sur /publications ; nouvelle page /publications-pdf (A4 imprimable, téléchargement FR/EN) ; SEO, breadcrumb, sitemap.',
+      'Page Collaborer — nouvelle route /collaborate : recherche opérationnelle, programmes de santé, conseil technique, partenariats stratégiques ; liens footer et recherche.',
+      'Rubriques newsletter — 4 sections sélectionnables (publications, tribunes, agenda, projets) ; checkboxes dans les préférences ; le digest filtre par rubrique.',
+      'Lightbox photos — composant réutilisable PhotoLightbox extrait de Media.tsx : navigation tactile (swipe), autoplay, clavier, focus trap, lien vers la page photo.',
+      'Tests — 342 tests au vert (298 → 342) ; suite complète : prerender, API, accessibility, newsletter, push, search.',
+    ],
+    en: [
+      'Push composer — "Push notifications" tab in /admin: title, body, optional URL, sent via /api/push-send (SMEMBERS push:subs, dead endpoint cleanup 404/410).',
+      'Search analytics — /api/search-log endpoint (POST, rate-limited 30/min/IP): global counters, top queries, recent history (max 20); enriched admin dashboard.',
+      'Enriched publications — ORCID and Google Scholar links on /publications; new /publications-pdf page (print-ready A4, FR/EN download); SEO, breadcrumb, sitemap.',
+      'Collaborate page — new /collaborate route: operational research, public health programs, technical advisory, strategic partnerships; footer and search links.',
+      'Newsletter sections — 4 selectable sections (publications, op-eds, agenda, projects); checkboxes in preferences; digest filters by section.',
+      'Photo lightbox — reusable PhotoLightbox component extracted from Media.tsx: touch swipe navigation, autoplay, keyboard, focus trap, link to photo page.',
+      'Tests — 342 tests green (298 → 342); full suite: prerender, API, accessibility, newsletter, push, search.',
+    ],
+  },
   {
     date: '2026-08-05',
     version: '2.2.1',

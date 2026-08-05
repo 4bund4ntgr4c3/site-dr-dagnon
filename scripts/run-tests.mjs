@@ -40,7 +40,7 @@ function compile(label, files, rootDir, outDir) {
   fs.writeFileSync(path.join(outDir, 'package.json'), '{"type":"module"}\n');
 }
 
-compile('api/', ['api/contact.ts', 'api/verify-phone.ts', 'api/newsletter.ts', 'api/newsletter-confirm.ts', 'api/newsletter-unsubscribe.ts', 'api/newsletter-prefs.ts', 'api/push-subscribe.ts', 'api/admin.ts', 'api/changelog.ts', 'api/_origin.ts', 'api/_alert.ts'], 'api', path.join(tmp, 'api'));
+compile('api/', ['api/contact.ts', 'api/verify-phone.ts', 'api/newsletter.ts', 'api/newsletter-confirm.ts', 'api/newsletter-unsubscribe.ts', 'api/newsletter-prefs.ts', 'api/push-subscribe.ts', 'api/push-send.ts', 'api/search-log.ts', 'api/admin.ts', 'api/changelog.ts', 'api/_origin.ts', 'api/_alert.ts'], 'api', path.join(tmp, 'api'));
 compile('src/i18n/routing.ts', ['src/i18n/routing.ts'], 'src/i18n', path.join(tmp, 'i18n'));
 compile('src/lib/citations.ts', ['src/lib/citations.ts'], 'src/lib', path.join(tmp, 'citations'));
 compile('src/lib/calendar-links.ts', ['src/lib/calendar-links.ts'], 'src/lib', path.join(tmp, 'calendar-links'));
@@ -50,11 +50,13 @@ compile('src/lib/calendar-links.ts', ['src/lib/calendar-links.ts'], 'src/lib', p
    node_modules/.tmp/src/... — so it is compiled in its own temp project
    where `@/` maps to src/ like it does in the frontend (same trick as
    scripts/send-newsletter.mjs). Run last: it writes into .tmp/api, which
-   the api compile above wipes. */
+   the api compile above wipes. The per-event reminder handlers
+   (api/event-remind.ts, api/event-reminders.ts) import the same data
+   files, plus _ip.ts and _origin.ts for the opt-in handler. */
 function compileAgendaReminders() {
   const proj = path.join(tmp, 'agenda-reminders');
   fs.rmSync(proj, { recursive: true, force: true });
-  for (const f of ['api/agenda-reminders.ts', 'api/_tokens.ts', 'api/_alert.ts', 'api/_rate-limit.ts', 'api/_push-guard.ts', 'api/_headers.ts', 'src/data/agenda.ts', 'src/i18n/lang.ts', 'src/lib/calendar-links.ts']) {
+  for (const f of ['api/agenda-reminders.ts', 'api/event-remind.ts', 'api/event-reminders.ts', 'api/_tokens.ts', 'api/_alert.ts', 'api/_rate-limit.ts', 'api/_push-guard.ts', 'api/_headers.ts', 'api/_ip.ts', 'api/_origin.ts', 'src/data/agenda.ts', 'src/i18n/lang.ts', 'src/lib/calendar-links.ts']) {
     const dest = path.join(proj, f);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.copyFileSync(path.join(root, f), dest);
@@ -77,10 +79,10 @@ function compileAgendaReminders() {
       include: ['api/**/*', 'src/**/*'],
     }),
   );
-  console.log('[test] compiling api/agenda-reminders.ts with its data');
+  console.log('[test] compiling api/agenda-reminders.ts and the event-reminder handlers with their data');
   execFileSync(process.execPath, [tsc, '-p', path.join(proj, 'tsconfig.json')], { cwd: root, stdio: 'inherit' });
   const out = path.join(proj, 'out');
-  for (const rel of ['api/agenda-reminders.js', 'api/_tokens.js', 'api/_alert.js', 'api/_rate-limit.js', 'api/_push-guard.js', 'api/_headers.js', 'src/data/agenda.js', 'src/lib/calendar-links.js']) {
+  for (const rel of ['api/agenda-reminders.js', 'api/event-remind.js', 'api/event-reminders.js', 'api/_tokens.js', 'api/_alert.js', 'api/_rate-limit.js', 'api/_push-guard.js', 'api/_headers.js', 'api/_ip.js', 'api/_origin.js', 'src/data/agenda.js', 'src/lib/calendar-links.js']) {
     const dest = path.join(tmp, rel);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.copyFileSync(path.join(out, rel), dest);

@@ -4,10 +4,17 @@
     {
       "path": "/api/agenda-reminders",
       "schedule": "0 8 * * 1"
+    },
+    {
+      "path": "/api/event-reminders",
+      "schedule": "0 7 * * *"
     }
   ],
   "functions": {
     "api/agenda-reminders.ts": {
+      "maxDuration": 60
+    },
+    "api/event-reminders.ts": {
       "maxDuration": 60
     }
   },
@@ -267,6 +274,10 @@
       "destination": "/inviter/index.html"
     },
     {
+      "source": "/collaborate",
+      "destination": "/collaborate/index.html"
+    },
+    {
       "source": "/newsletter",
       "destination": "/newsletter/index.html"
     },
@@ -285,6 +296,10 @@
     {
       "source": "/bibliography",
       "destination": "/bibliography/index.html"
+    },
+    {
+      "source": "/publications-pdf",
+      "destination": "/publications-pdf/index.html"
     },
     {
       "source": "/fr",
@@ -379,6 +394,10 @@
       "destination": "/fr/inviter/index.html"
     },
     {
+      "source": "/fr/collaborate",
+      "destination": "/fr/collaborate/index.html"
+    },
+    {
       "source": "/fr/newsletter",
       "destination": "/fr/newsletter/index.html"
     },
@@ -397,6 +416,10 @@
     {
       "source": "/fr/bibliography",
       "destination": "/fr/bibliography/index.html"
+    },
+    {
+      "source": "/fr/publications-pdf",
+      "destination": "/fr/publications-pdf/index.html"
     },
     {
       "source": "/admin",
