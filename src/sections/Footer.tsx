@@ -79,7 +79,7 @@ export function Footer() {
         {/* bottom bar */}
         <div className="flex flex-col items-center justify-between gap-6 pt-10 md:flex-row">
           <p className="text-[12px] text-pine-100/70">
-            {t['footer.rights']}
+            © {new Date().getFullYear()} {t['name.short']}. {t['footer.allRights']}
           </p>
 
           <nav aria-label={t['footerNav.ariaLabel']} className="flex flex-wrap justify-center gap-x-6 gap-y-2">
@@ -142,14 +142,17 @@ export function Footer() {
             </Link>
           </nav>
 
-          <a
-            href="https://studio26.africa"
-            target="_blank"
-            rel="noreferrer"
-            className="text-[12px] text-pine-100/70 transition-colors hover:text-gold-400"
-          >
-            {t['footer.design']}
-          </a>
+          <p className="text-[12px] text-pine-100/70">
+            {t['footer.designBy']}{' '}
+            <a
+              href="https://studio26.africa"
+              target="_blank"
+              rel="noreferrer"
+              className="underline decoration-gold-500/50 underline-offset-4 transition-colors hover:text-gold-400"
+            >
+              Studio26 Africa
+            </a>
+          </p>
         </div>
       </div>
     </footer>
