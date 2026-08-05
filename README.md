@@ -1,13 +1,13 @@
 # seynudedagnon.com
 
-Portfolio of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, deployed on Vercel with three serverless functions.
+Portfolio of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, deployed on Vercel with a set of serverless functions (contact, phone verification, newsletter, push, admin, changelog, agenda reminders).
 
 ## Commands
 
 ```bash
 npm run dev      # dev server on :3000
-npm run build    # typecheck, bundle, then prerender 100 pages + sitemap + 404 + service worker + send the newsletter digest on Vercel production
-npm test         # build, then 100 tests (node --test)
+npm run build    # typecheck, bundle, then prerender 108 pages + sitemap + 404 + service worker + send the newsletter digest on Vercel production
+npm test         # build, then 296 tests (node --test)
 npm run lint
 npm run images   # one-off: convert public/ photos to WebP (see below)
 npm run gen:og   # one-off: regenerate og-image.jpg
@@ -88,6 +88,13 @@ exactly when the content does. Navigations are network-first (fresh HTML
 online, the precached copy or the home page offline), other GETs are
 cache-first. It is registered in `src/main.tsx` in production only, and
 `vercel.json` serves it with `max-age=0` so updates propagate.
+
+**The changelog lives server-side.** `/changelog` is a password-protected,
+client-only page (never prerendered or indexed); its release history is served
+by `api/changelog.ts`, so the entries never ship in the client bundle. The
+header stats (commits, versions, tests, prerendered pages, period) live in the
+same file and must be updated on each release — they are the repo's release
+log (the former standalone `CHANGELOG.html` is gone).
 
 **Routes are listed explicitly in `vercel.json`** rather than relying on a
 catch-all rewrite, so a URL that does not exist gets a real 404 instead of a

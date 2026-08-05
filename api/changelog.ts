@@ -5,9 +5,9 @@
  * the client bundle would be readable by anyone with the JS.
  *
  *  Read only. Add new releases at the TOP of CHANGELOG_ENTRIES, newest
- *  first; each entry lists its changes in both languages. Content mirrors
- *  CHANGELOG.html (the repo's release log) — keep the two, and the
- *  CHANGELOG_HEADER stats below, in step. */
+ *  first; each entry lists its changes in both languages. Keep the
+ *  CHANGELOG_HEADER stats (commits/versions/tests/pages/period) in step
+ *  with the repository on every release. */
 
 export interface ChangelogEntry {
   /** ISO date for the <time datetime> attribute, when the release has one */
@@ -21,8 +21,8 @@ export interface ChangelogEntry {
   en: string[];
 }
 
-/** Header block served to the /changelog page, mirroring the hero of
- *  CHANGELOG.html (site name, subtitle and stats bar). */
+/** Header block served to the /changelog page (site name, subtitle and
+ *  stats bar). */
 export interface ChangelogHeader {
   title: { fr: string; en: string };
   sub: { fr: string; en: string };

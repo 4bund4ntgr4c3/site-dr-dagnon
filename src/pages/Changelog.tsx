@@ -80,8 +80,8 @@ export default function Changelog() {
   };
 
   return (
-    <main id="main-content" tabIndex={-1} className="min-h-screen bg-pine-950">
-      <section className="relative overflow-hidden">
+    <main id="main-content" tabIndex={-1} className="min-h-screen">
+      <section className="relative overflow-hidden bg-pine-950">
         <div className="absolute inset-0 texture-net" />
         <div className="absolute -top-40 -right-40 h-[560px] w-[560px] rounded-full bg-pine-600/25 blur-[130px]" />
 
@@ -90,7 +90,7 @@ export default function Changelog() {
             <History size={13} />
             {t['changelog.badge']}
           </span>
-          <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl">
+          <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl lg:text-[4.4rem]">
             {header?.title[lang] ?? t['changelog.title']}
           </h1>
           <p className="mt-4 max-w-2xl font-display text-lg italic text-pine-200/90 sm:text-xl">
@@ -138,33 +138,34 @@ export default function Changelog() {
             </div>
           )}
 
+          </div>
+      </section>
+
+      <section className="bg-ivory py-20 lg:py-28">
+        <div className="mx-auto max-w-4xl px-5 lg:px-8">
           {entries && header && (
             <>
-              <div
-                aria-hidden
-                className="mx-auto my-14 h-px w-full max-w-3xl bg-[linear-gradient(90deg,transparent_0%,#c9a24b_18%,#c9a24b_82%,transparent_100%)]"
-              />
-              <ol className="relative space-y-8 border-l border-white/10 pl-8">
+              <ol className="relative space-y-8 border-l border-pine-900/10 pl-8">
                 {entries.map((entry, i) => (
                   <li key={entry.date ?? i} className="relative">
-                    <span className="absolute top-1.5 -left-[2.35rem] flex h-5 w-5 items-center justify-center rounded-full border border-gold-500/40 bg-pine-950">
-                      <span className="h-2 w-2 rounded-full bg-gold-400" />
+                    <span className="absolute top-1.5 -left-[2.35rem] flex h-5 w-5 items-center justify-center rounded-full border border-gold-500/60 bg-white">
+                      <span className="h-2 w-2 rounded-full bg-gold-500" />
                     </span>
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                       <span className="rounded-lg bg-gold-500 px-2.5 py-0.5 text-[13px] font-bold tracking-[0.12em] text-pine-950">
                         v{entry.version}
                       </span>
-                      <time dateTime={entry.date} className="text-[12.5px] font-semibold uppercase tracking-[0.2em] text-pine-100/70">
+                      <time dateTime={entry.date} className="text-[12.5px] font-semibold uppercase tracking-[0.2em] text-pine-900/65">
                         {entry.label[lang]}
                       </time>
                     </div>
-                    <h2 className="mt-1.5 font-display text-xl font-medium leading-snug text-pine-100">
+                    <h2 className="mt-1.5 font-display text-xl font-medium leading-snug text-pine-950">
                       {entry.title[lang]}
                     </h2>
                     <ul className="mt-3 space-y-2">
                       {(lang === 'fr' ? entry.fr : entry.en).map((change, i) => (
-                        <li key={i} className="flex items-start gap-2.5 text-[14.5px] leading-relaxed text-pine-100/80">
-                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gold-400" />
+                        <li key={i} className="flex items-start gap-2.5 text-[14.5px] leading-relaxed text-ink/80">
+                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gold-500" />
                           {change}
                         </li>
                       ))}
@@ -176,7 +177,7 @@ export default function Changelog() {
               <button
                 type="button"
                 onClick={logout}
-                className="mt-10 inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-2.5 text-sm font-semibold text-pine-100/80 transition-colors hover:border-gold-400 hover:text-gold-300"
+                className="mt-10 inline-flex items-center gap-2 rounded-full border border-pine-900/15 px-6 py-2.5 text-sm font-semibold text-pine-900/75 transition-colors hover:border-gold-600 hover:text-gold-700"
               >
                 <LogOut size={15} />
                 {t['admin.logout']}
