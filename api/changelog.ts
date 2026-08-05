@@ -39,9 +39,9 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '237', en: '237' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '244', en: '244' }, label: { fr: 'commits', en: 'commits' } },
     { value: { fr: '23', en: '23' }, label: { fr: 'versions', en: 'versions' } },
-    { value: { fr: '296', en: '296' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
+    { value: { fr: '298', en: '298' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
     { value: { fr: '108', en: '108' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 5 août 2026', en: '16 Jul – 5 Aug 2026' } },
   ],

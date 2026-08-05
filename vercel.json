@@ -279,6 +279,10 @@
       "destination": "/legal/index.html"
     },
     {
+      "source": "/accessibility",
+      "destination": "/accessibility/index.html"
+    },
+    {
       "source": "/bibliography",
       "destination": "/bibliography/index.html"
     },
@@ -385,6 +389,10 @@
     {
       "source": "/fr/legal",
       "destination": "/fr/legal/index.html"
+    },
+    {
+      "source": "/fr/accessibility",
+      "destination": "/fr/accessibility/index.html"
     },
     {
       "source": "/fr/bibliography",

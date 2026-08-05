@@ -270,7 +270,7 @@ export const BIBLIOGRAPHY_SEO: Record<Lang, { title: string; description: string
 export const ACCESSIBILITY_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Accessibilité — Dr. Seynudé Dagnon',
-    description: "Déclaration d'accessibilité du site du Dr. Seynudé Dagnon : navigation au clavier, recherche globale Ctrl+K, contrastes, lecteurs d'écran et signalement des difficultés.",
+    description: "Déclaration d'accessibilité du site du Dr. Seynudé Dagnon : clavier, recherche Ctrl+K, contrastes, lecteurs d'écran, signalement des difficultés.",
     keywords: 'accessibilité Dr Dagnon, navigation clavier, lecteur écran, contrastes, déclaration accessibilité site santé publique',
   },
   en: {

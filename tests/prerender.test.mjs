@@ -69,6 +69,7 @@ const ROUTES = [
   '/newsletter',
   '/impact',
   '/legal',
+  '/accessibility',
   '/bibliography',
 ];
 
