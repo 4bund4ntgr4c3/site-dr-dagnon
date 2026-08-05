@@ -10,6 +10,7 @@ import { UI } from '@/i18n/translations';
 
 interface ChangelogEntry {
   date?: string;
+  version: string;
   label: { fr: string; en: string };
   title: { fr: string; en: string };
   fr: string[];
@@ -140,9 +141,14 @@ export default function Changelog() {
                     <span className="absolute top-1.5 -left-[2.35rem] flex h-5 w-5 items-center justify-center rounded-full border border-gold-500/40 bg-pine-950">
                       <span className="h-2 w-2 rounded-full bg-gold-400" />
                     </span>
-                    <time dateTime={entry.date} className="text-[12.5px] font-semibold uppercase tracking-[0.2em] text-pine-100/70">
-                      {entry.label[lang]}
-                    </time>
+                                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                      <span className="rounded-lg bg-gold-500 px-2.5 py-0.5 text-[13px] font-bold tracking-[0.12em] text-pine-950">
+                        v{entry.version}
+                      </span>
+                      <time dateTime={entry.date} className="text-[12.5px] font-semibold uppercase tracking-[0.2em] text-pine-100/70">
+                        {entry.label[lang]}
+                      </time>
+                    </div>
                     <h2 className="mt-1.5 font-display text-xl font-medium leading-snug text-pine-100">
                       {entry.title[lang]}
                     </h2>

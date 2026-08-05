@@ -12,6 +12,8 @@
 export interface ChangelogEntry {
   /** ISO date for the <time datetime> attribute, when the release has one */
   date?: string;
+  /** Version number, e.g. "2.2" (rendered as a v2.2 badge) */
+  version: string;
   /** Display label per language (supports date ranges) */
   label: { fr: string; en: string };
   title: { fr: string; en: string };
@@ -49,6 +51,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-05',
     label: { fr: '5 août 2026', en: '5 August 2026' },
+    version: '2.2',
     title: { fr: 'Accessibilité documentée, contact WhatsApp & changelog protégé', en: 'Documented accessibility, WhatsApp contact & protected changelog' },
     fr: [
       'Page Accessibilité — nouvelle route /accessibility (et /fr/accessibility) : structure et navigation, utilisation au clavier (Ctrl+K, Échap, flèches), recherche globale, texte/zoom/contrastes, lecteurs d\'écran, médias et signalement des difficultés ; fil d\'Ariane, JSON-LD CollectionPage, sitemap (priorité 0,3) et lien dans le footer.',
@@ -64,6 +67,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-03',
     label: { fr: '3 août 2026', en: '3 August 2026' },
+    version: '2.1',
     title: { fr: 'Audit, deuxième passe — réseau durci, accessibilité de masse, polices auto-hébergées, 296 tests', en: 'Second audit pass — hardened network, mass accessibility, self-hosted fonts, 296 tests' },
     fr: [
       'Sécurité — codes de vérification à 10 caractères ; limite de contact par adresse destinataire (3/h) en plus de la limite par IP ; utilitaires _ip/_headers/_origin/_push-guard mutualisés ; envois groupés fail-closed ; Cross-Origin-Opener-Policy: same-origin ; échantillon admin borné.',
@@ -83,6 +87,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-03',
     label: { fr: '3 août 2026', en: '3 August 2026' },
+    version: '2.0.1',
     title: { fr: 'Audit complet — durcissement sécurité, corrections SEO, accessibilité & PWA', en: 'Full audit — security hardening, SEO fixes, accessibility & PWA' },
     fr: [
       'Sécurité — VERIFY_SECRET désormais obligatoire en production pour signer tokens et codes ; limite par adresse destinataire sur le contact (3/h, anti mail-bombing) ; comparaison du secret de cron en temps constant ; tailles bornées des souscriptions push (endpoint ≤ 2048 octets, clés ≤ 512).',
@@ -100,6 +105,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-02',
     label: { fr: '2 août 2026', en: '2 August 2026' },
+    version: '2.0',
     title: { fr: 'Mentions légales, bibliographie, administration, préférences, audio & monitoring', en: 'Legal notice, bibliography, admin, preferences, audio & monitoring' },
     fr: [
       'Mentions légales — route /legal (et /fr/legal) : éditeur, hébergement, données personnelles, cookies, vos droits, propriété intellectuelle ; JSON-LD CollectionPage, sitemap (priorité 0,3) et lien footer.',
@@ -121,6 +127,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-02',
     label: { fr: '2 août 2026', en: '2 August 2026' },
+    version: '1.9',
     title: { fr: 'Page Impact, newsletter par langue, rappels push & alertes d\'échec', en: 'Impact page, per-language newsletter, push reminders & failure alerts' },
     fr: [
       'Page Impact — route /impact (et /fr/impact) : bandeau de statistiques (1 114 centres de santé, prévalence 44 % → 5 %, 3 M$ mobilisés, 180 M$+ de financements), six études d\'impact reliées aux études de cas, JSON-LD, sitemap.',
@@ -144,6 +151,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-02',
     label: { fr: '2 août 2026', en: '2 August 2026' },
+    version: '1.8',
     title: { fr: 'Newsletter en double opt-in, notifications push, PDF stylés & FAQ', en: 'Double opt-in newsletter, push notifications, styled PDFs & FAQ' },
     fr: [
       'Double opt-in newsletter — /api/newsletter met l\'adresse en attente (7 jours) et envoie une confirmation ; seul le clic sur le lien signé (HMAC, but/adresse/expiration/signature) ajoute l\'adresse ; lien expiré, falsifié ou réutilisé refusé avant toute écriture ; « déjà inscrit » géré.',
@@ -167,6 +175,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-02',
     label: { fr: '2 août 2026', en: '2 August 2026' },
+    version: '1.7',
     title: { fr: 'Partage natif, accessibilité auditée, recherche plein texte & rappels agenda', en: 'Native sharing, audited accessibility, full-text search & agenda reminders' },
     fr: [
       'Partage natif — bouton « Partager » via navigator.share (feuille native des mobiles et PWA), boutons sociaux en repli ; événement share_click suivi.',
@@ -192,6 +201,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-02',
     label: { fr: '2 août 2026', en: '2 August 2026' },
+    version: '1.6',
     title: { fr: 'Cartes de partage, fil d\'Ariane, citations & mode lecture', en: 'Share cards, breadcrumbs, citations & reading mode' },
     fr: [
       'Cartes de partage par article — gen-article-og.mjs rend une carte 1200×630 par tribune et étude de cas, dans chaque langue ; og:image/width/height/type/alt pointent vers /og/<slug>.<lang>.jpg.',
@@ -215,6 +225,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-02',
     label: { fr: '2 août 2026', en: '2 August 2026' },
+    version: '1.5',
     title: { fr: 'Filtres partageables, agenda abonnable & navigation instantanée', en: 'Shareable filters, subscribable agenda & instant navigation' },
     fr: [
       'Filtres partageables — année, tri et recherche des publications (?y=&sort=&q=) et type/recherche des médias (?type=&q=) vivent dans l\'URL.',
@@ -236,6 +247,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-01',
     label: { fr: '1 août 2026', en: '1 August 2026' },
+    version: '1.4',
     title: { fr: 'Lecture immersive, contenus liés & PWA installable', en: 'Immersive reading, related content & installable PWA' },
     fr: [
       'PWA installable — service worker généré au build (même liste que le sitemap + hash de version) : précache des 100 pages, assets versionnés et photos ; navigation network-first avec repli hors-ligne.',
@@ -253,6 +265,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-01',
     label: { fr: '1 août 2026', en: '1 August 2026' },
+    version: '1.3',
     title: { fr: 'Photos indexées, médias repensés & finitions', en: 'Indexed photos, reworked media & polish' },
     fr: [
       'Une page par photo — les 26 photos communautaires ont leur page indexable (titre, description, og:image aux dimensions réelles, précédent/suivant) : 100 pages HTML pré-rendues.',
@@ -274,6 +287,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-08-01',
     label: { fr: '31 juillet – 1 août 2026', en: '31 July – 1 August 2026' },
+    version: '1.2',
     title: { fr: 'Recherche étendue, polissage visuel & stabilité', en: 'Extended search, visual polish & stability' },
     fr: [
       'Recherche étendue à tout le site — auteurs de publications, photos de la médiathèque (avec miniatures), CV complet, sections de l\'accueil et textes intégraux des projets.',
@@ -295,6 +309,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-07-31',
     label: { fr: '31 juillet 2026', en: '31 July 2026' },
+    version: '1.1',
     title: { fr: 'Les 8 fonctionnalités', en: 'The 8 features' },
     fr: [
       'Boutons de partage sur les tribunes et études de cas — X, LinkedIn, WhatsApp et copie du lien avec confirmation accessible.',
@@ -320,6 +335,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-07-31',
     label: { fr: '28 – 31 juillet 2026', en: '28 – 31 July 2026' },
+    version: '1.0',
     title: { fr: 'CV imprimable, newsletter & thème sombre', en: 'Printable CV, newsletter & dark theme' },
     fr: [
       'Page CV imprimable (/cv) — profil complet, CSS d\'impression, barre « Imprimer / Enregistrer en PDF », liens depuis le footer et le contact.',
@@ -339,6 +355,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-07-29',
     label: { fr: '28 – 29 juillet 2026', en: '28 – 29 July 2026' },
+    version: '0.9',
     title: { fr: 'Contenu & navigation — Agenda, Tribunes, Projets', en: 'Content & navigation — Agenda, Op-Eds, Projects' },
     fr: [
       'Agenda — page des engagements à venir et passés (conférences, prises de parole, communauté, interviews, presse).',
@@ -360,6 +377,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-07-28',
     label: { fr: '27 – 28 juillet 2026', en: '27 – 28 July 2026' },
+    version: '0.8',
     title: { fr: 'URLs par langue, WebP, suite de tests & SSR du body', en: 'Per-language URLs, WebP, test suite & body SSR' },
     fr: [
       'Une URL par langue — français sous /fr/* (l\'anglais garde les chemins nus), redirection automatique pour les francophones, 48 pages HTML pré-rendues.',
@@ -381,6 +399,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-07-27',
     label: { fr: '26 – 27 juillet 2026', en: '26 – 27 July 2026' },
+    version: '0.7',
     title: { fr: 'Emails brandés & vérification du téléphone', en: 'Branded emails & phone verification' },
     fr: [
       'Vérification du téléphone par code — après soumission du formulaire, un code à 6 caractères est envoyé par email ; seul un code valide (token signé, expirant) débloque le numéro, qui n\'existe jamais côté navigateur avant cette étape.',
@@ -398,6 +417,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-07-26',
     label: { fr: '24 – 26 juillet 2026', en: '24 – 26 July 2026' },
+    version: '0.6',
     title: { fr: 'Albums photos, articles de presse & popups formation', en: 'Photo albums, press articles & education popups' },
     fr: [
       'Albums photos — « Génies en Herbe » (6 photos) et albums communauté (Nuit du Paludisme, Icône 360°, ONG Reel Concept) avec descriptions et diaporama à transitions douces (lecture auto, pause/lecture).',
@@ -417,6 +437,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-07-23',
     label: { fr: '22 – 23 juillet 2026', en: '22 – 23 July 2026' },
+    version: '0.5',
     title: { fr: 'Médias repensés — landing, 5 catégories & photos communauté', en: 'Reworked media — landing, 5 categories & community photos' },
     fr: [
       'Landing médias à deux niveaux — cartes de catégories d\'abord, puis vue par catégorie avec barre de filtres, recherche, sous-catégories et timeline.',
@@ -438,6 +459,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-07-22',
     label: { fr: '21 – 22 juillet 2026', en: '21 – 22 July 2026' },
+    version: '0.4',
     title: { fr: 'Audit complet & récompenses', en: 'Full audit & awards' },
     fr: [
       'Audit complet — SEO (og:image, twitter:card), accessibilité WCAG (contrastes, aria-labels traduits, lien d\'évitement), sécurité (HSTS, CSP durcie), performance (découpage, chargement différé), route 404, code mort supprimé.',
@@ -457,6 +479,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-07-21',
     label: { fr: '20 – 21 juillet 2026', en: '20 – 21 July 2026' },
+    version: '0.3',
     title: { fr: 'Page Contact, API & pages Médias / Publications', en: 'Contact page, API & Media / Publications pages' },
     fr: [
       'Page Contact dédiée — en-tête sombre style héros, formulaire envoyé via une fonction serverless (Resend), coordonnées révélées uniquement après soumission.',
@@ -478,6 +501,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-07-18',
     label: { fr: '17 – 18 juillet 2026', en: '17 – 18 July 2026' },
+    version: '0.2',
     title: { fr: 'SEO avancé & pré-rendu statique', en: 'Advanced SEO & static prerendering' },
     fr: [
       'Pré-rendu statique — chaque route générée en HTML complet à la construction (pas besoin de JavaScript pour le référencement), avec hreflang FR/EN et og:image 1200×630 dédiée.',
@@ -497,6 +521,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-07-17',
     label: { fr: '16 – 17 juillet 2026', en: '16 – 17 July 2026' },
+    version: '0.1',
     title: { fr: 'Fondations', en: 'Foundations' },
     fr: [
       'Projet Vite + React + TypeScript avec Tailwind, palette maison (pin vert, or, ivoire) et polices display/sans.',
