@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { Lock, History, LogOut } from 'lucide-react';
+import { History, LogOut } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 
@@ -9,8 +9,9 @@ import { UI } from '@/i18n/translations';
    /api/changelog — never from the bundle. */
 
 interface ChangelogEntry {
-  date: string;
-  version?: string;
+  date?: string;
+  label: { fr: string; en: string };
+  title: { fr: string; en: string };
   fr: string[];
   en: string[];
 }
@@ -65,11 +66,6 @@ export default function Changelog() {
     setEntries(null);
   };
 
-  const fmtDate = (iso: string) =>
-    new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(
-      new Date(`${iso}T00:00:00Z`),
-    );
-
   return (
     <main id="main-content" tabIndex={-1} className="min-h-screen bg-pine-950">
       <section className="relative overflow-hidden">
@@ -118,22 +114,17 @@ export default function Changelog() {
           {entries && (
             <div className="mt-10">
               <ol className="relative space-y-8 border-l border-white/10 pl-8">
-                {entries.map((entry) => (
-                  <li key={entry.date} className="relative">
+                {entries.map((entry, i) => (
+                  <li key={entry.date ?? i} className="relative">
                     <span className="absolute top-1.5 -left-[2.35rem] flex h-5 w-5 items-center justify-center rounded-full border border-gold-500/40 bg-pine-950">
                       <span className="h-2 w-2 rounded-full bg-gold-400" />
                     </span>
-                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <time dateTime={entry.date} className="text-[12.5px] font-semibold uppercase tracking-[0.2em] text-pine-100/70">
-                        {fmtDate(entry.date)}
-                      </time>
-                      {entry.version && (
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-500/40 bg-gold-500/10 px-3 py-1 text-[11px] font-bold text-gold-300">
-                          <Lock size={10} />
-                          v{entry.version}
-                        </span>
-                      )}
-                    </div>
+                    <time dateTime={entry.date} className="text-[12.5px] font-semibold uppercase tracking-[0.2em] text-pine-100/70">
+                      {entry.label[lang]}
+                    </time>
+                    <h2 className="mt-1.5 font-display text-xl font-medium leading-snug text-pine-100">
+                      {entry.title[lang]}
+                    </h2>
                     <ul className="mt-3 space-y-2">
                       {(lang === 'fr' ? entry.fr : entry.en).map((change, i) => (
                         <li key={i} className="flex items-start gap-2.5 text-[14.5px] leading-relaxed text-pine-100/80">
