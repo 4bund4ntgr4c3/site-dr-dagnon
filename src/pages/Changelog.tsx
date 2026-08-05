@@ -135,13 +135,22 @@ export default function Changelog() {
                   </span>
                 ))}
               </div>
-              <ol className="relative mt-12 space-y-8 border-l border-white/10 pl-8">
+            </div>
+          )}
+
+          {entries && header && (
+            <>
+              <div
+                aria-hidden
+                className="mx-auto my-14 h-px w-full max-w-3xl bg-[linear-gradient(90deg,transparent_0%,#c9a24b_18%,#c9a24b_82%,transparent_100%)]"
+              />
+              <ol className="relative space-y-8 border-l border-white/10 pl-8">
                 {entries.map((entry, i) => (
                   <li key={entry.date ?? i} className="relative">
                     <span className="absolute top-1.5 -left-[2.35rem] flex h-5 w-5 items-center justify-center rounded-full border border-gold-500/40 bg-pine-950">
                       <span className="h-2 w-2 rounded-full bg-gold-400" />
                     </span>
-                                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                       <span className="rounded-lg bg-gold-500 px-2.5 py-0.5 text-[13px] font-bold tracking-[0.12em] text-pine-950">
                         v{entry.version}
                       </span>
@@ -172,7 +181,7 @@ export default function Changelog() {
                 <LogOut size={15} />
                 {t['admin.logout']}
               </button>
-            </div>
+            </>
           )}
         </div>
       </section>
