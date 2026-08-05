@@ -6,7 +6,8 @@
  *
  *  Read only. Add new releases at the TOP of CHANGELOG_ENTRIES, newest
  *  first; each entry lists its changes in both languages. Content mirrors
- *  CHANGELOG.html (the repo's release log) — keep the two in step. */
+ *  CHANGELOG.html (the repo's release log) — keep the two, and the
+ *  CHANGELOG_HEADER stats below, in step. */
 
 export interface ChangelogEntry {
   /** ISO date for the <time datetime> attribute, when the release has one */
@@ -17,6 +18,32 @@ export interface ChangelogEntry {
   fr: string[];
   en: string[];
 }
+
+/** Header block served to the /changelog page, mirroring the hero of
+ *  CHANGELOG.html (site name, subtitle and stats bar). */
+export interface ChangelogHeader {
+  title: { fr: string; en: string };
+  sub: { fr: string; en: string };
+  stats: {
+    value: { fr: string; en: string };
+    label?: { fr: string; en: string };
+  }[];
+}
+
+export const CHANGELOG_HEADER: ChangelogHeader = {
+  title: { fr: 'Site Dr. Seynude Dagnon', en: 'Dr. Seynude Dagnon' },
+  sub: {
+    fr: 'Portfolio & site vitrine — site-dr-dagnon',
+    en: 'Portfolio & showcase website — site-dr-dagnon',
+  },
+  stats: [
+    { value: { fr: '237', en: '237' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '23', en: '23' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '296', en: '296' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
+    { value: { fr: '108', en: '108' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
+    { value: { fr: '16 juil – 5 août 2026', en: '16 Jul – 5 Aug 2026' } },
+  ],
+};
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
@@ -511,5 +538,5 @@ export default async function handler(req: Req, res: Res) {
   const auth = typeof req.headers?.authorization === 'string' ? req.headers.authorization : '';
   if (!safeEqual(`Bearer ${SECRET}`, auth)) { res.status(401).json({ error: 'Unauthorized' }); return; }
 
-  res.status(200).json({ ok: true, entries: CHANGELOG_ENTRIES });
+  res.status(200).json({ ok: true, header: CHANGELOG_HEADER, entries: CHANGELOG_ENTRIES });
 }

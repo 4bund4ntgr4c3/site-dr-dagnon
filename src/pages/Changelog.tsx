@@ -16,6 +16,15 @@ interface ChangelogEntry {
   en: string[];
 }
 
+interface ChangelogHeader {
+  title: { fr: string; en: string };
+  sub: { fr: string; en: string };
+  stats: {
+    value: { fr: string; en: string };
+    label?: { fr: string; en: string };
+  }[];
+}
+
 const AUTH_KEY = 'changelog-auth';
 
 export default function Changelog() {
@@ -25,6 +34,7 @@ export default function Changelog() {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [entries, setEntries] = useState<ChangelogEntry[] | null>(null);
+  const [header, setHeader] = useState<ChangelogHeader | null>(null);
 
   useEffect(() => {
     document.title = t['changelog.title'];
@@ -44,7 +54,8 @@ export default function Changelog() {
         setError(response.status === 401 ? t['admin.errorAuth'] : t['admin.errorServer']);
         return;
       }
-      const body = (await response.json()) as { entries: ChangelogEntry[] };
+      const body = (await response.json()) as { header: ChangelogHeader; entries: ChangelogEntry[] };
+      setHeader(body.header);
       setEntries(body.entries);
       sessionStorage.setItem(AUTH_KEY, secret);
     } catch {
@@ -64,6 +75,7 @@ export default function Changelog() {
     sessionStorage.removeItem(AUTH_KEY);
     setToken('');
     setEntries(null);
+    setHeader(null);
   };
 
   return (
@@ -78,7 +90,7 @@ export default function Changelog() {
             {t['changelog.badge']}
           </span>
           <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl">
-            {t['changelog.title']}
+            {header?.title[lang] ?? t['changelog.title']}
           </h1>
           <p className="mt-4 max-w-2xl font-display text-lg italic text-pine-200/90 sm:text-xl">
             {t['changelog.intro']}
@@ -111,9 +123,18 @@ export default function Changelog() {
             </form>
           )}
 
-          {entries && (
+          {entries && header && (
             <div className="mt-10">
-              <ol className="relative space-y-8 border-l border-white/10 pl-8">
+              <p className="text-[13px] font-medium uppercase tracking-[0.2em] text-pine-100/60">{header.sub[lang]}</p>
+              <div className="mt-4 flex flex-wrap gap-2.5">
+                {header.stats.map((s, i) => (
+                  <span key={i} className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2 text-[12.5px] text-pine-100">
+                    <strong className="font-bold text-gold-400">{s.value[lang]}</strong>
+                    {s.label ? ` ${s.label[lang]}` : ''}
+                  </span>
+                ))}
+              </div>
+              <ol className="relative mt-12 space-y-8 border-l border-white/10 pl-8">
                 {entries.map((entry, i) => (
                   <li key={entry.date ?? i} className="relative">
                     <span className="absolute top-1.5 -left-[2.35rem] flex h-5 w-5 items-center justify-center rounded-full border border-gold-500/40 bg-pine-950">
