@@ -129,10 +129,22 @@ export function Footer() {
               {t['footer.linkLegal']}
             </Link>
             <Link
+              to={localePath(lang, '/accessibility')}
+              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
+            >
+              {t['footer.linkAccessibility']}
+            </Link>
+            <Link
               to={localePath(lang, '/bibliography')}
               className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
             >
               {t['footer.linkBibliography']}
+            </Link>
+            <Link
+              to={localePath(lang, '/changelog')}
+              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
+            >
+              {t['footer.linkChangelog']}
             </Link>
           </nav>
 

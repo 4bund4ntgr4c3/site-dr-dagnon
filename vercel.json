@@ -399,6 +399,14 @@
       "destination": "/index.html"
     },
     {
+      "source": "/changelog",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/fr/changelog",
+      "destination": "/index.html"
+    },
+    {
       "source": "/newsletter/preferences",
       "destination": "/index.html"
     },

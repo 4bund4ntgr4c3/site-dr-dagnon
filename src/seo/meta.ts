@@ -267,6 +267,19 @@ export const BIBLIOGRAPHY_SEO: Record<Lang, { title: string; description: string
   },
 };
 
+export const ACCESSIBILITY_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Accessibilité — Dr. Seynudé Dagnon',
+    description: "Déclaration d'accessibilité du site du Dr. Seynudé Dagnon : navigation au clavier, recherche globale Ctrl+K, contrastes, lecteurs d'écran et signalement des difficultés.",
+    keywords: 'accessibilité Dr Dagnon, navigation clavier, lecteur écran, contrastes, déclaration accessibilité site santé publique',
+  },
+  en: {
+    title: 'Accessibility — Seynudé Dagnon',
+    description: "Accessibility statement for Dr. Seynudé Dagnon's website: keyboard navigation, Ctrl+K global search, contrast, screen readers and reporting difficulties.",
+    keywords: 'Dr Dagnon accessibility, keyboard navigation, screen reader, contrast, accessibility statement public health site',
+  },
+};
+
 /** The admin dashboard is a real page (it must never look like a 404) but is
     deliberately noindex and never prerendered or sitemapped. */
 export const ADMIN_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
@@ -293,6 +306,21 @@ export const PREFERENCES_SEO: Record<Lang, { title: string; description: string;
   en: {
     title: 'Newsletter preferences — Seynudé Dagnon',
     description: 'Manage your newsletter frequency.',
+    keywords: '',
+  },
+};
+
+/** Password-protected changelog — same status as /admin: a real page that
+    must not look like a 404, noindex, never prerendered. */
+export const CHANGELOG_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Changelog — Dr. Seynudé Dagnon',
+    description: "Historique des versions du site du Dr. Seynudé Dagnon.",
+    keywords: '',
+  },
+  en: {
+    title: 'Changelog — Seynudé Dagnon',
+    description: "Version history of Dr. Seynudé Dagnon's website.",
     keywords: '',
   },
 };
@@ -500,6 +528,8 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
     items.push({ name: lang === 'fr' ? 'Impact & résultats' : 'Impact & results', url: absUrl(lang, '/impact') });
   } else if (path === '/legal') {
     items.push({ name: lang === 'fr' ? 'Mentions légales' : 'Legal notice', url: absUrl(lang, '/legal') });
+  } else if (path === '/accessibility') {
+    items.push({ name: lang === 'fr' ? 'Accessibilité' : 'Accessibility', url: absUrl(lang, '/accessibility') });
   } else if (path === '/bibliography') {
     items.push({ name: lang === 'fr' ? 'Bibliographie' : 'Bibliography', url: absUrl(lang, '/bibliography') });
   }
@@ -756,10 +786,12 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isNewsletter = route === '/newsletter';
   const isImpact = route === '/impact';
   const isLegal = route === '/legal';
+  const isAccessibility = route === '/accessibility';
   const isBibliography = route === '/bibliography';
   const isAdmin = route === '/admin';
   const isPreferences = route === '/newsletter/preferences';
-  const isNoindex = isAdmin || isPreferences;
+  const isChangelog = route === '/changelog';
+  const isNoindex = isAdmin || isPreferences || isChangelog;
   const isTribunes = route === '/tribunes';
   const isTribuneArticle = route.startsWith('/tribunes/') && !isTribunes;
   const tribuneSlug = isTribuneArticle ? route.split('/tribunes/')[1]?.split('/')[0] || null : null;
@@ -832,13 +864,17 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                     ? IMPACT_SEO[lang]
                     : isLegal
                       ? LEGAL_SEO[lang]
-                      : isBibliography
-                        ? BIBLIOGRAPHY_SEO[lang]
+                      : isAccessibility
+                        ? ACCESSIBILITY_SEO[lang]
+                        : isBibliography
+                          ? BIBLIOGRAPHY_SEO[lang]
                         : isAdmin
                           ? ADMIN_SEO[lang]
                           : isPreferences
                             ? PREFERENCES_SEO[lang]
-                            : SEO[lang];
+                            : isChangelog
+                              ? CHANGELOG_SEO[lang]
+                              : SEO[lang];
 
   const url = absUrl(lang, route);
 
@@ -895,7 +931,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
               ? projectJsonLd(lang, project, url)
               : photo
                 ? imageObjectJsonLd(lang, photo, url)
-                : isMedia || isPub || isAgenda || isTribunes || isProjects || isPresse || isInvite || isNewsletter || isImpact || isLegal || isBibliography
+                : isMedia || isPub || isAgenda || isTribunes || isProjects || isPresse || isInvite || isNewsletter || isImpact || isLegal || isAccessibility || isBibliography
                   ? collectionPageJsonLd(lang, data.title, data.description, url)
                   : null,
     },
@@ -927,6 +963,7 @@ export const PRERENDER_ROUTES = [
   '/newsletter',
   '/impact',
   '/legal',
+  '/accessibility',
   '/bibliography',
 ];
 
@@ -947,6 +984,7 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/newsletter': { priority: '0.5', changefreq: 'weekly' },
   '/impact': { priority: '0.7', changefreq: 'monthly' },
   '/legal': { priority: '0.3', changefreq: 'yearly' },
+  '/accessibility': { priority: '0.3', changefreq: 'yearly' },
   '/bibliography': { priority: '0.7', changefreq: 'weekly' },
   ...Object.fromEntries(
     TRIBUNES.map((t) => [`/tribunes/${t.slug}`, { priority: '0.7', changefreq: 'monthly' }]),

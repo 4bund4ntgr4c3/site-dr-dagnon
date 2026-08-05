@@ -63,8 +63,10 @@ const pages: AppPages = {
   NewsletterArchive: page(() => import('./pages/NewsletterArchive'), (p) => p === '/newsletter'),
   Impact: page(() => import('./pages/Impact'), (p) => p === '/impact'),
   Legal: page(() => import('./pages/Legal'), (p) => p === '/legal'),
+  Accessibility: page(() => import('./pages/Accessibility'), (p) => p === '/accessibility'),
   Bibliography: page(() => import('./pages/Bibliography'), (p) => p === '/bibliography'),
   Admin: page(() => import('./pages/Admin'), (p) => p === '/admin'),
+  Changelog: page(() => import('./pages/Changelog'), (p) => p === '/changelog'),
   NewsletterPrefs: page(() => import('./pages/NewsletterPrefs'), (p) => p === '/newsletter/preferences'),
 }
 

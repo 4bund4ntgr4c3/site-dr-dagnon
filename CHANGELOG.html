@@ -85,15 +85,28 @@
     <h1>Site Dr. Seynude Dagnon</h1>
     <p class="sub">Portfolio &amp; site vitrine — <code>site-dr-dagnon</code></p>
     <div class="stats">
-      <span class="stat"><strong>235</strong> commits</span>
-      <span class="stat"><strong>22</strong> versions</span>
+      <span class="stat"><strong>237</strong> commits</span>
+      <span class="stat"><strong>23</strong> versions</span>
       <span class="stat"><strong>296</strong> tests automatisés</span>
-      <span class="stat"><strong>106</strong> pages prérendues</span>
-      <span class="stat">16 juil – 3 août 2026</span>
+      <span class="stat"><strong>108</strong> pages prérendues</span>
+      <span class="stat">16 juil – 5 août 2026</span>
     </div>
   </header>
 
   <div class="rule"></div>
+
+  <!-- ============ v2.2 ============ -->
+  <section class="version">
+    <div class="vhead"><span class="vnum">v2.2</span><span class="vdate">5 août 2026</span></div>
+    <h2 class="vtitle">Accessibilité documentée, contact WhatsApp &amp; changelog protégé</h2>
+    <p class="vsummary">Le site gagne sa déclaration d'accessibilité (structure, raccourcis, contrastes, aides techniques), un contact WhatsApp qui ne révèle jamais le numéro dans le bundle, et un historique des versions protégé par mot de passe — la page d'accessibilité porte le pré-rendu à 108 pages HTML (54 par langue).</p>
+    <ul>
+      <li><strong>Page Accessibilité</strong> — nouvelle route <code>/accessibility</code> (et <code>/fr/accessibility</code>) : structure et navigation, utilisation au clavier (Ctrl+K, Échap, flèches), recherche globale, texte/zoom/contrastes, lecteurs d'écran, médias et documents, signalement des difficultés ; fil d'Ariane et JSON-LD <code>CollectionPage</code>, sitemap (priorité 0,3), pré-rendue en FR/EN et lien dans le footer.</li>
+      <li><strong>Contact WhatsApp</strong> — bouton WhatsApp dans la rangée sociale de la page Contact, affiché uniquement après vérification du téléphone : le lien <code>wa.me</code> est construit depuis le numéro servi par <code>/api/verify-phone</code>, qui n'existe jamais côté navigateur avant cette étape.</li>
+      <li><strong>Changelog protégé</strong> — nouvelle route client-only <code>/changelog</code> (et <code>/fr/changelog</code>), lien en fin de pied de page : mot de passe partagé avec l'administration (<code>ADMIN_SECRET</code>, secours <code>CRON_SECRET</code>), session en <code>sessionStorage</code>, chronologie versionnée FR/EN ; les entrées vivent dans <code>/api/changelog</code> (jamais dans le bundle), page jamais pré-rendue ni indexée (<code>noindex</code> réaffirmé au montage, réécriture SPA dans <code>vercel.json</code>), premier numéro v2.1.0 inclus.</li>
+      <li><strong>Qualité</strong> — <code>tsc</code>, ESLint, compilation isolée de l'API et suite de 296 tests : tout reste vert ; le site comporte désormais 108 pages HTML pré-rendues.</li>
+    </ul>
+  </section>
 
   <!-- ============ v2.1 ============ -->
   <section class="version">

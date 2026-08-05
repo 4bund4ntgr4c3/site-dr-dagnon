@@ -16,11 +16,12 @@ import Invite from './pages/Invite';
 import NewsletterArchive from './pages/NewsletterArchive';
 import Impact from './pages/Impact';
 import Legal from './pages/Legal';
+import Accessibility from './pages/Accessibility';
 import Bibliography from './pages/Bibliography';
 
 /* Plain imports, not React.lazy() — see the comment on AppPages in App.tsx
    for why renderToStaticMarkup needs this. */
-const pages: AppPages = { Home, Contact, Media, Publications, Agenda, Tribunes, TribuneArticle, Projects, ProjectArticle, Cv, PressKit, Invite, NewsletterArchive, Impact, Legal, Bibliography };
+const pages: AppPages = { Home, Contact, Media, Publications, Agenda, Tribunes, TribuneArticle, Projects, ProjectArticle, Cv, PressKit, Invite, NewsletterArchive, Impact, Legal, Accessibility, Bibliography };
 
 /* Renders a route to plain HTML for scripts/prerender.mjs to embed in each
    generated dist/.../index.html — this is what a crawler sees before any
