@@ -78,15 +78,9 @@ export function Footer() {
 
         {/* bottom bar */}
         <div className="flex flex-col items-center justify-between gap-6 pt-10 md:flex-row">
-          <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gold-500 font-display text-sm font-semibold text-pine-950">
-              SD
-            </span>
-            <div className="leading-tight">
-              <p className="font-display text-sm font-medium text-ivory">{t['name.full']}</p>
-              <p className="text-[10.5px] uppercase tracking-[0.2em] text-pine-100/70">{t['footer.tagline']}</p>
-            </div>
-          </div>
+          <p className="text-[12px] text-pine-100/70">
+            {t['footer.rights']}
+          </p>
 
           <nav aria-label={t['footerNav.ariaLabel']} className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {NAV[lang].filter((item) => !BAR_EXCLUDED.includes(item.id)).map((item) => (
@@ -148,9 +142,14 @@ export function Footer() {
             </Link>
           </nav>
 
-          <p className="text-[12px] text-pine-100/70">
-            {t['footer.rights']}
-          </p>
+          <a
+            href="https://studio26.africa"
+            target="_blank"
+            rel="noreferrer"
+            className="text-[12px] text-pine-100/70 transition-colors hover:text-gold-400"
+          >
+            {t['footer.design']}
+          </a>
         </div>
       </div>
     </footer>
