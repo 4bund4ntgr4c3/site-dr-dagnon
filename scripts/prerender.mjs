@@ -286,6 +286,9 @@ async function run() {
       ? ['/presse/press-kit-fr.pdf', '/presse/press-kit-en.pdf']
       : []),
     ...(fs.existsSync(path.join(dist, 'cv')) ? ['/cv/cv-fr.pdf', '/cv/cv-en.pdf'] : []),
+    ...(fs.existsSync(path.join(dist, 'publications'))
+      ? ['/publications/publications-fr.pdf', '/publications/publications-en.pdf']
+      : []),
     ...(fs.existsSync(path.join(dist, 'assets'))
       ? fs.readdirSync(path.join(dist, 'assets')).map((f) => `/assets/${f}`)
       : []),

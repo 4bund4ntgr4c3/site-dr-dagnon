@@ -3,6 +3,8 @@ Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /fr/admin
+Disallow: /changelog
+Disallow: /fr/changelog
 Disallow: /newsletter/preferences
 Disallow: /fr/newsletter/preferences
 

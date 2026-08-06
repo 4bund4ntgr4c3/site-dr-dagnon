@@ -29,6 +29,9 @@ contact form to work at all.
 | `CONTACT_PHONE` | yes (phone reveal) | the protected phone number, so it can change without a code deploy |
 | `ALLOWED_ORIGINS` | no | comma-separated origin allowlist for the API |
 | `KV_REST_API_URL` + `KV_REST_API_TOKEN` | no | shared rate-limit store (see below) |
+| `ADMIN_SECRET` | yes (admin) | bearer token for `/api/admin` and `/api/changelog` (push composer, dashboard, changelog page) |
+| `CRON_SECRET` | yes (reminders) | bearer token for the cron endpoints (`agenda-reminders`, `event-reminders`); fallback for `/api/admin` and `/api/push-send` |
+| `VAPID_PUBLIC_KEY` + `VAPID_PRIVATE_KEY` | yes (push) | web-push VAPID key pair, generated with `web-push generate-vapid-keys --json` |
 
 Attaching a Vercel KV store sets the `KV_*` pair automatically. Upstash's own
 `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` are read too.
