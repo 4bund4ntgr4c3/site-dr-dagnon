@@ -39,15 +39,39 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '249', en: '249' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '25', en: '25' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '254', en: '254' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '26', en: '26' }, label: { fr: 'versions', en: 'versions' } },
     { value: { fr: '343', en: '343' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
     { value: { fr: '112', en: '112' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
-    { value: { fr: '16 juil – 5 août 2026', en: '16 Jul – 5 Aug 2026' } },
+    { value: { fr: '16 juil – 7 août 2026', en: '16 Jul – 7 Aug 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-08-07',
+    version: '2.4',
+    label: { fr: '7 août 2026', en: '7 August 2026' },
+    title: { fr: 'Performance GTmetrix, export PDF par publication, agenda depuis les médias, timeline des tribunes & témoignages', en: 'GTmetrix performance, per-publication PDF export, add-to-calendar from media, tribunes timeline & testimonials' },
+    fr: [
+      'Performance — icônes lucide regroupées en un seul chunk (68 → 34 requêtes JS) ; préchargement de la police Fraunces en priorité haute (LCP) ; le service worker ne précache plus les médias lourds à la demande (communauté/OG/presse, −3,9 Mo et −46 requêtes au premier chargement) — GTmetrix A, performance ~86 %, LCP 2,4 s.',
+      'Export PDF par publication — bouton Imprimer/PDF sur chaque carte de /publications qui ouvre /publications-pdf?id=<slug> : une seule publication, mise en page A4 imprimable, retour vers la liste.',
+      'Agenda depuis les médias — bouton « Ajouter au calendrier » (Google Calendar) sur les vidéos datées de /media.',
+      'Timeline & filtres des tribunes — /tribunes réorganisé en frise chronologique avec filtres année + thème (paludisme, santé publique, numérique, leadership), état partageable dans l\'URL.',
+      'Témoignages — section « Ce que disent les collaborateurs » sur /collaborate (paroles professionnelles par rôle institutionnel).',
+      'Accessibilité — contraste des étiquettes de filtres des tribunes corrigé (pine-900/60 → /80, ratio ≥ 4,5:1 sur ivoire).',
+      'Tests — 343 tests au vert ; suite complète prerender, API, accessibility, newsletter, push, search.',
+    ],
+    en: [
+      'Performance — lucide icons bundled into one chunk (68 → 34 JS requests); hero Fraunces font preload marked high priority (LCP); the service worker no longer precaches heavy on-demand media (community/OG/press, −3.9 MB and −46 requests on first load) — GTmetrix A, performance ~86%, LCP 2.4s.',
+      'Per-publication PDF export — Print/PDF button on every /publications card that opens /publications-pdf?id=<slug>: a single publication, print-ready A4 layout, back to the list.',
+      'Add-to-calendar from media — "Add to Google Calendar" button on dated videos on /media.',
+      'Tribunes timeline & filters — /tribunes reorganized as a chronological timeline with year + theme filters (malaria, public health, digital, leadership), shareable state in the URL.',
+      'Testimonials — "What collaborators say" section on /collaborate (professional quotes by institutional role).',
+      'Accessibility — fixed contrast of the tribunes filter labels (pine-900/60 → /80, ratio ≥ 4.5:1 on ivory).',
+      'Tests — 343 tests green; full suite: prerender, API, accessibility, newsletter, push, search.',
+    ],
+  },
   {
     date: '2026-08-05',
     version: '2.3',

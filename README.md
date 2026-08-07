@@ -6,8 +6,8 @@ Portfolio of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, d
 
 ```bash
 npm run dev      # dev server on :3000
-npm run build    # typecheck, bundle, then prerender 108 pages + sitemap + 404 + service worker + send the newsletter digest on Vercel production
-npm test         # build, then 298 tests (node --test)
+npm run build    # typecheck, bundle, then prerender 112 pages + sitemap + 404 + service worker + send the newsletter digest on Vercel production
+npm test         # build, then 343 tests (node --test)
 npm run lint
 npm run images   # one-off: convert public/ photos to WebP (see below)
 npm run gen:og   # one-off: regenerate og-image.jpg
