@@ -1,11 +1,11 @@
-import { Newspaper, ArrowUpRight, ExternalLink } from 'lucide-react';
-import { Link } from 'react-router';
+import { Newspaper, ArrowUpRight, Calendar } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
-import { TRIBUNES, type TribuneEntry } from '@/data/tribunes';
+import { TRIBUNES, type TribuneEntry, type TribuneTheme } from '@/data/tribunes';
 
 /* The ISO date is split, not parsed with new Date(), so the rendered date is
    exactly the one in the data file regardless of the visitor's timezone. */
@@ -14,11 +14,45 @@ const parts = (iso: string) => {
   return { y, m, d };
 };
 
+const THEMES: TribuneTheme[] = ['malaria', 'public-health', 'digital', 'leadership'];
+
+const pill = (active: boolean) =>
+  `whitespace-nowrap rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
+    active
+      ? 'bg-pine-950 text-gold-400 shadow'
+      : 'bg-pine-900/5 text-ink/75 ring-1 ring-pine-900/10 hover:text-pine-900 hover:ring-gold-500/50'
+  }`;
+
 export default function Tribunes() {
   const { lang } = useLang();
   const t = UI[lang];
+  const tKey = (k: string) => t[k as keyof typeof t] as unknown as string;
 
-  const sorted = [...TRIBUNES].sort((a, b) => b.date.localeCompare(a.date));
+  /* Filters live in the URL so a filtered view can be shared and bookmarked;
+     the `all` defaults are left out so the canonical link stays clean. */
+  const [searchParams, setSearchParams] = useSearchParams();
+  const year = searchParams.get('y') ?? 'all';
+  const theme = searchParams.get('t') ?? 'all';
+
+  const setFilter = (key: 'y' | 't', value: string, default_: string) => {
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (value === default_) next.delete(key);
+        else next.set(key, value);
+        return next;
+      },
+      { replace: true },
+    );
+  };
+
+  const filtered = TRIBUNES.filter((e) => {
+    if (year !== 'all' && String(parts(e.date).y) !== year) return false;
+    if (theme !== 'all' && e.theme !== theme) return false;
+    return true;
+  }).sort((a, b) => b.date.localeCompare(a.date));
+
+  const years = Array.from(new Set(TRIBUNES.map((e) => String(parts(e.date).y)))).sort((a, b) => b.localeCompare(a));
 
   return (
     <main id="main-content" tabIndex={-1} className="min-h-screen">
@@ -45,16 +79,64 @@ export default function Tribunes() {
 
       <section className="bg-pine-50 py-16 lg:py-20">
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
-          {sorted.length > 0 ? (
-            <div className="grid gap-5 lg:grid-cols-2">
-              {sorted.map((e, i) => (
-                <Reveal key={e.slug} delay={Math.min(i * 0.05, 0.3)}>
-                  <TribuneCard e={e} lang={lang} t={t} />
-                </Reveal>
+          {/* filters */}
+          <div className="rounded-2xl border border-pine-900/10 bg-ivory p-4 shadow-card">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:flex-wrap">
+              <span className="text-[12px] font-bold uppercase tracking-[0.15em] text-pine-900/80">
+                {t['tribunesPage.filterBy']}:
+              </span>
+              <button type="button" onClick={() => setFilter('t', 'all', 'all')} className={pill(theme === 'all')}>
+                {t['tribunesPage.all']}
+              </button>
+              {THEMES.map((th) => (
+                <button
+                  key={th}
+                  type="button"
+                  onClick={() => setFilter('t', th, 'all')}
+                  aria-pressed={theme === th}
+                  className={pill(theme === th)}
+                >
+                  {tKey(`tribunesPage.theme.${th}`)}
+                </button>
               ))}
             </div>
+            <div className="mt-3 flex flex-row flex-wrap items-center gap-2 border-t border-pine-900/10 pt-3">
+              <span className="inline-flex items-center gap-1.5 text-[12px] text-pine-900/80">
+                <Calendar size={13} /> {t['tribunesPage.filterYear']}:
+              </span>
+              <button type="button" onClick={() => setFilter('y', 'all', 'all')} className={pill(year === 'all')}>
+                {t['tribunesPage.all']}
+              </button>
+              {years.map((y) => (
+                <button
+                  key={y}
+                  type="button"
+                  onClick={() => setFilter('y', y, 'all')}
+                  aria-pressed={year === y}
+                  className={pill(year === y)}
+                >
+                  {y}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {filtered.length > 0 ? (
+            <div className="mt-10">
+              {/* visual timeline — vertical rule on the left, each piece dated */}
+              <ol className="relative space-y-6 border-l border-gold-500/40 pl-8 lg:pl-12">
+                {filtered.map((e) => (
+                  <li key={e.slug} className="relative">
+                    <span className="absolute -left-[37px] top-2 flex h-4 w-4 items-center justify-center rounded-full bg-gold-500 ring-4 ring-gold-500/20 lg:-left-[49px]" />
+                    <Reveal>
+                      <TribuneCard e={e} lang={lang} t={t} />
+                    </Reveal>
+                  </li>
+                ))}
+              </ol>
+            </div>
           ) : (
-            <p className="rounded-2xl border border-dashed border-pine-900/15 bg-white px-6 py-14 text-center text-sm text-pine-900/75">
+            <p className="mt-10 rounded-2xl border border-dashed border-pine-900/15 bg-white px-6 py-14 text-center text-sm text-pine-900/75">
               {t['tribunesPage.empty']}
             </p>
           )}
@@ -66,6 +148,7 @@ export default function Tribunes() {
 
 function TribuneCard({ e, lang, t }: { e: TribuneEntry; lang: 'fr' | 'en'; t: typeof UI['fr'] }) {
   const { y, m, d } = parts(e.date);
+  const tKey = (k: string) => t[k as keyof typeof t] as unknown as string;
   const dateLabel = new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : 'en-US', {
     year: 'numeric',
     month: 'long',
@@ -82,9 +165,8 @@ function TribuneCard({ e, lang, t }: { e: TribuneEntry; lang: 'fr' | 'en'; t: ty
           <Newspaper size={12} />
           {t['tribunesPage.badge']}
         </span>
-        <span className="inline-flex items-center gap-1.5 text-[11.5px] text-pine-900/70">
-          <ExternalLink size={12} />
-          {e.source.name}
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-gold-500/15 px-3 py-1 text-[11px] font-semibold text-gold-700">
+          {tKey(`tribunesPage.theme.${e.theme}`)}
         </span>
         <span className="ml-auto text-[11.5px] text-pine-900/65">{dateLabel}</span>
       </div>

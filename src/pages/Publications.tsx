@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router';
-import { FileText, ArrowUpRight, X, Star, Search, Quote, ExternalLink } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router';
+import { FileText, ArrowUpRight, X, Star, Search, Quote, ExternalLink, Printer } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { CitationModal } from '@/components/CitationModal';
@@ -9,6 +9,7 @@ import { UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { PUB_ITEMS, type PubEntry } from '@/data/publications';
 import { LINKS } from '@/data/content';
+import { localePath } from '@/i18n/routing';
 
 const pill = (active: boolean) =>
   `whitespace-nowrap rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
@@ -199,15 +200,22 @@ export default function PublicationsPage() {
                 {featured.map((p) => (
                   <Reveal key={p.id}>
                     <div className="relative">
-                      <FeaturedCard p={p} lang={lang} t={t} />
-                      <button
-                        type="button"
-                        onClick={() => setCiting(p)}
-                        aria-label={`${t['pubPage.cite']} — ${p.title[lang]}`}
-                        className="absolute right-4 top-4 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-gold-500/50 bg-pine-950/80 text-gold-300 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-gold-500 hover:text-pine-950"
-                      >
-                        <Quote size={15} />
-                      </button>
+<FeaturedCard p={p} lang={lang} t={t} />
+                  <button
+                    type="button"
+                    onClick={() => setCiting(p)}
+                    aria-label={`${t['pubPage.cite']} — ${p.title[lang]}`}
+                    className="absolute right-4 top-4 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-gold-500/50 bg-pine-950/80 text-gold-300 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-gold-500 hover:text-pine-950"
+                  >
+                    <Quote size={15} />
+                  </button>
+                  <Link
+                    to={`${localePath(lang, '/publications-pdf')}?id=${p.id}`}
+                    aria-label={`${t['pubPdf.print']} — ${p.title[lang]}`}
+                    className="absolute right-16 top-4 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-gold-500/50 bg-pine-950/80 text-gold-300 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-gold-500 hover:text-pine-950"
+                  >
+                    <Printer size={15} />
+                  </Link>
                     </div>
                   </Reveal>
                 ))}
@@ -228,6 +236,13 @@ export default function PublicationsPage() {
                         >
                           <Quote size={15} />
                         </button>
+                        <Link
+                          to={`${localePath(lang, '/publications-pdf')}?id=${p.id}`}
+                          aria-label={`${t['pubPdf.print']} — ${p.title[lang]}`}
+                          className="absolute right-16 top-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full bg-pine-950/85 text-gold-300 shadow-lg backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-gold-500 hover:text-pine-950"
+                        >
+                          <Printer size={15} />
+                        </Link>
                       </div>
                     </Reveal>
                   ))}

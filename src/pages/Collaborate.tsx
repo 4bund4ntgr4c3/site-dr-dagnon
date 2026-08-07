@@ -1,9 +1,10 @@
 import { Link } from 'react-router';
-import { Handshake, FlaskConical, Globe, Building2, ArrowUpRight, CalendarPlus, Mail } from 'lucide-react';
+import { Handshake, FlaskConical, Globe, Building2, ArrowUpRight, CalendarPlus, Mail, Quote } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
+import { TESTIMONIALS } from '@/data/testimonials';
 import type { Lang } from '@/i18n/lang';
 
 const COLLAB_TYPES: Record<Lang, { icon: typeof Handshake; title: string; text: string }[]> = {
@@ -69,6 +70,31 @@ export default function Collaborate() {
               </div>
             </div>
           </Reveal>
+
+          {TESTIMONIALS.length > 0 && (
+            <Reveal>
+              <div>
+                <h2 className="font-display text-2xl font-semibold text-pine-900">{t['collab.testimonialsTitle']}</h2>
+                <p className="mt-2 text-sm text-pine-900/70">{t['collab.testimonialsSub']}</p>
+                <div className="mt-6 grid gap-5 lg:grid-cols-2">
+                  {TESTIMONIALS.map((tm) => (
+                    <figure key={tm.id} className="flex flex-col rounded-2xl border border-pine-900/10 bg-white p-6 shadow-card">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gold-500 text-pine-950">
+                        <Quote size={16} />
+                      </span>
+                      <blockquote className="mt-4 flex-1 text-[14px] leading-relaxed text-pine-900/85">
+                        « {tm.quote[lang]} »
+                      </blockquote>
+                      <figcaption className="mt-5 border-t border-pine-900/10 pt-4">
+                        <p className="text-sm font-semibold text-pine-900">{tm.role[lang]}</p>
+                        <p className="text-[12px] text-pine-900/80">{tm.org[lang]}</p>
+                      </figcaption>
+                    </figure>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          )}
 
           <Reveal>
             <div className="rounded-2xl border border-pine-900/10 bg-white p-8 shadow-card sm:p-10">

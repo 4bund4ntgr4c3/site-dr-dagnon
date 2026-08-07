@@ -1,5 +1,5 @@
-import { Printer, FileText, ExternalLink } from 'lucide-react';
-import { Link } from 'react-router';
+import { Printer, FileText, ExternalLink, ArrowLeft } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
 import { useLang } from '@/i18n/useLang';
@@ -17,8 +17,18 @@ export default function PublicationsPdf() {
   const { lang } = useLang();
   const t = UI[lang];
   const otherLang: Lang = lang === 'fr' ? 'en' : 'fr';
+  /* A single-publication print/export view is reachable via ?id=<pubId>; the
+     same route renders the full list when no id is given. Using a query
+     param (not a new route) keeps the sitemap, prerender pages and service
+     worker precache unchanged. */
+  const [searchParams] = useSearchParams();
+  const singleId = searchParams.get('id');
+  const single = singleId ? PUB_ITEMS.find((p) => p.id === singleId) : undefined;
+
   const pubs = PUB_ITEMS.filter((p) => p.type === 'publication').sort((a, b) => b.year - a.year);
   const blogs = PUB_ITEMS.filter((p) => p.type === 'blog').sort((a, b) => b.year - a.year);
+  const listPubs = single ? pubs.filter((p) => p.id === single.id) : pubs;
+  const listBlogs = single ? blogs.filter((p) => p.id === single.id) : blogs;
 
   return (
     <main id="main-content" tabIndex={-1} className="min-h-screen">
@@ -32,14 +42,17 @@ export default function PublicationsPdf() {
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-300">
               <FileText size={13} />
-              {t['pubPdf.badge']}
+              {single ? t['pubPdf.singleBadge'] : t['pubPdf.badge']}
             </span>
             <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl lg:text-[4.4rem]">
-              {t['pubPdf.badge']} — <NameHighlight />
+              {single ? t['pubPdf.singleBadge'] : `${t['pubPdf.badge']} — `}
+              {single ? single.title[lang] : <NameHighlight />}
             </h1>
-            <p className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
-              {t['pubPdf.intro']}
-            </p>
+            {!single && (
+              <p className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
+                {t['pubPdf.intro']}
+              </p>
+            )}
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <button
                 type="button"
@@ -62,12 +75,21 @@ export default function PublicationsPdf() {
               >
                 <FileText size={15} /> {t['pubPdf.pdfEn']}
               </a>
-              <Link
-                to={localePath(otherLang, '/publications-pdf')}
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
-              >
-                {t['pubPdf.otherLang']}
-              </Link>
+              {single ? (
+                <Link
+                  to={localePath(lang, '/publications-pdf')}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
+                >
+                  <ArrowLeft size={15} /> {t['pubPdf.backToAll']}
+                </Link>
+              ) : (
+                <Link
+                  to={localePath(otherLang, '/publications-pdf')}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-ivory transition-all hover:-translate-y-0.5 hover:border-gold-400 hover:text-gold-300"
+                >
+                  {t['pubPdf.otherLang']}
+                </Link>
+              )}
             </div>
             <p className="mt-3 text-xs text-pine-100/55">{t['pubPdf.printHint']}</p>
           </Reveal>
@@ -114,7 +136,7 @@ export default function PublicationsPdf() {
               {t['pubPdf.publications']}
             </h2>
             <div className="mt-3.5 space-y-3">
-              {pubs.map((p) => (
+              {listPubs.map((p) => (
                 <p key={p.id} className="break-inside-avoid text-[11.5px] leading-relaxed text-pine-900/85">
                   <span className="font-medium">{p.authors[lang]}</span> ({p.year}).{' '}
                   <span className="italic">{p.title[lang]}</span>. {p.journal[lang]}.
@@ -130,13 +152,13 @@ export default function PublicationsPdf() {
           </section>
 
           {/* blog posts / opinion pieces */}
-          {blogs.length > 0 && (
+          {listBlogs.length > 0 && (
             <section className="mt-8">
               <h2 className="border-b border-pine-900/25 pb-1.5 text-[12px] font-bold uppercase tracking-[0.24em] text-pine-900">
                 {t['pubPdf.blogPosts']}
               </h2>
               <div className="mt-3.5 space-y-3">
-                {blogs.map((p) => (
+                {listBlogs.map((p) => (
                   <p key={p.id} className="break-inside-avoid text-[11.5px] leading-relaxed text-pine-900/85">
                     <span className="font-medium">{p.authors[lang]}</span> ({p.year}).{' '}
                     <span className="italic">{p.title[lang]}</span>. {p.journal[lang]}.

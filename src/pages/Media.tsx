@@ -17,6 +17,7 @@ import {
   ChevronRight,
   FolderOpen,
   Camera,
+  CalendarPlus,
 } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
@@ -28,6 +29,7 @@ import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { localePath } from '@/i18n/routing';
+import { gcalUrl } from '@/lib/calendar-links';
 import { PHOTO_DIMS, absUrl } from '@/seo/meta';
 import {
   MEDIA_ITEMS,
@@ -940,6 +942,18 @@ function MediaCard({
             {t['mediaPage.view']}
             <ArrowUpRight size={13} />
           </button>
+        )}
+        {m.type === 'video' && m.date && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <a
+              href={gcalUrl({ date: m.date, title: m.title[lang], description: m.description?.[lang] || m.title[lang], location: '' })}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-gold-500/40 px-3 py-1.5 text-[11.5px] font-semibold text-gold-700 transition-colors hover:bg-gold-500 hover:text-pine-950"
+            >
+              <CalendarPlus size={12} /> {t['mediaPage.addCalendar']}
+            </a>
+          </div>
         )}
       </div>
     </div>

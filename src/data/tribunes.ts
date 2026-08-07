@@ -7,11 +7,16 @@
 
 export type TribuneBlock = { kind: 'byline' | 'h2' | 'p' | 'quote'; text: string };
 
+/** Taxonomies for filtering and the visual timeline. */
+export type TribuneTheme = 'malaria' | 'public-health' | 'digital' | 'leadership';
+
 export interface TribuneEntry {
   /** URL slug, must match /^[a-z0-9-]+$/ */
   slug: string;
   /** ISO date of the original publication */
   date: string;
+  /** Topic the op-ed speaks to — shown as a filter pill and on the card. */
+  theme: TribuneTheme;
   source: { name: string; url: string };
   title: Record<Lang, string>;
   description: Record<Lang, string>;
@@ -21,6 +26,7 @@ export const TRIBUNES: TribuneEntry[] = [
   {
     slug: 'from-malaria-control-to-elimination',
     date: '2026-05-01',
+    theme: 'malaria',
     source: { name: 'Africa Health Watch', url: 'https://africahealthwatch.com/from-malaria-control-to-elimination-the-turn-we-need-to-make/' },
     title: {
       fr: 'Du contrôle du paludisme à l\'élimination : le virage à prendre',
