@@ -292,12 +292,14 @@ async function run() {
     ...(fs.existsSync(path.join(dist, 'assets'))
       ? fs.readdirSync(path.join(dist, 'assets')).map((f) => `/assets/${f}`)
       : []),
-    ...(fs.existsSync(path.join(dist, 'community'))
-      ? fs.readdirSync(path.join(dist, 'community')).map((f) => `/community/${f}`)
-      : []),
-    ...(fs.existsSync(path.join(dist, 'og'))
-      ? fs.readdirSync(path.join(dist, 'og')).map((f) => `/og/${f}`)
-      : []),
+    /* Heavy binary media is deliberately NOT precached: community photos,
+       og share images and the press kit only render when their page is
+       visited. Downloading all of them on the first visit added multi-MB and
+       dozens of requests to the initial load (they were the bulk of the
+       "Total Page Size / # requests" GTmetrix numbers). The fetch handler
+       runtime-caches them cache-first when each page actually loads, so the
+       PWA stays offline-capable — just for the media the visitor has seen
+       rather than the entire library up front. */
   ];
 
   const hash = (s) => {
