@@ -39,7 +39,7 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '254', en: '254' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '256', en: '256' }, label: { fr: 'commits', en: 'commits' } },
     { value: { fr: '26', en: '26' }, label: { fr: 'versions', en: 'versions' } },
     { value: { fr: '343', en: '343' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
     { value: { fr: '112', en: '112' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
@@ -60,6 +60,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
       'Timeline & filtres des tribunes — /tribunes réorganisé en frise chronologique avec filtres année + thème (paludisme, santé publique, numérique, leadership), état partageable dans l\'URL.',
       'Témoignages — section « Ce que disent les collaborateurs » sur /collaborate (paroles professionnelles par rôle institutionnel).',
       'Accessibilité — contraste des étiquettes de filtres des tribunes corrigé (pine-900/60 → /80, ratio ≥ 4,5:1 sur ivoire).',
+      'Maintenance — page Médias décomposée de 883 lignes en composants réutilisables (src/components/media/ : MediaLanding, CategoryView, CommunityView, PhotoView, MediaCard, categories, helpers).',
       'Tests — 343 tests au vert ; suite complète prerender, API, accessibility, newsletter, push, search.',
     ],
     en: [
@@ -69,6 +70,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
       'Tribunes timeline & filters — /tribunes reorganized as a chronological timeline with year + theme filters (malaria, public health, digital, leadership), shareable state in the URL.',
       'Testimonials — "What collaborators say" section on /collaborate (professional quotes by institutional role).',
       'Accessibility — fixed contrast of the tribunes filter labels (pine-900/60 → /80, ratio ≥ 4.5:1 on ivory).',
+      'Maintenance — Media page split from 883 lines into reusable components (src/components/media/: MediaLanding, CategoryView, CommunityView, PhotoView, MediaCard, categories, helpers).',
       'Tests — 343 tests green; full suite: prerender, API, accessibility, newsletter, push, search.',
     ],
   },
