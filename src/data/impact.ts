@@ -25,12 +25,16 @@ export const IMPACT_STATS: Record<Lang, ImpactStat[]> = {
     { value: '44 % → 5 %', label: { fr: 'taux d\'erreur national', en: 'national error rate' }, detail: { fr: 'Baisse du taux d\'erreur des données sur 1 114 centres de santé.', en: 'Data error rate cut across 1,114 health facilities.' } },
     { value: '$3 M', label: { fr: 'd\'économies générées', en: 'in savings generated' }, detail: { fr: 'Contrat G2G négocié avec le PNLP Bénin, sur 5 ans.', en: 'G2G contract negotiated with Benin\'s NMCP, over 5 years.' } },
     { value: '$180 M+', label: { fr: 'de portefeuille géré', en: 'in portfolio managed' }, detail: { fr: 'Subventions et contrats paludisme suivis à la Fondation Gates.', en: 'Malaria grants and contracts overseen at the Gates Foundation.' } },
+    { value: '34', label: { fr: 'zones de santé couvertes', en: 'health zones covered' }, detail: { fr: 'Approche basée sur la performance et S&E sur l\'ensemble des zones du Bénin (ARM3).', en: 'Performance-based approach and M&E across all of Benin\'s zones (ARM3).' } },
+    { value: '78', label: { fr: 'statisticiens formés', en: 'statisticians trained' }, detail: { fr: '44 statisticiens hospitaliers et 34 de zones formés à LOGISNIGS.', en: '44 hospital and 34 health zone statisticians trained on LOGISNIGS.' } },
   ],
   en: [
     { value: '1114', label: { fr: 'centres de santé couverts', en: 'health facilities covered' }, detail: { fr: 'Complétude du système d\'information : 35 % → 94 %.', en: 'Routine information system completeness: 35% → 94%.' } },
     { value: '44% → 5%', label: { fr: 'taux d\'erreur national', en: 'national error rate' }, detail: { fr: 'Baisse du taux d\'erreur des données sur 1 114 centres de santé.', en: 'Data error rate cut across 1,114 health facilities.' } },
     { value: '$3M', label: { fr: 'd\'économies générées', en: 'in savings generated' }, detail: { fr: 'Contrat G2G négocié avec le PNLP Bénin, sur 5 ans.', en: 'G2G contract negotiated with Benin\'s NMCP, over 5 years.' } },
     { value: '$180M+', label: { fr: 'de portefeuille géré', en: 'in portfolio managed' }, detail: { fr: 'Subventions et contrats paludisme suivis à la Fondation Gates.', en: 'Malaria grants and contracts overseen at the Gates Foundation.' } },
+    { value: '34', label: { fr: 'zones de santé couvertes', en: 'health zones covered' }, detail: { fr: 'Approche basée sur la performance et S&E sur l\'ensemble des zones du Bénin (ARM3).', en: 'Performance-based approach and M&E across all of Benin\'s zones (ARM3).' } },
+    { value: '78', label: { fr: 'statisticiens formés', en: 'statisticians trained' }, detail: { fr: '44 statisticiens hospitaliers et 34 de zones formés à LOGISNIGS.', en: '44 hospital and 34 health zone statisticians trained on LOGISNIGS.' } },
   ],
 };
 

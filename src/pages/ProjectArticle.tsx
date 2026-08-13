@@ -20,6 +20,7 @@ import { ReadingProgress } from '@/components/ReadingProgress';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { FontSizeControl } from '@/components/FontSizeControl';
 import { SelectionQuote } from '@/components/SelectionQuote';
+import { ArticleAudio } from '@/components/ArticleAudio';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
@@ -110,6 +111,10 @@ export default function ProjectArticle() {
                 <Printer size={12} />
                 {t['article.print']}
               </button>
+              <ArticleAudio
+                label="project"
+                text={`${details.context[lang]} ${details.approach[lang].join(' ')} ${details.results.map((r) => r.label[lang]).join(' ')}`}
+              />
               <FontSizeControl dark />
             </div>
             <h1 className="mt-7 font-display text-[2.2rem] leading-[1.08] font-medium text-pine-100 sm:text-5xl lg:text-[3.4rem]">

@@ -35,7 +35,7 @@ export default function Impact() {
 
       {/* key figures */}
       <section className="relative border-y border-gold-500/20 bg-pine-900">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-white/5 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-white/5 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-3">
           {IMPACT_STATS[lang].map((s, i) => (
             <Reveal key={s.value} delay={i * 0.08}>
               <div className="flex h-full flex-col justify-center px-6 py-10 text-center lg:px-8">

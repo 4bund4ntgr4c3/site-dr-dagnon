@@ -16,7 +16,7 @@ import { track } from '@/lib/analytics';
    - long bodies hit Chrome's ~15s pause and iOS length limits, so the text is
      split on sentence boundaries and read one bounded chunk at a time. */
 
-export function ArticleAudio({ text }: { text: string }) {
+export function ArticleAudio({ text, label = 'tribune' }: { text: string; label?: string }) {
   const { lang } = useLang();
   const t = UI[lang];
   const [supported] = useState(() => typeof window !== 'undefined' && 'speechSynthesis' in window);
@@ -108,7 +108,7 @@ export function ArticleAudio({ text }: { text: string }) {
       pausedRef.current = true;
       synth.pause();
       setPaused(true);
-      track('pause_article_audio', { event_category: 'engagement', event_label: 'tribune' });
+      track('pause_article_audio', { event_category: 'engagement', event_label: label });
       return;
     }
     if (paused) {
@@ -122,7 +122,7 @@ export function ArticleAudio({ text }: { text: string }) {
     indexRef.current = 0;
     setSpeaking(true);
     speakChunk(0);
-    track('play_article_audio', { event_category: 'engagement', event_label: 'tribune' });
+    track('play_article_audio', { event_category: 'engagement', event_label: label });
   };
 
   const stop = () => {

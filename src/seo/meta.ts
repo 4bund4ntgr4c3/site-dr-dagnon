@@ -618,19 +618,55 @@ export function buildRss(): string {
     String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const rfc822 = (iso: string) => new Date(`${iso}T00:00:00Z`).toUTCString();
 
-  const items: { title: string; link: string; pubDate: string; description: string }[] = [
+  /* Press coverage points to the external article; the agenda anchors to its
+     on-site section, or the external source when it is not already the link
+     of a press item (each feed <link> must stay unique). */
+  const pressLinks = new Set(MEDIA_ITEMS.filter((m) => m.category === 'press' && m.url).map((m) => m.url));
+  const pressItems = MEDIA_ITEMS.filter((m) => m.category === 'press' && m.url)
+    .map((m) => ({
+      title: m.title.en,
+      link: m.url!,
+      pubDate: rfc822(m.date),
+      description: m.description?.en ?? '',
+      category: 'press',
+      image: m.thumb ?? '',
+    }));
+
+  const agendaItems = AGENDA_ITEMS.map((e) => ({
+    title: e.title.en,
+    link: e.link && !pressLinks.has(e.link) ? e.link : absUrl('en', `/agenda#${e.id}`),
+    pubDate: rfc822(e.date),
+    description: e.description.en,
+    category: e.type,
+    image: '',
+  }));
+
+  const items: {
+    title: string;
+    link: string;
+    pubDate: string;
+    description: string;
+    category: string;
+    image: string;
+  }[] = [
     ...TRIBUNES.map((e) => ({
       title: e.title.en,
       link: absUrl('en', `/tribunes/${e.slug}`),
       pubDate: rfc822(e.date),
       description: e.description.en,
+      category: 'opinion',
+      image: `${SITE_URL}/og/${e.slug}.en.jpg`,
     })),
     ...PROJECTS.map((e) => ({
       title: e.title.en,
       link: absUrl('en', `/projets/${e.slug}`),
       pubDate: rfc822(e.date),
       description: e.description.en,
+      category: 'case-study',
+      image: `${SITE_URL}/og/${e.slug}.en.jpg`,
     })),
+    ...pressItems,
+    ...agendaItems,
   ].sort((a, b) => b.pubDate.localeCompare(a.pubDate));
 
   const itemXml = items
@@ -641,13 +677,16 @@ export function buildRss(): string {
     <guid isPermaLink="true">${i.link}</guid>
     <pubDate>${i.pubDate}</pubDate>
     <description>${xmlEscape(i.description)}</description>
+    <category>${xmlEscape(i.category)}</category>
+    <author>${xmlEscape(fullName('en'))}</author>
+    ${i.image ? `    <media:content url="${i.image}" medium="image"/>` : ''}
   </item>`,
     )
     .join('\n');
 
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+    '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">',
     '  <channel>',
     `    <title>${xmlEscape(SEO.en.title)}</title>`,
     `    <link>${homeUrl('en')}</link>`,
