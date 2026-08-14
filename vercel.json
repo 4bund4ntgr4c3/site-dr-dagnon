@@ -186,6 +186,14 @@
   ],
   "rewrites": [
     {
+      "source": "/api/newsletter-unsubscribe",
+      "destination": "/api/newsletter-confirm"
+    },
+    {
+      "source": "/api/event-remind",
+      "destination": "/api/event-reminders"
+    },
+    {
       "source": "/contact",
       "destination": "/contact/index.html"
     },

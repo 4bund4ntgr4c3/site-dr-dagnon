@@ -572,8 +572,11 @@ test('vercel.json serves every prerendered route explicitly', () => {
 
   assert.ok(!rewrites.has('/(.*)'), 'the catch-all rewrite would turn every 404 into a soft 200');
 
-  /* every rewrite must point at a file the build actually produced */
+  /* every rewrite must point at a file the build actually produced — the
+     two /api/ rewrites (merged functions, see api/newsletter-confirm.ts)
+     are exempt: they target serverless functions, not prerendered files */
   for (const [source, destination] of rewrites) {
+    if (destination.startsWith('/api/')) continue;
     const target = path.join(dist, destination);
     assert.ok(fs.existsSync(target), `${source} → ${destination}, which does not exist in dist/`);
   }

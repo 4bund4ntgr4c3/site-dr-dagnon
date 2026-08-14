@@ -2,7 +2,14 @@ import { checkToken } from './_tokens.js';
 import { alertOwner } from './_alert.js';
 import { applyPageHeaders } from './_headers.js';
 
-/* Double opt-in confirmation endpoint — the link inside the confirmation
+/* Two email-link endpoints in one function, so the deploy stays under the
+ * 12-function Hobby limit: /api/newsletter-confirm (double opt-in click)
+ * and /api/newsletter-unsubscribe (one-click opt-out). Both are GET-only,
+ * token-bound handlers that serve a plain HTML page and touch the same
+ * subscriber store; they are split on the request path (Vercel preserves
+ * the original URL through the rewrites in vercel.json).
+ *
+ * Double opt-in confirmation endpoint — the link inside the confirmation
  * email. Clicking it moves the address from the pending key into the
  * subscriber set (`newsletter:emails`) and sends the welcome email, which
  * is why the welcome template lives here and not in api/newsletter.ts:
@@ -13,6 +20,13 @@ import { applyPageHeaders } from './_headers.js';
  * an invalid, expired, forged or repurposed link is refused before any
  * store write. Clicking an already-consumed link is idempotent: SADD
  * reports 0 and no second welcome email goes out.
+ *
+ * The unsubscribe link carries a stateless token bound to its own address
+ * (purpose 'nl-unsub'), so it can only ever unsubscribe that address, and
+ * it stops working after 90 days. The address is removed from the
+ * subscriber set; the pending key and the per-language key are cleared too.
+ * The page is served regardless of KV being up: the token itself is the
+ * proof of intent.
  *
  * Template helpers are inline copies of the ones in newsletter.ts — see
  * the comment atop _rate-limit.ts. */
@@ -100,6 +114,64 @@ async function confirmSubscriber(email: string, lang: 'fr' | 'en'): Promise<Stor
   }
 }
 
+/* ── unsubscribe (same function, different path) ────────────────── */
+
+/* Removes the address from the subscriber set and clears the pending and
+   per-language keys so a stale confirmation link cannot resurrect the
+   subscription. The page is served regardless of KV being up: the token
+   itself is the proof of intent. */
+async function removeSubscriber(email: string): Promise<boolean> {
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return false;
+  try {
+    const response = await fetch(`${url.replace(/\/$/, '')}/pipeline`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify([
+        ['SREM', 'newsletter:emails', email],
+        ['DEL', `newsletter:pending:${email}`],
+        ['DEL', `newsletter:lang:${email}`],
+        ['DEL', `newsletter:prefs:${email}`],
+      ]),
+    });
+    if (!response.ok) return false;
+    const results = (await response.json()) as { result?: unknown }[];
+    return results?.[0]?.result !== undefined;
+  } catch {
+    return false;
+  }
+}
+
+async function unsubscribeHandler(req: Req, res: Res): Promise<void> {
+  const params = new URL(req.url || '/', SITE_URL).searchParams;
+  const rawEmail = params.get('email') || '';
+  const token = params.get('token') || '';
+
+  const cleanEmail = rawEmail.trim().slice(0, MAX_EMAIL).toLowerCase();
+  if (!cleanEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail) || !token) {
+    res.status(400).send(page('Invalid link', 'This link is invalid. You can manage your subscription from the newsletter page on the website.'));
+    return;
+  }
+
+  const result = checkToken('nl-unsub', token, cleanEmail);
+  if (result !== 'ok') {
+    res.status(400).send(page('Invalid link', 'This unsubscribe link is invalid or expired. You can manage your subscription from the newsletter page on the website.'));
+    return;
+  }
+
+  try {
+    await removeSubscriber(cleanEmail);
+    res.status(200).send(page(
+      'Unsubscribed',
+      'You have been unsubscribed from the newsletter of Dr. Seynudé Dagnon. You will no longer receive the digest or event reminders. If this was a mistake, you can subscribe again at any time.',
+    ));
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
 /* ── handler ────────────────────────────────────────────────────── */
 
 const MAX_EMAIL = 254;
@@ -110,6 +182,14 @@ interface Res { status(c: number): Res; send(d: string): void; json(d: unknown):
 export default async function handler(req: Req, res: Res) {
   applyPageHeaders(res);
   if (req.method !== 'GET') { res.status(405).json({ error: 'Method not allowed' }); return; }
+
+  /* Vercel preserves the original URL through the rewrite, so the path
+     picks the right link-handler. Everything else is the confirm flow. */
+  const path = new URL(req.url || '/', SITE_URL).pathname;
+  if (path === '/api/newsletter-unsubscribe' || path.endsWith('/newsletter-unsubscribe')) {
+    await unsubscribeHandler(req, res);
+    return;
+  }
 
   const params = new URL(req.url || '/', SITE_URL).searchParams;
   const rawEmail = params.get('email') || '';

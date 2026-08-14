@@ -1,6 +1,6 @@
 /* Contract tests for the per-event reminder feature:
- *   - api/event-remind.ts    the opt-in button + the opt-out page
- *   - api/event-reminders.ts the daily cron that mails the reminders
+ *   - api/event-reminders.ts serves both the /api/event-remind opt-in
+ *     button + opt-out page and the daily cron that mails the reminders
  * Compiled to node_modules/.tmp/api by scripts/run-tests.mjs — run via
  * `npm test`, not directly.
  *
@@ -75,7 +75,7 @@ globalThis.fetch = async (url, opts) => {
   return { ok: true, text: async () => '' };
 };
 
-const remind = await import(pathToFileURL(path.resolve('node_modules/.tmp/api/event-remind.js')).href);
+const remind = await import(pathToFileURL(path.resolve('node_modules/.tmp/api/event-reminders.js')).href);
 const remindHandler = remind.default;
 const { parseEventId } = remind;
 const cron = await import(pathToFileURL(path.resolve('node_modules/.tmp/api/event-reminders.js')).href);
@@ -144,7 +144,7 @@ const call = async (handler, { method = 'POST', body = {}, headers = {} } = {}) 
     setHeader() {},
   };
   await handler(
-    { method, body, headers: { origin: 'https://seynudedagnon.com', 'x-forwarded-for': '10.0.0.1', ...headers }, socket: { remoteAddress: '10.0.0.2' } },
+    { method, body, url: '/api/event-remind', headers: { origin: 'https://seynudedagnon.com', 'x-forwarded-for': '10.0.0.1', ...headers }, socket: { remoteAddress: '10.0.0.2' } },
     res,
   );
   return out;
@@ -308,7 +308,7 @@ const callCron = async ({ method = 'GET', authorization } = {}) => {
   };
   const headers = {};
   if (authorization !== undefined) headers.authorization = authorization;
-  await cronHandler({ method, headers }, res);
+  await cronHandler({ method, url: '/api/event-reminders', headers }, res);
   return out;
 };
 

@@ -1,16 +1,25 @@
 import { AGENDA_ITEMS, type AgendaEntry } from '../src/data/agenda.js';
 import { daysUntil, gcalUrl, outlookUrl } from '../src/lib/calendar-links.js';
-import { issueToken } from './_tokens.js';
+import { issueToken, checkToken } from './_tokens.js';
 import { alertOwner } from './_alert.js';
 import { isSafePushEndpoint } from './_push-guard.js';
-import { applyJsonHeaders } from './_headers.js';
+import { rateLimit } from './_rate-limit.js';
+import { originAllowed } from './_origin.js';
+import { clientIp } from './_ip.js';
+import { applyJsonHeaders, applyPageHeaders } from './_headers.js';
 import crypto from 'node:crypto';
 import webPush from 'web-push';
 
-/* Daily cron endpoint: mails the per-event reminders people opted into via
- * api/event-remind.ts ("Me rappeler / Remind me" on the agenda page) when an
- * event is one day away. Wired in vercel.json (`crons`) and guarded by the
- * same bearer CRON_SECRET as the agenda-reminders cron.
+/* Two endpoints in one function, so the deploy stays under the 12-function
+ * Hobby limit: /api/event-remind (the "Remind me" opt-in button + the
+ * one-click opt-out page) and /api/event-reminders (the daily cron that
+ * mails the reminders). They are split on the request path — Vercel
+ * preserves the original URL through the rewrite in vercel.json.
+ *
+ * The daily cron mails the per-event reminders people opted into via
+ * /api/event-remind when an event is one day away. Wired in vercel.json
+ * (`crons`) and guarded by the same bearer CRON_SECRET as the
+ * agenda-reminders cron.
  *
  * Events are reminded exactly once per address: a per-event set
  * (`event:remind-sent:<eventId>`) holds the addresses already mailed, and
@@ -21,8 +30,8 @@ import webPush from 'web-push';
  * notification fires when a reminder actually went out, dead subscriptions
  * (404/410) are dropped, and missing VAPID keys skip the channel entirely.
  *
- * Template helpers are inline copies of the ones in agenda-reminders.ts —
- * see the comment atop _rate-limit.ts. */
+ * Template helpers are inline copies of the ones in agenda-reminders.ts /
+ * newsletter-confirm.ts — see the comment atop _rate-limit.ts. */
 
 const SITE_URL = 'https://seynudedagnon.com';
 const REMIND_KEY = 'event:remind:';
@@ -85,6 +94,104 @@ export function subjectLine(e: AgendaEntry): string {
 /** notification payload for the web push channel; fixed tag replaces the previous one */
 export function pushPayload(e: AgendaEntry): string {
   return JSON.stringify({ title: `Agenda — demain : ${e.title.fr}`, body: `${e.date} — ${e.location.fr}`, url: `${SITE_URL}/agenda`, tag: `event-remind-${e.id}` });
+}
+
+/* ── per-event opt-in (/api/event-remind) ───────────────────────── */
+
+const MAX_EMAIL = 254;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const IP_WINDOW_MS = 10 * 60_000;
+const MAX_IP_HITS = 5;
+const EMAIL_WINDOW_MS = 60 * 60_000;
+const MAX_EMAIL_HITS = 5;
+
+/** validation shared by the opt-in POST — an event that isn't one of the
+ *  site's, or that is already past, is refused before any store write.
+ *  `items` is injectable for the unit tests, like run() in the cron.
+ *  `from` defaults to now — inject a stable date in tests. */
+export function parseEventId(raw: string, { items = AGENDA_ITEMS, from = new Date() }: { items?: { id: string; date: string }[]; from?: Date } = {}): string | null {
+  if (!raw) return null;
+  const event = items.find((e) => e.id === raw);
+  if (!event) return null;
+  if (daysUntil(event.date, from) < 0) return null;
+  return event.id;
+}
+
+async function storeOptIn(email: string, eventId: string): Promise<boolean> {
+  /* the key dies a few days after the event, so the store can't accumulate
+     past-event reminders forever */
+  const event = AGENDA_ITEMS.find((e) => e.id === eventId);
+  const ttlDays = event ? Math.max(daysUntil(event.date) + 3, 1) : 7;
+  const results = await kvPipeline([
+    ['SADD', `${REMIND_KEY}${eventId}`, email],
+    ['EXPIRE', `${REMIND_KEY}${eventId}`, String(ttlDays * 86400)],
+  ]);
+  return Number(results?.[0]?.result) > 0;
+}
+
+async function removeOptIn(email: string, eventId: string): Promise<boolean> {
+  const results = await kvPipeline([['SREM', `${REMIND_KEY}${eventId}`, email]]);
+  return Number(results?.[0]?.result) >= 0;
+}
+
+function page(title: string, body: string): string {
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"></head><body style="margin:0;padding:0;background:${C.ivory};font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif"><table width="100%" cellpadding="0" cellspacing="0" style="background:${C.ivory};padding:32px 16px"><tr><td align="center"><table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:${C.white};border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(12,46,42,.08)"><tr><td style="background:${C.pine950};padding:28px 32px"><p style="margin:0;font-size:13px;font-weight:600;letter-spacing:.12em;color:${C.gold400};text-transform:uppercase">Dr. Seynudé Dagnon</p><h1 style="margin:6px 0 0;font-size:20px;font-weight:600;color:${C.white};line-height:1.3">${esc(title)}</h1></td></tr><tr><td style="padding:28px 32px"><p style="margin:0;font-size:14px;line-height:1.7;color:${C.ink}">${body}</p><table width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0 0"><tr><td align="center"><a href="${SITE_URL}/agenda" style="display:inline-block;background:${C.gold500};color:${C.pine950};font-size:13px;font-weight:600;padding:12px 28px;border-radius:999px;text-decoration:none">Agenda</a></td></tr></table></td></tr></table></td></tr></table></body></html>`;
+}
+
+/** the opt-in/opt-out half of this function — the "Me rappeler / Remind
+ *  me" button on the agenda page (POST) and the one-click removal page
+ *  bound to a single address + event by a token (GET). */
+async function remindHandler(req: Req, res: Res): Promise<void> {
+  if (req.method === 'GET') {
+    applyPageHeaders(res);
+    const params = new URL(req.url || '/', SITE_URL).searchParams;
+    const eventId = params.get('event') || '';
+    const rawEmail = params.get('email') || '';
+    const token = params.get('token') || '';
+    const email = rawEmail.trim().slice(0, MAX_EMAIL).toLowerCase();
+    if (!email || !EMAIL_RE.test(email) || !token) {
+      res.status(400).send(page('Invalid link', 'This reminder link is invalid. Please use the link from the email you received.'));
+      return;
+    }
+    const event = AGENDA_ITEMS.find((e) => e.id === eventId);
+    if (!event) {
+      res.status(400).send(page('Invalid link', 'This reminder link is invalid. Please use the link from the email you received.'));
+      return;
+    }
+    if (checkToken('ev-remind', token, email) !== 'ok') {
+      res.status(400).send(page('Invalid link', 'This reminder link is invalid or expired. Please use the link from the email you received.'));
+      return;
+    }
+    await removeOptIn(email, event.id);
+    res.status(200).send(page('Rappel supprimé / Reminder canceled', 'Vous ne recevrez plus de rappel pour cet événement. | You will no longer receive a reminder for this event.'));
+    return;
+  }
+
+  applyJsonHeaders(res);
+  if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
+  if (!originAllowed(req.headers)) { res.status(403).json({ error: 'Forbidden' }); return; }
+
+  const ip = clientIp(req.headers, req.socket?.remoteAddress);
+  if (!ip) { res.status(403).json({ error: 'Forbidden' }); return; }
+  if (!(await rateLimit(`event-remind:ip:${ip}`, MAX_IP_HITS, IP_WINDOW_MS))) { res.status(429).json({ error: 'Too many requests' }); return; }
+
+  try {
+    const { eventId, email } = req.body || {};
+    const event = parseEventId(eventId || '');
+    if (!event) { res.status(400).json({ error: 'Invalid event' }); return; }
+
+    const cleanEmail = (email || '').replace(/[\r\n\t]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, MAX_EMAIL).toLowerCase();
+    if (!cleanEmail || !EMAIL_RE.test(cleanEmail)) { res.status(400).json({ error: 'Invalid email' }); return; }
+    if (!(await rateLimit(`event-remind:email:${cleanEmail}`, MAX_EMAIL_HITS, EMAIL_WINDOW_MS))) { res.status(429).json({ error: 'Too many requests' }); return; }
+
+    await storeOptIn(cleanEmail, event);
+    /* the near events page is the endpoint failure budget — a store that
+       drops the record still answers ok, the button is a low-stakes opt-in */
+    res.status(200).json({ ok: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Server error' });
+  }
 }
 
 /* ── KV ─────────────────────────────────────────────────────────── */
@@ -212,8 +319,8 @@ export async function run({ items = AGENDA_ITEMS, from = new Date(), apiKey }: {
 
 /* ── handler ────────────────────────────────────────────────────── */
 
-interface Req { method: string; headers: Record<string, string | string[] | undefined> }
-interface Res { status(c: number): Res; json(d: unknown): void; setHeader(k: string, v: string): void }
+interface Req { method: string; url?: string; headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string }; body?: { email?: string; eventId?: string } }
+interface Res { status(c: number): Res; send(d: string): void; json(d: unknown): void; setHeader(k: string, v: string): void }
 
 function safeEqual(a: string, b: string): boolean {
   const ab = Buffer.from(a);
@@ -223,6 +330,14 @@ function safeEqual(a: string, b: string): boolean {
 }
 
 export default async function handler(req: Req, res: Res) {
+  /* Vercel preserves the original URL through the rewrite, so the path
+     picks the right half of this function. Everything else is the cron. */
+  const path = new URL(req.url || '/', SITE_URL).pathname;
+  if (path === '/api/event-remind' || path.endsWith('/event-remind')) {
+    await remindHandler(req, res);
+    return;
+  }
+
   applyJsonHeaders(res);
   if (req.method !== 'GET') { res.status(405).json({ error: 'Method not allowed' }); return; }
   const secret = process.env.CRON_SECRET;

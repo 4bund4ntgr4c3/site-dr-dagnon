@@ -435,7 +435,9 @@ const { issueToken, checkToken } = await import(
   pathToFileURL(path.resolve('node_modules/.tmp/api/_tokens.js')).href
 );
 const newsletterConfirm = await load('newsletter-confirm.js');
-const newsletterUnsubscribe = await load('newsletter-unsubscribe.js');
+/* the opt-in and opt-out paths share one function (newsletter-confirm.ts),
+   split on the request path — so both tests use the same handler */
+const newsletterUnsubscribe = newsletterConfirm;
 
 /** subscribes through the full flow and returns { out, href }; the address
  *  is treated as new, so a fresh confirmation email is always the last one */
