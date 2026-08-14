@@ -1,4 +1,5 @@
-/* Contract tests for api/newsletter-prefs.ts and the monthly partition in
+/* Contract tests for the preferences endpoint — now served by
+ * api/newsletter.ts at /api/newsletter-prefs — and the monthly partition in
  * scripts/send-newsletter.mjs. Compiled to node_modules/.tmp/api by
  * scripts/run-tests.mjs — run via `npm test`, not directly. fetch is
  * stubbed; the token is issued with the real HMAC from _tokens.ts. */
@@ -25,7 +26,7 @@ globalThis.fetch = async (url, opts) => {
     : { ok: true, json: async () => [{ result: null }] };
 };
 
-const prefsHandler = (await import(pathToFileURL(path.resolve('node_modules/.tmp/api/newsletter-prefs.js')).href)).default;
+const prefsHandler = (await import(pathToFileURL(path.resolve('node_modules/.tmp/api/newsletter.js')).href)).default;
 const { issueToken } = await import(pathToFileURL(path.resolve('node_modules/.tmp/api/_tokens.js')).href);
 const { planRecipients } = await import('../scripts/send-newsletter.mjs');
 

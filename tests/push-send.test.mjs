@@ -54,7 +54,7 @@ globalThis.fetch = async (url, opts) => {
   throw new Error(`unexpected fetch: ${url}`);
 };
 
-const pushSend = await import(pathToFileURL(path.resolve('node_modules/.tmp/api/push-send.js')).href);
+const pushSend = await import(pathToFileURL(path.resolve('node_modules/.tmp/api/push.js')).href);
 const handler = pushSend.default;
 
 /* stub web-push: capture calls instead of hitting the real service */
@@ -76,7 +76,7 @@ const call = async ({ method = 'POST', body = {}, authorization } = {}) => {
     json(d) { out.payload = d; },
     setHeader() {},
   };
-  await handler({ method, body, headers: { authorization } }, res);
+  await handler({ method, url: '/api/push-send', body, headers: { authorization } }, res);
   return out;
 };
 

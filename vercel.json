@@ -186,8 +186,28 @@
   ],
   "rewrites": [
     {
+      "source": "/api/newsletter-confirm",
+      "destination": "/api/newsletter"
+    },
+    {
       "source": "/api/newsletter-unsubscribe",
-      "destination": "/api/newsletter-confirm"
+      "destination": "/api/newsletter"
+    },
+    {
+      "source": "/api/newsletter-prefs",
+      "destination": "/api/newsletter"
+    },
+    {
+      "source": "/api/push-subscribe",
+      "destination": "/api/push"
+    },
+    {
+      "source": "/api/push-send",
+      "destination": "/api/push"
+    },
+    {
+      "source": "/api/verify-phone",
+      "destination": "/api/contact"
     },
     {
       "source": "/api/event-remind",

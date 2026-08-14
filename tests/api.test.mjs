@@ -40,7 +40,7 @@ const load = async (name) => {
   const file = path.resolve('node_modules/.tmp/api', name);
   return (await import(pathToFileURL(file).href)).default;
 };
-const verifyPhone = await load('verify-phone.js');
+const verifyPhone = await load('contact.js');
 const contact = await load('contact.js');
 const newsletter = await load('newsletter.js');
 const { rateLimit, usingSharedStore } = await import(
@@ -49,7 +49,7 @@ const { rateLimit, usingSharedStore } = await import(
 
 const SITE_ORIGIN = 'https://seynudedagnon.com';
 
-const call = async (handler, body, { ip = '10.0.0.1', method = 'POST', origin = SITE_ORIGIN, headers } = {}) => {
+const call = async (handler, body, { ip = '10.0.0.1', method = 'POST', origin = SITE_ORIGIN, headers, url } = {}) => {
   const out = { code: 0, body: null };
   const res = {
     status(c) { out.code = c; return res; },
@@ -58,13 +58,13 @@ const call = async (handler, body, { ip = '10.0.0.1', method = 'POST', origin = 
   };
   const base = { 'x-forwarded-for': ip };
   if (origin !== null) base.origin = origin;
-  await handler({ method, headers: headers ?? base, body }, res);
+  await handler({ method, url, headers: headers ?? base, body }, res);
   return out;
 };
 
 /** requests a code and digs it back out of the captured email */
 const requestCode = async (email, ip) => {
-  const res = await call(verifyPhone, { action: 'send', email }, { ip });
+  const res = await call(verifyPhone, { action: 'send', email }, { ip, url: '/api/verify-phone' });
   const code = sent.at(-1)?.text.match(/code is: ([A-Z0-9]+)/)?.[1];
   return { res, code };
 };
@@ -82,20 +82,20 @@ test('send issues a token and never returns the phone number', async () => {
 
 test('a valid code returns the phone number', async () => {
   const { res, code } = await requestCode('ok@example.test', '10.1.0.2');
-  const verified = await call(verifyPhone, { action: 'verify', email: 'ok@example.test', code, token: res.body.token }, { ip: '10.1.0.2' });
+  const verified = await call(verifyPhone, { action: 'verify', email: 'ok@example.test', code, token: res.body.token }, { ip: '10.1.0.2', url: '/api/verify-phone' });
   assert.equal(verified.code, 200);
   assert.equal(verified.body.phone, FAKE_PHONE);
 });
 
 test('the code is case-insensitive and tolerates whitespace', async () => {
   const { res, code } = await requestCode('case@example.test', '10.1.0.3');
-  const verified = await call(verifyPhone, { action: 'verify', email: 'case@example.test', code: `  ${code.toLowerCase()} `, token: res.body.token }, { ip: '10.1.0.3' });
+  const verified = await call(verifyPhone, { action: 'verify', email: 'case@example.test', code: `  ${code.toLowerCase()} `, token: res.body.token }, { ip: '10.1.0.3', url: '/api/verify-phone' });
   assert.equal(verified.code, 200);
 });
 
 test('a wrong code is rejected without revealing the phone number', async () => {
   const { res } = await requestCode('wrong@example.test', '10.1.0.4');
-  const verified = await call(verifyPhone, { action: 'verify', email: 'wrong@example.test', code: 'AAAAAAAAAA', token: res.body.token }, { ip: '10.1.0.4' });
+  const verified = await call(verifyPhone, { action: 'verify', email: 'wrong@example.test', code: 'AAAAAAAAAA', token: res.body.token }, { ip: '10.1.0.4', url: '/api/verify-phone' });
   assert.equal(verified.code, 400);
   assert.equal(verified.body.error, 'Invalid code');
   assert.ok(!verified.body.phone);
@@ -105,7 +105,7 @@ test('a token carries a tight guess budget, then refuses further attempts', asyn
   const { res } = await requestCode('brute@example.test', '10.1.0.11');
   const verdicts = [];
   for (let i = 0; i < 8; i++) {
-    const attempt = await call(verifyPhone, { action: 'verify', email: 'brute@example.test', code: `AAAAAAAAA${i}`, token: res.body.token }, { ip: '10.1.0.11' });
+    const attempt = await call(verifyPhone, { action: 'verify', email: 'brute@example.test', code: `AAAAAAAAA${i}`, token: res.body.token }, { ip: '10.1.0.11', url: '/api/verify-phone' });
     verdicts.push(attempt.code);
   }
   assert.ok(verdicts.filter((c) => c === 400).length >= 5, 'the first guesses are plain refusals');
@@ -114,14 +114,14 @@ test('a token carries a tight guess budget, then refuses further attempts', asyn
 
 test('a code without its token is rejected', async () => {
   const { code } = await requestCode('notoken@example.test', '10.1.0.5');
-  const verified = await call(verifyPhone, { action: 'verify', email: 'notoken@example.test', code }, { ip: '10.1.0.5' });
+  const verified = await call(verifyPhone, { action: 'verify', email: 'notoken@example.test', code }, { ip: '10.1.0.5', url: '/api/verify-phone' });
   assert.equal(verified.code, 400);
   assert.ok(!verified.body.phone);
 });
 
 test('a token is bound to the email it was issued for', async () => {
   const { res, code } = await requestCode('owner@example.test', '10.1.0.6');
-  const verified = await call(verifyPhone, { action: 'verify', email: 'attacker@example.test', code, token: res.body.token }, { ip: '10.1.0.6' });
+  const verified = await call(verifyPhone, { action: 'verify', email: 'attacker@example.test', code, token: res.body.token }, { ip: '10.1.0.6', url: '/api/verify-phone' });
   assert.equal(verified.code, 400);
   assert.ok(!verified.body.phone);
 });
@@ -132,20 +132,20 @@ test('a tampered token payload fails the signature check', async () => {
   const decoded = JSON.parse(Buffer.from(payload, 'base64url').toString('utf-8'));
   /* push the expiry far into the future and keep the original signature */
   const forged = Buffer.from(JSON.stringify({ ...decoded, x: Date.now() + 9e9 })).toString('base64url');
-  const verified = await call(verifyPhone, { action: 'verify', email: 'tamper@example.test', code, token: `${forged}.${signature}` }, { ip: '10.1.0.7' });
+  const verified = await call(verifyPhone, { action: 'verify', email: 'tamper@example.test', code, token: `${forged}.${signature}` }, { ip: '10.1.0.7', url: '/api/verify-phone' });
   assert.equal(verified.code, 400);
   assert.ok(!verified.body.phone);
 });
 
 test('an expired token is reported as expired, not accepted', async () => {
   const payload = Buffer.from(JSON.stringify({ e: 'old@example.test', x: Date.now() - 1000, h: 'whatever' })).toString('base64url');
-  const verified = await call(verifyPhone, { action: 'verify', email: 'old@example.test', code: 'ABCDEF', token: `${payload}.bogus-signature` }, { ip: '10.1.0.8' });
+  const verified = await call(verifyPhone, { action: 'verify', email: 'old@example.test', code: 'ABCDEF', token: `${payload}.bogus-signature` }, { ip: '10.1.0.8', url: '/api/verify-phone' });
   assert.equal(verified.code, 400);
   assert.ok(!verified.body.phone);
 });
 
 test('non-POST methods are refused', async () => {
-  const out = await call(verifyPhone, {}, { method: 'GET' });
+  const out = await call(verifyPhone, {}, { method: 'GET', url: '/api/verify-phone' });
   assert.equal(out.code, 405);
 });
 
@@ -155,9 +155,9 @@ test('fails closed when CONTACT_PHONE is not configured', async () => {
   try {
     /* a fresh module instance (cache-busted), so the module-scope
        PHONE constant is recomputed without the env var */
-    const url = pathToFileURL(path.resolve('node_modules/.tmp/api/verify-phone.js')).href + `?nophone=${Date.now()}`;
+    const url = pathToFileURL(path.resolve('node_modules/.tmp/api/contact.js')).href + `?nophone=${Date.now()}`;
     const handler = (await import(url)).default;
-    const out = await call(handler, { action: 'send', email: 'nophone@example.test' }, { ip: '10.1.0.10' });
+    const out = await call(handler, { action: 'send', email: 'nophone@example.test' }, { ip: '10.1.0.10', url: '/api/verify-phone' });
     assert.equal(out.code, 500);
     assert.equal(out.body.error, 'Phone not configured');
     assert.ok(!out.body.phone);
@@ -168,7 +168,7 @@ test('fails closed when CONTACT_PHONE is not configured', async () => {
 
 test('an invalid email is refused before any email is sent', async () => {
   const before = sent.length;
-  const out = await call(verifyPhone, { action: 'send', email: 'not-an-email' }, { ip: '10.1.0.9' });
+  const out = await call(verifyPhone, { action: 'send', email: 'not-an-email' }, { ip: '10.1.0.9', url: '/api/verify-phone' });
   assert.equal(out.code, 400);
   assert.equal(sent.length, before, 'no email should have been sent');
 });
@@ -434,8 +434,8 @@ test('a failed provider send alerts the owner, at most once per window', async (
 const { issueToken, checkToken } = await import(
   pathToFileURL(path.resolve('node_modules/.tmp/api/_tokens.js')).href
 );
-const newsletterConfirm = await load('newsletter-confirm.js');
-/* the opt-in and opt-out paths share one function (newsletter-confirm.ts),
+const newsletterConfirm = await load('newsletter.js');
+/* the confirm and opt-out paths share one function (newsletter.ts),
    split on the request path — so both tests use the same handler */
 const newsletterUnsubscribe = newsletterConfirm;
 
@@ -627,7 +627,7 @@ test('send is capped per email address', async () => {
   const before = sent.length;
   const results = [];
   for (let i = 0; i < 5; i++) {
-    results.push(await call(verifyPhone, { action: 'send', email: 'flood@example.test' }, { ip: '10.3.0.1' }));
+    results.push(await call(verifyPhone, { action: 'send', email: 'flood@example.test' }, { ip: '10.3.0.1', url: '/api/verify-phone' }));
   }
   assert.ok(results.some((r) => r.code === 429), 'expected at least one 429');
   assert.ok(sent.length - before <= 3, `sent ${sent.length - before} emails, cap is 3`);

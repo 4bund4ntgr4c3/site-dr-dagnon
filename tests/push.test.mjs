@@ -26,7 +26,7 @@ globalThis.fetch = async (url, opts) => {
   return { ok: true, json: async () => [{ result: 'OK' }, { result: pipelineCount }] };
 };
 
-const mod = await import(pathToFileURL(path.resolve('node_modules/.tmp/api/push-subscribe.js')).href);
+const mod = await import(pathToFileURL(path.resolve('node_modules/.tmp/api/push.js')).href);
 const handler = mod.default;
 
 const SITE_ORIGIN = 'https://seynudedagnon.com';
@@ -40,7 +40,7 @@ const call = async (handler, body, { ip = '10.0.0.1', method = 'POST', origin = 
   };
   const headers = { 'x-forwarded-for': ip };
   if (origin !== null) headers.origin = origin;
-  await handler({ method, headers, body }, res);
+  await handler({ method, url: '/api/push-subscribe', headers, body }, res);
   return out;
 };
 
