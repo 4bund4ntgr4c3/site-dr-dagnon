@@ -27,6 +27,22 @@ const HOME_SECTIONS = ['apropos', 'expertise', 'parcours', 'formation', 'realisa
 /* anchor-only sections never appear as plain links in the bar */
 const BAR_EXCLUDED = ['apropos', 'expertise', 'parcours', 'formation', 'realisations'];
 
+/* the pages that live under the "More" dropdown: everything with a route of
+   its own that is not a plain bar link — the same set the footer lists */
+const MORE_PAGES = [
+  { id: 'cv', path: '/cv', label: 'cvPage.badge' },
+  { id: 'presse', path: '/presse', label: 'footer.linkPresse' },
+  { id: 'inviter', path: '/inviter', label: 'footer.linkInviter' },
+  { id: 'collaborate', path: '/collaborate', label: 'footer.linkCollaborer' },
+  { id: 'newsletter', path: '/newsletter', label: 'footer.linkNewsletter' },
+  { id: 'impact', path: '/impact', label: 'footer.linkImpact' },
+  { id: 'bibliography', path: '/bibliography', label: 'footer.linkBibliography' },
+  { id: 'publications-pdf', path: '/publications-pdf', label: 'pubPdf.badge' },
+  { id: 'legal', path: '/legal', label: 'footer.linkLegal' },
+  { id: 'accessibility', path: '/accessibility', label: 'footer.linkAccessibility' },
+  { id: 'changelog', path: '/changelog', label: 'footer.linkChangelog' },
+];
+
 const homeHref = (lang: Lang, id: string): string => `${localePath(lang, '/')}#${id}`;
 
 const sectionLabel = (lang: Lang, id: string): string =>
@@ -36,6 +52,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [homeOpen, setHomeOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   /* the modal stays mounted for a short fade-out after closing; searchMounted
      tracks that, so the lazy chunk is still only fetched on first use */
@@ -49,6 +66,7 @@ export function Navbar() {
   const headerRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const homeRef = useRef<HTMLDivElement>(null);
+  const moreRef = useRef<HTMLDivElement>(null);
   const logoNameRef = useRef<HTMLSpanElement>(null);
   /* how many lines the logo name wraps onto — when the header is squeezed the
      name grows, so the role line is dropped first, then the whole text */
@@ -122,22 +140,29 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  /* the Home menu closes on a click outside and on Escape (which returns
-     focus to the trigger). On mobile the toggle button lives inside the
-     mobile panel, not in homeRef, so a tap would first fire this mousedown
-     (closing the menu) and then the click (reopening it) — the toggle ends
-     up doing nothing. Skip the outside-close while the mobile menu is open;
-     its own button toggles the submenu. */
+  /* the Home and More dropdowns close on a click outside and on Escape
+     (which returns focus to the trigger). On mobile the toggle button lives
+     inside the mobile panel, not in homeRef, so a tap would first fire this
+     mousedown (closing the menu) and then the click (reopening it) — the
+     toggle ends up doing nothing. Skip the outside-close while the mobile
+     menu is open; its own button toggles the submenu. */
   useEffect(() => {
-    if (!homeOpen) return;
+    if (!homeOpen && !moreOpen) return;
     const onDown = (e: MouseEvent) => {
       if (open) return;
-      if (homeRef.current && !homeRef.current.contains(e.target as Node)) setHomeOpen(false);
+      if (homeOpen && homeRef.current && !homeRef.current.contains(e.target as Node)) setHomeOpen(false);
+      if (moreOpen && moreRef.current && !moreRef.current.contains(e.target as Node)) setMoreOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setHomeOpen(false);
-        homeRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
+        if (homeOpen) {
+          setHomeOpen(false);
+          homeRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
+        }
+        if (moreOpen) {
+          setMoreOpen(false);
+          moreRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
+        }
       }
     };
     document.addEventListener('mousedown', onDown);
@@ -146,12 +171,13 @@ export function Navbar() {
       document.removeEventListener('mousedown', onDown);
       document.removeEventListener('keydown', onKey);
     };
-  }, [homeOpen, open]);
+  }, [homeOpen, moreOpen, open]);
 
   const solid = scrolled || open;
   const closeAll = () => {
     setOpen(false);
     setHomeOpen(false);
+    setMoreOpen(false);
   };
   /* navigate to a home section; if we are already on that hash (clicking the
      same link twice), no navigation event fires, so scroll manually */
@@ -163,9 +189,11 @@ export function Navbar() {
   };
   const pageItems = NAV[lang].filter((item) => !BAR_EXCLUDED.includes(item.id));
 
-  /* arrow keys move focus through the open Home menu (desktop) */
-  const onHomeMenuKey = (e: ReactKeyboardEvent<HTMLAnchorElement>) => {
-    const items = Array.from(homeRef.current?.querySelectorAll<HTMLAnchorElement>('a') ?? []);
+  /* arrow keys move focus through the open Home/More dropdowns (desktop);
+     each link's parent is the menu panel, so the item list comes from the
+     DOM instead of a ref (refs must not be read during render) */
+  const onMenuKey = (e: ReactKeyboardEvent<HTMLAnchorElement>) => {
+    const items = Array.from(e.currentTarget.parentElement?.querySelectorAll<HTMLAnchorElement>('a') ?? []);
     const idx = items.indexOf(e.currentTarget);
     const last = items.length - 1;
     switch (e.key) {
@@ -271,7 +299,7 @@ export function Navbar() {
                         key={id}
                         to={homeHref(lang, id)}
                         onClick={() => goToSection(id)}
-                        onKeyDown={onHomeMenuKey}
+                        onKeyDown={onMenuKey}
                         className="block rounded-lg px-3 py-2 text-[13px] font-medium text-pine-100/90 transition-colors hover:bg-white/5 hover:text-gold-400"
                       >
                         {sectionLabel(lang, id)}
@@ -292,6 +320,55 @@ export function Navbar() {
                 {item.label}
               </Link>
             ))}
+
+            {/* More — every other routed page, kept out of the bar */}
+            <div
+              ref={moreRef}
+              className="relative"
+              onMouseEnter={() => setMoreOpen(true)}
+              onMouseLeave={() => setMoreOpen(false)}
+            >
+              <button
+                type="button"
+                onClick={() => setMoreOpen(!moreOpen)}
+                onKeyDown={(e) => {
+                  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+                  e.preventDefault();
+                  setMoreOpen(true);
+                  const items = moreRef.current?.querySelectorAll<HTMLAnchorElement>('a');
+                  if (items?.length) {
+                    (e.key === 'ArrowDown' ? items[0] : items[items.length - 1]).focus();
+                  }
+                }}
+                aria-expanded={moreOpen}
+                aria-controls="nav-more-menu"
+                className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
+                  moreOpen ? 'bg-gold-500 text-pine-950' : 'text-ivory'
+                }`}
+              >
+                {t['nav.more']}
+                <ChevronDown size={13} className={`transition-transform ${moreOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {moreOpen && (
+                <div className="absolute top-full left-0 pt-2">
+                  <div
+                    id="nav-more-menu"
+                    className="w-56 rounded-2xl border border-white/10 bg-pine-950/95 p-2 shadow-xl shadow-pine-950/40 backdrop-blur-md"
+                  >
+                    {MORE_PAGES.map((item) => (
+                      <Link
+                        key={item.id}
+                        to={localePath(lang, item.path)}
+                        onKeyDown={onMenuKey}
+                        className="block rounded-lg px-3 py-2 text-[13px] font-medium text-pine-100/90 transition-colors hover:bg-white/5 hover:text-gold-400"
+                      >
+                        {t[item.label]}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -373,6 +450,35 @@ export function Navbar() {
                     {item.label}
                   </Link>
                 ))}
+
+                {/* More — every other routed page */}
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setMoreOpen(!moreOpen)}
+                    aria-haspopup="true"
+                    aria-expanded={moreOpen}
+                    aria-controls="nav-more-menu-mobile"
+                    className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-gold-400"
+                  >
+                    {t['nav.more']}
+                    <ChevronDown size={16} className={`transition-transform ${moreOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  {moreOpen && (
+                    <div id="nav-more-menu-mobile" className="mt-1 ml-4 flex flex-col gap-1 border-l border-white/10 pl-3">
+                      {MORE_PAGES.map((item) => (
+                        <Link
+                          key={item.id}
+                          to={localePath(lang, item.path)}
+                          onClick={() => setOpen(false)}
+                          className="rounded-lg px-3 py-2 text-sm font-medium text-pine-100/90 hover:bg-white/5 hover:text-gold-400"
+                        >
+                          {t[item.label]}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </nav>
               <div className="mt-4 flex items-center gap-3">
                 <div className="flex flex-1 gap-3">
