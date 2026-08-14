@@ -148,7 +148,7 @@ export default function Changelog() {
               <ol className="relative space-y-8 border-l border-pine-900/10 pl-8">
                 {entries.map((entry, i) => (
                   <li key={entry.date ?? i} className="relative">
-                    <span className="absolute top-1.5 -left-[2.35rem] flex h-5 w-5 items-center justify-center rounded-full border border-gold-500/60 bg-white">
+                    <span className="absolute top-1.5 -left-[43px] flex h-5 w-5 items-center justify-center rounded-full border border-gold-500/60 bg-white">
                       <span className="h-2 w-2 rounded-full bg-gold-500" />
                     </span>
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1">

@@ -127,7 +127,7 @@ export default function Tribunes() {
               <ol className="relative space-y-6 border-l border-gold-500/40 pl-8 lg:pl-12">
                 {filtered.map((e) => (
                   <li key={e.slug} className="relative">
-                    <span className="absolute -left-[37px] top-2 flex h-4 w-4 items-center justify-center rounded-full bg-gold-500 ring-4 ring-gold-500/20 lg:-left-[49px]" />
+                    <span className="absolute -left-[41px] top-2 flex h-4 w-4 items-center justify-center rounded-full bg-gold-500 ring-4 ring-gold-500/20 lg:-left-[57px]" />
                     <Reveal>
                       <TribuneCard e={e} lang={lang} t={t} />
                     </Reveal>
