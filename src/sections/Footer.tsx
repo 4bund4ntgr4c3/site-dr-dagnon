@@ -8,6 +8,7 @@ import { useLang } from '@/i18n/useLang';
 import { NAV, UI } from '@/i18n/translations';
 import { navHref } from '@/lib/nav';
 import { localePath } from '@/i18n/routing';
+import { MORE_PAGES } from '@/data/navigation';
 
 /* Mirrors the header's page-level bar links (same items, same hrefs) — the
    one thing intentionally missing is the Home dropdown's section submenu. */
@@ -92,60 +93,15 @@ export function Footer() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              to={localePath(lang, '/presse')}
-              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
-            >
-              {t['footer.linkPresse']}
-            </Link>
-            <Link
-              to={localePath(lang, '/inviter')}
-              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
-            >
-              {t['footer.linkInviter']}
-            </Link>
-            <Link
-              to={localePath(lang, '/collaborate')}
-              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
-            >
-              {t['footer.linkCollaborer']}
-            </Link>
-            <Link
-              to={localePath(lang, '/newsletter')}
-              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
-            >
-              {t['footer.linkNewsletter']}
-            </Link>
-            <Link
-              to={localePath(lang, '/impact')}
-              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
-            >
-              {t['footer.linkImpact']}
-            </Link>
-            <Link
-              to={localePath(lang, '/legal')}
-              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
-            >
-              {t['footer.linkLegal']}
-            </Link>
-            <Link
-              to={localePath(lang, '/accessibility')}
-              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
-            >
-              {t['footer.linkAccessibility']}
-            </Link>
-            <Link
-              to={localePath(lang, '/bibliography')}
-              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
-            >
-              {t['footer.linkBibliography']}
-            </Link>
-            <Link
-              to={localePath(lang, '/changelog')}
-              className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
-            >
-              {t['footer.linkChangelog']}
-            </Link>
+            {MORE_PAGES.map((p) => (
+              <Link
+                key={p.id}
+                to={localePath(lang, p.path)}
+                className="text-[12.5px] font-medium text-pine-100/85 transition-colors hover:text-gold-400"
+              >
+                {t[p.label] ?? p.label}
+              </Link>
+            ))}
           </nav>
 
           <p className="text-center text-[12px] text-pine-100/70">

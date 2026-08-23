@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { Menu, X, Linkedin, ChevronDown, Search } from 'lucide-react';
 import { LINKS } from '@/data/content';
 import { NAV, UI } from '@/i18n/translations';
+import { MORE_PAGES } from '@/data/navigation';
 import { useLang } from '@/i18n/useLang';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -27,23 +28,6 @@ const SearchModal = lazy(() => import('@/components/SearchModal'));
 const HOME_SECTIONS = ['apropos', 'expertise', 'parcours', 'formation', 'realisations', 'publications', 'medias'];
 /* anchor-only sections never appear as plain links in the bar */
 const BAR_EXCLUDED = ['apropos', 'expertise', 'parcours', 'formation', 'realisations'];
-
-/* the pages that live under the "More" dropdown: everything with a route of
-   its own that is not a plain bar link — the same set the footer lists */
-const MORE_PAGES = [
-  { id: 'parcours', path: '/parcours', label: 'nav.career' },
-  { id: 'cv', path: '/cv', label: 'cvPage.badge' },
-  { id: 'presse', path: '/presse', label: 'footer.linkPresse' },
-  { id: 'inviter', path: '/inviter', label: 'footer.linkInviter' },
-  { id: 'collaborate', path: '/collaborate', label: 'footer.linkCollaborer' },
-  { id: 'newsletter', path: '/newsletter', label: 'footer.linkNewsletter' },
-  { id: 'impact', path: '/impact', label: 'footer.linkImpact' },
-  { id: 'bibliography', path: '/bibliography', label: 'footer.linkBibliography' },
-  { id: 'publications-pdf', path: '/publications-pdf', label: 'pubPdf.badge' },
-  { id: 'legal', path: '/legal', label: 'footer.linkLegal' },
-  { id: 'accessibility', path: '/accessibility', label: 'footer.linkAccessibility' },
-  { id: 'changelog', path: '/changelog', label: 'footer.linkChangelog' },
-];
 
 const homeHref = (lang: Lang, id: string): string => `${localePath(lang, '/')}#${id}`;
 
