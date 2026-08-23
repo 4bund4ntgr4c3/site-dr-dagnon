@@ -39,8 +39,8 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '280', en: '280' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '28', en: '28' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '282', en: '282' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '29', en: '29' }, label: { fr: 'versions', en: 'versions' } },
     { value: { fr: '371', en: '371' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
     { value: { fr: '112', en: '112' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 23 août 2026', en: '16 Jul – 23 Aug 2026' } },
@@ -48,6 +48,26 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-08-23',
+    version: '2.7',
+    label: { fr: '23 août 2026', en: '23 August 2026' },
+    title: { fr: 'Carte projets, baromètre paludisme, veille ORCID & assistant FAQ', en: 'Projects map, malaria barometer, ORCID sync & FAQ assistant' },
+    fr: [
+      'Carte projets — `src/components/ProjectsMap.tsx` : SVG Afrique (viewBox 0 0 100 104) avec 7 pins positionnés (Bénin 33,47 ; Burkina 29,40 ; Burundi 55,63 …), halo animé, hover synchronisé carte ↔ liste. Intégrée en haut de `/projets` avant la grille.',
+      'Baromètre paludisme — `src/components/MalariaBarometer.tsx` : 2 séries WHO WMR 2023 (cas mondiaux 241→263 M, incidence Bénin 312→259/1000) en barres CSS sans dépendance, gradients pine/gold, source et mise à jour manuelle. Intégré dans `/impact` entre les chiffres clés et les résultats.',
+      'Veille ORCID — `scripts/sync-orcid.mjs` + `npm run sync:orcid` : fetch `https://pub.orcid.org/v3.0/0009-0006-5022-1399/works`, génère `public/dagnon-publications.bib` + `orcid-meta.json` (19 lignes). Sans secret, diff reviewable, prêt pour GitHub Action cron.',
+      'Assistant FAQ — `src/components/FaqAssistant.tsx` : recherche locale temps réel (normalisation NFD, scoring par mot) sur FAQ, tribunes, 8 publications et 7 projets ; 6 hits max, liens directs, 100 % client-side (zéro réseau, idéal faible connectivité). Intégré dans `/presse` avant la FAQ.',
+      'Build — 112 pages, 170 precached, lint 0, tsc 0.',
+    ],
+    en: [
+      'Projects map — `src/components/ProjectsMap.tsx`: SVG Africa (viewBox 0 0 100 104) with 7 pins (Benin 33,47; Burkina 29,40; Burundi 55,63 …), animated halo, hover sync map ↔ list. Embedded at the top of `/projets` before the grid.',
+      'Malaria barometer — `src/components/MalariaBarometer.tsx`: 2 WHO WMR 2023 series (global cases 241→263 M, Benin incidence 312→259/1000) as CSS bars without dependencies, pine/gold gradients, source + manual update. Embedded in `/impact` between key figures and results.',
+      'ORCID sync — `scripts/sync-orcid.mjs` + `npm run sync:orcid`: fetches `https://pub.orcid.org/v3.0/0009-0006-5022-1399/works`, writes `public/dagnon-publications.bib` + `orcid-meta.json` (19 lines). No secret, diff reviewable, ready for GitHub Action cron.',
+      'FAQ assistant — `src/components/FaqAssistant.tsx`: live local search (NFD normalization, per-word scoring) across FAQ, op-eds, 8 publications and 7 projects; 6 hits max, direct links, 100 % client-side (zero network, ideal for low connectivity). Embedded in `/presse` before the FAQ.',
+      'Build — 112 pages, 170 precached, lint 0, tsc 0.',
+    ],
+  },
   {
     date: '2026-08-23',
     version: '2.6',
