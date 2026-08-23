@@ -39,15 +39,39 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '282', en: '282' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '29', en: '29' }, label: { fr: 'versions', en: 'versions' } },
-    { value: { fr: '371', en: '371' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
-    { value: { fr: '112', en: '112' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
+    { value: { fr: '284', en: '284' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '30', en: '30' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '373', en: '373' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
+    { value: { fr: '114', en: '114' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 23 août 2026', en: '16 Jul – 23 Aug 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-08-23',
+    version: '2.8',
+    label: { fr: '23 août 2026', en: '23 August 2026' },
+    title: { fr: 'Timeline carrière, podcast, booking, live WHO & portfolio 114 pages', en: 'Career timeline, podcast, booking, live WHO & 114-page portfolio' },
+    fr: [
+      'Timeline carrière — `src/components/CareerTimeline.tsx` : frise interactive des 6 postes (Gates, USAID/PMI, MCDI/ARM3…) avec dot pulsé, expand, responsabilités et achievements — intégrée dans `/cv` après la feuille A4.',
+      'Podcast RSS — `src/components/PodcastSection.tsx` + `buildPodcastRss()` + `dist/podcast.xml` (RSS 2.0 iTunes, 1 épisode tribune) + `dist/podcast-fr.xml` — section intégrée dans `/` (Home) entre Media et Newsletter ; flux linké `/podcast.xml`.',
+      'Booking RDV — `src/components/BookingWidget.tsx` : 3 créneaux (10/09, 17/09, 24/09) avec pick state, CTA vers `/inviter?slot=` pré-rempli — intégré dans `/inviter`.',
+      'Live WHO — `src/components/LiveIndicator.tsx` : pastille live + auto-refresh 60s intégrée dans `MalariaBarometer` à côté du badge WMR.',
+      'Portfolio complet — `src/pages/Portfolio.tsx` : page `/portfolio` agrégeant CV, 4 projets phares, 6 pubs — print-ready, SEO `PORTFOLIO_SEO`, `routeLastmod` max de toutes les collections, `PRERENDER_ROUTES` + `vercel.json` rewrites FR/EN — 57×2 = 114 pages, 173 precached.',
+      'Tests — 373 verts (371→373, +2 pages portfolio) ; `tests/prerender.test.mjs` inclut `/portfolio` ; `scripts/prerender.mjs` génère podcast.xml ; `podcast.xml` 1696 B validé.',
+      'Build — `tsc 0`, `lint 0`, `114 pages` (57×2) + `404 + sitemap(114) + feed + podcast + ics + sw(173)`.',
+    ],
+    en: [
+      'Career timeline — `src/components/CareerTimeline.tsx`: interactive timeline of 6 roles (Gates, USAID/PMI, MCDI/ARM3…) with pulsing dot, expand, responsibilities and achievements — embedded in `/cv` after the A4 sheet.',
+      'Podcast RSS — `src/components/PodcastSection.tsx` + `buildPodcastRss()` + `dist/podcast.xml` (RSS 2.0 iTunes, 1 tribune episode) + `dist/podcast-fr.xml` — section embedded in `/` (Home) between Media and Newsletter; feed at `/podcast.xml`.',
+      'Booking — `src/components/BookingWidget.tsx`: 3 slots (10/09, 17/09, 24/09) with pick state, CTA to `/inviter?slot=` pre-filled — embedded in `/inviter`.',
+      'Live WHO — `src/components/LiveIndicator.tsx`: live dot + 60s auto-refresh embedded in `MalariaBarometer` next to WMR badge.',
+      'Full portfolio — `src/pages/Portfolio.tsx`: `/portfolio` page aggregating CV, 4 flagship projects, 6 pubs — print-ready, `PORTFOLIO_SEO`, `routeLastmod` max across collections, `PRERENDER_ROUTES` + `vercel.json` FR/EN — 57×2 = 114 pages, 173 precached.',
+      'Tests — 373 green (371→373, +2 portfolio pages); `tests/prerender.test.mjs` includes `/portfolio`; `scripts/prerender.mjs` writes podcast.xml; `podcast.xml` 1696 B validated.',
+      'Build — `tsc 0`, `lint 0`, `114 pages` (57×2) + `404 + sitemap(114) + feed + podcast + ics + sw(173)`.',
+    ],
+  },
   {
     date: '2026-08-23',
     version: '2.7',
