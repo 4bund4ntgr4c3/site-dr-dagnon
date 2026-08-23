@@ -39,7 +39,7 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '269', en: '269' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '276', en: '276' }, label: { fr: 'commits', en: 'commits' } },
     { value: { fr: '27', en: '27' }, label: { fr: 'versions', en: 'versions' } },
     { value: { fr: '343', en: '343' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
     { value: { fr: '112', en: '112' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
@@ -60,6 +60,9 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
       'Dark mode corrigé — le corps des entrées utilisait text-ink/80, la seule opacité sans override dark dans index.css ; ajout de .dark .text-ink/80 (rgba(236,236,236,0.84)). Corrige aussi les pages Legal et Accessibilité qui partageaient le même motif.',
       'Timeline centrée — les points des timelines Changelog et Tribunes étaient décalés de ~5 px par rapport à la ligne verticale ; recalculé à -43 px (Changelog, point 20 px) et -41 px / -57 px (Tribunes, point 16 px) en fonction du padding-left et du border-l.',
       'SEO enrichi — variations de nom ajoutées aux keywords bilingues (Seynude, Fortuné, Jean-Fortuné, Dr Dagnon, DAGNON, etc.) et au schema.org Person (alternateName étendu, givenName/familyName/additionalName). Schema Person enrichi : honorificPrefix (Dr.), honorificSuffix (MD, MPH), memberOf (AMP), hasOccupation (2 rôles), knowsLanguage (fr/en/de/es), awards (PMI/USAID 2019–2020), alumniOf avec sameAs Wikipedia, knowsAbout élargi (DHIS2, Global Fund, PID, PBO nets, pays cibles). Entité Wikidata officielle (Q141154548) ajoutée au sameAs. Profil Google Scholar actif (Q6NT-4gAAAAJ) et ORCID (0009-0006-5022-1399) connectés dans le schema Person et sur toutes les pages. Fichier BibTeX (`dagnon-publications.bib`) ajouté dans public/ pour les citations académiques.',
+      'IndexNow — script d\'indexation en temps réel pour Bing/Yandex, déclenché automatiquement après chaque build Vercel. Fichier de vérification ajouté dans public/.',
+      'CV interactif — barre d\'actions (imprimer / partager) ajoutée en haut de /cv, avec partage natif ou copie du lien sur mobile.',
+      'Publications vérifiées — badges académiques vérifiés (ORCID, Google Scholar, Wikidata, BibTeX export) ajoutés aux cartes de /publications.',
       'Tests — 343 tests au vert ; lint, tsc et build validés (112 pages, 165 URLs precached).',
     ],
     en: [
@@ -69,6 +72,9 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
       'Dark mode fixed — entry body text used text-ink/80, the only opacity missing a dark override in index.css; added .dark .text-ink/80 (rgba(236,236,236,0.84)). Also fixes Legal and Accessibility pages that shared the same pattern.',
       'Timeline centering — the Changelog and Tribunes timeline dots were offset ~5 px from the vertical rule; recalculated to -43 px (Changelog, 20 px dot) and -41 px / -57 px (Tribunes, 16 px dot) based on padding-left and border-l width.',
       'SEO enrichment — name variations added to bilingual keywords (Seynude, Fortune, Jean-Fortune, Dr Dagnon, DAGNON, etc.) and to the schema.org Person (extended alternateName, givenName/familyName/additionalName). Person schema enriched: honorificPrefix (Dr.), honorificSuffix (MD, MPH), memberOf (AMP), hasOccupation (2 roles), knowsLanguage (fr/en/de/es), awards (PMI/USAID 2019–2020), alumniOf with Wikipedia sameAs, expanded knowsAbout (DHIS2, Global Fund, PID, PBO nets, target countries). Official Wikidata entity (Q141154548) added to sameAs. Active Google Scholar profile (Q6NT-4gAAAAJ) and ORCID (0009-0006-5022-1399) connected in the Person schema and across all pages. BibTeX file (`dagnon-publications.bib`) added to public/ for academic citations.',
+      'IndexNow — real-time indexing script for Bing/Yandex, triggered automatically after each Vercel build. Verification file added to public/.',
+      'Interactive CV — action bar (print / share) added to the top of /cv, with native sharing or link copy on mobile.',
+      'Verified publications — verified academic badges (ORCID, Google Scholar, Wikidata, BibTeX export) added to /publications cards.',
       'Tests — 343 tests green; lint, tsc and build validated (112 pages, 165 URLs precached).',
     ],
   },
