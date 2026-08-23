@@ -1,5 +1,6 @@
 import { useLang } from '@/i18n/useLang';
 import { TrendingDown, TrendingUp, Activity, Info } from 'lucide-react';
+import { LiveIndicator } from '@/components/LiveIndicator';
 
 /* Minimal WHO-inspired series (source: World Malaria Report). Static,
    no network dependency — the PWA and the prerender stay deterministic. */
@@ -25,9 +26,12 @@ export function MalariaBarometer() {
             {lang === 'fr' ? 'Où en est la lutte ?' : 'Where does the fight stand?'}
           </h3>
         </div>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-pine-950 px-3 py-1 text-[11px] font-semibold text-gold-400">
-          <Info size={12} /> WHO WMR 2023
-        </span>
+        <div className="flex flex-col items-end gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-pine-950 px-3 py-1 text-[11px] font-semibold text-gold-400">
+            <Info size={12} /> WHO WMR 2023
+          </span>
+          <LiveIndicator source="WHO WMR" />
+        </div>
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">

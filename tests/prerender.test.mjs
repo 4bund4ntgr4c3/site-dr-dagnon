@@ -72,6 +72,7 @@ const ROUTES = [
   '/legal',
   '/accessibility',
   '/bibliography',
+  '/portfolio',
   '/publications-pdf',
 ];
 

@@ -10,6 +10,7 @@ import { Publications } from '@/sections/Publications';
 import { LatestTribune } from '@/sections/LatestTribune';
 import { PressQuotes } from '@/sections/PressQuotes';
 import { Media } from '@/sections/Media';
+import { PodcastSection } from '@/components/PodcastSection';
 import { Newsletter } from '@/sections/Newsletter';
 import { useSectionTracking } from '@/hooks/useSectionTracking';
 
@@ -33,6 +34,11 @@ export default function Home() {
         <LatestTribune />
         <PressQuotes />
         <Media />
+        <section className="bg-pine-50 py-12 lg:py-16">
+          <div className="mx-auto max-w-4xl px-5 lg:px-8">
+            <PodcastSection />
+          </div>
+        </section>
         <Newsletter />
       </main>
     </MotionConfig>

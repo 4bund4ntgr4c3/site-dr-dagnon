@@ -326,6 +326,10 @@
       "destination": "/bibliography/index.html"
     },
     {
+      "source": "/portfolio",
+      "destination": "/portfolio/index.html"
+    },
+    {
       "source": "/publications-pdf",
       "destination": "/publications-pdf/index.html"
     },
@@ -444,6 +448,10 @@
     {
       "source": "/fr/bibliography",
       "destination": "/fr/bibliography/index.html"
+    },
+    {
+      "source": "/fr/portfolio",
+      "destination": "/fr/portfolio/index.html"
     },
     {
       "source": "/fr/publications-pdf",

@@ -10,6 +10,7 @@ import { PUB_ITEMS } from '@/data/publications';
 import { CV_PROFILE, CV_REVIEWS, CV_MEMBERSHIPS } from '@/data/cv';
 import { LINKS } from '@/data/content';
 import { ShareButtons } from '@/components/ShareButtons';
+import { CareerTimeline } from '@/components/CareerTimeline';
 import { localePath } from '@/i18n/routing';
 import type { Lang } from '@/i18n/lang';
 
@@ -300,6 +301,20 @@ export default function Cv() {
           >
             <Printer size={14} /> {t['cvPage.print']}
           </button>
+        </div>
+      </section>
+
+      <section className="bg-white py-12 lg:py-16 print:hidden">
+        <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-0">
+          <h2 className="font-display text-2xl font-semibold text-pine-950">
+            {lang === 'fr' ? 'Parcours en frise' : 'Career timeline'}
+          </h2>
+          <p className="mt-2 text-sm text-pine-900/65">
+            {lang === 'fr' ? '17 ans — survolez et dépliez chaque étape.' : '17 years — hover and expand each step.'}
+          </p>
+          <div className="mt-8">
+            <CareerTimeline />
+          </div>
         </div>
       </section>
     </main>

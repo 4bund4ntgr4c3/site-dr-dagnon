@@ -66,6 +66,7 @@ const pages: AppPages = {
   Legal: page(() => import('./pages/Legal'), (p) => p === '/legal'),
   Accessibility: page(() => import('./pages/Accessibility'), (p) => p === '/accessibility'),
   Bibliography: page(() => import('./pages/Bibliography'), (p) => p === '/bibliography'),
+  Portfolio: page(() => import('./pages/Portfolio'), (p) => p === '/portfolio'),
   PublicationsPdf: page(() => import('./pages/PublicationsPdf'), (p) => p === '/publications-pdf'),
   Admin: page(() => import('./pages/Admin'), (p) => p === '/admin'),
   Changelog: page(() => import('./pages/Changelog'), (p) => p === '/changelog'),

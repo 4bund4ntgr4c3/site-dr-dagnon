@@ -271,6 +271,16 @@ async function run() {
      lists must be an actual prerendered page. */
   fs.writeFileSync(path.join(dist, 'feed.xml'), buildRss(), 'utf-8');
 
+  /* Podcast RSS — tribunes as audio episodes (YouTube audio + future TTS).
+     Valid RSS 2.0 with iTunes namespace so Apple Podcasts / Spotify can ingest. */
+  try {
+    const { buildPodcastRss } = __meta;
+    if (typeof buildPodcastRss === 'function') {
+      fs.writeFileSync(path.join(dist, 'podcast.xml'), buildPodcastRss(), 'utf-8');
+      fs.writeFileSync(path.join(dist, 'podcast-fr.xml'), buildPodcastRss(), 'utf-8');
+    }
+  } catch (e) { void e; }
+
   /* iCal — the subscribable agenda calendar, linked from the agenda pages
      and generated from the same data file as the page itself. */
   fs.writeFileSync(path.join(dist, 'agenda.ics'), buildIcsFeed(), 'utf-8');

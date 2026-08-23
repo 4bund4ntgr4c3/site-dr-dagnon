@@ -391,6 +391,19 @@ export const CV_SEO: Record<Lang, { title: string; description: string; keywords
   },
 };
 
+export const PORTFOLIO_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Portfolio complet — Dr. Seynudé Dagnon',
+    description: 'Portfolio complet du Dr. Seynudé Dagnon : CV, projets, publications et distinctions en un seul document imprimable.',
+    keywords: 'portfolio Dr Dagnon, portfolio Seynude Dagnon, CV complet, projets paludisme, publications, Burkina Burundi Bénin, Gates Foundation, USAID, MPH, DAGNON portfolio',
+  },
+  en: {
+    title: 'Full Portfolio — Seynudé Dagnon',
+    description: 'Full portfolio of Dr. Seynudé Dagnon: CV, projects, publications and awards in one print-ready document.',
+    keywords: 'Seynude Dagnon portfolio, full portfolio, CV projects publications, Benin Burkina Burundi, Gates Foundation, USAID, MPH, DAGNON portfolio',
+  },
+};
+
 /** Short headline for the <title> budget: whatever comes after a colon is
     treated as a subtitle and dropped (a French colon has a space before it,
     hence the trim). */
@@ -686,9 +699,11 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
     items.push({ name: lang === 'fr' ? 'Mentions légales' : 'Legal notice', url: absUrl(lang, '/legal') });
   } else if (path === '/accessibility') {
     items.push({ name: lang === 'fr' ? 'Accessibilité' : 'Accessibility', url: absUrl(lang, '/accessibility') });
-  } else if (path === '/bibliography') {
-    items.push({ name: lang === 'fr' ? 'Bibliographie' : 'Bibliography', url: absUrl(lang, '/bibliography') });
-  }
+    } else if (path === '/bibliography') {
+      items.push({ name: lang === 'fr' ? 'Bibliographie' : 'Bibliography', url: absUrl(lang, '/bibliography') });
+    } else if (path === '/portfolio') {
+      items.push({ name: lang === 'fr' ? 'Portfolio complet' : 'Full portfolio', url: absUrl(lang, '/portfolio') });
+    }
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -821,6 +836,46 @@ export function buildRss(): string {
     `    <lastBuildDate>${rfc822(new Date().toISOString().slice(0, 10))}</lastBuildDate>`,
     `    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>`,
     itemXml,
+    '  </channel>',
+    '</rss>',
+    '',
+  ].join('\n');
+}
+
+export function buildPodcastRss(): string {
+  const xmlEscape = (s: string) =>
+    String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const rfc822 = (iso: string) => new Date(`${iso}T00:00:00Z`).toUTCString();
+  const items = [...TRIBUNES]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .map((t) => {
+      const link = `${SITE_URL}/tribunes/${t.slug}`;
+      return `  <item>
+    <title>${xmlEscape(t.title.en)}</title>
+    <link>${link}</link>
+    <guid isPermaLink="true">${link}</guid>
+    <pubDate>${rfc822(t.date)}</pubDate>
+    <description>${xmlEscape(t.description.en)}</description>
+    <itunes:author>${xmlEscape(fullName('en'))}</itunes:author>
+    <itunes:summary>${xmlEscape(t.description.en)}</itunes:summary>
+    <enclosure url="${link}" type="text/html" length="0" />
+  </item>`;
+    })
+    .join('\n');
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom">',
+    '  <channel>',
+    `    <title>${xmlEscape('Seynudé Dagnon — Tribunes & Talks')}</title>`,
+    `    <link>${SITE_URL}/tribunes</link>`,
+    `    <description>${xmlEscape('Op-eds and talks by Dr. Seynudé Dagnon on malaria and public health — audio companion.')}</description>`,
+    '    <language>en</language>',
+    `    <lastBuildDate>${rfc822(new Date().toISOString().slice(0, 10))}</lastBuildDate>`,
+    `    <atom:link href="${SITE_URL}/podcast.xml" rel="self" type="application/rss+xml"/>`,
+    '    <itunes:author>Seynudé Dagnon</itunes:author>',
+    '    <itunes:category text="Science" />',
+    `    <itunes:image href="${SITE_URL}/og-image.jpg" />`,
+    items,
     '  </channel>',
     '</rss>',
     '',
@@ -985,6 +1040,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isLegal = route === '/legal';
   const isAccessibility = route === '/accessibility';
   const isBibliography = route === '/bibliography';
+  const isPortfolio = route === '/portfolio';
   const isAdmin = route === '/admin';
   const isPreferences = route === '/newsletter/preferences';
   const isChangelog = route === '/changelog';
@@ -1067,6 +1123,8 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                         ? ACCESSIBILITY_SEO[lang]
                         : isBibliography
                           ? BIBLIOGRAPHY_SEO[lang]
+                          : isPortfolio
+                            ? PORTFOLIO_SEO[lang]
                           : isPublicationsPdf
                             ? PUBLICATIONS_PDF_SEO[lang]
                         : isAdmin
@@ -1136,7 +1194,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                   ? projectJsonLd(lang, project, url)
                   : photo
                     ? imageObjectJsonLd(lang, photo, url)
-                    : isMedia || isAgenda || isTribunes || isProjects || isPresse || isInvite || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility
+                    : isMedia || isAgenda || isTribunes || isProjects || isPresse || isInvite || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio
                       ? collectionPageJsonLd(lang, data.title, data.description, url)
                       : null,
     },
@@ -1170,8 +1228,9 @@ export const PRERENDER_ROUTES = [
   '/impact',
   '/legal',
   '/accessibility',
-  '/bibliography',
-  '/publications-pdf',
+    '/bibliography',
+    '/portfolio',
+    '/publications-pdf',
 ];
 
 export const PRERENDER_LANGS: Lang[] = SUPPORTED;
@@ -1194,6 +1253,7 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/legal': { priority: '0.3', changefreq: 'yearly' },
   '/accessibility': { priority: '0.3', changefreq: 'yearly' },
   '/bibliography': { priority: '0.7', changefreq: 'weekly' },
+  '/portfolio': { priority: '0.8', changefreq: 'monthly' },
   '/publications-pdf': { priority: '0.6', changefreq: 'monthly' },
   ...Object.fromEntries(
     TRIBUNES.map((t) => [`/tribunes/${t.slug}`, { priority: '0.7', changefreq: 'monthly' }]),
@@ -1237,6 +1297,17 @@ export function routeLastmod(route: string, fallback: string): string {
   if (route === '/publications' || route === '/publications-pdf' || route === '/bibliography') {
     const maxYear = Math.max(...PUB_ITEMS.map((p) => p.year));
     if (Number.isFinite(maxYear)) return `${maxYear}-01-01`;
+  }
+  if (route === '/portfolio') {
+    const cand = [
+      ...TRIBUNES.map((t) => t.date),
+      ...PROJECTS.map((p) => p.date),
+      ...MEDIA_ITEMS.map((m) => m.date),
+      ...AGENDA_ITEMS.map((e) => e.date),
+      `${Math.max(...PUB_ITEMS.map((p) => p.year))}-01-01`,
+    ];
+    const max = cand.reduce((m, c) => (c > m ? c : m), '1970-01-01');
+    if (max !== '1970-01-01') return max;
   }
   if (route === '/tribunes') {
     const max = TRIBUNES.reduce((m, t) => (t.date > m ? t.date : m), '1970-01-01');

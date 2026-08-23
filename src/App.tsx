@@ -39,6 +39,7 @@ export interface AppPages {
   Legal: ComponentType
   Accessibility: ComponentType
   Bibliography: ComponentType
+  Portfolio: ComponentType
   PublicationsPdf: ComponentType
   /** client-only page (never prerendered) — absent from the server's pages */
   Admin?: ComponentType
@@ -93,6 +94,7 @@ const routesFor = (Pages: AppPages) => [
   <Route key="legal" path="legal" element={<Pages.Legal />} />,
   <Route key="accessibility" path="accessibility" element={<Pages.Accessibility />} />,
   <Route key="bibliography" path="bibliography" element={<Pages.Bibliography />} />,
+  <Route key="portfolio" path="portfolio" element={<Pages.Portfolio />} />,
   <Route key="publications-pdf" path="publications-pdf" element={<Pages.PublicationsPdf />} />,
   ...(Pages.Admin ? [<Route key="admin" path="admin" element={<Pages.Admin />} />] : []),
   ...(Pages.Changelog ? [<Route key="changelog" path="changelog" element={<Pages.Changelog />} />] : []),

@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import { Mic, Presentation, Users, MessagesSquare, ArrowUpRight, CalendarPlus } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
+import { BookingWidget } from '@/components/BookingWidget';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
@@ -68,6 +69,10 @@ export default function Invite() {
                 })}
               </div>
             </div>
+          </Reveal>
+
+          <Reveal>
+            <BookingWidget />
           </Reveal>
 
           <Reveal>
