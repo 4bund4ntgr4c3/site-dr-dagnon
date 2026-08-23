@@ -49,6 +49,30 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
+    date: '2026-08-23',
+    version: '2.5',
+    label: { fr: '23 août 2026', en: '23 August 2026' },
+    title: { fr: 'Drawer mobile, menu « Plus », optimisation serverless, SEO enrichi & dark mode corrigé', en: 'Mobile drawer, More menu, serverless consolidation, SEO enrichment & dark mode fix' },
+    fr: [
+      'Drawer mobile — le menu hamburger a été remplacé par un panneau latéral glissant (translate-x, overlay backdrop, transitions CSS fluides) avec zone scrollable, logo + bouton fermer en en-tête, et CTA LinkedIn/YouTube en pied.',
+      'Menu « Plus » — toutes les pages routées absentes de la barre (CV, Kit de presse, Inviter le Dr, Collaborer, Newsletter, Impact, Bibliographie, Publications PDF, Mentions légales, Accessibilité, Changelog) sont regroupées dans un dropdown « Plus » / « More » sur desktop (hover, échappement, navigation aux flèches) et un sous-menu repliable sur mobile.',
+      'Fonctions serverless — réduction de 14 à 8 fonctions par fusion ciblée : contact absorbe verify-phone, push fusionne push-subscribe et push-send, newsletter absorbe newsletter-confirm, newsletter-unsubscribe et newsletter-prefs. Dispatch par path, rewrites vercel.json mises à jour. Limite Hobby Vercel respectée.',
+      'Dark mode corrigé — le corps des entrées utilisait text-ink/80, la seule opacité sans override dark dans index.css ; ajout de .dark .text-ink/80 (rgba(236,236,236,0.84)). Corrige aussi les pages Legal et Accessibilité qui partageaient le même motif.',
+      'Timeline centrée — les points des timelines Changelog et Tribunes étaient décalés de ~5 px par rapport à la ligne verticale ; recalculé à -43 px (Changelog, point 20 px) et -41 px / -57 px (Tribunes, point 16 px) en fonction du padding-left et du border-l.',
+      'SEO enrichi — variations de nom ajoutées aux keywords bilingues (Seynude, Fortuné, Jean-Fortuné, Dr Dagnon, DAGNON, etc.) et au schema.org Person (alternateName étendu, givenName/familyName/additionalName).',
+      'Tests — 343 tests au vert ; lint, tsc et build validés (112 pages, 165 URLs precached).',
+    ],
+    en: [
+      'Mobile drawer — the hamburger menu was replaced by a slide-in side panel (translate-x, backdrop overlay, smooth CSS transitions) with a scrollable nav area, logo + close button in the header, and LinkedIn/YouTube CTAs in the footer.',
+      'More menu — all routed pages missing from the bar (CV, Press kit, Invite, Collaborate, Newsletter, Impact, Bibliography, Publications PDF, Legal, Accessibility, Changelog) are grouped under a "More" dropdown on desktop (hover, escape, arrow-key navigation) and a collapsible submenu on mobile.',
+      'Serverless consolidation — reduced from 14 to 8 functions by targeted merging: contact absorbs verify-phone, push merges push-subscribe and push-send, newsletter absorbs newsletter-confirm, newsletter-unsubscribe and newsletter-prefs. Path-based dispatch, Vercel rewrites updated. Hobby limit respected.',
+      'Dark mode fixed — entry body text used text-ink/80, the only opacity missing a dark override in index.css; added .dark .text-ink/80 (rgba(236,236,236,0.84)). Also fixes Legal and Accessibility pages that shared the same pattern.',
+      'Timeline centering — the Changelog and Tribunes timeline dots were offset ~5 px from the vertical rule; recalculated to -43 px (Changelog, 20 px dot) and -41 px / -57 px (Tribunes, 16 px dot) based on padding-left and border-l width.',
+      'SEO enrichment — name variations added to bilingual keywords (Seynude, Fortune, Jean-Fortune, Dr Dagnon, DAGNON, etc.) and to the schema.org Person (extended alternateName, givenName/familyName/additionalName).',
+      'Tests — 343 tests green; lint, tsc and build validated (112 pages, 165 URLs precached).',
+    ],
+  },
+  {
     date: '2026-08-07',
     version: '2.4',
     label: { fr: '7 août 2026', en: '7 August 2026' },
