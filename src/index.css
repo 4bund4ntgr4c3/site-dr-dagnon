@@ -445,3 +445,22 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* High-contrast — toggled by HighContrastToggle, stacks on top of light/dark.
+   Boosts text opacity, border visibility and focus ring for low-vision users. */
+.high-contrast {
+  filter: contrast(1.18);
+}
+.high-contrast .text-pine-900\/70,
+.high-contrast .text-pine-900\/65,
+.high-contrast .text-pine-900\/60 {
+  color: #0c2e2a !important;
+}
+.high-contrast .text-ink\/70,
+.high-contrast .text-ink\/65,
+.high-contrast .border-pine-900\/10 {
+  border-color: rgba(12, 46, 42, 0.28) !important;
+}
+.high-contrast :focus-visible {
+  outline-width: 3px !important;
+}

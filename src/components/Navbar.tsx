@@ -6,6 +6,7 @@ import { NAV, UI } from '@/i18n/translations';
 import { useLang } from '@/i18n/useLang';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { HighContrastToggle } from '@/components/HighContrastToggle';
 import { track } from '@/lib/analytics';
 import { navHref } from '@/lib/nav';
 import { localePath } from '@/i18n/routing';
@@ -384,6 +385,7 @@ export function Navbar() {
               <Search size={19} />
             </button>
             <ThemeToggle />
+            <HighContrastToggle />
             <LanguageSwitcher className="inline-flex" />
 
             <a

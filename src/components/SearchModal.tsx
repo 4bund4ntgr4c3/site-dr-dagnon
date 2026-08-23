@@ -272,6 +272,7 @@ function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) 
   const t = UI[lang];
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
+  const [kindFilter, setKindFilter] = useState<SearchEntry['kind'] | 'all'>('all');
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -290,11 +291,10 @@ function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) 
       if ((e.keywords ?? '').toLowerCase().includes(q)) return 1;
       return 2;
     };
-    return index
-      .filter((e) => `${e.title} ${e.description} ${e.keywords ?? ''}`.toLowerCase().includes(q))
-      .sort((a, b) => score(a) - score(b) || KIND_ORDER[a.kind] - KIND_ORDER[b.kind])
-      .slice(0, 15);
-  }, [index, query]);
+    let filtered = index.filter((e) => `${e.title} ${e.description} ${e.keywords ?? ''}`.toLowerCase().includes(q));
+    if (kindFilter !== 'all') filtered = filtered.filter((e) => e.kind === kindFilter);
+    return filtered.sort((a, b) => score(a) - score(b) || KIND_ORDER[a.kind] - KIND_ORDER[b.kind]).slice(0, 15);
+  }, [index, query, kindFilter]);
 
   /* Site-search analytics, debounced so every keystroke does not fire a hit */
   useEffect(() => {
@@ -370,6 +370,21 @@ function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) 
             ESC
           </kbd>
         </div>
+
+        {query.trim().length >= 2 && (
+          <div className="flex flex-wrap gap-1.5 border-b border-white/10 px-3 py-2.5">
+            {(['all', 'tribune', 'project', 'publication', 'media', 'page'] as const).map((k) => (
+              <button
+                key={k}
+                type="button"
+                onClick={() => { setKindFilter(k); setActive(0); }}
+                className={`rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors ${kindFilter === k ? 'bg-gold-500 text-pine-950' : 'bg-white/5 text-pine-100/70 hover:bg-white/10 hover:text-gold-300'}`}
+              >
+                {k === 'all' ? (lang === 'fr' ? 'Tout' : 'All') : t[`search.kind.${k}` as keyof typeof t] ?? k}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div ref={listRef} className="max-h-[52vh] overflow-y-auto p-2">
           {query.trim() && results.length === 0 && (
