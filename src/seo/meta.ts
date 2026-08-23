@@ -11,6 +11,7 @@ import { PROJECTS } from '@/data/projects';
 import { MEDIA_ITEMS, type MediaEntry } from '@/data/media';
 import { AGENDA_ITEMS } from '@/data/agenda';
 import { FAQ_ITEMS } from '@/data/faq';
+import { PUB_ITEMS } from '@/data/publications';
 
 export const SITE_URL = 'https://seynudedagnon.com';
 
@@ -28,14 +29,14 @@ export const SEO: Record<Lang, { title: string; description: string; keywords: s
     title: 'Dr. Seynudé Dagnon — Santé publique & Paludisme en Afrique',
     description:
       "Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Leader en santé publique et paludisme à la Fondation Gates. 17+ ans au Bénin et en Afrique francophone.",
-    keywords: 'Seynudé Dagnon, paludisme, santé publique, Fondation Gates, USAID, PMI, Bénin, Afrique francophone, économie de la santé, leader paludisme, malaria program leader, Cotonou, doctorat Groningen, MPH Antwerp',
+    keywords: 'Seynudé Dagnon, Seynude Dagnon, Dr Dagnon, Fortuné Dagnon, Jean-Fortuné Dagnon, DAGNON, paludisme, santé publique, Fondation Gates, USAID, PMI, Bénin, Afrique francophone, économie de la santé, leader paludisme, malaria program leader, Cotonou, doctorat Groningen, MPH Antwerp, lutte antipaludique, élimination paludisme',
     ogLocale: 'fr_FR',
   },
   en: {
     title: 'Seynudé Dagnon, MD, MPH — Public Health & Malaria Leader',
     description:
       'Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Public Health & Malaria Leader at the Gates Foundation. 17+ years across Benin and Francophone Africa.',
-    keywords: 'Seynudé Dagnon, malaria, public health, Gates Foundation, USAID, PMI, Benin, Francophone Africa, health economics, malaria program leader, Cotonou, PhD Groningen, MPH Antwerp, vector control, SMC',
+    keywords: 'Seynudé Dagnon, Seynude Dagnon, Dr Dagnon, Fortuné Dagnon, Fortune Dagnon, Jean-Fortuné Dagnon, DAGNON, malaria, public health, Gates Foundation, USAID, PMI, Benin, Francophone Africa, health economics, malaria program leader, Cotonou, PhD Groningen, MPH Antwerp, vector control, SMC, malaria elimination, health systems',
     ogLocale: 'en_US',
   },
 };
@@ -44,12 +45,12 @@ export const CONTACT_SEO: Record<Lang, { title: string; description: string; key
   fr: {
     title: 'Contact — Dr. Seynudé Jean-Fortuné DAGNON',
     description: 'Contactez le Dr. Seynudé Jean-Fortuné Dagnon pour un partenariat, une conférence ou un conseil technique sur le paludisme et la santé publique.',
-    keywords: 'contact Dr Dagnon, email santé publique, partenariat paludisme, conférence Afrique, conseil technique Bénin, Cotonou, Dakar, Sénégal',
+    keywords: 'contact Dr Dagnon, contact Seynude Dagnon, email Seynudé Dagnon, email santé publique, partenariat paludisme, conférence Afrique, conseil technique Bénin, Cotonou, Dakar, Sénégal, Fortuné Dagnon contact, DAGNON contact',
   },
   en: {
     title: 'Contact — Seynudé Jean-Fortuné DAGNON, MD, MPH',
     description: 'Contact Dr. Seynudé Jean-Fortuné Dagnon for partnerships, conferences or technical advice on malaria and public health in Francophone Africa.',
-    keywords: 'contact Dr Dagnon, public health email, malaria partnership, Africa conference, technical advice Benin, Cotonou, Dakar, Senegal',
+    keywords: 'contact Dr Dagnon, contact Seynude Dagnon, email Seynudé Dagnon, public health email, malaria partnership, Africa conference, technical advice Benin, Cotonou, Dakar, Senegal, Fortune Dagnon contact, DAGNON contact',
   },
 };
 
@@ -57,12 +58,12 @@ export const MEDIA_SEO: Record<Lang, { title: string; description: string; keywo
   fr: {
     title: 'Médias — Interviews, Conférences & Engagements du Dr. Dagnon',
     description: 'Interviews, conférences, discours, presse et engagement communautaire du Dr. Seynudé Jean-Fortuné Dagnon sur le paludisme et la santé publique en Afrique.',
-    keywords: 'interviews Dr Dagnon, conférences paludisme, discours santé publique, presse Bénin, engagements communautaires, Nuit du Paludisme, media malaria Africa',
+    keywords: 'interviews Dr Dagnon, Seynude Dagnon interviews, conférences paludisme, discours santé publique, presse Bénin, engagements communautaires, Nuit du Paludisme, media malaria Africa, Fortuné Dagnon médias, DAGNON vidéo',
   },
   en: {
     title: 'Media — Interviews, Conferences & Engagements of Dr. Dagnon',
     description: 'Interviews, conferences, speeches, press coverage and community engagement by Dr. Seynudé Jean-Fortuné Dagnon on malaria and public health in Africa.',
-    keywords: 'Dr Dagnon interviews, malaria conferences, public health speeches, press Benin, community engagement, Night Against Malaria, media malaria Africa',
+    keywords: 'Dr Dagnon interviews, Seynude Dagnon media, malaria conferences, public health speeches, press Benin, community engagement, Night Against Malaria, media malaria Africa, Fortune Dagnon video, DAGNON media',
   },
 };
 
@@ -139,27 +140,27 @@ export const CAT_DESCRIPTIONS: Record<string, { fr: string; en: string; keywords
   interview: {
     fr: "Interviews du Dr. Seynudé Jean-Fortuné Dagnon sur la lutte contre le paludisme et les systèmes de santé en Afrique francophone.",
     en: "Interviews with Dr. Seynudé Jean-Fortuné Dagnon on malaria control, African health systems and malaria elimination in Francophone Africa.",
-    keywords: 'interview Dr Dagnon, paludisme Afrique, santé publique interview, malaria expert interview, Gates Foundation',
+    keywords: 'interview Dr Dagnon, interview Seynude Dagnon, paludisme Afrique, santé publique interview, malaria expert interview, Gates Foundation, Fortuné Dagnon interview',
   },
   conference: {
     fr: "Conférences et présentations du Dr. Seynudé Jean-Fortuné Dagnon lors d'événements internationaux sur le paludisme et les politiques de santé.",
     en: "Conferences and presentations by Dr. Seynudé Jean-Fortuné Dagnon at international events on malaria, operational research and health policy.",
-    keywords: 'conférence Dr Dagnon, présentation paludisme, malaria conference, health policy Africa, operational research malaria',
+    keywords: 'conférence Dr Dagnon, conférence Seynude Dagnon, présentation paludisme, malaria conference, health policy Africa, operational research malaria, Fortuné Dagnon conference',
   },
   speaking: {
     fr: "Discours du Dr. Seynudé Jean-Fortuné Dagnon lors de réunions de partenaires, lancements de campagnes antipaludiques et cérémonies officielles en Afrique.",
     en: "Speeches by Dr. Seynudé Jean-Fortuné Dagnon at partner meetings, anti-malaria campaign launches and official ceremonies in Africa.",
-    keywords: 'discours Dr Dagnon, campagne paludisme, campaign launch malaria, partner meeting Africa, official ceremony Benin',
+    keywords: 'discours Dr Dagnon, discours Seynude Dagnon, campagne paludisme, campaign launch malaria, partner meeting Africa, official ceremony Benin, Fortuné Dagnon discours',
   },
   press: {
     fr: "Articles de presse, tribunes et couvertures médiatiques mettant en avant le travail du Dr. Dagnon sur le paludisme et la santé publique en Afrique francophone.",
     en: "Press articles, op-eds and media coverage highlighting Dr. Dagnon's work on malaria and public health in Francophone Africa.",
-    keywords: 'presse Dr Dagnon, article paludisme, malaria press, media coverage Africa, op-ed health Benin, SMC Alliance, AIRID',
+    keywords: 'presse Dr Dagnon, presse Seynude Dagnon, article paludisme, malaria press, media coverage Africa, op-ed health Benin, SMC Alliance, AIRID, Fortuné Dagnon presse',
   },
   community: {
     fr: "Engagement communautaire et philanthropique du Dr. Dagnon : Nuit du Paludisme, fournitures scolaires, Génies en Herbe — actions de terrain au Bénin.",
     en: "Community and philanthropic engagement by Dr. Dagnon: Night Against Malaria, school kits, Génies en Herbe — field activities in Benin.",
-    keywords: 'engagement communautaire, Nuit du Paludisme, fournitures scolaires, Génies en Herbe, community malaria Benin, philanthropy Africa',
+    keywords: 'engagement communautaire, engagement Seynude Dagnon, Nuit du Paludisme, fournitures scolaires, Génies en Herbe, community malaria Benin, philanthropy Africa, Fortuné Dagnon philanthropie',
   },
 };
 
@@ -167,12 +168,12 @@ export const PUB_SEO: Record<Lang, { title: string; description: string; keyword
   fr: {
     title: 'Publications scientifiques — Dr. Seynudé Jean-Fortuné DAGNON',
     description: "Publications scientifiques du Dr. Seynudé Jean-Fortuné Dagnon dans Malaria Journal, Parasites & Vectors et autres revues. Entomologie, lutte antipaludique.",
-    keywords: 'publications Dr Dagnon, Malaria Journal, Parasites Vectors, Frontiers Tropical Diseases, recherche paludisme, entomologie, IRS, SMC, vector control Africa',
+    keywords: 'publications Dr Dagnon, publications Seynude Dagnon, Malaria Journal, Parasites Vectors, Frontiers Tropical Diseases, recherche paludisme, entomologie, IRS, SMC, vector control Africa, Fortuné Dagnon publications, DAGNON publications scientifiques',
   },
   en: {
     title: 'Scientific Publications — Seynudé Jean-Fortuné DAGNON',
     description: 'Scientific publications by Seynudé Jean-Fortuné Dagnon in Malaria Journal, Parasites & Vectors. Malaria control and elimination in Francophone Africa.',
-    keywords: 'Dr Dagnon publications, Malaria Journal, Parasites Vectors, Frontiers Tropical Diseases, malaria research, entomology, IRS, SMC, vector control Africa',
+    keywords: 'Dr Dagnon publications, Seynude Dagnon publications, Malaria Journal, Parasites Vectors, Frontiers Tropical Diseases, malaria research, entomology, IRS, SMC, vector control Africa, Fortune Dagnon publications, DAGNON scientific papers',
   },
 };
 
@@ -180,12 +181,12 @@ export const AGENDA_SEO: Record<Lang, { title: string; description: string; keyw
   fr: {
     title: 'Agenda — Conférences & engagements du Dr. Dagnon',
     description: 'Conférences, prises de parole et engagements communautaires du Dr. Seynudé Jean-Fortuné Dagnon — dates clés en Afrique.',
-    keywords: 'agenda Dr Dagnon, conférences paludisme, prise de parole, Nuit du Paludisme, agenda santé publique Afrique, événements malaria',
+    keywords: 'agenda Dr Dagnon, agenda Seynude Dagnon, conférences paludisme, prise de parole, Nuit du Paludisme, agenda santé publique Afrique, événements malaria, Fortuné Dagnon agenda',
   },
   en: {
     title: 'Agenda — Conferences & Engagements of Dr. Dagnon',
     description: 'Conferences, speaking engagements and community commitments of Dr. Seynudé Jean-Fortuné Dagnon — key dates across Africa.',
-    keywords: 'Dr Dagnon agenda, malaria conferences, speaking engagements, Night Against Malaria, public health events Africa, malaria events',
+    keywords: 'Dr Dagnon agenda, Seynude Dagnon events, malaria conferences, speaking engagements, Night Against Malaria, public health events Africa, malaria events, Fortune Dagnon agenda',
   },
 };
 
@@ -193,12 +194,12 @@ export const PRESSE_SEO: Record<Lang, { title: string; description: string; keyw
   fr: {
     title: 'Kit de presse — Dr. Dagnon',
     description: "Kit de presse du Dr. Seynudé Jean-Fortuné Dagnon : biographie, chiffres clés, photo et contact pour les journalistes et les médias.",
-    keywords: 'kit de presse Dr Dagnon, biographie paludisme, photo presse, contact médias, expert paludisme Afrique, porte-parole santé publique',
+    keywords: 'kit de presse Dr Dagnon, kit presse Seynude Dagnon, biographie paludisme, photo presse, contact médias, expert paludisme Afrique, porte-parole santé publique, Fortuné Dagnon presse, DAGNON bio',
   },
   en: {
     title: 'Press Kit — Seynudé Dagnon',
     description: "Press kit for Dr. Seynudé Jean-Fortuné Dagnon: biography, key figures, photo and contact for journalists and media teams.",
-    keywords: 'Dr Dagnon press kit, malaria biography, press photo, media contact, malaria expert Africa, public health spokesperson',
+    keywords: 'Dr Dagnon press kit, Seynude Dagnon press kit, malaria biography, press photo, media contact, malaria expert Africa, public health spokesperson, Fortune Dagnon press, DAGNON bio',
   },
 };
 
@@ -206,12 +207,12 @@ export const INVITER_SEO: Record<Lang, { title: string; description: string; key
   fr: {
     title: 'Inviter le Dr. Dagnon — Conférences & médias',
     description: "Invitez le Dr. Seynudé Dagnon : conférences, panels, formations et interviews sur le paludisme et la santé publique en Afrique francophone.",
-    keywords: 'inviter Dr Dagnon, conférencier paludisme, keynote santé publique, panel Afrique, intervenant Fondation Gates, conférence malaria',
+    keywords: 'inviter Dr Dagnon, inviter Seynude Dagnon, conférencier paludisme, keynote santé publique, panel Afrique, intervenant Fondation Gates, conférence malaria, Fortuné Dagnon conférencier',
   },
   en: {
     title: 'Invite Dr. Dagnon — Conferences & Media',
     description: "Invite Dr. Seynudé Dagnon: conferences, panels, workshops and interviews on malaria and public health across Francophone Africa.",
-    keywords: 'invite Dr Dagnon, malaria speaker, public health keynote, Africa panel, Gates Foundation speaker, malaria conference',
+    keywords: 'invite Dr Dagnon, invite Seynude Dagnon, malaria speaker, public health keynote, Africa panel, Gates Foundation speaker, malaria conference, Fortune Dagnon speaker',
   },
 };
 
@@ -219,12 +220,12 @@ export const COLLAB_SEO: Record<Lang, { title: string; description: string; keyw
   fr: {
     title: 'Collaborer — Recherche, programmes & partenariats',
     description: "Collaborez avec le Dr. Seynudé Dagnon : recherche opérationnelle, programmes de santé publique, conseil technique et partenariats stratégiques en Afrique.",
-    keywords: 'collaborer Dr Dagnon, partenariat paludisme, recherche opérationnelle Afrique, conseil technique santé publique, programme paludisme Bénin',
+    keywords: 'collaborer Dr Dagnon, collaborer Seynude Dagnon, partenariat paludisme, recherche opérationnelle Afrique, conseil technique santé publique, programme paludisme Bénin, Fortuné Dagnon partenariat',
   },
   en: {
     title: 'Collaborate — Research, Programs & Partnerships',
     description: "Collaborate with Dr. Seynudé Dagnon: operational research, public health programs, technical advisory and strategic partnerships across Africa.",
-    keywords: 'collaborate Dr Dagnon, malaria partnership, operational research Africa, technical advisory public health, malaria program Benin',
+    keywords: 'collaborate Dr Dagnon, collaborate Seynude Dagnon, malaria partnership, operational research Africa, technical advisory public health, malaria program Benin, Fortune Dagnon partnership',
   },
 };
 
@@ -232,12 +233,12 @@ export const NEWSLETTER_SEO: Record<Lang, { title: string; description: string; 
   fr: {
     title: 'Newsletter — Dr. Dagnon',
     description: "Archives de la newsletter du Dr. Seynudé Dagnon : analyses, dates clés et avancées de la lutte contre le paludisme en Afrique.",
-    keywords: 'newsletter Dr Dagnon, archive newsletter paludisme, lettre d\'information santé publique, veille malaria Afrique',
+    keywords: 'newsletter Dr Dagnon, newsletter Seynude Dagnon, archive newsletter paludisme, lettre information santé publique, veille malaria Afrique, actualités santé Afrique francophone, Fortuné Dagnon newsletter, DAGNON lettre',
   },
   en: {
     title: 'Newsletter — Seynudé Dagnon',
     description: "Archive of Dr. Seynudé Dagnon's newsletter: analysis, key dates and progress in the malaria fight across Africa.",
-    keywords: 'Dr Dagnon newsletter, malaria newsletter archive, public health newsletter, malaria news Africa',
+    keywords: 'Dr Dagnon newsletter, Seynude Dagnon newsletter, malaria newsletter archive, public health newsletter, malaria news Africa, health policy insights, Fortune Dagnon newsletter, DAGNON updates',
   },
 };
 
@@ -245,12 +246,12 @@ export const IMPACT_SEO: Record<Lang, { title: string; description: string; keyw
   fr: {
     title: 'Impact & résultats — Dr. Dagnon',
     description: "Résultats mesurables du Dr. Seynudé Dagnon : 1 114 centres de santé, complétude des données de 35 % à 94 %, économies de 3 M$ et portefeuille de 180 M$.",
-    keywords: 'impact Dr Dagnon, résultats paludisme, données de santé Bénin, IRS nord Bénin, digitalisation MILDA, économies G2G, portfolio Fondation Gates',
+    keywords: 'impact Dr Dagnon, impact Seynude Dagnon, résultats paludisme, données de santé Bénin, IRS nord Bénin, digitalisation MILDA, économies G2G, portfolio Fondation Gates, indicateurs santé publique Afrique, Fortuné Dagnon impact, DAGNON réalisations',
   },
   en: {
     title: 'Impact & Results — Seynudé Dagnon',
     description: "Measurable results by Dr. Seynudé Dagnon: 1,114 health facilities, data completeness from 35% to 94%, $3M in savings and a $180M portfolio.",
-    keywords: 'Dr Dagnon impact, malaria results, health data Benin, IRS northern Benin, LLIN digitization, G2G savings, Gates Foundation portfolio',
+    keywords: 'Dr Dagnon impact, Seynude Dagnon impact, malaria results, health data Benin, IRS northern Benin, LLIN digitization, G2G savings, Gates Foundation portfolio, public health metrics Africa, Fortune Dagnon results, DAGNON achievements',
   },
 };
 
@@ -258,12 +259,12 @@ export const LEGAL_SEO: Record<Lang, { title: string; description: string; keywo
   fr: {
     title: 'Mentions légales & RGPD — Dr. Dagnon',
     description: 'Mentions légales, hébergement, données personnelles (RGPD), cookies et droits des visiteurs du site du Dr. Seynudé Dagnon.',
-    keywords: 'mentions légales Dr Dagnon, RGPD site santé publique, données personnelles, cookies, politique confidentialité',
+    keywords: 'mentions légales Dr Dagnon, mentions légales Seynude Dagnon, RGPD site santé publique, données personnelles, cookies, politique confidentialité, Fortuné Dagnon mentions légales',
   },
   en: {
     title: 'Legal notice & GDPR — Seynudé Dagnon',
     description: 'Legal notice, hosting, personal data (GDPR), cookies and visitor rights on Dr. Seynudé Dagnon\'s website.',
-    keywords: 'Dr Dagnon legal notice, GDPR public health website, personal data, cookies, privacy policy',
+    keywords: 'Dr Dagnon legal notice, Seynude Dagnon legal, GDPR public health website, personal data, cookies, privacy policy, Fortune Dagnon legal',
   },
 };
 
@@ -271,12 +272,12 @@ export const BIBLIOGRAPHY_SEO: Record<Lang, { title: string; description: string
   fr: {
     title: 'Bibliographie scientifique — Dr. Dagnon',
     description: 'Publications de recherche du Dr. Seynudé Dagnon indexées par DOI : paludisme, moustiquaires imprégnées, pulvérisation intradomiciliaire.',
-    keywords: 'bibliographie Dr Dagnon, publications paludisme DOI, chimioprévention, MILDA, IRS Bénin, entomologie, citations BibTeX',
+    keywords: 'bibliographie Dr Dagnon, bibliographie Seynude Dagnon, publications paludisme DOI, chimioprévention, MILDA, IRS Bénin, entomologie médicale, citations BibTeX, APA, articles scientifiques pairs, Fortuné Dagnon bibliographie, DAGNON recherche',
   },
   en: {
     title: 'Scientific bibliography — Seynudé Dagnon',
     description: 'DOI-indexed research publications by Dr. Seynudé Dagnon: malaria, insecticide-treated nets, indoor residual spraying, insecticide resistance.',
-    keywords: 'Dr Dagnon bibliography, malaria publications DOI, chemoprevention, LLIN, IRS Benin, entomology, BibTeX citations',
+    keywords: 'Dr Dagnon bibliography, Seynude Dagnon bibliography, malaria publications DOI, chemoprevention, LLIN, IRS Benin, entomology, BibTeX citations, APA, peer-reviewed articles, Fortune Dagnon bibliography, DAGNON research',
   },
 };
 
@@ -284,12 +285,12 @@ export const PUBLICATIONS_PDF_SEO: Record<Lang, { title: string; description: st
   fr: {
     title: 'Publications (PDF) — Dr. Seynudé Dagnon',
     description: 'Liste complète des publications scientifiques du Dr. Seynudé Dagnon, téléchargeable en PDF. ORCID, Google Scholar, citations.',
-    keywords: 'publications Dr Dagnon PDF, liste publications paludisme, ORCID, Google Scholar, CV scientifique',
+    keywords: 'publications Dr Dagnon PDF, publications Seynude Dagnon PDF, liste publications paludisme, ORCID, Google Scholar, CV scientifique, télécharger publications Dagnon, Fortuné Dagnon PDF',
   },
   en: {
     title: 'Publications (PDF) — Dr. Dagnon',
     description: 'Complete list of scientific publications by Dr. Seynudé Dagnon, downloadable as PDF. ORCID, Google Scholar, citations.',
-    keywords: 'Dr Dagnon publications PDF, malaria publications list, ORCID, Google Scholar, academic CV',
+    keywords: 'Dr Dagnon publications PDF, Seynude Dagnon publications PDF, malaria publications list, ORCID, Google Scholar, academic CV, download publications Dagnon, Fortune Dagnon PDF',
   },
 };
 
@@ -297,12 +298,12 @@ export const ACCESSIBILITY_SEO: Record<Lang, { title: string; description: strin
   fr: {
     title: 'Accessibilité — Dr. Seynudé Dagnon',
     description: "Déclaration d'accessibilité du site du Dr. Seynudé Dagnon : clavier, recherche Ctrl+K, contrastes, lecteurs d'écran, signalement des difficultés.",
-    keywords: 'accessibilité Dr Dagnon, navigation clavier, lecteur écran, contrastes, déclaration accessibilité site santé publique',
+    keywords: 'accessibilité Dr Dagnon, accessibilité Seynude Dagnon, navigation clavier, lecteur écran, contrastes, déclaration accessibilité site santé publique, RGAA, WCAG',
   },
   en: {
     title: 'Accessibility — Seynudé Dagnon',
     description: "Accessibility statement for Dr. Seynudé Dagnon's website: keyboard navigation, Ctrl+K global search, contrast, screen readers and reporting difficulties.",
-    keywords: 'Dr Dagnon accessibility, keyboard navigation, screen reader, contrast, accessibility statement public health site',
+    keywords: 'Dr Dagnon accessibility, Seynude Dagnon accessibility, keyboard navigation, screen reader, contrast, accessibility statement public health site, WCAG compliance',
   },
 };
 
@@ -355,12 +356,12 @@ export const TRIBUNES_SEO: Record<Lang, { title: string; description: string; ke
   fr: {
     title: 'Tribunes & Analyses — Dr. Dagnon',
     description: 'Tribunes et analyses du Dr. Seynudé Jean-Fortuné Dagnon — textes hébergés, indexés et partageables sur le paludisme et la santé publique.',
-    keywords: 'tribune Dr Dagnon, op-ed paludisme, analyse santé publique, élimination paludisme, Afrique, tribunes hébergées',
+    keywords: 'tribune Dr Dagnon, tribune Seynude Dagnon, op-ed paludisme, analyse santé publique, élimination paludisme, Afrique francophone, tribunes hébergées, plaidoyer santé, Rose Leke Dagnon, Africa Health Watch, Fortuné Dagnon tribune, DAGNON op-ed',
   },
   en: {
     title: 'Op-Eds & Analyses — Seynudé Dagnon',
     description: 'Op-eds and analyses by Dr. Seynudé Jean-Fortuné Dagnon — hosted, indexable and shareable texts on malaria and public health in Africa.',
-    keywords: 'Dr Dagnon op-ed, malaria op-ed, public health analysis, malaria elimination, Africa, hosted tribunes',
+    keywords: 'Dr Dagnon op-ed, Seynude Dagnon op-ed, malaria op-ed, public health analysis, malaria elimination, Francophone Africa, hosted tribunes, health advocacy, Rose Leke Dagnon, Africa Health Watch, Fortune Dagnon analysis, DAGNON commentary',
   },
 };
 
@@ -368,12 +369,12 @@ export const PROJETS_SEO: Record<Lang, { title: string; description: string; key
   fr: {
     title: 'Projets & Études de cas — Dr. Dagnon',
     description: 'Études de cas du Dr. Seynudé Dagnon : campagnes MILDA digitalisées, données paludisme au Burundi, CPS, IRS au nord du Bénin — avec résultats.',
-    keywords: 'projets Dr Dagnon, études de cas paludisme, digitalisation campagnes MILDA, données paludisme Burundi, CPS SMC, IRS Bénin, résultats',
+    keywords: 'projets Dr Dagnon, projets Seynude Dagnon, études de cas paludisme, digitalisation campagnes MILDA Bénin, données paludisme Burundi, CPS SMC chimioprévention, IRS pulvérisation Atacora Donga, contrat G2G PNLP USAID, santé numérique Afrique, Fortuné Dagnon projets, DAGNON études de cas',
   },
   en: {
     title: 'Projects & Case Studies — Seynudé Dagnon',
     description: 'Case studies by Dr. Seynudé Dagnon: digitalized LLIN campaigns, malaria data in Burundi, SMC scale-up, IRS in northern Benin — with measurable results.',
-    keywords: 'Dr Dagnon projects, malaria case studies, LLIN campaign digitization, malaria data Burundi, SMC scale-up, IRS Benin, results',
+    keywords: 'Dr Dagnon projects, Seynude Dagnon projects, malaria case studies, LLIN campaign digitization Benin, malaria data Burundi, SMC scale-up chemoprevention, IRS northern Benin, G2G contract NMCP USAID, digital health Africa, Fortune Dagnon projects, DAGNON case studies',
   },
 };
 
@@ -381,12 +382,12 @@ export const CV_SEO: Record<Lang, { title: string; description: string; keywords
   fr: {
     title: 'Curriculum Vitae — Dr. Seynudé Dagnon',
     description: 'CV complet du Dr. Seynudé Dagnon : 17 ans dans les programmes paludisme, formation, enseignements, distinctions et publications. Imprimable en PDF.',
-    keywords: 'CV Dr Dagnon, curriculum vitae santé publique, parcours paludisme, expérience Fondation Gates, USAID, PMI, formation Groningen, imprimer CV PDF',
+    keywords: 'CV Dr Dagnon, CV Seynude Dagnon, curriculum vitae santé publique, parcours paludisme, expérience Fondation Gates, Gates Foundation Senior Program Officer, USAID PMI Resident Advisor, formation Groningen doctorat, ITG Anvers MPH, médecin Cotonou Bénin, Fortuné Dagnon CV, Jean-Fortuné Dagnon CV, DAGNON parcours professionnel',
   },
   en: {
     title: 'Resume — Dr. Seynudé Dagnon, malaria program leader',
     description: 'Full resume of Dr. Seynudé Dagnon: 17+ years in malaria programs, education, teaching, awards and publications. Print-ready PDF version.',
-    keywords: 'Dr Dagnon resume, public health CV, malaria career, Gates Foundation, USAID, PMI, education Groningen, print CV PDF',
+    keywords: 'Dr Dagnon resume, Seynude Dagnon CV, public health resume, malaria career track record, Gates Foundation Senior Program Officer, USAID PMI Resident Advisor, Groningen PhD, ITG Antwerp MPH, medical doctor Benin, Fortune Dagnon resume, Jean-Fortune Dagnon CV, DAGNON professional profile',
   },
 };
 
@@ -414,7 +415,27 @@ export function personJsonLd(lang: Lang) {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: fullName(lang),
-    alternateName: 'Seynudé Dagnon',
+    givenName: 'Seynudé',
+    familyName: 'Dagnon',
+    additionalName: ['Jean-Fortuné', 'Fortuné'],
+    alternateName: [
+      'Seynudé Dagnon',
+      'Dr. Seynudé Dagnon',
+      'Dr Dagnon',
+      'Fortuné Dagnon',
+      'Jean-Fortuné Dagnon',
+      'Seynudé Jean-Fortuné Dagnon',
+      'Dagnon Seynudé',
+      'S.J.F. Dagnon',
+      'Dagnon S.J.F.',
+      'Seynude Dagnon',                  // sans accent — faute fréquente
+      'Seynude Jean-Fortune Dagnon',     // sans accents
+      'Fortune Dagnon',                  // sans accent
+      'Dr. Seynudé Jean-Fortuné DAGNON',
+      'Seynudé DAGNON',
+      'Dagnon Jean-Fortuné',
+      'Dr. Fortuné Dagnon',
+    ],
     jobTitle: lang === 'fr' ? 'Leader de programme en santé publique et paludisme' : 'Public Health & Malaria Program Leader',
     description: SEO[lang].description,
     url: homeUrl(lang),
@@ -438,7 +459,25 @@ export function personJsonLd(lang: Lang) {
       name: lang === 'fr' ? 'Fondation Gates' : 'Gates Foundation',
       url: 'https://www.gatesfoundation.org/',
     },
-    knowsAbout: ['Malaria', 'Public Health', 'Health Systems', 'Digital Health', 'Epidemiology', 'SMC', 'PMI', 'USAID'],
+    knowsAbout: [
+      'Malaria', 'Paludisme',
+      'Public Health', 'Santé publique',
+      'Health Systems Strengthening', 'Renforcement des systèmes de santé',
+      'Malaria Elimination', 'Élimination du paludisme',
+      'Digital Health', 'Santé numérique',
+      'Epidemiology', 'Épidémiologie',
+      'Vector Control', 'Lutte antivectorielle',
+      'Health Economics', 'Économie de la santé',
+      'Seasonal Malaria Chemoprevention', 'Chimioprévention du paludisme saisonnier', 'SMC', 'CPS',
+      'Indoor Residual Spraying', 'Pulvérisation intradomiciliaire', 'IRS',
+      'Insecticide-Treated Nets', 'Moustiquaires imprégnées', 'MILDA', 'LLIN',
+      'Data-Driven Decision Making', 'Prise de décision basée sur les données',
+      'PMI', 'USAID',
+      'Entomology', 'Entomologie médicale',
+      'Program Management', 'Gestion de programmes de santé',
+      'Francophone Africa', 'Afrique francophone',
+      'Health Financing', 'Financement de la santé',
+    ],
     hasCredential: [
       { '@type': 'EducationalOccupationalCredential', credentialCategory: 'degree', name: 'MD — Doctor of Medicine' },
       { '@type': 'EducationalOccupationalCredential', credentialCategory: 'degree', name: 'MPH — Master of Public Health' },
@@ -888,7 +927,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
       ? {
           title: tribuneShortTitle(lang, tribune),
           description: tribune.description[lang],
-          keywords: TRIBUNES_SEO[lang].keywords,
+          keywords: `${tribune.title[lang]}, ${TRIBUNES_SEO[lang].keywords}, Seynudé Dagnon, Seynude Dagnon, Fortuné Dagnon, Dr Dagnon, DAGNON`,
         }
       : isTribunes
         ? TRIBUNES_SEO[lang]
@@ -896,7 +935,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
       ? {
           title: projectShortTitle(lang, project),
           description: project.description[lang],
-          keywords: PROJETS_SEO[lang].keywords,
+          keywords: `${project.title[lang]}, ${project.tag[lang]}, ${project.location[lang]}, ${PROJETS_SEO[lang].keywords}, Seynudé Dagnon, Seynude Dagnon, Fortuné Dagnon, Dr Dagnon, DAGNON`,
         }
       : isProjects
         ? PROJETS_SEO[lang]
@@ -906,7 +945,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
       ? {
           title: photoTitleShort(lang, photo),
           description: photoDescription(lang, photo),
-          keywords: CAT_DESCRIPTIONS.community.keywords,
+          keywords: `${photo.title[lang]}, ${CAT_DESCRIPTIONS.community.keywords}, Seynudé Dagnon, Seynude Dagnon, Fortuné Dagnon, Dr Dagnon, DAGNON, Bénin, santé publique`,
         }
       : isMedia && catName
       ? {

@@ -65,6 +65,8 @@ export function Navbar() {
   const t = UI[lang];
   const headerRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const drawerCloseRef = useRef<HTMLButtonElement>(null);
   const homeRef = useRef<HTMLDivElement>(null);
   const moreRef = useRef<HTMLDivElement>(null);
   const logoNameRef = useRef<HTMLSpanElement>(null);
@@ -72,9 +74,9 @@ export function Navbar() {
      name grows, so the role line is dropped first, then the whole text */
   const [logoLines, setLogoLines] = useState(1);
 
-  /* the open mobile menu is a dialog: Escape closes it, Tab stays inside,
+  /* the open mobile drawer is a dialog: Escape closes it, Tab stays inside,
      the page behind stops scrolling */
-  useFocusTrap(headerRef, toggleRef, open, () => setOpen(false));
+  useFocusTrap(drawerRef, toggleRef, open, () => setOpen(false));
 
   useEffect(() => {
     const el = logoNameRef.current;
@@ -405,108 +407,177 @@ export function Navbar() {
             </button>
           </div>
         </div>
+      </div>
+    </header>
 
-        {open && (
-          <div className="lg:hidden px-3 pb-3">
-            <div className="rounded-3xl border border-white/10 bg-pine-950/95 backdrop-blur-md px-5 pb-6 pt-3 shadow-lg shadow-pine-950/30">
-              <nav aria-label={t['nav.ariaLabel']} className="flex flex-col gap-1">
-                {/* Home — one anchored link per home-page section */}
-                <div>
-                  <button
-                    type="button"
-                    onClick={() => setHomeOpen(!homeOpen)}
-                    aria-haspopup="true"
-                    aria-expanded={homeOpen}
-                    aria-controls="nav-home-menu-mobile"
-                    className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-gold-400"
-                  >
-                    {t['nav.home']}
-                    <ChevronDown size={16} className={`transition-transform ${homeOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  {homeOpen && (
-                    <div id="nav-home-menu-mobile" className="mt-1 ml-4 flex flex-col gap-1 border-l border-white/10 pl-3">
-                      {HOME_SECTIONS.map((id) => (
-                        <Link
-                          key={id}
-                          to={homeHref(lang, id)}
-                          onClick={() => goToSection(id)}
-                          className="rounded-lg px-3 py-2 text-sm font-medium text-pine-100/90 hover:bg-white/5 hover:text-gold-400"
-                        >
-                          {sectionLabel(lang, id)}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+      {/* ── mobile drawer ── always mounted for CSS transitions ── */}
+      <div
+        ref={drawerRef}
+        className={`fixed inset-0 z-[60] lg:hidden ${
+          open ? 'visible' : 'invisible pointer-events-none delay-500'
+        }`}
+        aria-hidden={!open}
+      >
+        {/* overlay */}
+        <div
+          className={`absolute inset-0 bg-pine-950/60 backdrop-blur-sm transition-opacity duration-500 ease-out ${
+            open ? 'opacity-100' : 'opacity-0'
+          }`}
+          onClick={() => setOpen(false)}
+        />
+
+        {/* drawer panel */}
+        <aside
+          className={`absolute inset-y-0 left-0 flex w-[min(85vw,360px)] flex-col border-r border-white/10 bg-pine-950/[0.97] shadow-2xl shadow-pine-950/60 backdrop-blur-xl transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+            open ? 'translate-x-0' : '-translate-x-full'
+          }`}
+        >
+          {/* drawer header */}
+          <div className="flex items-center justify-between px-5 pt-5 pb-3">
+            <Link
+              to={localePath(lang, '/')}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 group"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gold-500 font-display text-sm font-semibold text-pine-950 transition-transform group-hover:scale-105">
+                SD
+              </span>
+              <span className="leading-tight">
+                <span className="block font-display text-[15px] font-medium text-ivory">
+                  {t['name.short']}
+                </span>
+                <span className="block truncate text-[10px] uppercase tracking-[0.22em] text-gold-400">
+                  {t['nav.subtitle']}
+                </span>
+              </span>
+            </Link>
+            <button
+              ref={drawerCloseRef}
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label={t['nav.close']}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-ivory transition-colors hover:bg-white/10"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          <div className="mx-5 border-t border-white/10" />
+
+          {/* scrollable nav content */}
+          <nav
+            aria-label={t['nav.ariaLabel']}
+            className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/10"
+          >
+            <div className="flex flex-col gap-0.5">
+              {/* Home — one anchored link per home-page section */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setHomeOpen(!homeOpen)}
+                  aria-haspopup="true"
+                  aria-expanded={homeOpen}
+                  aria-controls="nav-home-menu-mobile"
+                  className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-gold-400 transition-colors hover:bg-white/5"
+                >
+                  {t['nav.home']}
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform duration-300 ${homeOpen ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                <div
+                  id="nav-home-menu-mobile"
+                  className={`ml-4 flex flex-col gap-0.5 border-l border-white/10 pl-3 overflow-hidden transition-all duration-300 ease-out ${
+                    homeOpen ? 'max-h-[500px] opacity-100 mt-1' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  {HOME_SECTIONS.map((id) => (
+                    <Link
+                      key={id}
+                      to={homeHref(lang, id)}
+                      onClick={() => goToSection(id)}
+                      className="rounded-lg px-3 py-2 text-sm font-medium text-pine-100/90 transition-colors hover:bg-white/5 hover:text-gold-400"
+                    >
+                      {sectionLabel(lang, id)}
+                    </Link>
+                  ))}
                 </div>
+              </div>
 
-                {/* page-level links */}
-                {pageItems.map((item) => (
-                  <Link
-                    key={item.id}
-                    to={navHref(lang, item.id)}
-                    onClick={() => setOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-sm font-medium text-pine-100/90 hover:bg-white/5 hover:text-gold-400"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+              {/* page-level links */}
+              {pageItems.map((item) => (
+                <Link
+                  key={item.id}
+                  to={navHref(lang, item.id)}
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl px-3 py-2.5 text-sm font-medium text-pine-100/90 transition-colors hover:bg-white/5 hover:text-gold-400"
+                >
+                  {item.label}
+                </Link>
+              ))}
 
-                {/* More — every other routed page */}
-                <div>
-                  <button
-                    type="button"
-                    onClick={() => setMoreOpen(!moreOpen)}
-                    aria-haspopup="true"
-                    aria-expanded={moreOpen}
-                    aria-controls="nav-more-menu-mobile"
-                    className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-gold-400"
-                  >
-                    {t['nav.more']}
-                    <ChevronDown size={16} className={`transition-transform ${moreOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  {moreOpen && (
-                    <div id="nav-more-menu-mobile" className="mt-1 ml-4 flex flex-col gap-1 border-l border-white/10 pl-3">
-                      {MORE_PAGES.map((item) => (
-                        <Link
-                          key={item.id}
-                          to={localePath(lang, item.path)}
-                          onClick={() => setOpen(false)}
-                          className="rounded-lg px-3 py-2 text-sm font-medium text-pine-100/90 hover:bg-white/5 hover:text-gold-400"
-                        >
-                          {t[item.label]}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </nav>
-              <div className="mt-4 flex items-center gap-3">
-                <div className="flex flex-1 gap-3">
-                  <a
-                    href={LINKS.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => track('click', { event_category: 'outbound', event_label: 'linkedin' })}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-full bg-gold-500 px-4 py-2.5 text-sm font-semibold text-pine-950"
-                  >
-                    <Linkedin size={15} /> {t['nav.linkedin']}
-                  </a>
-                  <a
-                    href={LINKS.youtube}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => track('click', { event_category: 'outbound', event_label: 'youtube' })}
-                    className="flex-1 items-center justify-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-ivory"
-                  >
-                    {t['nav.youtube']}
-                  </a>
+              {/* More — every other routed page */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setMoreOpen(!moreOpen)}
+                  aria-haspopup="true"
+                  aria-expanded={moreOpen}
+                  aria-controls="nav-more-menu-mobile"
+                  className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-gold-400 transition-colors hover:bg-white/5"
+                >
+                  {t['nav.more']}
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform duration-300 ${moreOpen ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                <div
+                  id="nav-more-menu-mobile"
+                  className={`ml-4 flex flex-col gap-0.5 border-l border-white/10 pl-3 overflow-hidden transition-all duration-300 ease-out ${
+                    moreOpen ? 'max-h-[800px] opacity-100 mt-1' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  {MORE_PAGES.map((item) => (
+                    <Link
+                      key={item.id}
+                      to={localePath(lang, item.path)}
+                      onClick={() => setOpen(false)}
+                      className="rounded-lg px-3 py-2 text-sm font-medium text-pine-100/90 transition-colors hover:bg-white/5 hover:text-gold-400"
+                    >
+                      {t[item.label]}
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>
+          </nav>
+
+          {/* drawer footer — CTA buttons */}
+          <div className="mx-5 border-t border-white/10" />
+          <div className="flex gap-3 px-5 py-5">
+            <a
+              href={LINKS.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => track('click', { event_category: 'outbound', event_label: 'linkedin' })}
+              className="flex flex-1 items-center justify-center gap-2 rounded-full bg-gold-500 px-4 py-2.5 text-sm font-semibold text-pine-950 transition-transform active:scale-95"
+            >
+              <Linkedin size={15} /> {t['nav.linkedin']}
+            </a>
+            <a
+              href={LINKS.youtube}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => track('click', { event_category: 'outbound', event_label: 'youtube' })}
+              className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-ivory transition-transform active:scale-95"
+            >
+              {t['nav.youtube']}
+            </a>
           </div>
-        )}
+        </aside>
       </div>
-    </header>
     </>
   );
 }
