@@ -39,15 +39,29 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '288', en: '288' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '32', en: '32' }, label: { fr: 'versions', en: 'versions' } },
-    { value: { fr: '375', en: '375' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
-    { value: { fr: '116', en: '116' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
+    { value: { fr: '291', en: '291' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '33', en: '33' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '377', en: '377' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
+    { value: { fr: '118', en: '118' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 23 août 2026', en: '16 Jul – 23 Aug 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-08-23',
+    version: '3.1',
+    label: { fr: '23 août 2026', en: '23 August 2026' },
+    title: { fr: 'Page parcours dédiée — 118 pages', en: 'Dedicated career page — 118 pages' },
+    fr: [
+      'Parcours — `src/pages/Career.tsx` : page `/parcours` dédiée avec hero, frise `CareerTimeline` interactive et CTA CV/portfolio — SEO `CAREER_SEO`, `routeLastmod` max, `PRERENDER_ROUTES` 59×2=118, `vercel.json` FR/EN, `MORE_PAGES` + `nav.career` (FR Parcours / EN Career).',
+      'Build — 118 pages + podcast + sitemap(118) + sw(180) — `tsc 0/lint 0`.',
+    ],
+    en: [
+      'Career — `src/pages/Career.tsx`: dedicated `/parcours` page with hero, interactive `CareerTimeline` and CV/portfolio CTAs — `CAREER_SEO`, `routeLastmod` max, `PRERENDER_ROUTES` 59×2=118, `vercel.json` FR/EN, `MORE_PAGES` + `nav.career` (FR Parcours / EN Career).',
+      'Build — 118 pages + podcast + sitemap(118) + sw(180) — `tsc 0/lint 0`.',
+    ],
+  },
   {
     date: '2026-08-23',
     version: '3.0',
