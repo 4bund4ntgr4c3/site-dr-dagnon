@@ -39,8 +39,8 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '284', en: '284' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '30', en: '30' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '286', en: '286' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '31', en: '31' }, label: { fr: 'versions', en: 'versions' } },
     { value: { fr: '373', en: '373' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
     { value: { fr: '114', en: '114' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 23 août 2026', en: '16 Jul – 23 Aug 2026' } },
@@ -48,6 +48,28 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-08-23',
+    version: '2.9',
+    label: { fr: '23 août 2026', en: '23 August 2026' },
+    title: { fr: 'Recherche avancée, haute-contraste, LinkedIn & OG auto', en: 'Advanced search, high-contrast, LinkedIn & auto OG' },
+    fr: [
+      'Recherche avancée — `src/components/SearchModal.tsx` : filtres par type (tout/tribune/projet/publication/media/page) avec chips, état `kindFilter`, résultats filtrés avant tri — UX sans réseau supplémentaire.',
+      'Haute-contraste — `src/components/HighContrastToggle.tsx` + `src/index.css:449` : classe `html.high-contrast` (contrast 1.18, textes `pine-900/70→#0c2e2a`, borders +28 %, outline 3px) — toggle Eye à côté du ThemeToggle, persistant localStorage, `track(high_contrast)`.',
+      'LinkedIn feed — `src/components/LinkedinFeed.tsx` : 3 posts statiques (AIRID 21/07, Harvard 17/06, tribune 01/05) avec lien `LINKS.linkedin` — intégré Home entre Podcast et Newsletter.',
+      'OG auto — `scripts/gen-og.mjs` génère `og/tribune.*.jpg` et `og/projet.*.jpg` à chaque build, précachés (173 URLs) — pas de dépendance réseau au runtime.',
+      'Dashboard déjà en place — `/admin` affiche `searchTotal/topQueries/recentQueries` depuis `api/admin.ts` (KV) — pas de nouvelle fonction, limite Hobby 8 respectée.',
+      'Build — 114 pages, 173 precached, `tsc 0/lint 0/373 verts`.',
+    ],
+    en: [
+      'Advanced search — `src/components/SearchModal.tsx`: kind filters (all/op-ed/project/publication/media/page) with chips, `kindFilter` state, filtered before sort — no extra network.',
+      'High-contrast — `src/components/HighContrastToggle.tsx` + `src/index.css:449`: `html.high-contrast` (contrast 1.18, texts `pine-900/70→#0c2e2a`, borders +28 %, outline 3px) — Eye toggle next to ThemeToggle, persisted, `track(high_contrast)`.',
+      'LinkedIn feed — `src/components/LinkedinFeed.tsx`: 3 static posts (AIRID 21/07, Harvard 17/06, op-ed 01/05) with `LINKS.linkedin` — embedded Home between Podcast and Newsletter.',
+      'Auto OG — `scripts/gen-og.mjs` generates `og/tribune.*.jpg` and `og/project.*.jpg` on each build, precached (173 URLs) — no runtime network.',
+      'Dashboard already live — `/admin` shows `searchTotal/topQueries/recentQueries` from `api/admin.ts` (KV) — no new function, Hobby 8 limit kept.',
+      'Build — 114 pages, 173 precached, `tsc 0/lint 0/373 green`.',
+    ],
+  },
   {
     date: '2026-08-23',
     version: '2.8',
