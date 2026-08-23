@@ -415,7 +415,7 @@ export function Navbar() {
       {/* ── mobile drawer ── always mounted for CSS transitions ── */}
       <div
         ref={drawerRef}
-        className={`fixed inset-0 z-[60] lg:hidden ${
+        className={`fixed inset-0 z-[60] overflow-hidden lg:hidden ${
           open ? 'visible' : 'invisible pointer-events-none delay-500'
         }`}
         aria-hidden={!open}

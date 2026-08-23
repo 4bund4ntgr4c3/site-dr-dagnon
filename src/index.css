@@ -36,9 +36,11 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 5.5rem;
+    overflow-x: hidden;
   }
   body {
     @apply bg-ivory text-ink font-sans antialiased;
+    overflow-x: hidden;
   }
   /* Reading mode: the A−/A+ control in the article pages sets
      --reader-scale on <html>; this rule applies it to the article body only,
