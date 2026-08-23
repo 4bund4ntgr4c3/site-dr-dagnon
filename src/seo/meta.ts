@@ -404,6 +404,19 @@ export const PORTFOLIO_SEO: Record<Lang, { title: string; description: string; k
   },
 };
 
+export const OFFLINE_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Hors-ligne — Contenu disponible sans connexion',
+    description: 'Mode hors-ligne : recherche, pages et médias en cache restent accessibles sans connexion.',
+    keywords: 'hors-ligne, offline, PWA, cache, Seynude Dagnon, contenu disponible',
+  },
+  en: {
+    title: 'Offline — Cached content available',
+    description: 'Offline mode: search, pages and cached media stay available without connection.',
+    keywords: 'offline, PWA, cache, Seynude Dagnon, cached content',
+  },
+};
+
 /** Short headline for the <title> budget: whatever comes after a colon is
     treated as a subtitle and dropped (a French colon has a space before it,
     hence the trim). */
@@ -703,6 +716,8 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
       items.push({ name: lang === 'fr' ? 'Bibliographie' : 'Bibliography', url: absUrl(lang, '/bibliography') });
     } else if (path === '/portfolio') {
       items.push({ name: lang === 'fr' ? 'Portfolio complet' : 'Full portfolio', url: absUrl(lang, '/portfolio') });
+    } else if (path === '/offline') {
+      items.push({ name: 'Offline', url: absUrl(lang, '/offline') });
     }
   return {
     '@context': 'https://schema.org',
@@ -1041,6 +1056,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isAccessibility = route === '/accessibility';
   const isBibliography = route === '/bibliography';
   const isPortfolio = route === '/portfolio';
+  const isOffline = route === '/offline';
   const isAdmin = route === '/admin';
   const isPreferences = route === '/newsletter/preferences';
   const isChangelog = route === '/changelog';
@@ -1125,6 +1141,8 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                           ? BIBLIOGRAPHY_SEO[lang]
                           : isPortfolio
                             ? PORTFOLIO_SEO[lang]
+                          : isOffline
+                            ? OFFLINE_SEO[lang]
                           : isPublicationsPdf
                             ? PUBLICATIONS_PDF_SEO[lang]
                         : isAdmin
@@ -1194,7 +1212,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                   ? projectJsonLd(lang, project, url)
                   : photo
                     ? imageObjectJsonLd(lang, photo, url)
-                    : isMedia || isAgenda || isTribunes || isProjects || isPresse || isInvite || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio
+                    : isMedia || isAgenda || isTribunes || isProjects || isPresse || isInvite || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio || isOffline
                       ? collectionPageJsonLd(lang, data.title, data.description, url)
                       : null,
     },
@@ -1230,6 +1248,7 @@ export const PRERENDER_ROUTES = [
   '/accessibility',
     '/bibliography',
     '/portfolio',
+    '/offline',
     '/publications-pdf',
 ];
 
@@ -1254,6 +1273,7 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/accessibility': { priority: '0.3', changefreq: 'yearly' },
   '/bibliography': { priority: '0.7', changefreq: 'weekly' },
   '/portfolio': { priority: '0.8', changefreq: 'monthly' },
+  '/offline': { priority: '0.3', changefreq: 'yearly' },
   '/publications-pdf': { priority: '0.6', changefreq: 'monthly' },
   ...Object.fromEntries(
     TRIBUNES.map((t) => [`/tribunes/${t.slug}`, { priority: '0.7', changefreq: 'monthly' }]),

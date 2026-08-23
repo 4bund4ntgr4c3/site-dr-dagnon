@@ -7,6 +7,7 @@ import { SwUpdateToast } from '@/components/SwUpdateToast'
 import { Seo } from '@/components/Seo'
 import { NotFoundView } from '@/components/NotFoundView'
 import { PageErrorBoundary } from '@/components/PageErrorBoundary'
+import { OfflineIndicator } from '@/components/OfflineIndicator'
 import { LanguageProvider } from '@/i18n/LanguageContext'
 import { useLang } from '@/i18n/useLang'
 import { UI } from '@/i18n/translations'
@@ -40,6 +41,7 @@ export interface AppPages {
   Accessibility: ComponentType
   Bibliography: ComponentType
   Portfolio: ComponentType
+  Offline: ComponentType
   PublicationsPdf: ComponentType
   /** client-only page (never prerendered) — absent from the server's pages */
   Admin?: ComponentType
@@ -95,6 +97,7 @@ const routesFor = (Pages: AppPages) => [
   <Route key="accessibility" path="accessibility" element={<Pages.Accessibility />} />,
   <Route key="bibliography" path="bibliography" element={<Pages.Bibliography />} />,
   <Route key="portfolio" path="portfolio" element={<Pages.Portfolio />} />,
+  <Route key="offline" path="offline" element={<Pages.Offline />} />,
   <Route key="publications-pdf" path="publications-pdf" element={<Pages.PublicationsPdf />} />,
   ...(Pages.Admin ? [<Route key="admin" path="admin" element={<Pages.Admin />} />] : []),
   ...(Pages.Changelog ? [<Route key="changelog" path="changelog" element={<Pages.Changelog />} />] : []),
@@ -119,6 +122,7 @@ export default function App({ pages }: { pages: AppPages }) {
       <Footer />
       <ScrollToTop />
       <SwUpdateToast />
+      <OfflineIndicator />
     </LanguageProvider>
   )
 }

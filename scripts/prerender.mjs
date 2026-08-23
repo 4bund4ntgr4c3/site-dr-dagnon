@@ -417,7 +417,7 @@ self.addEventListener('fetch', (event) => {
           }
           return fresh;
         } catch {
-          return (await caches.match(request)) || (await caches.match('/')) || Response.error();
+          return (await caches.match(request)) || (await caches.match('/offline')) || (await caches.match('/')) || Response.error();
         }
       })(),
     );

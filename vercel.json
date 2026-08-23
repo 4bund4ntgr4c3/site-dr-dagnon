@@ -330,6 +330,10 @@
       "destination": "/portfolio/index.html"
     },
     {
+      "source": "/offline",
+      "destination": "/offline/index.html"
+    },
+    {
       "source": "/publications-pdf",
       "destination": "/publications-pdf/index.html"
     },
@@ -452,6 +456,10 @@
     {
       "source": "/fr/portfolio",
       "destination": "/fr/portfolio/index.html"
+    },
+    {
+      "source": "/fr/offline",
+      "destination": "/fr/offline/index.html"
     },
     {
       "source": "/fr/publications-pdf",

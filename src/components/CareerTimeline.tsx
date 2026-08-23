@@ -32,10 +32,10 @@ export function CareerTimeline() {
                     <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold ${exp.current ? 'bg-gold-500 text-pine-950' : 'bg-pine-950 text-gold-400'}`}>
                       <Calendar size={11} /> {exp.period}
                     </span>
-                    <span className="inline-flex items-center gap-1 text-pine-900/60"><MapPin size={11} /> {exp.org}</span>
+                    <span className="inline-flex items-center gap-1 text-pine-900/70"><MapPin size={11} /> {exp.org}</span>
                   </span>
                   <span className="mt-2 block font-display text-[15px] font-semibold leading-tight text-pine-950">{exp.role}</span>
-                  <span className="mt-1 block text-sm leading-relaxed text-pine-900/70 line-clamp-2">{exp.text}</span>
+                  <span className="mt-1 block text-sm leading-relaxed text-pine-900 line-clamp-2">{exp.text}</span>
                 </span>
                 <ChevronDown size={18} className={`mt-1 shrink-0 text-gold-600 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
               </button>
@@ -44,7 +44,7 @@ export function CareerTimeline() {
                 <div className="ml-1 mt-3 rounded-xl border border-pine-900/5 bg-pine-50 p-4 sm:ml-2 sm:p-5">
                   <ul className="space-y-1.5">
                     {exp.details.responsibilities.slice(0, 4).map((r, j) => (
-                      <li key={j} className="flex gap-2 text-sm leading-relaxed text-pine-900/75">
+                      <li key={j} className="flex gap-2 text-sm leading-relaxed text-pine-900">
                         <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gold-500" aria-hidden="true" />
                         <span>{r}</span>
                       </li>
@@ -56,7 +56,7 @@ export function CareerTimeline() {
                     </p>
                   )}
                   {exp.details.projects && exp.details.projects.length > 0 && (
-                    <p className="mt-3 text-xs text-pine-900/55">
+                    <p className="mt-3 text-xs text-pine-900/70">
                       {lang === 'fr' ? `${exp.details.projects.length} subventions` : `${exp.details.projects.length} grants`} · {exp.details.projects.slice(0, 2).map((p) => p.name).join(' · ')}
                       {exp.details.projects.length > 2 ? ' …' : ''}
                     </p>

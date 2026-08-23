@@ -73,6 +73,7 @@ const ROUTES = [
   '/accessibility',
   '/bibliography',
   '/portfolio',
+  '/offline',
   '/publications-pdf',
 ];
 

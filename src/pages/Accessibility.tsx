@@ -54,7 +54,7 @@ export default function AccessibilityPage() {
                     </h2>
                     <div className="mt-5 space-y-3.5">
                       {section.body[lang].map((paragraph, j) => (
-                        <p key={j} className="text-[14.5px] leading-relaxed text-ink/80">
+                        <p key={j} className="text-[14.5px] leading-relaxed text-pine-900">
                           {paragraph}
                         </p>
                       ))}
