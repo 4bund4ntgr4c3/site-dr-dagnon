@@ -4,6 +4,6 @@ export const LINKS = {
   youtube: 'https://www.youtube.com/@seynudedagnon6233',
   facebook: 'https://www.facebook.com/jeanfortune.dagnon/',
   x: 'https://x.com/SeynudeD',
-  orcid: 'https://orcid.org/0009-0007-5357-2009',
-  scholar: 'https://scholar.google.com/citations?user=5Fk0ALIAAAAJ',
+  orcid: 'https://orcid.org/0009-0006-5022-1399',
+  scholar: 'https://scholar.google.com/citations?user=Q6NT-4gAAAAJ',
 };
