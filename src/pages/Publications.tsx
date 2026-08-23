@@ -92,15 +92,16 @@ export default function PublicationsPage() {
             <p className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
               {t['pubPage.intro']}
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap items-center gap-3">
               {LINKS.orcid && (
                 <a
                   href={LINKS.orcid}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-pine-100/20 bg-white/10 px-4 py-2 text-sm font-medium text-pine-100 backdrop-blur-sm transition-all hover:border-gold-400/50 hover:bg-gold-500/10 hover:text-gold-300"
+                  className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/15 px-4 py-2 text-sm font-medium text-emerald-200 backdrop-blur-sm transition-all hover:border-emerald-400 hover:bg-emerald-500/25 hover:text-emerald-100"
                 >
-                  <span className="text-[11px] font-bold tracking-wider">ORCID</span>
+                  <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[11.5px] font-bold tracking-wider">ORCID: 0009-0006-5022-1399</span>
                   <ExternalLink size={13} />
                 </a>
               )}
@@ -111,10 +112,27 @@ export default function PublicationsPage() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-full border border-pine-100/20 bg-white/10 px-4 py-2 text-sm font-medium text-pine-100 backdrop-blur-sm transition-all hover:border-gold-400/50 hover:bg-gold-500/10 hover:text-gold-300"
                 >
-                  <span className="text-[11px] font-bold tracking-wider">Google Scholar</span>
+                  <span className="text-[11.5px] font-bold tracking-wider">Google Scholar</span>
                   <ExternalLink size={13} />
                 </a>
               )}
+              <a
+                href="https://www.wikidata.org/wiki/Q141154548"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-pine-100/20 bg-white/10 px-4 py-2 text-sm font-medium text-pine-100 backdrop-blur-sm transition-all hover:border-gold-400/50 hover:bg-gold-500/10 hover:text-gold-300"
+              >
+                <span className="text-[11.5px] font-bold tracking-wider">Wikidata Q141154548</span>
+                <ExternalLink size={13} />
+              </a>
+              <a
+                href="/dagnon-publications.bib"
+                download="dagnon-publications.bib"
+                className="inline-flex items-center gap-2 rounded-full border border-gold-400/40 bg-gold-500/15 px-4 py-2 text-sm font-semibold text-gold-300 backdrop-blur-sm transition-all hover:border-gold-400 hover:bg-gold-500/25 hover:text-gold-200"
+              >
+                <FileText size={14} />
+                <span className="text-[11.5px] tracking-wider">{lang === 'fr' ? 'Exporter BibTeX (.bib)' : 'Export BibTeX (.bib)'}</span>
+              </a>
             </div>
           </Reveal>
         </div>

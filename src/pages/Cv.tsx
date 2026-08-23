@@ -9,6 +9,7 @@ import { IDENTITY, EXPERIENCE, EDUCATION, TEACHING_LIST, TRAINING_LIST, AWARDS }
 import { PUB_ITEMS } from '@/data/publications';
 import { CV_PROFILE, CV_REVIEWS, CV_MEMBERSHIPS } from '@/data/cv';
 import { LINKS } from '@/data/content';
+import { ShareButtons } from '@/components/ShareButtons';
 import { localePath } from '@/i18n/routing';
 import type { Lang } from '@/i18n/lang';
 
@@ -117,6 +118,30 @@ export default function Cv() {
                 {LINKS.linkedin.replace(/^https?:\/\/(www\.)?/, '')}
               </a>
             </li>
+            {LINKS.orcid && (
+              <li>
+                <a
+                  className="underline decoration-emerald-700/40 underline-offset-2 hover:decoration-emerald-700 font-medium text-emerald-800"
+                  href={LINKS.orcid}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  ORCID: {LINKS.orcid.replace('https://orcid.org/', '')}
+                </a>
+              </li>
+            )}
+            {LINKS.scholar && (
+              <li>
+                <a
+                  className="underline decoration-pine-900/30 underline-offset-2 hover:decoration-gold-500"
+                  href={LINKS.scholar}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Google Scholar
+                </a>
+              </li>
+            )}
             <li>
               <Link className="underline decoration-pine-900/30 underline-offset-2 hover:decoration-gold-500" to={localePath(lang, '/')}>
                 seynudedagnon.com
@@ -261,6 +286,21 @@ export default function Cv() {
           {t['cvPage.refs']}
         </p>
         </article>
+
+        {/* share & print bar (screen only) */}
+        <div className="mx-auto mt-8 flex max-w-4xl flex-wrap items-center justify-between gap-4 px-4 print:hidden">
+          <ShareButtons
+            title={`CV — ${t['name.full']}`}
+            url={lang === 'fr' ? 'https://seynudedagnon.com/fr/cv' : 'https://seynudedagnon.com/cv'}
+          />
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="inline-flex items-center gap-2 rounded-full border border-pine-900/15 bg-white px-5 py-2.5 text-xs font-semibold text-pine-900 shadow-card transition-all hover:-translate-y-0.5 hover:border-gold-500 hover:text-gold-700"
+          >
+            <Printer size={14} /> {t['cvPage.print']}
+          </button>
+        </div>
       </section>
     </main>
   );
