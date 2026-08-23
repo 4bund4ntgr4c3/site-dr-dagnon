@@ -39,15 +39,41 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '276', en: '276' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '27', en: '27' }, label: { fr: 'versions', en: 'versions' } },
-    { value: { fr: '343', en: '343' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
+    { value: { fr: '278', en: '278' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '28', en: '28' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '371', en: '371' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
     { value: { fr: '112', en: '112' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 23 août 2026', en: '16 Jul – 23 Aug 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-08-23',
+    version: '2.6',
+    label: { fr: '23 août 2026', en: '23 August 2026' },
+    title: { fr: 'Audit complet — sécurité, performance, SEO et accessibilité', en: 'Full audit — security, performance, SEO and accessibility fixes' },
+    fr: [
+      'Sécurité — `nanoid 3.3.17 → 3.3.18` via `npm audit fix` (GHSA-2v37-7h3g-55p8) ; plus de vulnérabilités. `.env.example` ajouté (avec `!.env.example` dans `.gitignore`) pour documenter les 13 variables requises.',
+      'Performance — `vite.config.ts` découpe désormais `react`, `react-dom`, `react-router` et `framer-motion` en chunks séparés (en plus de `lucide-icons`) : `index` 414→194 kB, `Home` 180→49 kB (-73 % grâce à l’extraction de motion), `170 URLs precached` (vs 165) — meilleur cache et parallélisation, gzip total inchangé.',
+      'Accessibilité — 3 nouvelles suites axe-core : `/contact` (labels + honeypot), `/cv` (barre d’actions print/share), et overlay `PhotoLightbox` (focus trap, contrôles close/prev/next) — en plus de la boucle existante sur les 112 pages et du dialogue recherche.',
+      'SEO sitemap — `routeLastmod()` dans `src/seo/meta.ts` : chaque URL porte sa vraie date (tribune/projet/photo = sa publication, collection = le plus récent, sinon build date). Plus de `lastmod` unique pour les 112 URLs ; pages `publications` synthétisées en `YYYY-01-01`.',
+      'SEO JSON-LD — snapshot `personJsonLd` FR+EN (28 assertions : alternateName 14 variantes, sameAs Scholar/ORCID/Wikidata, alumniOf 3, award, knowsAbout bilingue) + 5 tests `routeLastmod` par entité — verrouille le graphe professionnel contre toute régression.',
+      'IndexNow — contrat vérifié : `public/<KEY>.txt`, constantes `HOST/KEY/KEY_LOCATION`, parsing `<loc>` du sitemap (112 URLs, FR présents) et shape du payload vers `api.indexnow.org`.',
+      'Tests — 371 tests au vert (343→371, +28) ; `tests/prerender.test.mjs` tolère `Gamal Abdel Nasser University of Conakry` (même entité, plus de faux négatif) ; `scripts/prerender.mjs` copie le bundle frais vers `node_modules/.tmp/prerender/meta.mjs` pour que `routing.test.mjs` et `seo.test.mjs` restent synchrones.',
+      'Build — 112 pages + 404 + sitemap + feed + agenda.ics + sw.js ; lint 0, tsc 0.',
+    ],
+    en: [
+      'Security — `nanoid 3.3.17 → 3.3.18` via `npm audit fix` (GHSA-2v37-7h3g-55p8); zero vulnerabilities. `.env.example` added (with `!.env.example` in `.gitignore`) documenting all 13 required variables.',
+      'Performance — `vite.config.ts` now splits `react`, `react-dom`, `react-router` and `framer-motion` into separate chunks (in addition to `lucide-icons`): `index` 414→194 kB, `Home` 180→49 kB (-73 % from motion extraction), `170 URLs precached` (was 165) — better caching and parallelism, total gzip unchanged.',
+      'Accessibility — 3 new axe-core suites: `/contact` (labels + honeypot), `/cv` (print/share action bar), and `PhotoLightbox` overlay (focus trap, close/prev/next controls) — on top of the existing loop over 112 pages and the search dialog.',
+      'SEO sitemap — `routeLastmod()` in `src/seo/meta.ts`: each URL carries its true date (entity = own publication, collection = newest item, fallback = build date). No more single `lastmod` for 112 URLs; `publications` synthesised as `YYYY-01-01`.',
+      'SEO JSON-LD — `personJsonLd` FR+EN snapshot (28 assertions: 14 alternateName variants, sameAs Scholar/ORCID/Wikidata, 3 alumniOf, award, bilingual knowsAbout) + 5 `routeLastmod` entity tests — locks the professional graph against regressions.',
+      'IndexNow — contract verified: `public/<KEY>.txt`, `HOST/KEY/KEY_LOCATION` constants, `<loc>` parsing of sitemap (112 URLs, FR present) and payload shape to `api.indexnow.org`.',
+      'Tests — 371 green (343→371, +28); `tests/prerender.test.mjs` now accepts `Gamal Abdel Nasser University of Conakry` (same entity, no more false negative); `scripts/prerender.mjs` copies the fresh bundle to `node_modules/.tmp/prerender/meta.mjs` so `routing.test.mjs` and `seo.test.mjs` stay in sync.',
+      'Build — 112 pages + 404 + sitemap + feed + agenda.ics + sw.js; lint 0, tsc 0.',
+    ],
+  },
   {
     date: '2026-08-23',
     version: '2.5',

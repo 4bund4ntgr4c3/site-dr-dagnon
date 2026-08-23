@@ -263,7 +263,8 @@ test('the Person schema carries no unreachable university URL', () => {
   eachPage(({ id, html }) => {
     const personBlock = html.match(/<script id="person-jsonld"[^>]*>([\s\S]*?)<\/script>/)?.[1];
     const alumniOf = JSON.parse(personBlock).alumniOf ?? [];
-    const conakry = alumniOf.find((a) => a.name === 'University of Conakry');
+    // Matches either "University of Conakry" or the full "Gamal Abdel Nasser University of Conakry"
+    const conakry = alumniOf.find((a) => a.name.includes('Conakry'));
     assert.ok(conakry, `${id}: University of Conakry entry missing`);
     assert.ok(!conakry.url, `${id}: still links to the dead univconakry.edu.gn — remove until a working URL is known`);
   });

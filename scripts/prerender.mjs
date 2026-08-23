@@ -139,6 +139,12 @@ async function loadMeta() {
       rollupOptions: { output: { entryFileNames: 'meta.mjs' } },
     },
   });
+  // Keep the test bundle in sync: routing.test.mjs and seo.test.mjs import
+  // from node_modules/.tmp/prerender/meta.mjs, while this build writes to
+  // node_modules/.tmp/prerender-meta/meta.mjs. Copy so both stay fresh.
+  const testBundleDir = path.join(root, 'node_modules', '.tmp', 'prerender');
+  fs.mkdirSync(testBundleDir, { recursive: true });
+  fs.copyFileSync(path.join(tmpMeta, 'meta.mjs'), path.join(testBundleDir, 'meta.mjs'));
   return import(pathToFileURL(path.join(tmpMeta, 'meta.mjs')).href);
 }
 
@@ -173,6 +179,7 @@ async function run() {
     die(`SEO markers not found in dist/index.html — expected "${START}" … "${END}" (check index.html).`);
   }
 
+  const __meta = await loadMeta();
   const {
     pageMeta,
     localePath,
@@ -184,7 +191,7 @@ async function run() {
     SITE_URL,
     buildRss,
     buildIcsFeed,
-  } = await loadMeta();
+  } = __meta;
   const { renderPage } = await loadRenderer();
   const image = `${SITE_URL}/og-image.jpg`;
   const feedUrl = `${SITE_URL}/feed.xml`;
@@ -242,16 +249,19 @@ async function run() {
   fs.writeFileSync(path.join(dist, '404.html'), notFoundHtml, 'utf-8');
 
   /* The sitemap is generated from the same route list, so it can no longer
-     drift from what is actually deployed. */
-  const lastmod = new Date().toISOString().slice(0, 10);
+     drift from what is actually deployed. Each route gets its own lastmod:
+     entity pages use their publication date, collection pages use the newest
+     item they list, everything else falls back to the build date. */
+  const lastmodFallback = new Date().toISOString().slice(0, 10);
   const urls = PRERENDER_LANGS.flatMap((lang) =>
     PRERENDER_ROUTES.map((route) => {
       const meta = pageMeta(lang, route);
       const { priority, changefreq } = ROUTE_PRIORITY[route] || DEFAULT_ROUTE_PRIORITY;
+      const lm = typeof __meta.routeLastmod === 'function' ? __meta.routeLastmod(route, lastmodFallback) : lastmodFallback;
       const alts = meta.alternates
         .map(({ hreflang, href }) => `<xhtml:link rel="alternate" hreflang="${hreflang}" href="${href}"/>`)
         .join('');
-      return `  <url><loc>${meta.url}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority>${alts}</url>`;
+      return `  <url><loc>${meta.url}</loc><lastmod>${lm}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority>${alts}</url>`;
     }),
   );
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`;

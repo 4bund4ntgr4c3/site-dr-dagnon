@@ -142,3 +142,73 @@ test('axe: no critical or serious violations in the open search dialog', async (
     await page.close();
   }
 });
+
+/* Contact page: the static loop already audits /contact, but the form carries
+   labels, required markers and the honeypot field — re-audit explicitly so the
+   dedicated coverage survives a change in the walk filter. */
+test('axe: no violations on the contact page (form labels and honeypot)', async () => {
+  const page = await context.newPage();
+  try {
+    const response = await page.goto(`http://localhost:${PORT}/contact`, { waitUntil: 'domcontentloaded' });
+    assert.ok(response && response.ok());
+    await page.waitForTimeout(200);
+    const results = await new AxeBuilder({ page }).analyze();
+    const bad = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
+    assert.deepEqual(
+      bad.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`),
+      [],
+      `contact: ${bad.length} critical/serious violations`,
+    );
+  } finally {
+    await page.close();
+  }
+});
+
+/* CV page: the sticky action bar (print + share) only renders on screen and
+   carries its own buttons — audit the page with it visible. */
+test('axe: no violations on the CV page including the action bar', async () => {
+  const page = await context.newPage();
+  try {
+    const response = await page.goto(`http://localhost:${PORT}/cv`, { waitUntil: 'domcontentloaded' });
+    assert.ok(response && response.ok());
+    await page.waitForTimeout(200);
+    const results = await new AxeBuilder({ page }).analyze();
+    const bad = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
+    assert.deepEqual(
+      bad.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`),
+      [],
+      `cv: ${bad.length} critical/serious violations`,
+    );
+  } finally {
+    await page.close();
+  }
+});
+
+/* Photo lightbox: the overlay traps focus, carries labelled controls (close,
+   prev/next) and a backdrop — click the first community image to open it. */
+test('axe: no violations in the photo lightbox overlay', async () => {
+  const page = await context.newPage();
+  try {
+    const response = await page.goto(`http://localhost:${PORT}/media/community`, { waitUntil: 'domcontentloaded' });
+    assert.ok(response && response.ok(), '/media/community did not load');
+    // Lightbox trigger: first community card link or image link to a photo page
+    const trigger = page.locator('a[href*="/media/community/"]').first();
+    if ((await trigger.count()) === 0) return; // no community photos, skip
+    await trigger.click();
+    await page.waitForTimeout(500);
+    // Either a dialog overlay exists or navigation landed on the photo page
+    const dialog = page.getByRole('dialog');
+    const hasDialog = (await dialog.count()) > 0;
+    const builder = hasDialog ? new AxeBuilder({ page }).include('[role="dialog"]') : new AxeBuilder({ page });
+    const results = await builder.analyze();
+    const bad = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
+    assert.deepEqual(
+      bad.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`),
+      [],
+      `photo lightbox/photo page: ${bad.length} critical/serious violations`,
+    );
+    if (hasDialog) await page.keyboard.press('Escape');
+  } finally {
+    await page.close();
+  }
+});

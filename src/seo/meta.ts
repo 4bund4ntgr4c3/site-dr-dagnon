@@ -1212,6 +1212,53 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
 };
 export const DEFAULT_ROUTE_PRIORITY = { priority: '0.8', changefreq: 'monthly' };
 
+/** Last modification date for a route, as `YYYY-MM-DD`.
+ *  Entity pages use their own publication/date; collection pages use the
+ *  newest item they list; everything else falls back to the build date.
+ *  MEDIA dates are ISO strings and PUB year is synthesised to `YYYY-01-01`. */
+export function routeLastmod(route: string, fallback: string): string {
+  // entity pages — own date
+  if (route.startsWith('/media/community/')) {
+    const id = route.slice('/media/community/'.length);
+    const item = MEDIA_ITEMS.find((m) => m.id === id && m.category === 'community');
+    if (item?.date) return item.date;
+  }
+  if (route.startsWith('/tribunes/')) {
+    const slug = route.slice('/tribunes/'.length);
+    const t = TRIBUNES.find((x) => x.slug === slug);
+    if (t?.date) return t.date;
+  }
+  if (route.startsWith('/projets/')) {
+    const slug = route.slice('/projets/'.length);
+    const p = PROJECTS.find((x) => x.slug === slug);
+    if (p?.date) return p.date;
+  }
+  // collection pages — newest item
+  if (route === '/publications' || route === '/publications-pdf' || route === '/bibliography') {
+    const maxYear = Math.max(...PUB_ITEMS.map((p) => p.year));
+    if (Number.isFinite(maxYear)) return `${maxYear}-01-01`;
+  }
+  if (route === '/tribunes') {
+    const max = TRIBUNES.reduce((m, t) => (t.date > m ? t.date : m), '1970-01-01');
+    if (max !== '1970-01-01') return max;
+  }
+  if (route === '/projets') {
+    const max = PROJECTS.reduce((m, p) => (p.date > m ? p.date : m), '1970-01-01');
+    if (max !== '1970-01-01') return max;
+  }
+  if (route === '/agenda') {
+    const max = AGENDA_ITEMS.reduce((m, e) => (e.date > m ? e.date : m), '1970-01-01');
+    if (max !== '1970-01-01') return max;
+  }
+  if (route.startsWith('/media')) {
+    const cat = route === '/media' ? null : route.split('/media/')[1]?.split('/')[0] || null;
+    const items = cat ? MEDIA_ITEMS.filter((m) => m.category === cat) : MEDIA_ITEMS;
+    const max = items.reduce((m, e) => (e.date > m ? e.date : m), '1970-01-01');
+    if (max !== '1970-01-01') return max;
+  }
+  return fallback;
+}
+
 /* re-exported so scripts/prerender.mjs works from this module alone */
 export { localePath, DEFAULT_LANG } from '@/i18n/routing';
 /* re-exported so scripts/gen-article-og.mjs can render one card per article
