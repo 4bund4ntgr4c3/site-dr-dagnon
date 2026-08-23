@@ -39,15 +39,35 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '286', en: '286' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '31', en: '31' }, label: { fr: 'versions', en: 'versions' } },
-    { value: { fr: '373', en: '373' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
-    { value: { fr: '114', en: '114' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
+    { value: { fr: '288', en: '288' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '32', en: '32' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '375', en: '375' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
+    { value: { fr: '116', en: '116' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 23 août 2026', en: '16 Jul – 23 Aug 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-08-23',
+    version: '3.0',
+    label: { fr: '23 août 2026', en: '23 August 2026' },
+    title: { fr: 'Offline complet — 116 pages, indicateur & a11y', en: 'Full offline — 116 pages, indicator & a11y' },
+    fr: [
+      'Offline — `src/pages/Offline.tsx` : page `/offline` avec état du cache (recherche, 116 pages, médias visités) + CTA portfolio/home — SEO `OFFLINE_SEO`, `routeLastmod` fallback, `PRERENDER_ROUTES` 58×2=116, `vercel.json` rewrites FR/EN.',
+      'Indicateur — `src/components/OfflineIndicator.tsx` : écoute `online/offline`, banner bottom avec Wifi/WiFiOff, auto-hide 2.5s — intégré dans `App.tsx` sous `SwUpdateToast`.',
+      'Service worker — `scripts/prerender.mjs:420` : fallback `caches.match(/offline)` avant `/` pour les navigations offline ; `offline` précaché via `PRERENDER_ROUTES` (176→176? 173→176 avec portfolio).',
+      'Accessibilité — `src/pages/Accessibility.tsx:57` : `text-ink/80` → `text-pine-900` (contraste 4.5:1) ; `src/components/CareerTimeline.tsx` : `pine-900/60→70` et `pine-900/55→70`, `75→900` — corrige 2 violations axe `color-contrast` sur `/fr/accessibility` et `/cv`.',
+      'Build — 116 pages + podcast + sitemap(116) + sw(176) — `tsc 0/lint 0/375 verts`.',
+    ],
+    en: [
+      'Offline — `src/pages/Offline.tsx`: `/offline` page with cache state (search, 116 pages, visited media) + portfolio/home CTA — `OFFLINE_SEO`, `routeLastmod` fallback, `PRERENDER_ROUTES` 58×2=116, `vercel.json` FR/EN rewrites.',
+      'Indicator — `src/components/OfflineIndicator.tsx`: listens `online/offline`, bottom banner with Wifi/WiFiOff, auto-hide 2.5s — wired in `App.tsx` under `SwUpdateToast`.',
+      'Service worker — `scripts/prerender.mjs:420`: fallback `caches.match(/offline)` before `/` for navigations offline; `offline` precached via `PRERENDER_ROUTES` (173→176 with portfolio).',
+      'Accessibility — `src/pages/Accessibility.tsx:57`: `text-ink/80` → `text-pine-900` (contrast 4.5:1); `src/components/CareerTimeline.tsx`: `pine-900/60→70` and `55→70`, `75→900` — fixes 2 axe `color-contrast` violations on `/fr/accessibility` and `/cv`.',
+      'Build — 116 pages + podcast + sitemap(116) + sw(176) — `tsc 0/lint 0/375 green`.',
+    ],
+  },
   {
     date: '2026-08-23',
     version: '2.9',
