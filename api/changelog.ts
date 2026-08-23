@@ -39,7 +39,7 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '266', en: '266' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '267', en: '267' }, label: { fr: 'commits', en: 'commits' } },
     { value: { fr: '27', en: '27' }, label: { fr: 'versions', en: 'versions' } },
     { value: { fr: '343', en: '343' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
     { value: { fr: '112', en: '112' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
@@ -59,7 +59,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
       'Fonctions serverless — réduction de 14 à 8 fonctions par fusion ciblée : contact absorbe verify-phone, push fusionne push-subscribe et push-send, newsletter absorbe newsletter-confirm, newsletter-unsubscribe et newsletter-prefs. Dispatch par path, rewrites vercel.json mises à jour. Limite Hobby Vercel respectée.',
       'Dark mode corrigé — le corps des entrées utilisait text-ink/80, la seule opacité sans override dark dans index.css ; ajout de .dark .text-ink/80 (rgba(236,236,236,0.84)). Corrige aussi les pages Legal et Accessibilité qui partageaient le même motif.',
       'Timeline centrée — les points des timelines Changelog et Tribunes étaient décalés de ~5 px par rapport à la ligne verticale ; recalculé à -43 px (Changelog, point 20 px) et -41 px / -57 px (Tribunes, point 16 px) en fonction du padding-left et du border-l.',
-      'SEO enrichi — variations de nom ajoutées aux keywords bilingues (Seynude, Fortuné, Jean-Fortuné, Dr Dagnon, DAGNON, etc.) et au schema.org Person (alternateName étendu, givenName/familyName/additionalName). Schema Person enrichi : honorificPrefix (Dr.), honorificSuffix (MD, MPH), memberOf (AMP), hasOccupation (2 rôles), knowsLanguage (fr/en/de/es), awards (PMI/USAID 2019–2020), alumniOf avec sameAs Wikipedia, knowsAbout élargi (DHIS2, Global Fund, PID, PBO nets, pays cibles).',
+      'SEO enrichi — variations de nom ajoutées aux keywords bilingues (Seynude, Fortuné, Jean-Fortuné, Dr Dagnon, DAGNON, etc.) et au schema.org Person (alternateName étendu, givenName/familyName/additionalName). Schema Person enrichi : honorificPrefix (Dr.), honorificSuffix (MD, MPH), memberOf (AMP), hasOccupation (2 rôles), knowsLanguage (fr/en/de/es), awards (PMI/USAID 2019–2020), alumniOf avec sameAs Wikipedia, knowsAbout élargi (DHIS2, Global Fund, PID, PBO nets, pays cibles). Entité Wikidata officielle (Q141154548) ajoutée au sameAs.',
       'Tests — 343 tests au vert ; lint, tsc et build validés (112 pages, 165 URLs precached).',
     ],
     en: [
@@ -68,7 +68,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
       'Serverless consolidation — reduced from 14 to 8 functions by targeted merging: contact absorbs verify-phone, push merges push-subscribe and push-send, newsletter absorbs newsletter-confirm, newsletter-unsubscribe and newsletter-prefs. Path-based dispatch, Vercel rewrites updated. Hobby limit respected.',
       'Dark mode fixed — entry body text used text-ink/80, the only opacity missing a dark override in index.css; added .dark .text-ink/80 (rgba(236,236,236,0.84)). Also fixes Legal and Accessibility pages that shared the same pattern.',
       'Timeline centering — the Changelog and Tribunes timeline dots were offset ~5 px from the vertical rule; recalculated to -43 px (Changelog, 20 px dot) and -41 px / -57 px (Tribunes, 16 px dot) based on padding-left and border-l width.',
-      'SEO enrichment — name variations added to bilingual keywords (Seynude, Fortune, Jean-Fortune, Dr Dagnon, DAGNON, etc.) and to the schema.org Person (extended alternateName, givenName/familyName/additionalName). Person schema enriched: honorificPrefix (Dr.), honorificSuffix (MD, MPH), memberOf (AMP), hasOccupation (2 roles), knowsLanguage (fr/en/de/es), awards (PMI/USAID 2019–2020), alumniOf with Wikipedia sameAs, expanded knowsAbout (DHIS2, Global Fund, PID, PBO nets, target countries).',
+      'SEO enrichment — name variations added to bilingual keywords (Seynude, Fortune, Jean-Fortune, Dr Dagnon, DAGNON, etc.) and to the schema.org Person (extended alternateName, givenName/familyName/additionalName). Person schema enriched: honorificPrefix (Dr.), honorificSuffix (MD, MPH), memberOf (AMP), hasOccupation (2 roles), knowsLanguage (fr/en/de/es), awards (PMI/USAID 2019–2020), alumniOf with Wikipedia sameAs, expanded knowsAbout (DHIS2, Global Fund, PID, PBO nets, target countries). Official Wikidata entity (Q141154548) added to sameAs.',
       'Tests — 343 tests green; lint, tsc and build validated (112 pages, 165 URLs precached).',
     ],
   },
