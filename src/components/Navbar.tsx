@@ -31,6 +31,7 @@ const BAR_EXCLUDED = ['apropos', 'expertise', 'parcours', 'formation', 'realisat
 /* the pages that live under the "More" dropdown: everything with a route of
    its own that is not a plain bar link — the same set the footer lists */
 const MORE_PAGES = [
+  { id: 'parcours', path: '/parcours', label: 'nav.career' },
   { id: 'cv', path: '/cv', label: 'cvPage.badge' },
   { id: 'presse', path: '/presse', label: 'footer.linkPresse' },
   { id: 'inviter', path: '/inviter', label: 'footer.linkInviter' },

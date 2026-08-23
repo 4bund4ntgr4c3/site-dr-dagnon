@@ -74,6 +74,7 @@ const ROUTES = [
   '/bibliography',
   '/portfolio',
   '/offline',
+  '/parcours',
   '/publications-pdf',
 ];
 

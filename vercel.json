@@ -334,6 +334,10 @@
       "destination": "/offline/index.html"
     },
     {
+      "source": "/parcours",
+      "destination": "/parcours/index.html"
+    },
+    {
       "source": "/publications-pdf",
       "destination": "/publications-pdf/index.html"
     },
@@ -460,6 +464,10 @@
     {
       "source": "/fr/offline",
       "destination": "/fr/offline/index.html"
+    },
+    {
+      "source": "/fr/parcours",
+      "destination": "/fr/parcours/index.html"
     },
     {
       "source": "/fr/publications-pdf",

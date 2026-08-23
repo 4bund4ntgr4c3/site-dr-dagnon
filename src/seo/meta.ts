@@ -417,6 +417,19 @@ export const OFFLINE_SEO: Record<Lang, { title: string; description: string; key
   },
 };
 
+export const CAREER_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Parcours — 17 ans en santé publique & paludisme',
+    description: 'Frise interactive du parcours du Dr. Seynudé Dagnon : Fondation Gates, USAID/PMI, MCDI/ARM3 — 17 ans, 6 postes, distinctions et projets.',
+    keywords: 'parcours Dr Dagnon, carrière Seynude Dagnon, Gates Foundation, USAID PMI, MCDI ARM3, timeline carrière, santé publique, Bénin, Fortuné Dagnon parcours',
+  },
+  en: {
+    title: 'Career — 17 years in public health & malaria',
+    description: 'Interactive career timeline of Dr. Seynudé Dagnon: Gates Foundation, USAID/PMI, MCDI/ARM3 — 17 years, 6 roles, awards and projects.',
+    keywords: 'Seynude Dagnon career, Dr Dagnon timeline, Gates Foundation, USAID PMI, MCDI ARM3, career timeline, public health, Benin, Fortune Dagnon career',
+  },
+};
+
 /** Short headline for the <title> budget: whatever comes after a colon is
     treated as a subtitle and dropped (a French colon has a space before it,
     hence the trim). */
@@ -718,6 +731,8 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
       items.push({ name: lang === 'fr' ? 'Portfolio complet' : 'Full portfolio', url: absUrl(lang, '/portfolio') });
     } else if (path === '/offline') {
       items.push({ name: 'Offline', url: absUrl(lang, '/offline') });
+    } else if (path === '/parcours') {
+      items.push({ name: lang === 'fr' ? 'Parcours' : 'Career', url: absUrl(lang, '/parcours') });
     }
   return {
     '@context': 'https://schema.org',
@@ -1057,6 +1072,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isBibliography = route === '/bibliography';
   const isPortfolio = route === '/portfolio';
   const isOffline = route === '/offline';
+  const isCareer = route === '/parcours';
   const isAdmin = route === '/admin';
   const isPreferences = route === '/newsletter/preferences';
   const isChangelog = route === '/changelog';
@@ -1143,6 +1159,8 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                             ? PORTFOLIO_SEO[lang]
                           : isOffline
                             ? OFFLINE_SEO[lang]
+                          : isCareer
+                            ? CAREER_SEO[lang]
                           : isPublicationsPdf
                             ? PUBLICATIONS_PDF_SEO[lang]
                         : isAdmin
@@ -1212,7 +1230,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                   ? projectJsonLd(lang, project, url)
                   : photo
                     ? imageObjectJsonLd(lang, photo, url)
-                    : isMedia || isAgenda || isTribunes || isProjects || isPresse || isInvite || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio || isOffline
+                    : isMedia || isAgenda || isTribunes || isProjects || isPresse || isInvite || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio || isOffline || isCareer
                       ? collectionPageJsonLd(lang, data.title, data.description, url)
                       : null,
     },
@@ -1249,6 +1267,7 @@ export const PRERENDER_ROUTES = [
     '/bibliography',
     '/portfolio',
     '/offline',
+    '/parcours',
     '/publications-pdf',
 ];
 
@@ -1274,6 +1293,7 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/bibliography': { priority: '0.7', changefreq: 'weekly' },
   '/portfolio': { priority: '0.8', changefreq: 'monthly' },
   '/offline': { priority: '0.3', changefreq: 'yearly' },
+  '/parcours': { priority: '0.8', changefreq: 'monthly' },
   '/publications-pdf': { priority: '0.6', changefreq: 'monthly' },
   ...Object.fromEntries(
     TRIBUNES.map((t) => [`/tribunes/${t.slug}`, { priority: '0.7', changefreq: 'monthly' }]),
@@ -1318,7 +1338,7 @@ export function routeLastmod(route: string, fallback: string): string {
     const maxYear = Math.max(...PUB_ITEMS.map((p) => p.year));
     if (Number.isFinite(maxYear)) return `${maxYear}-01-01`;
   }
-  if (route === '/portfolio') {
+  if (route === '/portfolio' || route === '/parcours') {
     const cand = [
       ...TRIBUNES.map((t) => t.date),
       ...PROJECTS.map((p) => p.date),
