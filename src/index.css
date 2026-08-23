@@ -255,11 +255,17 @@
 .dark .text-ink {
   color: #ececec;
 }
-.dark .text-ink\/75 {
-  color: rgba(236, 236, 236, 0.8);
+.dark .text-ink\/90 {
+  color: rgba(236, 236, 236, 0.92);
+}
+.dark .text-ink\/85 {
+  color: rgba(236, 236, 236, 0.88);
 }
 .dark .text-ink\/80 {
   color: rgba(236, 236, 236, 0.84);
+}
+.dark .text-ink\/75 {
+  color: rgba(236, 236, 236, 0.8);
 }
 .dark .text-ink\/70 {
   color: rgba(236, 236, 236, 0.76);
@@ -269,6 +275,9 @@
 }
 .dark .text-ink\/60 {
   color: rgba(236, 236, 236, 0.68);
+}
+.dark .text-ink\/50 {
+  color: rgba(236, 236, 236, 0.6);
 }
 .dark .text-pine-600 {
   color: #8dbcb4;
@@ -284,7 +293,10 @@
 }
 .dark .bg-gold-500.text-pine-950,
 .dark .bg-gold-500\/90.text-pine-950,
-.dark .from-gold-500.text-pine-950 {
+.dark .from-gold-500.text-pine-950,
+.dark .group:hover .group-hover\:text-pine-950,
+.dark .group-hover\:text-pine-950:hover,
+.dark .hover\:text-pine-950:hover {
   color: #071f1c;
 }
 .dark .text-pine-900 {
@@ -378,33 +390,33 @@
 .dark .placeholder\:text-ink\/65::placeholder {
   color: rgba(236, 236, 236, 0.72);
 }
-  .dark .border-pine-900 {
-    border-color: rgba(255, 255, 255, 0.22);
-  }
-  .dark .border-pine-900\/25 {
-    border-color: rgba(255, 255, 255, 0.26);
-  }
-  .dark .border-pine-900\/20 {
-    border-color: rgba(255, 255, 255, 0.22);
-  }
-  .dark .border-pine-900\/15 {
-    border-color: rgba(255, 255, 255, 0.19);
-  }
-  .dark .border-pine-900\/10 {
-    border-color: rgba(255, 255, 255, 0.16);
-  }
-  .dark .ring-pine-900\/10 {
-    --tw-ring-color: rgba(255, 255, 255, 0.14);
-  }
-  .dark .ring-pine-50 {
-    --tw-ring-color: rgba(240, 247, 245, 0.3);
-  }
-  .dark ::selection {
-    color: #071f1c;
-  }
-  .dark ::-moz-selection {
-    color: #071f1c;
-  }
+.dark .border-pine-900 {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+.dark .border-pine-900\/25 {
+  border-color: rgba(255, 255, 255, 0.26);
+}
+.dark .border-pine-900\/20 {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+.dark .border-pine-900\/15 {
+  border-color: rgba(255, 255, 255, 0.19);
+}
+.dark .border-pine-900\/10 {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.dark .ring-pine-900\/10 {
+  --tw-ring-color: rgba(255, 255, 255, 0.14);
+}
+.dark .ring-pine-50 {
+  --tw-ring-color: rgba(240, 247, 245, 0.3);
+}
+.dark ::selection {
+  color: #071f1c;
+}
+.dark ::-moz-selection {
+  color: #071f1c;
+}
 
 /* Global focus indicator — gold-600 clears 3:1 on the light surfaces, the
    darker dark-mode gold clears it on the grey ramp, and gold buttons get a
