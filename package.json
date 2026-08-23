@@ -14,6 +14,7 @@
     "images": "node scripts/optimize-images.mjs",
     "prerender": "node scripts/prerender.mjs",
     "indexnow": "node scripts/indexnow.mjs",
+    "sync:orcid": "node scripts/sync-orcid.mjs",
     "test": "npm run build && node scripts/run-tests.mjs",
     "test:only": "node scripts/run-tests.mjs",
     "lint": "eslint .",

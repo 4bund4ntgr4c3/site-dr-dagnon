@@ -2,6 +2,7 @@ import { FolderKanban, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
+import { ProjectsMap } from '@/components/ProjectsMap';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
@@ -36,7 +37,15 @@ export default function Projects() {
         </div>
       </section>
 
-      <section className="bg-pine-50 py-16 lg:py-20">
+      <section className="bg-pine-50 py-10 lg:py-12">
+        <div className="mx-auto max-w-6xl px-5 lg:px-8">
+          <Reveal>
+            <ProjectsMap />
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-pine-50 py-10 lg:py-12">
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
           {sorted.length > 0 ? (
             <div className="grid gap-5 lg:grid-cols-2">

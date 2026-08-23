@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import { TrendingUp, ArrowUpRight, BarChart3, Award } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
+import { MalariaBarometer } from '@/components/MalariaBarometer';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
@@ -49,6 +50,15 @@ export default function Impact() {
               </div>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* barometer */}
+      <section className="bg-ivory py-12 lg:py-16">
+        <div className="mx-auto max-w-5xl px-5 lg:px-8">
+          <Reveal>
+            <MalariaBarometer />
+          </Reveal>
         </div>
       </section>
 

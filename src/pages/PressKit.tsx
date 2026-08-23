@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import { Newspaper, Download, Mail, FileText, Image as ImageIcon, Phone, ChevronDown } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
+import { FaqAssistant } from '@/components/FaqAssistant';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
@@ -180,10 +181,15 @@ export default function PressKit() {
             </div>
           </Reveal>
 
+          {/* Assistant — local search over FAQ + site content */}
+          <Reveal>
+            <FaqAssistant />
+          </Reveal>
+
           {/* FAQ — answers stay in the DOM (hidden when closed) so the page
-              body and the FAQPage JSON-LD below it can never disagree; the
-              block is skipped in print so the press-kit PDF stays one clean
-              document */}
+               body and the FAQPage JSON-LD below it can never disagree; the
+               block is skipped in print so the press-kit PDF stays one clean
+               document */}
           <Reveal>
             <div className="print:hidden">
               <h2 className="font-display text-2xl font-semibold text-pine-900">{t['pressePage.faqTitle']}</h2>
