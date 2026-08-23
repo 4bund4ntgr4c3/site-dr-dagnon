@@ -428,8 +428,8 @@ export function Navbar() {
 
         {/* drawer panel */}
         <aside
-          className={`absolute inset-y-0 left-0 flex w-[min(85vw,360px)] flex-col border-r border-white/10 bg-pine-950/[0.97] shadow-2xl shadow-pine-950/60 backdrop-blur-xl transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-            open ? 'translate-x-0' : '-translate-x-full'
+          className={`absolute inset-y-0 right-0 flex w-[85vw] sm:w-[80vw] max-w-md flex-col border-l border-white/10 bg-pine-950/[0.97] shadow-2xl shadow-pine-950/60 backdrop-blur-xl transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+            open ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
           {/* drawer header */}
