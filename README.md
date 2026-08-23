@@ -1,14 +1,15 @@
 # seynudedagnon.com
 
-Portfolio of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, deployed on Vercel with a set of serverless functions (contact, phone verification, newsletter, push, admin, changelog, agenda reminders).
+Portfolio of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, deployed on Vercel with 8 serverless functions (contact+verify-phone, newsletter×4, push×2, search-log, admin, changelog, agenda-reminders, event-reminders) — under the Hobby 12-function limit.
 
 ## Commands
 
 ```bash
 npm run dev      # dev server on :3000
-npm run build    # typecheck, bundle, then prerender 112 pages + sitemap + 404 + service worker + send the newsletter digest on Vercel production
-npm test         # build, then 343 tests (node --test)
+npm run build    # typecheck, bundle (react/motion split), then prerender 112 pages + sitemap (per-route lastmod) + 404 + service worker (170 precached) + newsletter digest on Vercel production
+npm test         # build, then 371 tests (node --test, incl. a11y + seo + indexnow)
 npm run lint
+npm run indexnow # submit sitemap URLs to IndexNow (Bing/Yandex) — 112 URLs, needs dist/sitemap.xml
 npm run images   # one-off: convert public/ photos to WebP (see below)
 npm run gen:og   # one-off: regenerate og-image.jpg
 ```
@@ -58,7 +59,7 @@ deploy retries it.
 ## Things that are not obvious
 
 **The phone number is not in the client bundle.** It lives in
-`api/verify-phone.ts` and is only returned after a code sent by email is
+`api/contact.ts` (merged `verify-phone` handler) and is only returned after a code sent by email is
 verified. It comes from `CONTACT_PHONE` with no hardcoded default — if that
 variable is unset, the endpoint fails closed rather than revealing a number.
 The verification is stateless — a signed token carries an HMAC of
