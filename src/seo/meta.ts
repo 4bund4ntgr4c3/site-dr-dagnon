@@ -533,6 +533,49 @@ export function collectionPageJsonLd(lang: Lang, pageTitle: string, pageDesc: st
   };
 }
 
+export function profilePageJsonLd(lang: Lang, url: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    name: CV_SEO[lang].title,
+    description: CV_SEO[lang].description,
+    url,
+    mainEntity: personJsonLd(lang),
+  };
+}
+
+export function publicationsPageJsonLd(lang: Lang, url: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: PUB_SEO[lang].title,
+    description: PUB_SEO[lang].description,
+    url,
+    author: { '@type': 'Person', name: fullName(lang) },
+    inLanguage: [lang],
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: PUB_ITEMS.map((item, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        item: {
+          '@type': 'ScholarlyArticle',
+          headline: item.title[lang],
+          name: item.title[lang],
+          description: item.description[lang],
+          datePublished: String(item.year),
+          author: { '@type': 'Person', name: item.authors[lang] },
+          publication: {
+            '@type': 'PublicationIssue',
+            name: item.journal[lang],
+          },
+          ...(item.url ? { url: item.url } : {}),
+        },
+      })),
+    },
+  };
+}
+
 /** One page per community photo, so every caption is crawlable text and
     every image has its own addressable, shareable URL. */
 export function imageObjectJsonLd(lang: Lang, photo: MediaEntry, url: string) {
@@ -1039,15 +1082,19 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
         ? null
         : isContact
           ? contactPageJsonLd(lang)
-          : tribune
-            ? articleJsonLd(lang, tribune, url)
-            : project
-              ? projectJsonLd(lang, project, url)
-              : photo
-                ? imageObjectJsonLd(lang, photo, url)
-                : isMedia || isPub || isAgenda || isTribunes || isProjects || isPresse || isInvite || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isBibliography
-                  ? collectionPageJsonLd(lang, data.title, data.description, url)
-                  : null,
+          : isCv
+            ? profilePageJsonLd(lang, url)
+            : isPub || isBibliography || isPublicationsPdf
+              ? publicationsPageJsonLd(lang, url)
+              : tribune
+                ? articleJsonLd(lang, tribune, url)
+                : project
+                  ? projectJsonLd(lang, project, url)
+                  : photo
+                    ? imageObjectJsonLd(lang, photo, url)
+                    : isMedia || isAgenda || isTribunes || isProjects || isPresse || isInvite || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility
+                      ? collectionPageJsonLd(lang, data.title, data.description, url)
+                      : null,
     },
   };
 }
