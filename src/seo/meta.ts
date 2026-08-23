@@ -444,6 +444,7 @@ export function personJsonLd(lang: Lang) {
     image: `${SITE_URL}/og-image.jpg`,
     mainEntityOfPage: { '@type': 'WebPage', '@id': homeUrl(lang) },
     sameAs: [
+      'https://www.wikidata.org/wiki/Q141154548',
       'https://www.linkedin.com/in/seynud%C3%A9-jean-fortune-dagnon-md-mph-p-h-d-in-progress-093a5a2a/',
       'https://www.youtube.com/@seynudedagnon6233',
       'https://www.facebook.com/jeanfortune.dagnon/',
