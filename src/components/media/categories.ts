@@ -22,7 +22,7 @@ export const CATEGORIES: MediaCategoryMeta[] = [
     bg: 'bg-pine-700',
     ring: 'ring-pine-500/40',
     badge: 'bg-pine-100 text-pine-700',
-    thumb: 'https://img.youtube.com/vi/5yh0ODmp47s/hqdefault.jpg',
+    thumb: 'https://img.youtube.com/vi/IenUdkxFqNE/hqdefault.jpg',
     descKey: 'mediaPage.catDescInterview',
   },
   {

@@ -1,4 +1,4 @@
-﻿import type { Lang } from '@/i18n/lang';
+import type { Lang } from '@/i18n/lang';
 
 export const STATS: Record<Lang, { value: number; suffix: string; label: string; detail: string }[]> = {
   fr: [
@@ -443,16 +443,16 @@ export const TRAINING_LIST: Record<Lang, { date: string; institution: string; de
 
 export const MEDIA: Record<Lang, { kind: string; title: string; event: string; url: string; thumb?: string }[]> = {
   fr: [
+    { kind: 'video', title: 'Podcast Ndëp (Épisode 5) — L’espoir dans la lutte contre le paludisme', event: 'Podcast Ndëp 2026', url: 'https://www.youtube.com/watch?v=IenUdkxFqNE', thumb: 'https://img.youtube.com/vi/IenUdkxFqNE/hqdefault.jpg' },
     { kind: 'video', title: 'Discours d’ouverture — 8e conférence PAMCA', event: 'PAMCA 2022 · Kigali', url: 'https://www.youtube.com/watch?v=ZTW9HqJ57kA', thumb: 'https://img.youtube.com/vi/ZTW9HqJ57kA/hqdefault.jpg' },
     { kind: 'video', title: 'Discours — Lancement campagne Stop Paludisme au Cameroun', event: 'Cameroun 2022', url: 'https://www.youtube.com/watch?v=dxBGiEW41aM', thumb: 'https://img.youtube.com/vi/dxBGiEW41aM/hqdefault.jpg' },
     { kind: 'video', title: 'Présentation — American Society of Tropical Medicine & Hygiene', event: 'ASTMH 2022', url: 'https://www.youtube.com/watch?v=skmrswZhGZE', thumb: 'https://img.youtube.com/vi/skmrswZhGZE/hqdefault.jpg' },
-    { kind: 'deck', title: 'Funding landscape — Fondation Gates', event: 'AMP / SMC 2026 · Présentation (PDF)', url: 'https://allianceformalariaprevention.com/wp-content/uploads/2026/02/04-d_Funding-Landscape_Gates-Foundation_Seynude-Dagnon_ENG.pdf' },
   ],
   en: [
+    { kind: 'video', title: 'Ndëp Podcast (Episode 5) — Hope in the fight against malaria', event: 'Ndëp Podcast 2026', url: 'https://www.youtube.com/watch?v=IenUdkxFqNE', thumb: 'https://img.youtube.com/vi/IenUdkxFqNE/hqdefault.jpg' },
     { kind: 'video', title: 'Opening keynote — 8th PAMCA conference', event: 'PAMCA 2022 · Kigali', url: 'https://www.youtube.com/watch?v=ZTW9HqJ57kA', thumb: 'https://img.youtube.com/vi/ZTW9HqJ57kA/hqdefault.jpg' },
     { kind: 'video', title: 'Talk — Launch of the Stop Malaria campaign in Cameroon', event: 'Cameroon 2022', url: 'https://www.youtube.com/watch?v=dxBGiEW41aM', thumb: 'https://img.youtube.com/vi/dxBGiEW41aM/hqdefault.jpg' },
     { kind: 'video', title: 'Talk — American Society of Tropical Medicine & Hygiene', event: 'ASTMH 2022', url: 'https://www.youtube.com/watch?v=skmrswZhGZE', thumb: 'https://img.youtube.com/vi/skmrswZhGZE/hqdefault.jpg' },
-    { kind: 'deck', title: 'Funding landscape — Gates Foundation', event: 'AMP / SMC 2026 · Deck (PDF)', url: 'https://allianceformalariaprevention.com/wp-content/uploads/2026/02/04-d_Funding-Landscape_Gates-Foundation_Seynude-Dagnon_ENG.pdf' },
   ],
 };
 

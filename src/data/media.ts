@@ -22,6 +22,18 @@ export interface MediaEntry {
 export const MEDIA_ITEMS: MediaEntry[] = [
   // ── Interviews ───────────────────────────────────────────────────
   {
+    id: 'podcast-ndep-ep5',
+    type: 'video',
+    category: 'interview',
+    date: '2026-08-25',
+    title: {
+      fr: 'Podcast Ndëp (Épisode 5) — L’espoir dans la lutte contre le paludisme',
+      en: 'Ndëp Podcast (Episode 5) — Hope in the fight against malaria',
+    },
+    youtubeId: 'IenUdkxFqNE',
+    thumb: 'https://img.youtube.com/vi/IenUdkxFqNE/hqdefault.jpg',
+  },
+  {
     id: 'interview-health-financing',
     type: 'video',
     category: 'interview',

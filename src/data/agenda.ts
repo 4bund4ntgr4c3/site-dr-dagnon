@@ -21,6 +21,21 @@ export interface AgendaEntry {
    call-to-action until a real date exists. */
 export const AGENDA_ITEMS: AgendaEntry[] = [
   {
+    id: 'podcast-ndep-ep5-2026',
+    date: '2026-08-25',
+    type: 'interview',
+    title: {
+      fr: 'Podcast Ndëp — L’espoir dans la lutte contre le paludisme',
+      en: 'Ndëp Podcast — Hope in the fight against malaria',
+    },
+    location: { fr: 'En ligne / Podcast Ndëp', en: 'Online / Ndëp Podcast' },
+    description: {
+      fr: 'Épisode 5 du podcast Ndëp : entretien approfondi avec le Dr. Seynudé Jean-Fortuné Dagnon sur les défis, les innovations et l\'espoir dans la lutte et l\'élimination du paludisme en Afrique francophone.',
+      en: 'Episode 5 of Ndëp podcast: in-depth interview with Dr. Seynudé Jean-Fortuné Dagnon on challenges, innovations, and hope in the fight and elimination of malaria across Francophone Africa.',
+    },
+    link: 'https://www.youtube.com/watch?v=IenUdkxFqNE',
+  },
+  {
     id: 'airid-visit-2026',
     date: '2026-07-21',
     type: 'community',
