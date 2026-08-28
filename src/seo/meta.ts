@@ -352,6 +352,19 @@ export const CHANGELOG_SEO: Record<Lang, { title: string; description: string; k
   },
 };
 
+export const PODCASTS_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Podcasts & Audio — Dr. Seynudé Jean-Fortuné DAGNON',
+    description: 'Écoutez les podcasts et entretiens audio du Dr. Seynudé Jean-Fortuné Dagnon sur le paludisme, la santé publique et les systèmes de santé en Afrique.',
+    keywords: 'podcast Dr Dagnon, podcast paludisme, podcast santé publique Afrique, audio Seynude Dagnon, podcast Ndëp Dr Dagnon, interviews audio, écoute tribunes paludisme, Fortuné Dagnon podcast, DAGNON audio',
+  },
+  en: {
+    title: 'Podcasts & Audio — Seynudé Jean-Fortuné DAGNON, MD, MPH',
+    description: 'Listen to podcast episodes and audio discussions by Dr. Seynudé Jean-Fortuné Dagnon on malaria elimination, public health, and health systems in Africa.',
+    keywords: 'Dr Dagnon podcast, malaria podcast, public health podcast Africa, Seynude Dagnon audio, Ndëp podcast Dr Dagnon, audio interviews, op-ed audio, Fortune Dagnon podcast, DAGNON audio',
+  },
+};
+
 export const TRIBUNES_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Tribunes & Analyses — Dr. Dagnon',
@@ -1073,6 +1086,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isPortfolio = route === '/portfolio';
   const isOffline = route === '/offline';
   const isCareer = route === '/parcours';
+  const isPodcasts = route === '/podcasts';
   const isAdmin = route === '/admin';
   const isPreferences = route === '/newsletter/preferences';
   const isChangelog = route === '/changelog';
@@ -1163,6 +1177,8 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                             ? CAREER_SEO[lang]
                           : isPublicationsPdf
                             ? PUBLICATIONS_PDF_SEO[lang]
+                          : isPodcasts
+                            ? PODCASTS_SEO[lang]
                         : isAdmin
                           ? ADMIN_SEO[lang]
                           : isPreferences
@@ -1230,7 +1246,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                   ? projectJsonLd(lang, project, url)
                   : photo
                     ? imageObjectJsonLd(lang, photo, url)
-                    : isMedia || isAgenda || isTribunes || isProjects || isPresse || isInvite || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio || isOffline || isCareer
+                    : isMedia || isAgenda || isTribunes || isProjects || isPresse || isInvite || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio || isOffline || isCareer || isPodcasts
                       ? collectionPageJsonLd(lang, data.title, data.description, url)
                       : null,
     },
@@ -1264,11 +1280,12 @@ export const PRERENDER_ROUTES = [
   '/impact',
   '/legal',
   '/accessibility',
-    '/bibliography',
-    '/portfolio',
-    '/offline',
-    '/parcours',
-    '/publications-pdf',
+  '/bibliography',
+  '/portfolio',
+  '/offline',
+  '/parcours',
+  '/publications-pdf',
+  '/podcasts',
 ];
 
 export const PRERENDER_LANGS: Lang[] = SUPPORTED;
@@ -1295,6 +1312,7 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/offline': { priority: '0.3', changefreq: 'yearly' },
   '/parcours': { priority: '0.8', changefreq: 'monthly' },
   '/publications-pdf': { priority: '0.6', changefreq: 'monthly' },
+  '/podcasts': { priority: '0.8', changefreq: 'weekly' },
   ...Object.fromEntries(
     TRIBUNES.map((t) => [`/tribunes/${t.slug}`, { priority: '0.7', changefreq: 'monthly' }]),
   ),
@@ -1360,6 +1378,9 @@ export function routeLastmod(route: string, fallback: string): string {
   if (route === '/agenda') {
     const max = AGENDA_ITEMS.reduce((m, e) => (e.date > m ? e.date : m), '1970-01-01');
     if (max !== '1970-01-01') return max;
+  }
+  if (route === '/podcasts') {
+    return '2026-08-25';
   }
   if (route.startsWith('/media')) {
     const cat = route === '/media' ? null : route.split('/media/')[1]?.split('/')[0] || null;

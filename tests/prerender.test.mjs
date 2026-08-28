@@ -76,6 +76,7 @@ const ROUTES = [
   '/offline',
   '/parcours',
   '/publications-pdf',
+  '/podcasts',
 ];
 
 const dist = path.resolve('dist');

@@ -70,6 +70,7 @@ const pages: AppPages = {
   Offline: page(() => import('./pages/Offline'), (p) => p === '/offline'),
   Career: page(() => import('./pages/Career'), (p) => p === '/parcours'),
   PublicationsPdf: page(() => import('./pages/PublicationsPdf'), (p) => p === '/publications-pdf'),
+  Podcasts: page(() => import('./pages/Podcasts'), (p) => p === '/podcasts'),
   Admin: page(() => import('./pages/Admin'), (p) => p === '/admin'),
   Changelog: page(() => import('./pages/Changelog'), (p) => p === '/changelog'),
   NewsletterPrefs: page(() => import('./pages/NewsletterPrefs'), (p) => p === '/newsletter/preferences'),

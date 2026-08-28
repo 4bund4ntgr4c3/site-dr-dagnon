@@ -18,6 +18,7 @@ export interface NavPage {
 }
 
 export const MORE_PAGES: NavPage[] = [
+  { id: 'podcasts', path: '/podcasts', label: 'nav.podcasts' },
   { id: 'parcours', path: '/parcours', label: 'nav.career' },
   { id: 'portfolio', path: '/portfolio', label: 'nav.portfolio' },
   { id: 'cv', path: '/cv', label: 'cvPage.badge' },

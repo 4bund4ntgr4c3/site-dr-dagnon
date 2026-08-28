@@ -44,6 +44,7 @@ export interface AppPages {
   Offline: ComponentType
   Career: ComponentType
   PublicationsPdf: ComponentType
+  Podcasts: ComponentType
   /** client-only page (never prerendered) — absent from the server's pages */
   Admin?: ComponentType
   NewsletterPrefs?: ComponentType
@@ -101,6 +102,7 @@ const routesFor = (Pages: AppPages) => [
   <Route key="offline" path="offline" element={<Pages.Offline />} />,
   <Route key="career" path="parcours" element={<Pages.Career />} />,
   <Route key="publications-pdf" path="publications-pdf" element={<Pages.PublicationsPdf />} />,
+  <Route key="podcasts" path="podcasts" element={<Pages.Podcasts />} />,
   ...(Pages.Admin ? [<Route key="admin" path="admin" element={<Pages.Admin />} />] : []),
   ...(Pages.Changelog ? [<Route key="changelog" path="changelog" element={<Pages.Changelog />} />] : []),
   ...(Pages.NewsletterPrefs ? [<Route key="newsletter-prefs" path="newsletter/preferences" element={<Pages.NewsletterPrefs />} />] : []),

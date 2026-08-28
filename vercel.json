@@ -38,6 +38,16 @@
       "source": "/fr/media/research",
       "destination": "/fr/media",
       "permanent": true
+    },
+    {
+      "source": "/podcast",
+      "destination": "/podcasts",
+      "permanent": true
+    },
+    {
+      "source": "/fr/podcast",
+      "destination": "/fr/podcasts",
+      "permanent": true
     }
   ],
   "headers": [
@@ -342,6 +352,10 @@
       "destination": "/publications-pdf/index.html"
     },
     {
+      "source": "/podcasts",
+      "destination": "/podcasts/index.html"
+    },
+    {
       "source": "/fr",
       "destination": "/fr/index.html"
     },
@@ -472,6 +486,10 @@
     {
       "source": "/fr/publications-pdf",
       "destination": "/fr/publications-pdf/index.html"
+    },
+    {
+      "source": "/fr/podcasts",
+      "destination": "/fr/podcasts/index.html"
     },
     {
       "source": "/admin",

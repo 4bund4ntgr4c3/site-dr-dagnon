@@ -70,6 +70,7 @@ const PAGE_ROUTES: { labelKey: string; path: string }[] = [
   { labelKey: 'invitePage.title', path: '/inviter' },
   { labelKey: 'collab.title', path: '/collaborate' },
   { labelKey: 'newsletterPage.title', path: '/newsletter' },
+  { labelKey: 'nav.podcasts', path: '/podcasts' },
 ];
 
 /* Home-page sections, searchable by their nav label and anchored to the

@@ -1,4 +1,4 @@
-﻿import type { Lang } from './lang';
+import type { Lang } from './lang';
 
 type Dict = Record<string, string>;
 
@@ -40,6 +40,7 @@ export const UI: Record<Lang, Dict> = {
     'a11y.skip': 'Aller au contenu',
     'nav.ariaLabel': 'Navigation principale',
     'nav.home': 'Accueil',
+    'nav.podcasts': 'Podcasts & Audio',
     'nav.career': 'Parcours',
     'nav.portfolio': 'Portfolio',
     'nav.more': 'Plus',
@@ -348,6 +349,7 @@ export const UI: Record<Lang, Dict> = {
     'impactPage.readStudy': 'Étudier le projet',
     'impactPage.allStudies': 'Tous les projets & études de cas',
     'footer.linkPresse': 'Kit de presse',
+    'footer.linkPodcasts': 'Podcasts & Audio',
     'footer.linkInviter': 'Inviter le Dr',
     'footer.linkNewsletter': 'Newsletter',
     'footer.linkImpact': 'Impact',
@@ -539,6 +541,7 @@ export const UI: Record<Lang, Dict> = {
     'a11y.skip': 'Skip to content',
     'nav.ariaLabel': 'Main navigation',
     'nav.home': 'Home',
+    'nav.podcasts': 'Podcasts & Audio',
     'nav.career': 'Career',
     'nav.portfolio': 'Portfolio',
     'nav.more': 'More',
@@ -847,6 +850,7 @@ export const UI: Record<Lang, Dict> = {
     'impactPage.readStudy': 'View case study',
     'impactPage.allStudies': 'All projects & case studies',
     'footer.linkPresse': 'Press kit',
+    'footer.linkPodcasts': 'Podcasts & Audio',
     'footer.linkInviter': 'Invite the Dr',
     'footer.linkNewsletter': 'Newsletter',
     'footer.linkImpact': 'Impact',
