@@ -321,15 +321,15 @@ export function PodcastSection() {
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gold-500 text-pine-950 transition-transform group-hover:scale-105">
                 <Play size={12} className="ml-0.5" />
               </span>
-              <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-semibold text-pine-950 group-hover:text-gold-700">
+              <span className="min-w-0 flex-1 overflow-hidden">
+                <span className="block line-clamp-2 break-words pr-1 text-sm font-semibold leading-snug text-pine-950 group-hover:text-gold-700">
                   {t.title[lang]}
                 </span>
-                <span className="block text-xs text-pine-900/60">
+                <span className="block truncate pr-1 text-xs text-pine-900/60">
                   {t.date} · {t.source.name}
                 </span>
               </span>
-              <ExternalLink size={13} className="shrink-0 text-pine-900/25 group-hover:text-gold-600" />
+              <ExternalLink size={13} className="hidden shrink-0 text-pine-900/25 group-hover:text-gold-600 sm:block" />
             </Link>
           ))}
         </div>
