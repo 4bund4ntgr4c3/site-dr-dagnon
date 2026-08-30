@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react';
-import { Search, ExternalLink, FileText, Star } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Search, ExternalLink, FileText, Star, ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
+import { localePath } from '@/i18n/routing';
 import { PUBLICATIONS, publicationsCount } from '@/data/site';
 
 export function Publications() {
@@ -17,6 +19,9 @@ export function Publications() {
 
   const [query, setQuery] = useState('');
   const [year, setYear] = useState(t['publications.all']);
+  const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => { setShowAll(false); }, [query, year]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -77,9 +82,9 @@ export function Publications() {
           {publicationsCount(lang, filtered.length)}
         </p>
 
-        {/* list */}
+        {/* list — 5 max on home, toggle + link to full page */}
         <div className="mt-5 space-y-4">
-          {filtered.map((p, i) => (
+          {(showAll ? filtered : filtered.slice(0, 5)).map((p, i) => (
             <Reveal key={p.title} delay={Math.min(i * 0.04, 0.3)} y={16}>
               <article
                 className={`group flex gap-5 rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover ${
@@ -140,6 +145,39 @@ export function Publications() {
           {filtered.length === 0 && (
             <div className="rounded-2xl border border-dashed border-pine-900/20 p-12 text-center text-sm text-ink/70">
               {t['publications.empty']}
+            </div>
+          )}
+
+          {filtered.length > 5 && (
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => setShowAll((v) => !v)}
+                className="inline-flex items-center gap-2 rounded-full border border-pine-900/15 bg-white px-6 py-2.5 text-sm font-semibold text-pine-900 transition-all hover:border-gold-500 hover:text-gold-700"
+              >
+                {showAll
+                  ? (lang === 'fr' ? 'Voir moins' : 'Show less')
+                  : `${lang === 'fr' ? 'Voir plus' : 'Show more'} (${filtered.length - 5})`}
+                <ArrowUpRight size={14} className={showAll ? 'rotate-180' : ''} />
+              </button>
+              <Link
+                to={localePath(lang, '/publications')}
+                className="inline-flex items-center gap-2 rounded-full bg-pine-950 px-6 py-2.5 text-sm font-semibold text-gold-400 hover:bg-pine-900"
+              >
+                {lang === 'fr' ? 'Toutes les publications' : 'All publications'}
+                <ArrowUpRight size={14} />
+              </Link>
+            </div>
+          )}
+          {filtered.length > 0 && filtered.length <= 5 && (
+            <div className="mt-6 flex justify-center">
+              <Link
+                to={localePath(lang, '/publications')}
+                className="inline-flex items-center gap-2 rounded-full bg-pine-950 px-6 py-2.5 text-sm font-semibold text-gold-400 hover:bg-pine-900"
+              >
+                {lang === 'fr' ? 'Toutes les publications' : 'All publications'}
+                <ArrowUpRight size={14} />
+              </Link>
             </div>
           )}
         </div>
