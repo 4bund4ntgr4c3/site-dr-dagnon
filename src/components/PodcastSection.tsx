@@ -316,7 +316,7 @@ export function PodcastSection() {
             <Link
               key={t.slug}
               to={localePath(lang, `/tribunes/${t.slug}`)}
-              className="group flex items-center gap-3 rounded-xl border border-pine-900/5 bg-pine-50 px-4 py-2.5 transition-colors hover:border-gold-500/30 hover:bg-white"
+              className="group flex items-center gap-3 rounded-xl border border-pine-900/5 bg-pine-50 px-4 py-2.5 transition-colors hover:border-gold-500/30 hover:bg-white dark:border-white/5 dark:bg-pine-900/30 dark:hover:border-gold-500/30 dark:hover:bg-pine-800/60"
             >
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gold-500 text-pine-950 transition-transform group-hover:scale-105">
                 <Play size={12} className="ml-0.5" />

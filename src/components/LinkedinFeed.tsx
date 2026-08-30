@@ -20,7 +20,7 @@ export function LinkedinFeed() {
       </h3>
       <div className="mt-4 space-y-3">
         {POSTS.map((p) => (
-          <a key={p.date} href={p.url} target="_blank" rel="noreferrer" className="flex items-start gap-3 rounded-xl border border-pine-900/5 bg-pine-50 px-4 py-3 transition-colors hover:border-[#0A66C2]/30 hover:bg-white">
+          <a key={p.date} href={p.url} target="_blank" rel="noreferrer" className="flex items-start gap-3 rounded-xl border border-pine-900/5 bg-pine-50 px-4 py-3 transition-colors hover:border-[#0A66C2]/30 hover:bg-white dark:border-white/5 dark:bg-pine-900/30 dark:hover:border-gold-500/30 dark:hover:bg-pine-800/60">
             <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0A66C2] text-white">
               <Linkedin size={13} />
             </span>
