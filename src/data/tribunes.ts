@@ -37,4 +37,18 @@ export const TRIBUNES: TribuneEntry[] = [
       en: 'Op-ed by Professor Rose Leke and Dr. Seynudé Dagnon: why malaria control is not enough — and what country-led, community-centered elimination requires.',
     },
   },
+  {
+    slug: 'de-la-lutte-a-lelimination-afrique-francophone',
+    date: '2026-08-21',
+    theme: 'malaria',
+    source: { name: 'Le Soleil', url: 'https://lesoleil.sn/opinions/de-la-lutte-a-lelimination-pourquoi-lafrique-francophone-doit-adapter-sa-riposte-au-paludisme/' },
+    title: {
+      fr: 'De la lutte à l’élimination : pourquoi l’Afrique francophone doit adapter sa riposte au paludisme',
+      en: 'From control to elimination: why Francophone Africa must adapt its malaria response',
+    },
+    description: {
+      fr: 'Tribune du Dr Seynudé Dagnon dans Le Soleil (Sénégal) : l’adaptation infranationale comme pont entre lutte et élimination, à l’occasion de la Journée mondiale du moustique.',
+      en: 'Op-ed by Dr Seynudé Dagnon in Le Soleil (Senegal): subnational tailoring as the bridge from control to elimination, on World Mosquito Day.',
+    },
+  },
 ];

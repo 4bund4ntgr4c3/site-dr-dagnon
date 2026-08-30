@@ -6,6 +6,36 @@ import type { TribuneBlock } from '@/data/tribunes';
    bodies. Imported only by the lazy TribuneArticle page. */
 
 export const TRIBUNE_BODIES: Record<string, Record<Lang, TribuneBlock[]>> = {
+  'de-la-lutte-a-lelimination-afrique-francophone': {
+    fr: [
+      { kind: 'byline', text: 'Par Seynudé Jean-Fortune Dagnon, Senior Program Officer — Paludisme / Afrique francophone, Fondation Gates.' },
+      { kind: 'p', text: 'À l’occasion de la Journée mondiale du moustique, l’Afrique francophone est confrontée à une question décisive : pouvons-nous passer d’une gestion du paludisme comme fardeau sanitaire permanent, à une élimination délibérée, région par région ?' },
+      { kind: 'p', text: 'Il est six heures du matin dans le poste de santé d’un village d’Afrique de l’Ouest. Une mère attend, son enfant de deux ans dans les bras, brûlant de fièvre. Elle n’a pas fermé l’œil de la nuit. Un seul moustique, entré par une fenêtre sans moustiquaire, a suffi. Cet anophèle femelle, minuscule, a transmis le paludisme à 282 millions de personnes et causé 610 000 décès en 2024, dont 95 % en Afrique. Trois quarts des décès concernaient des enfants de moins de cinq ans.' },
+      { kind: 'p', text: 'Depuis 2000, la lutte a permis d’éviter 2,3 milliards de cas et 14 millions de décès, grâce aux moustiquaires de nouvelle génération, aux deux vaccins déployés dans une vingtaine de pays et aux nouveaux traitements. Quarante-sept pays sont aujourd’hui certifiés exempts de paludisme. Mais la prochaine révolution tiendra moins à un nouvel outil qu’à la façon de déployer ceux déjà disponibles : nous ne pouvons pas éliminer le paludisme partout en faisant la même chose partout.' },
+      { kind: 'h2', text: 'Une région, des réalités très différentes' },
+      { kind: 'p', text: 'L’Afrique francophone ne constitue pas une zone épidémiologique unique. Dans un même pays, un district peut connaître une transmission intense et permanente, un autre une transmission fortement saisonnière, tandis qu’un troisième peut avoir atteint des niveaux très faibles. Or les programmes ont historiquement été conçus autour de stratégies nationales et de paquets standardisés.' },
+      { kind: 'h2', text: 'L’adaptation infranationale : le pont entre la lutte et l’élimination' },
+      { kind: 'p', text: 'L’adaptation infranationale consiste à utiliser les données épidémiologiques, entomologiques, démographiques, sanitaires, climatiques et contextuelles locales pour déterminer la combinaison d’interventions la plus appropriée pour une zone donnée. Le manuel OMS 2025 la décrit comme stratifiée, modélisée et coût-efficace.' },
+      { kind: 'h2', text: 'Une bataille qui se joue chez nous' },
+      { kind: 'p', text: 'La Côte d’Ivoire, le Mali, le Burkina Faso comptent parmi les dix pays concentrant deux tiers des cas mondiaux. C’est le poste de santé de Kédougou, de Bobo-Dioulasso, de Kayes. C’est une classe qui perd un enfant à chaque saison des pluies. L’adaptation infranationale permet de concentrer les ressources rares là où elles sauvent le plus de vies.' },
+      { kind: 'p', text: 'Or le financement mondial n’a atteint que 3,9 milliards de dollars en 2024, soit moins de la moitié des 9,3 milliards jugés nécessaires. Une réduction de 30 % entraînerait 146 millions de cas supplémentaires et 400 000 décès d’ici 2030 selon l’Union africaine. Ce sont ces financements qui permettent de recueillir les données fines sans lesquelles aucune stratégie différenciée n’est possible.' },
+      { kind: 'quote', text: 'Cette mère ne devrait plus jamais avoir à passer une nuit blanche à cause d’un moustique. Nous avons les outils. Il nous faut la volonté politique, les moyens financiers, et le courage de ne plus faire la même chose partout — pour enfin finir le travail.' },
+    ],
+    en: [
+      { kind: 'byline', text: 'By Seynudé Jean-Fortune Dagnon, Senior Program Officer — Malaria / Francophone Africa, Gates Foundation.' },
+      { kind: 'p', text: 'On World Mosquito Day, Francophone Africa faces a decisive question: can we move from managing malaria as a permanent health burden to deliberate, region-by-region elimination?' },
+      { kind: 'p', text: 'At six in the morning in a West African health post, a mother waits with her two-year-old, feverish, having not slept. One mosquito through an unscreened window was enough. That tiny female Anopheles transmitted malaria to 282 million people and caused 610,000 deaths in 2024, 95% in Africa.' },
+      { kind: 'p', text: 'Since 2000, control has averted 2.3 billion cases and 14 million deaths via next-generation nets, two vaccines in ~20 countries and new treatments. Forty-seven countries are now certified malaria-free. But the next revolution will be about how we deploy existing tools: we cannot eliminate malaria everywhere by doing the same thing everywhere.' },
+      { kind: 'h2', text: 'One region, many realities' },
+      { kind: 'p', text: 'Francophone Africa is not one epidemiological zone. Within one country, one district may have intense perennial transmission, another highly seasonal, a third very low. Yet programs have historically been built around national, standardized packages.' },
+      { kind: 'h2', text: 'Subnational tailoring: the bridge' },
+      { kind: 'p', text: 'Subnational tailoring uses local epi, ento, demographic, health, climate and contextual data to choose the right mix for each geography. The WHO 2025 manual frames it as stratified, modeled and cost-effective.' },
+      { kind: 'h2', text: 'A battle at home' },
+      { kind: 'p', text: 'Côte d’Ivoire, Mali, Burkina Faso are among ten countries concentrating two-thirds of global cases. It’s the health post in Kédougou, Bobo-Dioulasso, Kayes. Subnational tailoring focuses scarce resources where they save the most lives.' },
+      { kind: 'p', text: 'Global funding was $3.9B in 2024, less than half the $9.3B needed. A 30% cut would mean 146M extra cases and 400k deaths by 2030 (AU). That funding collects the granular data without which no differentiated strategy works.' },
+      { kind: 'quote', text: 'That mother should never again lose a night to a mosquito. We have the tools. We need political will, financing, and the courage to stop doing the same thing everywhere — to finally finish the job.' },
+    ],
+  },
   'from-malaria-control-to-elimination': {
       en: [
         {
