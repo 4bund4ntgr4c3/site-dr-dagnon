@@ -39,15 +39,29 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '291', en: '291' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '33', en: '33' }, label: { fr: 'versions', en: 'versions' } },
-    { value: { fr: '377', en: '377' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
-    { value: { fr: '118', en: '118' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
+    { value: { fr: '300', en: '300' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '34', en: '34' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '379', en: '379' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
+    { value: { fr: '122', en: '122' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 23 août 2026', en: '16 Jul – 23 Aug 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-08-23',
+    version: '3.2',
+    label: { fr: '23 août 2026', en: '23 August 2026' },
+    title: { fr: 'Tribune Le Soleil — Afrique francophone (122p)', en: 'Le Soleil op-ed — Francophone Africa (122p)' },
+    fr: [
+      'Tribune — `src/data/tribunes.ts` : `de-la-lutte-a-lelimination-afrique-francophone` (21/08/2026, Le Soleil) — adaptation infranationale, Journée mondiale du moustique — SEO `routeLastmod`, `tribune-bodies.ts` FR/EN complet, `PRERENDER_ROUTES` 61×2=122, `WIKIPEDIA.md` ajouté.',
+      'Build — 122 pages + podcast + sitemap(122) + sw(185) — `tsc 0/lint 0`.',
+    ],
+    en: [
+      'Op-ed — `src/data/tribunes.ts`: `de-la-lutte-a-lelimination-afrique-francophone` (21/08/2026, Le Soleil) — subnational tailoring, World Mosquito Day — `routeLastmod`, `tribune-bodies.ts` FR/EN, `PRERENDER_ROUTES` 61×2=122, `WIKIPEDIA.md` added.',
+      'Build — 122 pages + podcast + sitemap(122) + sw(185) — `tsc 0/lint 0`.',
+    ],
+  },
   {
     date: '2026-08-23',
     version: '3.1',
