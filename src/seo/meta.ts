@@ -499,7 +499,7 @@ export function personJsonLd(lang: Lang) {
       'https://scholar.google.com/citations?user=Q6NT-4gAAAAJ',
       'https://orcid.org/0009-0006-5022-1399',
       'https://www.wikidata.org/wiki/Q141154548',
-      'https://www.linkedin.com/in/seynud%C3%A9-jean-fortune-dagnon-md-mph-p-h-d-in-progress-093a5a2a/',
+      'https://www.linkedin.com/in/seynud%C3%A9-jean-fortune-dagnon-md-mph-seynudedagnon-com-093a5a2a/',
       'https://www.youtube.com/@seynudedagnon6233',
       'https://www.facebook.com/jeanfortune.dagnon/',
       'https://x.com/SeynudeD',
