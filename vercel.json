@@ -512,6 +512,10 @@
       "destination": "/fr/toolkit/index.html"
     },
     {
+      "source": "/fr/mentorat",
+      "destination": "/fr/mentorat/index.html"
+    },
+    {
       "source": "/admin",
       "destination": "/index.html"
     },

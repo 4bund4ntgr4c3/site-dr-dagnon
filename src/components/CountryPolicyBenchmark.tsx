@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Globe2, ShieldCheck, CheckCircle2, Sparkles, Building2, Syringe, Layers, Database, DollarSign } from 'lucide-react';
+import { Globe2, ShieldCheck, Sparkles, Syringe, Layers, Database, DollarSign } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { COUNTRY_BENCHMARKS, type CountryPolicy } from '@/data/benchmark';
 

@@ -1,14 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { motion, AnimatePresence } from 'framer-motion';
 import {
   Compass,
   GraduationCap,
-  Building2,
   Sparkles,
   CheckCircle2,
   AlertTriangle,
-  ArrowRight,
   Send,
   Linkedin,
   Award,

@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Microscope, AlertTriangle, ShieldCheck, TrendingUp, MapPin, Sparkles, Activity, Dna } from 'lucide-react';
+import { Microscope, MapPin, Sparkles, Activity, Dna } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { GENOMICS_MARKERS, type GenomicsMarker } from '@/data/genomics';
 

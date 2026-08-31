@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Pause, Video, Clock, MapPin, Quote, Copy, CheckCircle2, Sparkles, Building2, Volume2 } from 'lucide-react';
+import { Video, Clock, MapPin, Quote, Copy, CheckCircle2 } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { KEYNOTES, type Keynote, type KeynoteChapter } from '@/data/keynotes';
 

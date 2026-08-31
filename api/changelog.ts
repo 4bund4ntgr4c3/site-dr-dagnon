@@ -39,15 +39,37 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '315', en: '315' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '36', en: '36' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '320', en: '320' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '37', en: '37' }, label: { fr: 'versions', en: 'versions' } },
     { value: { fr: '379', en: '379' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
-    { value: { fr: '126', en: '126' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
+    { value: { fr: '128', en: '128' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 31 août 2026', en: '16 Jul – 31 Aug 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-08-31',
+    version: '3.5',
+    label: { fr: '31 août 2026', en: '31 August 2026' },
+    title: { fr: 'Leadership & Surveillance — Benchmark Pays, Mentorat, Génomique, Studio Conférences (128p)', en: 'Leadership & Surveillance — Policy Benchmark, Mentorship, Genomics, Conference Studio (128p)' },
+    fr: [
+      'Comparateur de Politiques Sanitaires — `src/components/CountryPolicyBenchmark.tsx` & `src/data/benchmark.ts` : Outil de benchmark multi-pays comparant les protocoles antivectoriels, la CPS, la maturité DHIS2 et les contrats G2G à travers 6 pays avec recommandations personnalisées du Dr. Dagnon.',
+      'Boussole de Mentorat en Santé Mondiale — `src/pages/Mentorship.tsx` & `src/data/mentorship.ts` : Nouvelle page dédiée `/mentorat` offrant 3 feuilles de route de carrière (Recherche/PhD, Programmes bilatéraux USAID/PMI, Philanthropie Gates) avec compétences clés et conseils stratégiques.',
+      'Explorateur Génomique & Moléculaire — `src/components/GenomicsExplorer.tsx` & `src/data/genomics.ts` : Dashboard de surveillance interactive des mutations de résistance aux pyréthrinoïdes (kdr/CYP6P3), délétions pfhrp2/3 (TDR) et mutations Kelch13 (artémisinine).',
+      'Studio de Conférences Interactif — `src/components/ConferenceStudio.tsx` & `src/data/keynotes.ts` : Lecteur multimédia avec chapitrage temporel cliquable par temps fort (ASTMH Chicago, PAMCA Kigali) et citations marquantes partageables en 1 clic.',
+      'Navigation & SEO — Route `/mentorat` intégrée dans `MORE_PAGES` (menu Navbar + Footer), `MENTORSHIP_SEO`, rewrites `vercel.json` et sitemap mis à jour.',
+      'Build — 128 pages prérendues (64 FR + 64 EN) + sitemap (128) + sw (194) — `tsc 0 / lint 0`.',
+    ],
+    en: [
+      'Country Policy Benchmark — `src/components/CountryPolicyBenchmark.tsx` & `src/data/benchmark.ts`: Interactive comparative matrix benchmarking vector control, SMC, DHIS2 data maturity, and direct G2G awards across 6 key countries with Dr. Dagnon’s strategic roadmaps.',
+      'Global Health Mentorship Compass — `src/pages/Mentorship.tsx` & `src/data/mentorship.ts`: Dedicated `/mentorat` page providing 3 actionable career tracks (Academic/PhD, Bilateral USAID/PMI, Gates Philanthropy) with core competencies and milestone guidance.',
+      'Genomics & Resistance Explorer — `src/components/GenomicsExplorer.tsx` & `src/data/genomics.ts`: Interactive surveillance explorer tracking pyrethroid vector resistance (kdr/CYP6P3), pfhrp2/3 diagnostic gene deletions, and Kelch13 artemisinin mutations.',
+      'Interactive Keynote Studio — `src/components/ConferenceStudio.tsx` & `src/data/keynotes.ts`: Multimedia plenary player with timecoded chapter navigation (ASTMH Chicago, PAMCA Kigali) and 1-click shareable quote clips.',
+      'Navigation & SEO — `/mentorat` route added to `MORE_PAGES` (Navbar More menu + Footer), `MENTORSHIP_SEO`, `vercel.json` rewrites, and updated sitemap.',
+      'Build — 128 prerendered static pages (64 FR + 64 EN) + sitemap (128) + sw (194) — `tsc 0 / lint 0`.',
+    ],
+  },
   {
     date: '2026-08-31',
     version: '3.4',
