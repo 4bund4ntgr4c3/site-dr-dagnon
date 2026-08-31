@@ -46,6 +46,7 @@ export interface AppPages {
   PublicationsPdf: ComponentType
   Podcasts: ComponentType
   Connect: ComponentType
+  Toolkit: ComponentType
   /** client-only page (never prerendered) — absent from the server's pages */
   Admin?: ComponentType
   NewsletterPrefs?: ComponentType
@@ -105,6 +106,7 @@ const routesFor = (Pages: AppPages) => [
   <Route key="publications-pdf" path="publications-pdf" element={<Pages.PublicationsPdf />} />,
   <Route key="podcasts" path="podcasts" element={<Pages.Podcasts />} />,
   <Route key="connect" path="connect" element={<Pages.Connect />} />,
+  <Route key="toolkit" path="toolkit" element={<Pages.Toolkit />} />,
   ...(Pages.Admin ? [<Route key="admin" path="admin" element={<Pages.Admin />} />] : []),
   ...(Pages.Changelog ? [<Route key="changelog" path="changelog" element={<Pages.Changelog />} />] : []),
   ...(Pages.NewsletterPrefs ? [<Route key="newsletter-prefs" path="newsletter/preferences" element={<Pages.NewsletterPrefs />} />] : []),

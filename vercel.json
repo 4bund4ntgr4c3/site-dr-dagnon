@@ -360,6 +360,10 @@
       "destination": "/connect/index.html"
     },
     {
+      "source": "/toolkit",
+      "destination": "/toolkit/index.html"
+    },
+    {
       "source": "/fr",
       "destination": "/fr/index.html"
     },
@@ -498,6 +502,10 @@
     {
       "source": "/fr/connect",
       "destination": "/fr/connect/index.html"
+    },
+    {
+      "source": "/fr/toolkit",
+      "destination": "/fr/toolkit/index.html"
     },
     {
       "source": "/admin",

@@ -456,6 +456,19 @@ export const CONNECT_SEO: Record<Lang, { title: string; description: string; key
   },
 };
 
+export const TOOLKIT_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Boîte à Outils & Protocoles pour Décideurs — Dr. Seynudé Dagnon',
+    description: 'Guides méthodologiques et protocoles opérationnels du Dr. Seynudé Dagnon : digitalisation de campagnes MILDA, contrats G2G, audit DHIS2 et ciblage CPS.',
+    keywords: 'toolkit santé publique, protocole MILDA, financement direct G2G, audit DHIS2, ciblage CPS, Dr Dagnon outils, santé publique Afrique, Fortuné Dagnon',
+  },
+  en: {
+    title: 'Public Health Toolkit & Operational Protocols — Dr. Seynudé Dagnon',
+    description: 'Field-tested operational guidelines by Dr. Seynudé Dagnon: mass campaign digitalization, G2G direct financing, DHIS2 audit, and SMC targeting.',
+    keywords: 'public health toolkit, LLIN protocol, G2G financing guide, DHIS2 data audit, SMC targeting matrix, Dr Dagnon toolkit, global health',
+  },
+};
+
 /** Short headline for the <title> budget: whatever comes after a colon is
     treated as a subtitle and dropped (a French colon has a space before it,
     hence the trim). */
@@ -1101,6 +1114,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isCareer = route === '/parcours';
   const isPodcasts = route === '/podcasts';
   const isConnect = route === '/connect';
+  const isToolkit = route === '/toolkit';
   const isAdmin = route === '/admin';
   const isPreferences = route === '/newsletter/preferences';
   const isChangelog = route === '/changelog';
@@ -1195,6 +1209,8 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                             ? PODCASTS_SEO[lang]
                           : isConnect
                             ? CONNECT_SEO[lang]
+                          : isToolkit
+                            ? TOOLKIT_SEO[lang]
                         : isAdmin
                           ? ADMIN_SEO[lang]
                           : isPreferences
@@ -1303,6 +1319,7 @@ export const PRERENDER_ROUTES = [
   '/publications-pdf',
   '/podcasts',
   '/connect',
+  '/toolkit',
 ];
 
 export const PRERENDER_LANGS: Lang[] = SUPPORTED;
@@ -1312,6 +1329,7 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/': { priority: '1.0', changefreq: 'weekly' },
   '/contact': { priority: '0.7', changefreq: 'monthly' },
   '/connect': { priority: '0.8', changefreq: 'monthly' },
+  '/toolkit': { priority: '0.8', changefreq: 'monthly' },
   '/cv': { priority: '0.7', changefreq: 'monthly' },
   '/media': { priority: '0.9', changefreq: 'weekly' },
   '/publications': { priority: '0.9', changefreq: 'weekly' },

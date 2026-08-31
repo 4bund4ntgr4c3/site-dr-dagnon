@@ -72,6 +72,7 @@ const pages: AppPages = {
   PublicationsPdf: page(() => import('./pages/PublicationsPdf'), (p) => p === '/publications-pdf'),
   Podcasts: page(() => import('./pages/Podcasts'), (p) => p === '/podcasts'),
   Connect: page(() => import('./pages/Connect'), (p) => p === '/connect'),
+  Toolkit: page(() => import('./pages/Toolkit'), (p) => p === '/toolkit'),
   Admin: page(() => import('./pages/Admin'), (p) => p === '/admin'),
   Changelog: page(() => import('./pages/Changelog'), (p) => p === '/changelog'),
   NewsletterPrefs: page(() => import('./pages/NewsletterPrefs'), (p) => p === '/newsletter/preferences'),

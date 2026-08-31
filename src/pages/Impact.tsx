@@ -4,6 +4,8 @@ import { Reveal } from '@/components/Reveal';
 import { MalariaBarometer } from '@/components/MalariaBarometer';
 import { AfricaImpactMap } from '@/components/AfricaImpactMap';
 import { HealthEconomicsSimulator } from '@/components/HealthEconomicsSimulator';
+import { PolicyBriefGenerator } from '@/components/PolicyBriefGenerator';
+import { MalariaRadar } from '@/components/MalariaRadar';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
@@ -69,6 +71,24 @@ export default function Impact() {
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
             <HealthEconomicsSimulator />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Executive Policy Brief Generator */}
+      <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <Reveal>
+            <PolicyBriefGenerator />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Global Malaria Intelligence Radar */}
+      <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <Reveal>
+            <MalariaRadar />
           </Reveal>
         </div>
       </section>
