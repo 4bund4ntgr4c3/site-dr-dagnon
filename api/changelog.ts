@@ -39,15 +39,55 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Portfolio & showcase website — site-dr-dagnon',
   },
   stats: [
-    { value: { fr: '300', en: '300' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '34', en: '34' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '315', en: '315' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '36', en: '36' }, label: { fr: 'versions', en: 'versions' } },
     { value: { fr: '379', en: '379' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
-    { value: { fr: '122', en: '122' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
-    { value: { fr: '16 juil – 23 août 2026', en: '16 Jul – 23 Aug 2026' } },
+    { value: { fr: '126', en: '126' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
+    { value: { fr: '16 juil – 31 août 2026', en: '16 Jul – 31 Aug 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-08-31',
+    version: '3.4',
+    label: { fr: '31 août 2026', en: '31 August 2026' },
+    title: { fr: 'Innovations Stratégiques — Policy Briefs, Radar de Veille, Toolkit (126p)', en: 'Strategic Innovations — Policy Briefs, Intelligence Radar, Toolkit (126p)' },
+    fr: [
+      'Générateur de Policy Briefs — `src/components/PolicyBriefGenerator.tsx` : Outil de génération et d’export PDF de mémorandums stratégiques 1-clic pour ministres et bailleurs (financement direct G2G, moustiquaires Dual-AI, extension dynamique CPS).',
+      'Radar de Veille Paludisme — `src/components/MalariaRadar.tsx` & `src/data/radar.ts` : Radar d’intelligence stratégique en direct avec alertes scientifiques mondiales, recherche instantanée et encadré d’analyse opérationnelle exclusive du Dr. Dagnon.',
+      'Boîte à Outils & Guides — `src/pages/Toolkit.tsx` & `src/data/toolkits.ts` : Nouvelle page `/toolkit` regroupant 4 guides méthodologiques pratiques (digitalisation de campagnes MILDA, contrats G2G, audit qualité DHIS2, matrice de ciblage CPS) avec copie de protocoles en 1 clic.',
+      'Navigation & SEO — Route `/toolkit` intégrée dans `MORE_PAGES` (menu Navbar + Footer), `TOOLKIT_SEO` FR/EN, rewrites `vercel.json` et sitemap mis à jour.',
+      'Build — 126 pages prérendues (63 FR + 63 EN) + sitemap (126) + sw (191) — `tsc 0 / lint 0`.',
+    ],
+    en: [
+      'Policy Brief Generator — `src/components/PolicyBriefGenerator.tsx`: Executive memo generator with 1-click A4 PDF print/export for health ministers and global donors (direct G2G financing, Next-Gen Dual-AI nets, dynamic SMC scaling).',
+      'Malaria Intelligence Radar — `src/components/MalariaRadar.tsx` & `src/data/radar.ts`: Real-time strategic radar tracking global breakthroughs with keyword search and Dr. Dagnon’s expert operational takeaways.',
+      'Public Health Toolkit — `src/pages/Toolkit.tsx` & `src/data/toolkits.ts`: Dedicated `/toolkit` page featuring 4 operational roadmaps (mass campaign digitalization, G2G direct grants, DHIS2 audit, SMC targeting matrix) with 1-click protocol copying.',
+      'Navigation & SEO — `/toolkit` route registered in `MORE_PAGES` (Navbar More menu + Footer), `TOOLKIT_SEO` FR/EN, `vercel.json` rewrites, and updated sitemap.',
+      'Build — 126 prerendered static pages (63 FR + 63 EN) + sitemap (126) + sw (191) — `tsc 0 / lint 0`.',
+    ],
+  },
+  {
+    date: '2026-08-31',
+    version: '3.3',
+    label: { fr: '31 août 2026', en: '31 August 2026' },
+    title: { fr: 'Impact & Mobilité — Carte d’Afrique, Simulateur Santé, VCard Digitale (124p)', en: 'Impact & Mobility — Africa Map, Health Simulator, Digital VCard (124p)' },
+    fr: [
+      'Carte d’Impact Afrique — `src/components/AfricaImpactMap.tsx` : Visualisation interactive des projets phares en Afrique de l’Ouest et centrale (Bénin, Burundi, Burkina Faso, Sénégal, Nigéria) avec filtres thématiques et fiches pays.',
+      'Simulateur d’Économie de la Santé — `src/components/HealthEconomicsSimulator.tsx` : Outil de micro-simulation épidémiologique et financière modélisant cas évités, vies d’enfants sauvées, économies hospitalières ($) et ROI sanitaire.',
+      'Lecteur Audio Amélioré — `src/components/ArticleAudio.tsx` : Synthèse vocale enrichie avec sélecteur de vitesse (0.8x, 1x, 1.25x, 1.5x), barres d’ondes audio animées et décompte de progression.',
+      'Carte de Visite Digitale — `src/pages/Connect.tsx` & `src/lib/vcard.ts` : Page dédiée `/connect` pour le networking lors des conférences (ASTMH, PAMCA), téléchargement vCard (.vcf) 1-clic et QR Code interactif.',
+      'Build — 124 pages prérendues (62 FR + 62 EN) + sitemap (124) + sw (188) — `tsc 0 / lint 0`.',
+    ],
+    en: [
+      'Africa Impact Map — `src/components/AfricaImpactMap.tsx`: Interactive regional footprint map covering Benin, Burundi, Burkina Faso, Senegal, and Nigeria with thematic filters and country dossiers.',
+      'Health Economics Simulator — `src/components/HealthEconomicsSimulator.tsx`: Micro-simulation tool modeling averted cases, saved under-5 lives, healthcare cost savings ($), and health ROI multiplier.',
+      'Enhanced Audio Narration — `src/components/ArticleAudio.tsx`: Upgraded text-to-speech with speed switcher (0.8x, 1x, 1.25x, 1.5x), equalizer animation, and real-time remaining countdown.',
+      'Digital Business Card — `src/pages/Connect.tsx` & `src/lib/vcard.ts`: Dedicated `/connect` page for conference networking, 1-click vCard (.vcf) export, and interactive scan-ready QR code.',
+      'Build — 124 prerendered static pages (62 FR + 62 EN) + sitemap (124) + sw (188) — `tsc 0 / lint 0`.',
+    ],
+  },
   {
     date: '2026-08-23',
     version: '3.2',
