@@ -12,9 +12,7 @@ import {
   FileText,
   Copy,
 } from 'lucide-react';
-import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { useLang } from '@/i18n/useLang';
-import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
 import { LINKS } from '@/data/content';
 import { downloadVCard } from '@/lib/vcard';
@@ -22,7 +20,6 @@ import { downloadVCard } from '@/lib/vcard';
 export default function Connect() {
   const { lang } = useLang();
   const isFr = lang === 'fr';
-  const t = UI[lang];
 
   const [copied, setCopied] = useState(false);
   const [showQr, setShowQr] = useState(false);
@@ -47,14 +44,6 @@ export default function Connect() {
       <div className="fixed bottom-0 -left-40 h-[460px] w-[460px] rounded-full bg-gold-600/10 blur-[130px] pointer-events-none" />
 
       <div className="relative mx-auto max-w-xl">
-        <Breadcrumbs
-          dark
-          items={[
-            { label: t['breadcrumb.home'], to: localePath(lang, '/') },
-            { label: isFr ? 'Carte de Visite Digitale' : 'Digital Business Card' },
-          ]}
-        />
-
         {/* Executive Digital Business Card */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
