@@ -71,6 +71,7 @@ const pages: AppPages = {
   Career: page(() => import('./pages/Career'), (p) => p === '/parcours'),
   PublicationsPdf: page(() => import('./pages/PublicationsPdf'), (p) => p === '/publications-pdf'),
   Podcasts: page(() => import('./pages/Podcasts'), (p) => p === '/podcasts'),
+  Connect: page(() => import('./pages/Connect'), (p) => p === '/connect'),
   Admin: page(() => import('./pages/Admin'), (p) => p === '/admin'),
   Changelog: page(() => import('./pages/Changelog'), (p) => p === '/changelog'),
   NewsletterPrefs: page(() => import('./pages/NewsletterPrefs'), (p) => p === '/newsletter/preferences'),

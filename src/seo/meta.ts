@@ -443,6 +443,19 @@ export const CAREER_SEO: Record<Lang, { title: string; description: string; keyw
   },
 };
 
+export const CONNECT_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Carte de Visite Digitale & Contact — Dr. Seynudé Dagnon',
+    description: 'Carte de visite digitale du Dr. Seynudé Jean-Fortuné Dagnon : coordonnées officielles, vCard (.vcf), QR Code et profil professionnel.',
+    keywords: 'vcard Dr Dagnon, QR Code Seynude Dagnon, contact digital, carte de visite, Gates Foundation, ASTMH, PAMCA, Cotonou, coordonnées officielles',
+  },
+  en: {
+    title: 'Digital Business Card & Contact — Dr. Seynudé Dagnon',
+    description: 'Official digital business card of Dr. Seynudé Jean-Fortuné Dagnon: official contact details, vCard (.vcf), QR Code and verified profile.',
+    keywords: 'vcard Dr Dagnon, QR code Seynude Dagnon, digital business card, Gates Foundation contact, ASTMH, PAMCA, official contact info',
+  },
+};
+
 /** Short headline for the <title> budget: whatever comes after a colon is
     treated as a subtitle and dropped (a French colon has a space before it,
     hence the trim). */
@@ -1087,6 +1100,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isOffline = route === '/offline';
   const isCareer = route === '/parcours';
   const isPodcasts = route === '/podcasts';
+  const isConnect = route === '/connect';
   const isAdmin = route === '/admin';
   const isPreferences = route === '/newsletter/preferences';
   const isChangelog = route === '/changelog';
@@ -1179,6 +1193,8 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                             ? PUBLICATIONS_PDF_SEO[lang]
                           : isPodcasts
                             ? PODCASTS_SEO[lang]
+                          : isConnect
+                            ? CONNECT_SEO[lang]
                         : isAdmin
                           ? ADMIN_SEO[lang]
                           : isPreferences
@@ -1286,6 +1302,7 @@ export const PRERENDER_ROUTES = [
   '/parcours',
   '/publications-pdf',
   '/podcasts',
+  '/connect',
 ];
 
 export const PRERENDER_LANGS: Lang[] = SUPPORTED;
@@ -1294,6 +1311,7 @@ export const PRERENDER_LANGS: Lang[] = SUPPORTED;
 export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: string }> = {
   '/': { priority: '1.0', changefreq: 'weekly' },
   '/contact': { priority: '0.7', changefreq: 'monthly' },
+  '/connect': { priority: '0.8', changefreq: 'monthly' },
   '/cv': { priority: '0.7', changefreq: 'monthly' },
   '/media': { priority: '0.9', changefreq: 'weekly' },
   '/publications': { priority: '0.9', changefreq: 'weekly' },

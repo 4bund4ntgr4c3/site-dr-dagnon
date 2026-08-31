@@ -1,36 +1,41 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Volume2, Pause, Play } from 'lucide-react';
+import { Pause, Play, RotateCcw, FastForward } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
-import { UI } from '@/i18n/translations';
 import { track } from '@/lib/analytics';
 
-/* In-browser text-to-speech for article bodies. No audio files, no network:
-   the browser's speechSynthesis reads the article aloud in the current
-   language. Falls back to nothing (renders null) where the API is missing —
-   including the build-time server render, where `window` does not exist.
+interface ArticleAudioProps {
+  text: string;
+  label?: string;
+}
 
-   Two mobile pitfalls are handled here:
-   - most Chrome/Safari mobile builds ship NO default voice, so speak() on a
-     voice-less utterance is silent — we load getVoices() (empty at first, it
-     fills on the voiceschanged event) and pin an explicit fr-FR/en-US voice;
-   - long bodies hit Chrome's ~15s pause and iOS length limits, so the text is
-     split on sentence boundaries and read one bounded chunk at a time. */
-
-export function ArticleAudio({ text, label = 'tribune' }: { text: string; label?: string }) {
+export function ArticleAudio({ text, label = 'tribune' }: ArticleAudioProps) {
   const { lang } = useLang();
-  const t = UI[lang];
+  const isFr = lang === 'fr';
+
   const [supported] = useState(() => typeof window !== 'undefined' && 'speechSynthesis' in window);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [speaking, setSpeaking] = useState(false);
   const [paused, setPaused] = useState(false);
+  const [chunkIndex, setChunkIndex] = useState(0);
+  const [rate, setRate] = useState<number>(1);
+
+  const synthRef = useRef<SpeechSynthesis | null>(null);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   useEffect(() => {
     if (!supported) return;
-    const synth = window.speechSynthesis;
-    const load = () => setVoices(synth.getVoices());
-    load();
-    synth.addEventListener('voiceschanged', load);
-    return () => synth.removeEventListener('voiceschanged', load);
+    synthRef.current = window.speechSynthesis;
+    const loadVoices = () => {
+      setVoices(window.speechSynthesis.getVoices());
+    };
+    loadVoices();
+    window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
+    return () => {
+      window.speechSynthesis.removeEventListener('voiceschanged', loadVoices);
+      if (synthRef.current) {
+        synthRef.current.cancel();
+      }
+    };
   }, [supported]);
 
   const voice = useMemo(() => {
@@ -44,12 +49,13 @@ export function ArticleAudio({ text, label = 'tribune' }: { text: string; label?
     );
   }, [voices, lang]);
 
+  // Break text into digestible chunks for speech engine
   const chunks = useMemo(() => {
     const sentences = text.match(/[^.!?…]+[.!?…]+|.+$/g) ?? [text];
     const out: string[] = [];
     let buf = '';
     for (const s of sentences) {
-      if ((buf + s).length > 600 && buf) {
+      if ((buf + s).length > 500 && buf) {
         out.push(buf.trim());
         buf = s;
       } else {
@@ -60,104 +66,156 @@ export function ArticleAudio({ text, label = 'tribune' }: { text: string; label?
     return out;
   }, [text]);
 
-  /* the queue index is the only state that must outlive renders: onend fires
-     asynchronously, long after the event handler that started the queue */
-  const indexRef = useRef(0);
-  const pausedRef = useRef(false);
+  const speakChunk = (idx: number, playRate: number = rate) => {
+    if (!synthRef.current || idx >= chunks.length) {
+      setSpeaking(false);
+      setPaused(false);
+      setChunkIndex(0);
+      return;
+    }
 
-  const speakChunk = (i: number) => {
-    const synth = window.speechSynthesis;
-    const u = new SpeechSynthesisUtterance(chunks[i] ?? '');
-    u.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
-    u.rate = 0.95;
+    setChunkIndex(idx);
+    const u = new SpeechSynthesisUtterance(chunks[idx]);
     if (voice) u.voice = voice;
+    u.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
+    u.rate = playRate;
+
     u.onend = () => {
-      if (pausedRef.current) {
-        /* paused while the engine was idle between chunks — remember where */
-        indexRef.current = i + 1;
-        return;
-      }
-      if (i + 1 < chunks.length) {
-        indexRef.current = i + 1;
-        speakChunk(i + 1);
+      if (idx + 1 < chunks.length) {
+        speakChunk(idx + 1, playRate);
       } else {
-        indexRef.current = 0;
+        setSpeaking(false);
+        setPaused(false);
+        setChunkIndex(0);
+      }
+    };
+
+    u.onerror = (e) => {
+      if (e.error !== 'canceled') {
         setSpeaking(false);
         setPaused(false);
       }
     };
-    u.onerror = () => {
-      indexRef.current = 0;
-      setSpeaking(false);
-      setPaused(false);
-    };
-    synth.speak(u);
+
+    utteranceRef.current = u;
+    synthRef.current.speak(u);
   };
 
-  useEffect(() => () => {
-    /* leaving the page (or unmounting) must never leave the browser
-       reading aloud */
-    if (supported) window.speechSynthesis.cancel();
-  }, [supported]);
+  const handlePlayPause = () => {
+    if (!synthRef.current) return;
+
+    if (!speaking) {
+      track('article_audio_start', { label, lang, rate });
+      setSpeaking(true);
+      setPaused(false);
+      synthRef.current.cancel();
+      speakChunk(chunkIndex, rate);
+    } else if (paused) {
+      synthRef.current.resume();
+      setPaused(false);
+    } else {
+      synthRef.current.pause();
+      setPaused(true);
+    }
+  };
+
+  const handleReset = () => {
+    if (synthRef.current) {
+      synthRef.current.cancel();
+    }
+    setSpeaking(false);
+    setPaused(false);
+    setChunkIndex(0);
+  };
+
+  const toggleRate = () => {
+    const rates = [1, 1.25, 1.5, 0.8];
+    const nextIdx = (rates.indexOf(rate) + 1) % rates.length;
+    const nextRate = rates[nextIdx];
+    setRate(nextRate);
+    if (speaking && !paused) {
+      if (synthRef.current) synthRef.current.cancel();
+      speakChunk(chunkIndex, nextRate);
+    }
+  };
+
+  const progressPercent = chunks.length > 0 ? Math.round(((chunkIndex + 1) / chunks.length) * 100) : 0;
 
   if (!supported) return null;
 
-  const toggle = () => {
-    const synth = window.speechSynthesis;
-    if (speaking && !paused) {
-      pausedRef.current = true;
-      synth.pause();
-      setPaused(true);
-      track('pause_article_audio', { event_category: 'engagement', event_label: label });
-      return;
-    }
-    if (paused) {
-      pausedRef.current = false;
-      setPaused(false);
-      if (synth.speaking || synth.pending) synth.resume();
-      else speakChunk(indexRef.current);
-      return;
-    }
-    synth.cancel();
-    indexRef.current = 0;
-    setSpeaking(true);
-    speakChunk(0);
-    track('play_article_audio', { event_category: 'engagement', event_label: label });
-  };
-
-  const stop = () => {
-    window.speechSynthesis.cancel();
-    indexRef.current = 0;
-    setSpeaking(false);
-    setPaused(false);
-  };
-
   return (
-    <span className="inline-flex items-center gap-1.5">
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={paused ? t['article.audioResume'] : speaking ? t['article.audioPause'] : t['article.audioListen']}
-        aria-pressed={speaking}
-        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11.5px] font-semibold transition-all ${
-          speaking
-            ? 'bg-gold-500 text-pine-950'
-            : 'border border-gold-500/50 text-gold-300 hover:bg-gold-500 hover:text-pine-950'
-        }`}
-      >
-        {paused ? <Play size={12} /> : speaking ? <Pause size={12} /> : <Volume2 size={12} />}
-        {paused ? t['article.audioResume'] : speaking ? t['article.audioPause'] : t['article.audioListen']}
-      </button>
+    <div className="rounded-2xl border border-pine-800/80 bg-pine-900/90 p-4 backdrop-blur-md shadow-lg my-6 print:hidden">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        {/* Left: Play button + Title */}
+        <div className="flex items-center gap-3.5">
+          <button
+            type="button"
+            onClick={handlePlayPause}
+            aria-label={speaking && !paused ? (isFr ? 'Mettre en pause' : 'Pause audio') : (isFr ? 'Écouter la tribune' : 'Listen to op-ed')}
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-500 text-pine-950 shadow-md shadow-gold-500/25 transition-all hover:scale-105 hover:bg-gold-400 focus:outline-none focus:ring-2 focus:ring-gold-400"
+          >
+            {speaking && !paused ? <Pause size={18} /> : <Play size={18} className="ml-0.5" />}
+          </button>
+
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold text-pine-100">
+                {speaking
+                  ? paused
+                    ? (isFr ? 'Lecture en pause' : 'Playback paused')
+                    : (isFr ? 'Lecture audio en cours' : 'Playing audio narration')
+                  : (isFr ? 'Écouter cette tribune' : 'Listen to this op-ed')}
+              </span>
+              {speaking && !paused && (
+                <div className="flex items-center gap-0.5 h-3">
+                  <span className="w-0.5 h-full bg-gold-400 animate-pulse rounded-full" />
+                  <span className="w-0.5 h-2/3 bg-gold-400 animate-pulse delay-75 rounded-full" />
+                  <span className="w-0.5 h-4/5 bg-gold-400 animate-pulse delay-150 rounded-full" />
+                </div>
+              )}
+            </div>
+            <p className="text-[11.5px] text-pine-200/70">
+              {speaking
+                ? `${progressPercent}% • ${chunks.length - chunkIndex} ${isFr ? 'sections restantes' : 'sections remaining'}`
+                : (isFr ? 'Synthèse vocale intégrée pour décideurs en déplacement' : 'In-browser speech for leaders on the move')}
+            </p>
+          </div>
+        </div>
+
+        {/* Right: Controls (Speed + Reset) */}
+        <div className="flex items-center gap-2">
+          {speaking && (
+            <button
+              type="button"
+              onClick={handleReset}
+              title={isFr ? 'Recommencer' : 'Restart'}
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-pine-200 hover:border-gold-400 hover:text-gold-300 transition-colors"
+            >
+              <RotateCcw size={13} />
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={toggleRate}
+            title={isFr ? 'Modifier la vitesse de lecture' : 'Change playback speed'}
+            className="flex items-center gap-1 h-8 rounded-lg border border-white/15 bg-white/5 px-2.5 text-xs font-bold text-gold-300 hover:border-gold-400 hover:bg-gold-500/10 transition-all"
+          >
+            <FastForward size={12} />
+            <span>{rate}x</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Scrubber progress bar */}
       {speaking && (
-        <button
-          type="button"
-          onClick={stop}
-          aria-label={t['article.audioStop']}
-          className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-pine-100/85 transition-colors hover:text-gold-300"
-        >
-          {t['article.audioStop']}
-        </button>
+        <div className="mt-3 w-full bg-pine-950 h-1.5 rounded-full overflow-hidden">
+          <div
+            className="bg-gold-400 h-full transition-all duration-300 rounded-full"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
       )}
-    </span>
+    </div>
   );
 }

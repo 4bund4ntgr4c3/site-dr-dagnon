@@ -356,6 +356,10 @@
       "destination": "/podcasts/index.html"
     },
     {
+      "source": "/connect",
+      "destination": "/connect/index.html"
+    },
+    {
       "source": "/fr",
       "destination": "/fr/index.html"
     },
@@ -490,6 +494,10 @@
     {
       "source": "/fr/podcasts",
       "destination": "/fr/podcasts/index.html"
+    },
+    {
+      "source": "/fr/connect",
+      "destination": "/fr/connect/index.html"
     },
     {
       "source": "/admin",

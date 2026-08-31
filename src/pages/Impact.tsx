@@ -2,6 +2,8 @@ import { Link } from 'react-router';
 import { TrendingUp, ArrowUpRight, BarChart3, Award } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { MalariaBarometer } from '@/components/MalariaBarometer';
+import { AfricaImpactMap } from '@/components/AfricaImpactMap';
+import { HealthEconomicsSimulator } from '@/components/HealthEconomicsSimulator';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
@@ -50,6 +52,24 @@ export default function Impact() {
               </div>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* Interactive Africa Impact Map */}
+      <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <Reveal>
+            <AfricaImpactMap />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Health Economics & Malaria Simulator */}
+      <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <Reveal>
+            <HealthEconomicsSimulator />
+          </Reveal>
         </div>
       </section>
 
