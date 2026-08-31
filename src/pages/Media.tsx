@@ -5,6 +5,7 @@ import { Reveal } from '@/components/Reveal';
 import { CategoryView } from '@/components/media/CategoryView';
 import { MediaLanding } from '@/components/media/MediaLanding';
 import { PhotoView } from '@/components/media/PhotoView';
+import { ConferenceStudio } from '@/components/ConferenceStudio';
 import { MEDIA_ITEMS, type MediaCategory } from '@/data/media';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -71,6 +72,15 @@ export default function MediaPage() {
                 ? t[`mediaPage.cat${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}` as keyof typeof t] || t['mediaPage.intro']
                 : t['mediaPage.intro']}
             </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Interactive Keynotes & Conference Studio */}
+      <section className="bg-pine-950 py-16 lg:py-20 border-t border-gold-500/20">
+        <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
+          <Reveal>
+            <ConferenceStudio />
           </Reveal>
         </div>
       </section>

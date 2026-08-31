@@ -47,6 +47,7 @@ export interface AppPages {
   Podcasts: ComponentType
   Connect: ComponentType
   Toolkit: ComponentType
+  Mentorship: ComponentType
   /** client-only page (never prerendered) — absent from the server's pages */
   Admin?: ComponentType
   NewsletterPrefs?: ComponentType
@@ -107,6 +108,7 @@ const routesFor = (Pages: AppPages) => [
   <Route key="podcasts" path="podcasts" element={<Pages.Podcasts />} />,
   <Route key="connect" path="connect" element={<Pages.Connect />} />,
   <Route key="toolkit" path="toolkit" element={<Pages.Toolkit />} />,
+  <Route key="mentorship" path="mentorat" element={<Pages.Mentorship />} />,
   ...(Pages.Admin ? [<Route key="admin" path="admin" element={<Pages.Admin />} />] : []),
   ...(Pages.Changelog ? [<Route key="changelog" path="changelog" element={<Pages.Changelog />} />] : []),
   ...(Pages.NewsletterPrefs ? [<Route key="newsletter-prefs" path="newsletter/preferences" element={<Pages.NewsletterPrefs />} />] : []),

@@ -20,6 +20,7 @@ export interface NavPage {
 export const MORE_PAGES: NavPage[] = [
   { id: 'connect', path: '/connect', label: 'nav.connect' },
   { id: 'toolkit', path: '/toolkit', label: 'nav.toolkit' },
+  { id: 'mentorship', path: '/mentorat', label: 'nav.mentorship' },
   { id: 'podcasts', path: '/podcasts', label: 'nav.podcasts' },
   { id: 'parcours', path: '/parcours', label: 'nav.career' },
   { id: 'portfolio', path: '/portfolio', label: 'nav.portfolio' },

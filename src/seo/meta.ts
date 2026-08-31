@@ -469,6 +469,19 @@ export const TOOLKIT_SEO: Record<Lang, { title: string; description: string; key
   },
 };
 
+export const MENTORSHIP_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
+  fr: {
+    title: 'Boussole & Mentorat en Santé Mondiale — Dr. Seynudé Dagnon',
+    description: 'Guide de mentorat et parcours de carrière en santé mondiale par le Dr. Seynudé Dagnon : recherche académique (PhD), gestion de programmes bilatéraux (USAID/PMI) et philanthropie (Fondation Gates).',
+    keywords: 'mentorat santé mondiale, carrières santé publique Afrique, PhD économie de la santé, USAID PMI carrières, Fondation Gates recrutement, Dr Dagnon mentorat, Fortuné Dagnon',
+  },
+  en: {
+    title: 'Global Health Mentorship & Career Compass — Dr. Seynudé Dagnon',
+    description: 'Career mentorship and roadmap in global health by Dr. Seynudé Dagnon: academic research (PhD), bilateral program leadership (USAID/PMI), and philanthropy (Gates Foundation).',
+    keywords: 'global health mentorship, African public health careers, health economics PhD, USAID PMI careers, Gates Foundation careers, Dr Dagnon mentorship',
+  },
+};
+
 /** Short headline for the <title> budget: whatever comes after a colon is
     treated as a subtitle and dropped (a French colon has a space before it,
     hence the trim). */
@@ -1115,6 +1128,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isPodcasts = route === '/podcasts';
   const isConnect = route === '/connect';
   const isToolkit = route === '/toolkit';
+  const isMentorship = route === '/mentorat';
   const isAdmin = route === '/admin';
   const isPreferences = route === '/newsletter/preferences';
   const isChangelog = route === '/changelog';
@@ -1211,6 +1225,8 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                             ? CONNECT_SEO[lang]
                           : isToolkit
                             ? TOOLKIT_SEO[lang]
+                          : isMentorship
+                            ? MENTORSHIP_SEO[lang]
                         : isAdmin
                           ? ADMIN_SEO[lang]
                           : isPreferences
@@ -1320,6 +1336,7 @@ export const PRERENDER_ROUTES = [
   '/podcasts',
   '/connect',
   '/toolkit',
+  '/mentorat',
 ];
 
 export const PRERENDER_LANGS: Lang[] = SUPPORTED;
@@ -1330,6 +1347,7 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/contact': { priority: '0.7', changefreq: 'monthly' },
   '/connect': { priority: '0.8', changefreq: 'monthly' },
   '/toolkit': { priority: '0.8', changefreq: 'monthly' },
+  '/mentorat': { priority: '0.8', changefreq: 'monthly' },
   '/cv': { priority: '0.7', changefreq: 'monthly' },
   '/media': { priority: '0.9', changefreq: 'weekly' },
   '/publications': { priority: '0.9', changefreq: 'weekly' },
