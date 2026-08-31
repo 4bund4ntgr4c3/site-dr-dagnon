@@ -26,17 +26,17 @@ const homeUrl = (lang: Lang) => absUrl(lang, '/');
    truncates the SERP snippet mid-word rather than at a sentence boundary. */
 export const SEO: Record<Lang, { title: string; description: string; keywords: string; ogLocale: string }> = {
   fr: {
-    title: 'Dr. Seynudé Dagnon — Santé publique & Paludisme en Afrique',
+    title: 'Dr. Seynudé Dagnon — Site Officiel | Santé Publique & Paludisme',
     description:
-      "Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Leader en santé publique et paludisme à la Fondation Gates. 17+ ans au Bénin et en Afrique francophone.",
-    keywords: 'Seynudé Dagnon, Seynude Dagnon, Dr Dagnon, Fortuné Dagnon, Jean-Fortuné Dagnon, DAGNON, paludisme, santé publique, Fondation Gates, USAID, PMI, Bénin, Afrique francophone, économie de la santé, leader paludisme, malaria program leader, Cotonou, doctorat Groningen, MPH Antwerp, lutte antipaludique, élimination paludisme',
+      "Site officiel du Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Leader en santé publique et lutte contre le paludisme en Afrique (Fondation Gates, USAID, PMI).",
+    keywords: 'Dr. Seynudé Dagnon, Dr Seynudé Dagnon, Seynudé Dagnon, Seynude Dagnon, Dr Dagnon, Fortuné Dagnon, Jean-Fortuné Dagnon, Dr. Fortuné Dagnon, DAGNON, site officiel Seynudé Dagnon, paludisme, santé publique, Fondation Gates, USAID, PMI, Bénin, Afrique francophone',
     ogLocale: 'fr_FR',
   },
   en: {
-    title: 'Seynudé Dagnon, MD, MPH — Public Health & Malaria Leader',
+    title: 'Dr. Seynudé Dagnon — Official Website | Public Health & Malaria Leader',
     description:
-      'Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Public Health & Malaria Leader at the Gates Foundation. 17+ years across Benin and Francophone Africa.',
-    keywords: 'Seynudé Dagnon, Seynude Dagnon, Dr Dagnon, Fortuné Dagnon, Fortune Dagnon, Jean-Fortuné Dagnon, DAGNON, malaria, public health, Gates Foundation, USAID, PMI, Benin, Francophone Africa, health economics, malaria program leader, Cotonou, PhD Groningen, MPH Antwerp, vector control, SMC, malaria elimination, health systems',
+      'Official website of Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Public Health & Malaria Leader in Africa (Gates Foundation, USAID, PMI).',
+    keywords: 'Dr. Seynude Dagnon, Dr Seynude Dagnon, Seynudé Dagnon, Seynude Dagnon, Dr Dagnon, Fortuné Dagnon, Fortune Dagnon, Jean-Fortuné Dagnon, Dr. Fortune Dagnon, DAGNON, official website Seynude Dagnon, malaria, public health, Gates Foundation, USAID, PMI, Benin, Francophone Africa',
     ogLocale: 'en_US',
   },
 };
