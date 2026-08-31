@@ -74,7 +74,7 @@ export default function Connect() {
                 {isFr ? 'Profil Officiel Vérifié' : 'Verified Official Profile'}
               </span>
               <h1 className="mt-2.5 font-display text-2xl sm:text-3xl font-bold text-pine-100">
-                Dr. Seynudé Jean-Fortuné DAGNON
+                {isFr ? 'Dr. Seynudé Jean-Fortuné DAGNON — Carte Digitale' : 'Seynudé Jean-Fortuné DAGNON, MD, MPH — Digital Card'}
               </h1>
               <p className="text-xs font-semibold text-gold-400 mt-1">
                 MD, MPH · Ph.D. Candidate (Health Economics)

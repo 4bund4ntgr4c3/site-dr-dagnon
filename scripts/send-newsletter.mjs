@@ -349,7 +349,7 @@ async function sendDigest({ send, owner, apiKey }) {
      the subscriber set */
   const ownerObj = { email: owner, lang: 'both', sections: ['publications', 'tribunes', 'agenda', 'projets'] };
   const allRecipients = [ownerObj, ...recipients];
-  const from = process.env.NEWSLETTER_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
+  const from = process.env.NEWSLETTER_FROM_EMAIL || 'Dr. Seynudé Dagnon <admin@seynudedagnon.com>';
   for (const [i, r] of allRecipients.entries()) {
     /* filter items by recipient's sections */
     const filtered = send.filter((item) => {

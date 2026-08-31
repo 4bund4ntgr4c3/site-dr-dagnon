@@ -232,9 +232,9 @@ ${selectedBrief.recommendations.map((r, i) => `${i + 1}. ${r.title[lang]}\n   Ac
 INDICATEURS CIBLES:
 ${selectedBrief.indicators.map((ind) => `- ${ind.label[lang]}: ${ind.target}`).join('\n')}
 
-Auteur: Dr. Seynudé Jean-Fortuné DAGNON, MD, MPH
-Senior Program Officer - Paludisme & Santé Publique | Fondation Bill & Melinda Gates
-Site officiel: https://seynudedagnon.com
+${lang === 'fr' ? 'Auteur : Dr. Seynudé Jean-Fortuné DAGNON' : 'Author: Seynudé Jean-Fortuné DAGNON, MD, MPH'}
+${lang === 'fr' ? 'Senior Program Officer — Paludisme & Santé Publique | Fondation Bill & Melinda Gates' : 'Senior Program Officer — Malaria & Public Health | Bill & Melinda Gates Foundation'}
+${lang === 'fr' ? 'Site officiel : https://seynudedagnon.com' : 'Official website: https://seynudedagnon.com'}
     `.trim();
 
     try {
@@ -390,8 +390,8 @@ Site officiel: https://seynudedagnon.com
         {/* Official Signature Footer */}
         <div className="mt-8 pt-4 border-t-2 border-pine-900/20 flex justify-between items-end text-[10px] text-pine-700">
           <div>
-            <p className="font-bold text-pine-950">Dr. Seynudé Jean-Fortuné DAGNON, MD, MPH</p>
-            <p>PhD Candidate (Health Economics) · Université de Groningen</p>
+            <p className="font-bold text-pine-950">{isFr ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD, MPH'}</p>
+            <p>{isFr ? 'Doctorant en économie de la santé · Université de Groningen' : 'PhD Candidate (Health Economics) · University of Groningen'}</p>
             <p className="text-gold-800 font-mono mt-0.5">https://seynudedagnon.com/impact</p>
           </div>
           <div className="text-right">

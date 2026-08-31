@@ -233,7 +233,7 @@ async function subscribeHandler(req: Req, res: Res): Promise<void> {
     const cleanLang: 'fr' | 'en' = lang === 'fr' ? 'fr' : 'en';
 
     const apiKey = process.env.RESEND_API_KEY;
-    const from = process.env.CONTACT_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
+    const from = process.env.CONTACT_FROM_EMAIL || 'Dr. Seynudé Dagnon <admin@seynudedagnon.com>';
     if (!apiKey) { res.status(500).json({ error: 'Email service not configured' }); return; }
 
     const staged = await stageSubscriber(cleanEmail, cleanLang);
@@ -310,7 +310,7 @@ async function confirmHandler(req: Req, res: Res): Promise<void> {
       return;
     }
     if (stored === 'added') {
-      const from = process.env.CONTACT_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
+      const from = process.env.CONTACT_FROM_EMAIL || 'Dr. Seynudé Dagnon <admin@seynudedagnon.com>';
       const r = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },

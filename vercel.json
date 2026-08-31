@@ -268,6 +268,10 @@
       "destination": "/tribunes/from-malaria-control-to-elimination/index.html"
     },
     {
+      "source": "/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
+      "destination": "/tribunes/de-la-lutte-a-lelimination-afrique-francophone/index.html"
+    },
+    {
       "source": "/projets",
       "destination": "/projets/index.html"
     },
@@ -414,6 +418,10 @@
     {
       "source": "/fr/tribunes/from-malaria-control-to-elimination",
       "destination": "/fr/tribunes/from-malaria-control-to-elimination/index.html"
+    },
+    {
+      "source": "/fr/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
+      "destination": "/fr/tribunes/de-la-lutte-a-lelimination-afrique-francophone/index.html"
     },
     {
       "source": "/fr/projets",

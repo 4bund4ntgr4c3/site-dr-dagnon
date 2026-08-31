@@ -106,7 +106,7 @@ async function contactHandler(req: Req, res: Res): Promise<void> {
 
     const apiKey = process.env.RESEND_API_KEY;
     const to = process.env.CONTACT_TO_EMAIL;
-    const from = process.env.CONTACT_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
+    const from = process.env.CONTACT_FROM_EMAIL || 'Dr. Seynudé Dagnon <admin@seynudedagnon.com>';
     if (!apiKey || !to) { res.status(500).json({ error: 'Email service not configured' }); return; }
 
     const subjectLine = `Website contact — ${cleanTypeLabel ? `[${cleanTypeLabel}] ` : ''}${cleanSubject || cleanName}`;
@@ -242,7 +242,7 @@ async function verifyHandler(req: Req, res: Res): Promise<void> {
       return;
     }
     const apiKey = process.env.RESEND_API_KEY;
-    const from = process.env.CONTACT_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
+    const from = process.env.CONTACT_FROM_EMAIL || 'Dr. Seynudé Dagnon <admin@seynudedagnon.com>';
     if (!apiKey) { res.status(500).json({ error: 'Email service not configured' }); return; }
     const verificationCode = generateCode();
     try {

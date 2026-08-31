@@ -26,14 +26,14 @@ const homeUrl = (lang: Lang) => absUrl(lang, '/');
    truncates the SERP snippet mid-word rather than at a sentence boundary. */
 export const SEO: Record<Lang, { title: string; description: string; keywords: string; ogLocale: string }> = {
   fr: {
-    title: 'Dr. Seynudé Dagnon — Site Officiel | Santé Publique & Paludisme',
+    title: 'Dr. Seynudé Dagnon — Santé Publique & Paludisme',
     description:
       "Site officiel du Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Leader en santé publique et lutte contre le paludisme en Afrique (Fondation Gates, USAID, PMI).",
     keywords: 'Dr. Seynudé Dagnon, Dr Seynudé Dagnon, Seynudé Dagnon, Seynude Dagnon, Dr Dagnon, Fortuné Dagnon, Jean-Fortuné Dagnon, Dr. Fortuné Dagnon, DAGNON, site officiel Seynudé Dagnon, paludisme, santé publique, Fondation Gates, USAID, PMI, Bénin, Afrique francophone',
     ogLocale: 'fr_FR',
   },
   en: {
-    title: 'Dr. Seynudé Dagnon — Official Website | Public Health & Malaria Leader',
+    title: 'Dr. Seynudé Dagnon — Public Health & Malaria Leader',
     description:
       'Official website of Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Public Health & Malaria Leader in Africa (Gates Foundation, USAID, PMI).',
     keywords: 'Dr. Seynude Dagnon, Dr Seynude Dagnon, Seynudé Dagnon, Seynude Dagnon, Dr Dagnon, Fortuné Dagnon, Fortune Dagnon, Jean-Fortuné Dagnon, Dr. Fortune Dagnon, DAGNON, official website Seynude Dagnon, malaria, public health, Gates Foundation, USAID, PMI, Benin, Francophone Africa',
@@ -458,12 +458,12 @@ export const CONNECT_SEO: Record<Lang, { title: string; description: string; key
 
 export const TOOLKIT_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
-    title: 'Boîte à Outils & Protocoles pour Décideurs — Dr. Seynudé Dagnon',
+    title: 'Boîte à Outils & Protocoles — Dr. Seynudé Dagnon',
     description: 'Guides méthodologiques et protocoles opérationnels du Dr. Seynudé Dagnon : digitalisation de campagnes MILDA, contrats G2G, audit DHIS2 et ciblage CPS.',
     keywords: 'toolkit santé publique, protocole MILDA, financement direct G2G, audit DHIS2, ciblage CPS, Dr Dagnon outils, santé publique Afrique, Fortuné Dagnon',
   },
   en: {
-    title: 'Public Health Toolkit & Operational Protocols — Dr. Seynudé Dagnon',
+    title: 'Public Health Toolkit & Protocols — Dr. Seynudé Dagnon',
     description: 'Field-tested operational guidelines by Dr. Seynudé Dagnon: mass campaign digitalization, G2G direct financing, DHIS2 audit, and SMC targeting.',
     keywords: 'public health toolkit, LLIN protocol, G2G financing guide, DHIS2 data audit, SMC targeting matrix, Dr Dagnon toolkit, global health',
   },
@@ -472,12 +472,12 @@ export const TOOLKIT_SEO: Record<Lang, { title: string; description: string; key
 export const MENTORSHIP_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Boussole & Mentorat en Santé Mondiale — Dr. Seynudé Dagnon',
-    description: 'Guide de mentorat et parcours de carrière en santé mondiale par le Dr. Seynudé Dagnon : recherche académique (PhD), gestion de programmes bilatéraux (USAID/PMI) et philanthropie (Fondation Gates).',
+    description: 'Guide de mentorat et carrières en santé mondiale du Dr. Seynudé Dagnon : recherche (PhD), programmes bilatéraux (USAID) et philanthropie (Gates Foundation).',
     keywords: 'mentorat santé mondiale, carrières santé publique Afrique, PhD économie de la santé, USAID PMI carrières, Fondation Gates recrutement, Dr Dagnon mentorat, Fortuné Dagnon',
   },
   en: {
-    title: 'Global Health Mentorship & Career Compass — Dr. Seynudé Dagnon',
-    description: 'Career mentorship and roadmap in global health by Dr. Seynudé Dagnon: academic research (PhD), bilateral program leadership (USAID/PMI), and philanthropy (Gates Foundation).',
+    title: 'Global Health Mentorship & Career — Dr. Seynudé Dagnon',
+    description: 'Global health mentorship by Dr. Seynudé Dagnon: academic research (PhD), bilateral leadership (USAID/PMI), and philanthropy (Gates Foundation).',
     keywords: 'global health mentorship, African public health careers, health economics PhD, USAID PMI careers, Gates Foundation careers, Dr Dagnon mentorship',
   },
 };
@@ -785,6 +785,14 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
       items.push({ name: 'Offline', url: absUrl(lang, '/offline') });
     } else if (path === '/parcours') {
       items.push({ name: lang === 'fr' ? 'Parcours' : 'Career', url: absUrl(lang, '/parcours') });
+    } else if (path === '/podcasts') {
+      items.push({ name: lang === 'fr' ? 'Podcasts & Audio' : 'Podcasts & Audio', url: absUrl(lang, '/podcasts') });
+    } else if (path === '/connect') {
+      items.push({ name: lang === 'fr' ? 'Carte Digitale & Contact' : 'Digital Card & Connect', url: absUrl(lang, '/connect') });
+    } else if (path === '/toolkit') {
+      items.push({ name: lang === 'fr' ? 'Boîte à Outils' : 'Toolkit', url: absUrl(lang, '/toolkit') });
+    } else if (path === '/mentorat') {
+      items.push({ name: lang === 'fr' ? 'Mentorat & Académie' : 'Mentorship & Academy', url: absUrl(lang, '/mentorat') });
     }
   return {
     '@context': 'https://schema.org',

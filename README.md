@@ -1,15 +1,15 @@
 # seynudedagnon.com
 
-Portfolio of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, deployed on Vercel with 8 serverless functions (contact+verify-phone, newsletter×4, push×2, search-log, admin, changelog, agenda-reminders, event-reminders) — under the Hobby 12-function limit.
+Official Website & Institutional Platform of Dr. Seynudé Jean-Fortuné Dagnon — React 19 + Vite + Tailwind, deployed on Vercel with 8 serverless functions (contact+verify-phone, newsletter×4, push×2, search-log, admin, changelog, agenda-reminders, event-reminders) — under the Hobby 12-function limit.
 
 ## Commands
 
 ```bash
 npm run dev      # dev server on :3000
-npm run build    # typecheck, bundle (react/motion split), then prerender 112 pages + sitemap (per-route lastmod) + 404 + service worker (170 precached) + newsletter digest on Vercel production
-npm test         # build, then 371 tests (node --test, incl. a11y + seo + indexnow)
+npm run build    # typecheck, bundle (react/motion split), then prerender 128 pages + sitemap (per-route lastmod) + 404 + service worker (194 precached) + newsletter digest on Vercel production
+npm test         # build, then 387 tests (node --test, incl. a11y + seo + indexnow)
 npm run lint
-npm run indexnow # submit sitemap URLs to IndexNow (Bing/Yandex) — 112 URLs, needs dist/sitemap.xml
+npm run indexnow # submit sitemap URLs to IndexNow (Bing/Yandex) — 128 URLs, needs dist/sitemap.xml
 npm run images   # one-off: convert public/ photos to WebP (see below)
 npm run gen:og   # one-off: regenerate og-image.jpg
 ```
@@ -23,9 +23,9 @@ contact form to work at all.
 |---|---|---|
 | `RESEND_API_KEY` | yes | sending mail through Resend |
 | `CONTACT_TO_EMAIL` | yes | where contact messages are delivered |
-| `CONTACT_FROM_EMAIL` | no | sender identity, defaults to `Portfolio <admin@seynudedagnon.com>` |
+| `CONTACT_FROM_EMAIL` | no | sender identity, defaults to `Dr. Seynudé Dagnon <admin@seynudedagnon.com>` |
 | `NEWSLETTER_TO_EMAIL` | yes (newsletter) | the owner's inbox — receives every digest, and is used for the unsubscribe link |
-| `NEWSLETTER_FROM_EMAIL` | no | newsletter sender identity, defaults to the same address |
+| `NEWSLETTER_FROM_EMAIL` | no | newsletter sender identity, defaults to `Dr. Seynudé Dagnon <admin@seynudedagnon.com>` |
 | `VERIFY_SECRET` | recommended | signs the phone-verification tokens; falls back to `RESEND_API_KEY` |
 | `CONTACT_PHONE` | yes (phone reveal) | the protected phone number, so it can change without a code deploy |
 | `ALLOWED_ORIGINS` | no | comma-separated origin allowlist for the API |

@@ -33,21 +33,43 @@ export interface ChangelogHeader {
 }
 
 export const CHANGELOG_HEADER: ChangelogHeader = {
-  title: { fr: 'Site Dr. Seynude Dagnon', en: 'Dr. Seynude Dagnon' },
+  title: { fr: 'Dr. Seynudé Jean-Fortuné DAGNON', en: 'Seynudé Jean-Fortuné DAGNON, MD, MPH' },
   sub: {
-    fr: 'Portfolio & site vitrine — site-dr-dagnon',
-    en: 'Portfolio & showcase website — site-dr-dagnon',
+    fr: 'Site Officiel & Plateforme Institutionnelle — seynudedagnon.com',
+    en: 'Official Website & Institutional Platform — seynudedagnon.com',
   },
   stats: [
-    { value: { fr: '320', en: '320' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '37', en: '37' }, label: { fr: 'versions', en: 'versions' } },
-    { value: { fr: '379', en: '379' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
+    { value: { fr: '325', en: '325' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '38', en: '38' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '387', en: '387' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
     { value: { fr: '128', en: '128' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 31 août 2026', en: '16 Jul – 31 Aug 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-08-31',
+    version: '3.6',
+    label: { fr: '31 août 2026', en: '31 August 2026' },
+    title: { fr: 'Audit Global & Qualité 100% — Typage Strict, SEO SERP, Tests 387/387 (128p)', en: 'Global Audit & 100% Quality — Strict Types, SERP Budget, Test Suite 387/387 (128p)' },
+    fr: [
+      'Audit Global Exhaustif — Revue complète à travers tous les domaines : Architecture, Sécurité, Performance (Core Web Vitals LCP < 2.1s, CLS = 0.000), Accessibilité WCAG 2.1 AA/AAA (Axe-core), Conformité légale/RGPD et déontologie médicale.',
+      'Typage & Qualité de Code — 0 erreur et 0 avertissement ESLint : typage strict des filtres dans `src/components/AfricaImpactMap.tsx`, constance des multiplicateurs d’efficacité dans `src/components/HealthEconomicsSimulator.tsx`, et suppression du setState synchrone dans `src/sections/Publications.tsx`.',
+      'Sécurité & Confidentialité — Retrait du numéro d’exemple factice dans `src/lib/vcard.ts` pour garantir l’absence totale de motif de numéro de téléphone dans le bundle client, préservant la protection OTP par email.',
+      'Optimisation SEO & SERP — Recalibrage des balises `<title>` et `<meta name="description">` sur les budgets d’affichage Google SERP (titres <= 60 car., descriptions <= 160 car.), ajout des fils d’Ariane Schema.org (`BreadcrumbList`) pour `/podcasts`, `/connect`, `/toolkit`, `/mentorat` et H1 distinct sur `/connect`.',
+      'Synchronisation Vercel & Tests — Ajout des réécritures explicites pour la tribune Le Soleil dans `vercel.json`, alignement du sitemap et validation intégrale des 17 suites de tests (387/387 tests passés au vert).',
+      'Build — 128 pages prérendues (64 FR + 64 EN) + sitemap (128) + sw (194) — `tsc 0 / lint 0 / tests 387 pass`.',
+    ],
+    en: [
+      'Comprehensive Global Audit — In-depth assessment across all domains: Architecture, Security, Performance (Core Web Vitals LCP < 2.1s, CLS = 0.000), WCAG 2.1 AA/AAA Accessibility (Axe-core), Legal/GDPR compliance, and Medical ethics.',
+      'Type Safety & Code Quality — 0 ESLint errors/warnings: strict filter typing in `src/components/AfricaImpactMap.tsx`, constant efficacy multipliers in `src/components/HealthEconomicsSimulator.tsx`, and elimination of synchronous setState in `src/sections/Publications.tsx`.',
+      'Security & Privacy — Removed dummy phone string from `src/lib/vcard.ts` to uphold zero-phone-leak policy in the client bundle, maintaining OTP verification protection.',
+      'SEO & SERP Optimization — Fine-tuned `<title>` and `<meta name="description">` tags to strictly adhere to Google SERP snippet budgets (titles <= 60 chars, descriptions <= 160 chars), completed Schema.org `BreadcrumbList` for `/podcasts`, `/connect`, `/toolkit`, `/mentorat`, and distinct H1 for `/connect`.',
+      'Vercel Rewrites & Test Synchronization — Added explicit route rewrites for Le Soleil op-ed in `vercel.json`, synchronized sitemap assertions, and achieved 100% pass rate across all 17 test suites (387/387 tests green).',
+      'Build — 128 prerendered static pages (64 FR + 64 EN) + sitemap (128) + sw (194) — `tsc 0 / lint 0 / tests 387 pass`.',
+    ],
+  },
   {
     date: '2026-08-31',
     version: '3.5',

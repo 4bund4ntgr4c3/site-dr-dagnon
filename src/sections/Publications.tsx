@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Search, ExternalLink, FileText, Star, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router';
 import { SectionHeading } from '@/components/SectionHeading';
@@ -20,8 +20,6 @@ export function Publications() {
   const [query, setQuery] = useState('');
   const [year, setYear] = useState(t['publications.all']);
   const [showAll, setShowAll] = useState(false);
-
-  useEffect(() => { setShowAll(false); }, [query, year]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -45,15 +43,18 @@ export function Publications() {
           intro={t['publications.intro']}
         />
 
-        {/* filters */}
-        <Reveal delay={0.15}>
+        {/* search + year filter */}
+        <Reveal delay={0.1} y={20}>
           <div className="mt-10 flex flex-col gap-4 rounded-2xl border border-pine-900/10 bg-ivory p-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="relative flex-1 sm:max-w-sm">
               <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/60" />
               <input
                 aria-label={t['publications.search']}
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setShowAll(false);
+                }}
                 placeholder={t['publications.search']}
                 className="w-full rounded-full border border-pine-900/15 bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-ink/65 focus:border-gold-500/40 focus:ring-1 focus:ring-gold-500/10"
               />
@@ -63,7 +64,10 @@ export function Publications() {
                 <button
                   key={y}
                   type="button"
-                  onClick={() => setYear(y)}
+                  onClick={() => {
+                    setYear(y);
+                    setShowAll(false);
+                  }}
                   aria-pressed={year === y}
                   className={`rounded-full px-4 py-1.5 text-[12.5px] font-semibold transition-all ${
                     year === y

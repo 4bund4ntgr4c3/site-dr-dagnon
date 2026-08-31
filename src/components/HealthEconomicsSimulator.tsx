@@ -19,10 +19,10 @@ export function HealthEconomicsSimulator() {
     const baselineCases = (population * 0.38);
 
     // Efficacy multiplier based on intervention combination
-    let netEfficacy = dualAiNets ? 0.35 : 0.20; // 35% reduction from Next-Gen nets vs 20% standard
-    let smcEfficacy = smcCycles === 5 ? 0.32 : smcCycles === 4 ? 0.26 : 0;
-    let irsEfficacy = targetedIrs ? 0.18 : 0;
-    let digitalEfficacy = digitalTracking ? 0.12 : 0; // 12% boost from zero stockouts and rapid diagnosis
+    const netEfficacy = dualAiNets ? 0.35 : 0.20; // 35% reduction from Next-Gen nets vs 20% standard
+    const smcEfficacy = smcCycles === 5 ? 0.32 : smcCycles === 4 ? 0.26 : 0;
+    const irsEfficacy = targetedIrs ? 0.18 : 0;
+    const digitalEfficacy = digitalTracking ? 0.12 : 0; // 12% boost from zero stockouts and rapid diagnosis
 
     // Combined protective efficacy with synergy attenuation
     const totalEfficacy = Math.min(0.82, netEfficacy + smcEfficacy + irsEfficacy + digitalEfficacy);

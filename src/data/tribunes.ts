@@ -1,4 +1,4 @@
-﻿import type { Lang } from '@/i18n/lang';
+import type { Lang } from '@/i18n/lang';
 
 /* Hosted op-eds ("tribunes") — full reprints of articles Dr. Dagnon
    co-authored, with attribution to the original publication. Each entry is
@@ -47,7 +47,7 @@ export const TRIBUNES: TribuneEntry[] = [
       en: 'From control to elimination: why Francophone Africa must adapt its malaria response',
     },
     description: {
-      fr: 'Tribune du Dr Seynudé Dagnon dans Le Soleil (Sénégal) : l’adaptation infranationale comme pont entre lutte et élimination, à l’occasion de la Journée mondiale du moustique.',
+      fr: 'Tribune du Dr Seynudé Dagnon dans Le Soleil (Sénégal) : l’adaptation infranationale comme pont entre lutte et élimination du paludisme.',
       en: 'Op-ed by Dr Seynudé Dagnon in Le Soleil (Senegal): subnational tailoring as the bridge from control to elimination, on World Mosquito Day.',
     },
   },

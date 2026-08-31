@@ -286,7 +286,7 @@ export async function run({ items = AGENDA_ITEMS, from = new Date(), apiKey }: {
     const addresses = pendingAddresses(optIns, sent);
     if (addresses.length === 0) continue;
 
-    const sender = process.env.NEWSLETTER_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
+    const sender = process.env.NEWSLETTER_FROM_EMAIL || 'Dr. Seynudé Dagnon <admin@seynudedagnon.com>';
     const subject = subjectLine(event);
     for (const [i, to] of addresses.entries()) {
       const offHref = offKeyHref(to, event);

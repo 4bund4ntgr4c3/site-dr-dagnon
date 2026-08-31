@@ -254,7 +254,7 @@ export async function run({ items = AGENDA_ITEMS, from = new Date(), owner, apiK
   if (send.length === 0) return { sent: 0, recipients: recipients.length, pushed: 0 };
 
   const subject = subjectLine(send);
-  const sender = process.env.NEWSLETTER_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
+  const sender = process.env.NEWSLETTER_FROM_EMAIL || 'Dr. Seynudé Dagnon <admin@seynudedagnon.com>';
   for (const [i, to] of recipients.entries()) {
     const href = unsubHref(to);
     const body: { from: string; to: string[]; subject: string; html: string; text: string } = {

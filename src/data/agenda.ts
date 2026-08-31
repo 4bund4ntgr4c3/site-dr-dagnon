@@ -29,10 +29,7 @@ export const AGENDA_ITEMS: AgendaEntry[] = [
       en: 'Ndëp Podcast — Hope in the fight against malaria',
     },
     location: { fr: 'En ligne / Podcast Ndëp', en: 'Online / Ndëp Podcast' },
-    description: {
-      fr: 'Épisode 5 du podcast Ndëp : entretien approfondi avec le Dr. Seynudé Jean-Fortuné Dagnon sur les défis, les innovations et l\'espoir dans la lutte et l\'élimination du paludisme en Afrique francophone.',
-      en: 'Episode 5 of Ndëp podcast: in-depth interview with Dr. Seynudé Jean-Fortuné Dagnon on challenges, innovations, and hope in the fight and elimination of malaria across Francophone Africa.',
-    },
+    description: { fr: 'Épisode 5 du podcast Ndëp : entretien approfondi avec le Dr. Seynudé Jean-Fortuné Dagnon sur les défis, les innovations et l\'espoir dans la lutte et l\'élimination du paludisme en Afrique francophone.', en: 'Episode 5 of Ndëp podcast: in-depth interview with Dr. Seynudé Jean-Fortuné Dagnon on challenges, innovations, and hope in the fight and elimination of malaria across Francophone Africa.' },
     link: 'https://www.youtube.com/watch?v=IenUdkxFqNE',
   },
   {

@@ -55,6 +55,7 @@ const ROUTES = [
   '/publications',
   '/tribunes',
   '/tribunes/from-malaria-control-to-elimination',
+  '/tribunes/de-la-lutte-a-lelimination-afrique-francophone',
   '/projets',
   '/projets/digitalisation-milda-benin',
   '/projets/recherche-cps-smc',
@@ -77,6 +78,9 @@ const ROUTES = [
   '/parcours',
   '/publications-pdf',
   '/podcasts',
+  '/connect',
+  '/toolkit',
+  '/mentorat',
 ];
 
 const dist = path.resolve('dist');

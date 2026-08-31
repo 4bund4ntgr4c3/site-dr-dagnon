@@ -25,7 +25,6 @@ export function downloadVCard(lang: 'fr' | 'en' = 'fr') {
     `ORG:${org}`,
     `TITLE:${title}`,
     'EMAIL;type=INTERNET,pref:contact@seynudedagnon.com',
-    'TEL;type=CELL,VOICE:+22997000000',
     'URL;type=WORK:https://seynudedagnon.com',
     'URL;type=LINKEDIN:https://www.linkedin.com/in/seynud%C3%A9-jean-fortune-dagnon-md-mph-seynudedagnon-com-093a5a2a/',
     'URL;type=ORCID:https://orcid.org/0009-0006-5022-1399',

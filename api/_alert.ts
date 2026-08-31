@@ -25,7 +25,7 @@ export async function alertOwner(topic: string, detail: string): Promise<void> {
   if (!apiKey || !to) return;
   try {
     if (!(await rateLimit(`alert:${topic}`, 1, WINDOW_MS))) return;
-    const from = process.env.CONTACT_FROM_EMAIL || 'Portfolio <admin@seynudedagnon.com>';
+    const from = process.env.CONTACT_FROM_EMAIL || 'Dr. Seynudé Dagnon <admin@seynudedagnon.com>';
     const env = process.env.VERCEL_ENV || 'development';
     const url = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://seynudedagnon.com';
     const response = await fetch('https://api.resend.com/emails', {

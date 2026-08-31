@@ -209,16 +209,18 @@ export function AfricaImpactMap() {
 
         {/* Filter buttons */}
         <div className="flex flex-wrap gap-2">
-          {[
-            { id: 'all', label: { fr: 'Tous les pays', en: 'All countries' } },
-            { id: 'digital', label: { fr: 'Digitalisation', en: 'Digitization' } },
-            { id: 'smc', label: { fr: 'CPS / SMC', en: 'SMC Research' } },
-            { id: 'funding', label: { fr: 'Stratégie & Fonds', en: 'Strategy & Funds' } },
-          ].map((btn) => (
+          {(
+            [
+              { id: 'all', label: { fr: 'Tous les pays', en: 'All countries' } },
+              { id: 'digital', label: { fr: 'Digitalisation', en: 'Digitization' } },
+              { id: 'smc', label: { fr: 'CPS / SMC', en: 'SMC Research' } },
+              { id: 'funding', label: { fr: 'Stratégie & Fonds', en: 'Strategy & Funds' } },
+            ] as const
+          ).map((btn) => (
             <button
               key={btn.id}
               type="button"
-              onClick={() => setFilter(btn.id as any)}
+              onClick={() => setFilter(btn.id)}
               className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
                 filter === btn.id
                   ? 'bg-gold-500 text-pine-950 shadow-md shadow-gold-500/20'
