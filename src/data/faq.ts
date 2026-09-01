@@ -71,4 +71,14 @@ export const FAQ_ITEMS: FaqEntry[] = [
       en: 'Yes, op-eds, articles and content may be reused with explicit attribution and a link to the source. For any other use (translation, adaptation, commercial use), please contact us beforehand.',
     },
   },
+  {
+    question: {
+      fr: 'Quelles sont les différentes graphies et variantes du nom du Dr. Dagnon ?',
+      en: 'What are the different spellings and variants of Dr. Dagnon’s name?',
+    },
+    answer: {
+      fr: 'Le nom officiel complet est Dr. Seynudé Jean-Fortuné DAGNON. Dans les publications internationales, les moteurs de recherche et la presse, il est fréquemment référencé sous les formes sans accents : Seynude Dagnon, Fortune Dagnon, Seynude Jean-Fortune Dagnon, Jean-Fortuné Dagnon, ou abrégé en Dr. Fortuné Dagnon et S.J.F. Dagnon.',
+      en: 'The full official name is Seynudé Jean-Fortuné DAGNON, MD, MPH. In international literature, media, and search engines, it is commonly spelled without diacritics: Seynude Dagnon, Fortune Dagnon, Seynude Jean-Fortune Dagnon, or abbreviated as Dr. Fortune Dagnon and S.J.F. Dagnon.',
+    },
+  },
 ];
