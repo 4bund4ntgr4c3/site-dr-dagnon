@@ -1,4 +1,4 @@
-﻿import type { Lang } from '@/i18n/lang';
+import type { Lang } from '@/i18n/lang';
 import type { TribuneBlock } from '@/data/tribunes';
 
 /* Full reprint bodies of the hosted op-eds, keyed by tribune slug. Split
@@ -195,5 +195,91 @@ export const TRIBUNE_BODIES: Record<string, Record<Lang, TribuneBlock[]>> = {
           text: 'La Journée mondiale de lutte contre le paludisme est un moment pour réfléchir à notre disposition à faire ce virage.',
         },
       ],
+  },
+  'financement-direct-g2g-souverainete-sanitaire': {
+    fr: [
+      {
+        kind: 'byline',
+        text: 'Par Dr. Seynudé Jean-Fortuné Dagnon, Senior Program Officer — Paludisme & Partenariats Stratégiques Afrique francophone.',
+      },
+      {
+        kind: 'p',
+        text: 'Pendant des décennies, l’aide internationale en santé a fonctionné selon un modèle où les fonds des bailleurs transitaient quasi-exclusivement par des organisations internationales et des cabinets intermédiaires. Si ce modèle a permis de répondre à des urgences humanitaires aiguës, il a souvent maintenu les ministères de la santé africains dans une posture d’exécutants plutôt que de maîtres d’ouvrage de leurs propres politiques nationales.',
+      },
+      {
+        kind: 'p',
+        text: 'Le financement direct d’État à État, ou Government-to-Government (G2G), opère une rupture fondamentale : il transfère directement les ressources budgétaires sur des comptes dédiés du Trésor Public national, tout en liant les décaissements à l’atteinte d’indicateurs de performance rigoureusement audités.',
+      },
+      {
+        kind: 'h2',
+        text: 'Une efficience financière démultipliée',
+      },
+      {
+        kind: 'p',
+        text: 'L’expérience menée au Bénin avec le Programme National de Lutte contre le Paludisme (PNLP) sous contrat G2G avec l’USAID a prouvé qu’en supprimant les strates d’intermédiation, jusqu’à 18 à 22 % d’économies directes de frais généraux sont réinjectées dans l’achat de médicaments essentiels et le déploiement des agents de santé communautaires.',
+      },
+      {
+        kind: 'h2',
+        text: 'Responsabilité fiduciaire et digitalisation des données',
+      },
+      {
+        kind: 'p',
+        text: 'L’autonomie ne signifie pas l’absence de contrôle. Au contraire, le succès du G2G repose sur deux piliers indissociables : une pré-certification fiduciaire rigoureuse (évaluation NUPAS) et la digitalisation intégrale des systèmes d’information sanitaire (DHIS2). Lorsque chaque dépense et chaque cas clinique sont tracés numériquement en temps réel, la confiance mutuelle entre bailleurs et gouvernements devient pérenne.',
+      },
+      {
+        kind: 'quote',
+        text: 'La véritable souveraineté sanitaire ne se décrète pas : elle se construit par des institutions nationales capables de programmer, de justifier et d’exécuter leurs budgets avec le plus haut niveau d’exigence internationale.',
+      },
+      {
+        kind: 'h2',
+        text: 'Vers une transition pérenne vers les financements domestiques',
+      },
+      {
+        kind: 'p',
+        text: 'À l’heure où les enveloppes de l’aide publique au développement se contractent mondialement, le modèle G2G constitue le meilleur tremplin vers l’autofinancement progressif par les budgets nationaux. En renforçant les capacités de gestion publique des ministères africains, nous préparons l’avenir : une Afrique qui ne dépend plus de la charité extérieure, mais investit souverainement dans la vie de ses enfants.',
+      },
+    ],
+    en: [
+      {
+        kind: 'byline',
+        text: 'By Dr. Seynudé Jean-Fortuné Dagnon, Senior Program Officer — Malaria & Strategic Partnerships, Francophone Africa.',
+      },
+      {
+        kind: 'p',
+        text: 'For decades, international health assistance relied on a model where donor funding flowed almost exclusively through international NGOs and third-party contractors. While this framework delivered vital humanitarian relief, it frequently relegated African health ministries to administrative executors rather than sovereign architects of their own national health agendas.',
+      },
+      {
+        kind: 'p',
+        text: 'Direct Government-to-Government (G2G) financing represents a paradigm shift: it channels funds directly into dedicated sub-accounts at the National Treasury, while tying grant disbursements to rigorously audited performance milestones.',
+      },
+      {
+        kind: 'h2',
+        text: 'Unlocking Dramatic Cost-Efficiencies',
+      },
+      {
+        kind: 'p',
+        text: 'Our direct G2G experience in Benin between the National Malaria Control Program (NMCP) and USAID demonstrated that removing intermediary overhead layers unlocked 18% to 22% in direct operational savings — resources instantly redirected to frontline procurement of essential ACT treatments and community health worker stipends.',
+      },
+      {
+        kind: 'h2',
+        text: 'Fiduciary Rigor and End-to-End Data Digitalization',
+      },
+      {
+        kind: 'p',
+        text: 'Autonomy does not mean less oversight. On the contrary, G2G success hinges on two non-negotiable pillars: rigorous upfront fiduciary certification (NUPAS audit) and end-to-end digitalization of national health management information systems (DHIS2). When every transaction voucher and epidemiological case report is tracked digitally in real time, mutual trust between donors and governments becomes unshakeable.',
+      },
+      {
+        kind: 'quote',
+        text: 'True health sovereignty cannot merely be proclaimed: it is built through national institutions capable of planning, justifying, and executing their budgets to the highest global standard of fiduciary excellence.',
+      },
+      {
+        kind: 'h2',
+        text: 'A Bridge to Domestic Resource Mobilization',
+      },
+      {
+        kind: 'p',
+        text: 'As global development budgets face tightening fiscal constraints, G2G mechanisms provide the definitive stepping stone toward progressive domestic health financing. By strengthening public sector financial management across African ministries, we build the ultimate future: an Africa that no longer depends on external aid cycles, but invests sovereignly in the health and prosperity of its own children.',
+      },
+    ],
   },
 };

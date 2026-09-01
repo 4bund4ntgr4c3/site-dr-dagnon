@@ -272,6 +272,10 @@
       "destination": "/tribunes/de-la-lutte-a-lelimination-afrique-francophone/index.html"
     },
     {
+      "source": "/tribunes/financement-direct-g2g-souverainete-sanitaire",
+      "destination": "/tribunes/financement-direct-g2g-souverainete-sanitaire/index.html"
+    },
+    {
       "source": "/projets",
       "destination": "/projets/index.html"
     },
@@ -422,6 +426,10 @@
     {
       "source": "/fr/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
       "destination": "/fr/tribunes/de-la-lutte-a-lelimination-afrique-francophone/index.html"
+    },
+    {
+      "source": "/fr/tribunes/financement-direct-g2g-souverainete-sanitaire",
+      "destination": "/fr/tribunes/financement-direct-g2g-souverainete-sanitaire/index.html"
     },
     {
       "source": "/fr/projets",

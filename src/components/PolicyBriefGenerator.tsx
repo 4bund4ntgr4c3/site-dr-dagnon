@@ -202,6 +202,122 @@ const POLICY_BRIEFS: PolicyBrief[] = [
       { label: { fr: 'Coût par enfant / an', en: 'Cost per child / year' }, target: '< $4.00' },
     ],
   },
+  {
+    id: 'anopheles-stephensi-urban-threat',
+    category: 'Surveillance & Climat',
+    date: '2026',
+    title: {
+      fr: 'Alerte Sanitaire : Risque d’Invasion Urbaine d’Anopheles stephensi en Afrique Côtière',
+      en: 'Policy Alert: Containing the Urban Invasion of Anopheles stephensi across Coastal Africa',
+    },
+    subtitle: {
+      fr: 'Stratégie de riposte préventive pour les métropoles et zones portuaires d’Afrique de l’Ouest',
+      en: 'Early detection and containment roadmap for West African seaports and urban centers',
+    },
+    context: {
+      fr: 'Contrairement aux vecteurs ruraux traditionnels, Anopheles stephensi prolifère dans les récipients d’eau propre artificiels (citernes, chantiers, pneus) au cœur des mégapoles urbaines et résiste à multiples classes d’insecticides. Sans surveillance proactive, il menace d’ajouter des millions de cas de paludisme urbain dans des villes historiquement peu touchées.',
+      en: 'Unlike traditional rural vectors, Anopheles stephensi breeds in artificial urban water containers (cisterns, construction sites, discarded tires) and exhibits high insecticide resistance. Without proactive surveillance, it threatens to trigger unprecedented urban malaria outbreaks across major African coastal cities.',
+    },
+    targetAudience: {
+      fr: 'Maires des grandes villes, Directeurs de l’Hygiène Publique, Équipes Entomologiques Portuaires',
+      en: 'City Mayors, Public Health Officers, Port Health and Vector Surveillance Teams',
+    },
+    recommendations: [
+      {
+        title: {
+          fr: '1. Établir des cordons de surveillance entomologique moléculaire dans les ports et aéroports',
+          en: '1. Establish molecular entomological surveillance cordons at ports and airports',
+        },
+        action: {
+          fr: 'Déployer des pièges sentinelles BG-Sentinel et tester par PCR l’ADN des larves collectées dans un rayon de 10 km des nœuds logistiques.',
+          en: 'Deploy BG-Sentinel traps and run routine PCR molecular assays on collected larvae within 10 km of trade hubs.',
+        },
+      },
+      {
+        title: {
+          fr: '2. Imposer le traitement larvicide biologique (Bti) des réservoirs urbains',
+          en: '2. Enforce biological larviciding (Bti) across urban artificial water storage',
+        },
+        action: {
+          fr: 'Traiter systématiquement les citernes ouvertes, chantiers immobiliers et bassins de rétention avec du Bacillus thuringiensis israelensis.',
+          en: 'Systematically treat open cisterns, construction retention ponds, and rainwater tanks with eco-friendly Bti larvicides.',
+        },
+      },
+      {
+        title: {
+          fr: '3. Cartographier les gîtes larvaires par imagerie drone haute résolution',
+          en: '3. Map urban breeding hotspots using high-resolution drone imagery',
+        },
+        action: {
+          fr: 'Intégrer les coordonnées GPS des points d’eau stagnante urbains dans le module SIG du DHIS2 municipal.',
+          en: 'Feed geospatial coordinates of stagnant urban water bodies directly into municipal DHIS2 GIS layers.',
+        },
+      },
+    ],
+    indicators: [
+      { label: { fr: 'Détection précoce', en: 'Early detection window' }, target: '< 14 jours' },
+      { label: { fr: 'Couverture larvicide urbaine', en: 'Urban larviciding coverage' }, target: '> 90%' },
+      { label: { fr: 'Incidence urbaine évitée', en: 'Averted urban cases' }, target: '100% stable' },
+    ],
+  },
+  {
+    id: 'malaria-vaccine-integration-r21',
+    category: 'Vaccination & Systèmes de Santé',
+    date: '2026',
+    title: {
+      fr: 'Feuille de Route : Intégration Économique des Vaccins Antipaludiques (R21 / RTS,S) dans le PEV',
+      en: 'Strategic Roadmap: Cost-Effective Integration of Malaria Vaccines (R21 / RTS,S) into EPI',
+    },
+    subtitle: {
+      fr: 'Maximiser le retour sur investissement sanitaire par la combinaison synergique Vaccin + CPS + MILDA',
+      en: 'Maximizing health ROI through the layered synergy of Vaccines, SMC, and Next-Gen Nets',
+    },
+    context: {
+      fr: 'L’introduction des vaccins R21/Matrix-M et RTS,S marque un tournant historique. Cependant, leur coût unitaire et la logistique de 4 doses exigent un ciblage infranational rigoureux : les modèles démontrent que l’impact est démultiplié (+60% de mortalité évitée) lorsque le vaccin est déployé en synergie avec la chimioprévention saisonnière dans les zones à forte transmission.',
+      en: 'The rollout of R21/Matrix-M and RTS,S vaccines is a historic milestone. However, procurement costs and 4-dose cold-chain logistics necessitate precision subnational targeting: health economics models prove that vaccine impact surges (+60% child mortality averted) when layered synchronously with seasonal chemoprevention.',
+    },
+    targetAudience: {
+      fr: 'Coordonnateurs PEV, Directeurs Santé Mère-Enfant, Conseillers Économie de la Santé Gavi/UNICEF',
+      en: 'EPI Coordinators, Maternal and Child Health Directors, Gavi/UNICEF Health Economists',
+    },
+    recommendations: [
+      {
+        title: {
+          fr: '1. Prioriser l’introduction dans les districts à forte charge et accès restreint aux soins',
+          en: '1. Prioritize introduction in high-burden districts with high pediatric mortality',
+        },
+        action: {
+          fr: 'Allouer les premières cohortes vaccinales aux zones rurales où l’accès aux structures hospitalières dépasse 2 heures de trajet.',
+          en: 'Direct initial vaccine cohorts to remote rural health districts where emergency pediatric care is over 2 hours away.',
+        },
+      },
+      {
+        title: {
+          fr: '2. Synchroniser la 4e dose de rappel avec le premier cycle de CPS',
+          en: '2. Synchronize the 4th booster dose with SMC Cycle 1 campaigns',
+        },
+        action: {
+          fr: 'Coupler le passage communautaire de la chimioprévention pour rattraper les enfants ayant manqué leur dose de rappel vaccinal à 18 mois.',
+          en: 'Leverage door-to-door SMC distribution to catch up children who missed their 18-month EPI booster appointment.',
+        },
+      },
+      {
+        title: {
+          fr: '3. Digitaliser le carnet vaccinal électronique dans le registre DHIS2 Tracker',
+          en: '3. Digitize electronic immunization registries using DHIS2 Tracker',
+        },
+        action: {
+          fr: 'Envoyer des rappels SMS automatiques aux mères de famille 48h avant chaque échéance vaccinale (Mois 5, 6, 7 et 18).',
+          en: 'Trigger automated SMS appointment reminders to caregivers 48 hours prior to each scheduled vaccination dose.',
+        },
+      },
+    ],
+    indicators: [
+      { label: { fr: 'Taux de complétude 4 doses', en: '4-dose completion rate' }, target: '> 85%' },
+      { label: { fr: 'Baisse de mortalité toutes causes', en: 'All-cause child mortality drop' }, target: '-13%' },
+      { label: { fr: 'Coût / année de vie gagnée (DALY)', en: 'Cost per DALY averted' }, target: '< $65' },
+    ],
+  },
 ];
 
 export function PolicyBriefGenerator() {

@@ -56,6 +56,7 @@ const ROUTES = [
   '/tribunes',
   '/tribunes/from-malaria-control-to-elimination',
   '/tribunes/de-la-lutte-a-lelimination-afrique-francophone',
+  '/tribunes/financement-direct-g2g-souverainete-sanitaire',
   '/projets',
   '/projets/digitalisation-milda-benin',
   '/projets/recherche-cps-smc',

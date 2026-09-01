@@ -39,15 +39,35 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Official Website & Institutional Platform — seynudedagnon.com',
   },
   stats: [
-    { value: { fr: '325', en: '325' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '38', en: '38' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '328', en: '328' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '39', en: '39' }, label: { fr: 'versions', en: 'versions' } },
     { value: { fr: '387', en: '387' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
-    { value: { fr: '128', en: '128' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
-    { value: { fr: '16 juil – 31 août 2026', en: '16 Jul – 31 Aug 2026' } },
+    { value: { fr: '130', en: '130' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
+    { value: { fr: '16 juil – 1 sept 2026', en: '16 Jul – 1 Sep 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-09-01',
+    version: '3.7',
+    label: { fr: '1er septembre 2026', en: '1 September 2026' },
+    title: { fr: 'Positionnement Stratégique & Souveraineté — Tribune G2G, Menace Stephensi, Vaccins R21 (130p)', en: 'Strategic Positioning & Sovereignty — G2G Op-Ed, Stephensi Threat, R21 Vaccines (130p)' },
+    fr: [
+      'Nouvelle Tribune Hébergée — `financement-direct-g2g-souverainete-sanitaire` : Analyse d’orientation stratégique sur la transition vers le financement direct d’État à État (G2G), démontrant comment 18 à 22 % d’économies de frais généraux renforcent la souveraineté des ministères de la santé africains.',
+      'Alerte Stratégique Climat & Stephensi — Nouveau Policy Brief dans `src/components/PolicyBriefGenerator.tsx` : Feuille de route de détection précoce moléculaire et traitement larvicide biologique (Bti) contre l’invasion urbaine d’Anopheles stephensi dans les métropoles côtières d’Afrique de l’Ouest.',
+      'Déploiement Vaccinal R21 / RTS,S — Nouveau Policy Brief dans `src/components/PolicyBriefGenerator.tsx` : Modélisation coût-efficacité de l’intégration des vaccins antipaludiques dans le PEV couplée à la chimioprévention saisonnière (+60% d’impact sur la mortalité pédiatrique).',
+      'Graphe Sémantique Wikidata Avancé — 52 alias et variantes indexés (`alternateName`) et 14 disciplines reliées à leurs entités Wikidata officielles (`knowsAbout` DefinedTerms) dans le schéma Schema.org Person.',
+      'Infrastructure & Tests — 130 pages statiques prérendues (65 FR + 65 EN), rewrites `vercel.json` et sitemap actualisés, 100% de réussite aux 387 tests automatisés.',
+    ],
+    en: [
+      'New Hosted Op-Ed — `financement-direct-g2g-souverainete-sanitaire`: Strategic commentary on the transition to Government-to-Government (G2G) direct financing, illustrating how 18% to 22% in overhead savings empower African health ministries toward domestic financial sovereignty.',
+      'Climate & Stephensi Alert — New Policy Brief in `src/components/PolicyBriefGenerator.tsx`: Early molecular detection and biological larviciding (Bti) roadmap against the urban invasion of Anopheles stephensi across West African coastal trade hubs.',
+      'R21 / RTS,S Vaccine Integration — New Policy Brief in `src/components/PolicyBriefGenerator.tsx`: Cost-effective integration of malaria vaccines into EPI synchronized with seasonal chemoprevention (+60% impact on pediatric mortality averted).',
+      'Comprehensive Wikidata Semantic Graph — 52 aliases/name variants declared (`alternateName`) and 14 core disciplines mapped to official Wikidata URIs (`knowsAbout` DefinedTerms) in Schema.org Person.',
+      'Infrastructure & Tests — 130 prerendered static pages (65 FR + 65 EN), updated `vercel.json` rewrites and sitemap, 100% test pass rate across all 387 automated tests.',
+    ],
+  },
   {
     date: '2026-08-31',
     version: '3.6',

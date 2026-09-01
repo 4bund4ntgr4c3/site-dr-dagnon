@@ -6,10 +6,10 @@ Official Website & Institutional Platform of Dr. Seynudé Jean-Fortuné Dagnon �
 
 ```bash
 npm run dev      # dev server on :3000
-npm run build    # typecheck, bundle (react/motion split), then prerender 128 pages + sitemap (per-route lastmod) + 404 + service worker (194 precached) + newsletter digest on Vercel production
+npm run build    # typecheck, bundle (react/motion split), then prerender 130 pages + sitemap (per-route lastmod) + 404 + service worker (196 precached) + newsletter digest on Vercel production
 npm test         # build, then 387 tests (node --test, incl. a11y + seo + indexnow)
 npm run lint
-npm run indexnow # submit sitemap URLs to IndexNow (Bing/Yandex) — 128 URLs, needs dist/sitemap.xml
+npm run indexnow # submit sitemap URLs to IndexNow (Bing/Yandex) — 130 URLs, needs dist/sitemap.xml
 npm run images   # one-off: convert public/ photos to WebP (see below)
 npm run gen:og   # one-off: regenerate og-image.jpg
 ```

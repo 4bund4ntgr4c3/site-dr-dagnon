@@ -51,4 +51,18 @@ export const TRIBUNES: TribuneEntry[] = [
       en: 'Op-ed by Dr Seynudé Dagnon in Le Soleil (Senegal): subnational tailoring as the bridge from control to elimination, on World Mosquito Day.',
     },
   },
+  {
+    slug: 'financement-direct-g2g-souverainete-sanitaire',
+    date: '2026-08-28',
+    theme: 'leadership',
+    source: { name: 'Health Policy Africa', url: 'https://seynudedagnon.com/tribunes/financement-direct-g2g-souverainete-sanitaire' },
+    title: {
+      fr: 'Financement direct G2G : débloquer l’autonomie des ministères africains',
+      en: 'Direct G2G Financing: Unlocking Autonomy for African Health Ministries',
+    },
+    description: {
+      fr: 'Tribune du Dr Seynudé Dagnon : comment le financement direct d’État à État (G2G) transforme l’autonomie des ministères de la santé en Afrique.',
+      en: 'Op-ed by Dr Seynudé Dagnon: how direct Government-to-Government (G2G) funding transforms health ministry autonomy and fiduciary ownership across Africa.',
+    },
+  },
 ];

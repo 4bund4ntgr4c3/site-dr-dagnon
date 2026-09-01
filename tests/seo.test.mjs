@@ -89,7 +89,7 @@ if (typeof routeLastmod === 'function') {
   });
   test('routeLastmod: collection pages return the newest item', () => {
     // /tribunes → max tribunes date (newest entry), /projets → max projects date
-    assert.equal(routeLastmod('/tribunes', FALLBACK), '2026-08-21');
+    assert.equal(routeLastmod('/tribunes', FALLBACK), '2026-08-28');
     assert.match(routeLastmod('/projets', FALLBACK), /^\d{4}-\d{2}-\d{2}$/);
     // /publications synthesises YYYY-01-01
     assert.match(routeLastmod('/publications', FALLBACK), /^\d{4}-01-01$/);
