@@ -76,15 +76,6 @@ export default function MediaPage() {
         </div>
       </section>
 
-      {/* Interactive Keynotes & Conference Studio */}
-      <section className="bg-pine-950 py-16 lg:py-20 border-t border-gold-500/20">
-        <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
-          <Reveal>
-            <ConferenceStudio />
-          </Reveal>
-        </div>
-      </section>
-
       {/* content — light */}
       <section className="bg-pine-50 py-16 lg:py-20">
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
@@ -93,6 +84,15 @@ export default function MediaPage() {
           ) : (
             <MediaLanding lang={lang} t={t} />
           )}
+        </div>
+      </section>
+
+      {/* Interactive Keynotes & Conference Studio */}
+      <section className="bg-pine-950 py-16 lg:py-20 border-t border-gold-500/20">
+        <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
+          <Reveal>
+            <ConferenceStudio />
+          </Reveal>
         </div>
       </section>
     </main>
