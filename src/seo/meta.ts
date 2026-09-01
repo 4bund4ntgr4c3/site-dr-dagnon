@@ -644,10 +644,16 @@ export function personJsonLd(lang: Lang) {
         '@type': 'Occupation',
         name: lang === 'fr' ? 'Médecin spécialiste en santé publique' : 'Public Health Physician',
         occupationalCategory: '29-1069.00',
+        skills: lang === 'fr'
+          ? ['Santé publique', 'Épidémiologie', 'Économie de la santé', 'Renforcement des systèmes de santé']
+          : ['Public Health', 'Epidemiology', 'Health Economics', 'Health Systems Strengthening'],
       },
       {
         '@type': 'Occupation',
         name: lang === 'fr' ? 'Leader de programmes de lutte contre le paludisme' : 'Malaria Program Leader & Senior Officer',
+        skills: lang === 'fr'
+          ? ['Élimination du paludisme', 'Lutte antivectorielle', 'Digitalisation de campagnes MILDA', 'Financement direct G2G', 'DHIS2']
+          : ['Malaria Elimination', 'Vector Control', 'LLIN Campaign Digitalization', 'Direct G2G Financing', 'DHIS2'],
       },
     ],
     knowsLanguage: ['fr', 'en', 'de', 'es'],
@@ -657,25 +663,101 @@ export function personJsonLd(lang: Lang) {
       'Special Recognition Award 2025',
     ],
     knowsAbout: [
+      // Concepts & Disciplines (Bilingue)
       'Malaria', 'Paludisme',
       'Public Health', 'Santé publique',
       'Health Systems Strengthening', 'Renforcement des systèmes de santé',
       'Malaria Elimination', 'Élimination du paludisme',
       'Digital Health', 'Santé numérique',
-      'DHIS2', 'HMIS',
+      'DHIS2', 'HMIS', 'SIGS',
       'Epidemiology', 'Épidémiologie',
       'Vector Control', 'Lutte antivectorielle',
       'Health Economics', 'Économie de la santé',
       'Health Financing', 'Financement de la santé',
       'Seasonal Malaria Chemoprevention', 'Chimioprévention du paludisme saisonnier', 'SMC', 'CPS',
       'Indoor Residual Spraying', 'Pulvérisation intradomiciliaire', 'IRS', 'PID',
-      'Insecticide-Treated Nets', 'Moustiquaires imprégnées d’insecticide', 'MILDA', 'LLIN', 'PBO nets',
+      'Insecticide-Treated Nets', 'Moustiquaires imprégnées d’insecticide', 'MILDA', 'LLIN', 'PBO nets', 'Dual-AI nets',
+      'Genomic Surveillance', 'Surveillance génomique', 'Insecticide Resistance', 'Résistance aux insecticides',
       'Data-Driven Decision Making', 'Prise de décision basée sur les données',
+      'Policy Analysis', 'Analyse des politiques de santé', 'Policy Brief', 'Note d’orientation stratégique',
+      'Subnational Tailoring', 'Adaptation infranationale',
       'PMI', 'USAID', 'Gates Foundation', 'Fondation Gates',
-      'Global Fund', 'Fonds mondial',
-      'Entomology', 'Entomologie médicale', 'Anopheles gambiae', 'Anopheles coluzzii',
-      'Program Management', 'Gestion de programmes de santé', 'G2G direct financing',
-      'Francophone Africa', 'Afrique francophone', 'Bénin', 'Burundi', 'Burkina Faso', 'Sénégal',
+      'Global Fund', 'Fonds mondial', 'World Health Organization', 'OMS',
+      'Entomology', 'Entomologie médicale', 'Anopheles gambiae', 'Anopheles coluzzii', 'Anopheles funestus',
+      'Program Management', 'Gestion de programmes de santé', 'G2G direct financing', 'Financement direct G2G',
+      'Francophone Africa', 'Afrique francophone', 'Bénin', 'Burundi', 'Burkina Faso', 'Sénégal', 'RDC', 'Nigéria',
+
+      // Entités sémantiques formelles (Wikidata URIs)
+      {
+        '@type': 'DefinedTerm',
+        name: 'Malaria',
+        sameAs: 'https://www.wikidata.org/wiki/Q12156',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'Health Economics',
+        sameAs: 'https://www.wikidata.org/wiki/Q1661146',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'Public Health',
+        sameAs: 'https://www.wikidata.org/wiki/Q189603',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'Vector Control',
+        sameAs: 'https://www.wikidata.org/wiki/Q169544',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'DHIS2',
+        sameAs: 'https://www.wikidata.org/wiki/Q17009477',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'Epidemiology',
+        sameAs: 'https://www.wikidata.org/wiki/Q133805',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'Chemoprevention',
+        sameAs: 'https://www.wikidata.org/wiki/Q5090623',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'Insecticide-Treated Net',
+        sameAs: 'https://www.wikidata.org/wiki/Q5363402',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'Indoor Residual Spraying',
+        sameAs: 'https://www.wikidata.org/wiki/Q11075678',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'President’s Malaria Initiative',
+        sameAs: 'https://www.wikidata.org/wiki/Q7241285',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'Bill & Melinda Gates Foundation',
+        sameAs: 'https://www.wikidata.org/wiki/Q180516',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'Global Fund to Fight AIDS, Tuberculosis and Malaria',
+        sameAs: 'https://www.wikidata.org/wiki/Q1048680',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'World Health Organization',
+        sameAs: 'https://www.wikidata.org/wiki/Q7809',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'Anopheles gambiae',
+        sameAs: 'https://www.wikidata.org/wiki/Q133379',
+      },
     ],
     hasCredential: [
       { '@type': 'EducationalOccupationalCredential', credentialCategory: 'degree', name: 'MD — Doctor of Medicine' },
