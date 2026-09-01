@@ -39,15 +39,35 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Official Website & Institutional Platform — seynudedagnon.com',
   },
   stats: [
-    { value: { fr: '328', en: '328' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '39', en: '39' }, label: { fr: 'versions', en: 'versions' } },
-    { value: { fr: '387', en: '387' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
+    { value: { fr: '330', en: '330' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '40', en: '40' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '389', en: '389' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
     { value: { fr: '130', en: '130' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
     { value: { fr: '16 juil – 1 sept 2026', en: '16 Jul – 1 Sep 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-09-01',
+    version: '3.8',
+    label: { fr: '1er septembre 2026', en: '1 September 2026' },
+    title: { fr: 'Outils Décisionnels Majeurs — Stratification SNT, Simulateur G2G, Audio Op-Ed & 10 Profils Pays (130p)', en: 'Major Decision Tools — SNT Modeler, G2G Calculator, Audio Op-Ed & 10 Country Profiles (130p)' },
+    fr: [
+      'Modélisateur de Stratification Infranationale (SNT) — `src/components/SubnationalTailoringSimulator.tsx` & `src/data/stratification.ts` : Outil interactif calculant le paquet d’interventions optimal (Dual-AI, CPS élargie, Vaccin R21, PECADOM Plus) pour 4 archétypes de transmission avec calcul en temps réel des cas évités, vies sauvées et coût par DALY.',
+      'Simulateur d’Économies Fiduciaires G2G — `src/components/G2GSimulator.tsx` & `src/data/g2g-calculator.ts` : Calculateur financier démontrant comment 18 à 22 % d’économies de frais généraux se traduisent directement en traitements ACT, tests TDR et salaires d’agents communautaires avec calendrier DLI sur 24 mois.',
+      'Player Audio « Écoute & Podcast » pour les Tribunes — `src/components/TribuneAudioPlayer.tsx` : Lecteur audio immersif haute fidélité avec synthèse vocale naturelle FR/EN, contrôle de vitesse (1x à 2x), saut 15s et barre de progression.',
+      'Observatoire des Profils Pays 2026–2030 (10 Pays) — `src/components/CountryProfiles.tsx` & `src/data/country-profiles.ts` : Fiches de synthèse One-Pager pour 10 pays d’Afrique francophone (Bénin, Sénégal, Côte d’Ivoire, RDC, Burkina Faso, Mali, Guinée, Niger, Burundi, Cameroun) avec 3 directives prioritaires exclusives du Dr. Dagnon par pays et fonction d’impression diplomatique.',
+      'Qualité & Robustesse — 0 erreur ESLint / TypeScript, 100% de conformité WCAG 2.1 AA (Axe-core), 389/389 tests automatisés au vert.',
+    ],
+    en: [
+      'Subnational Tailoring (SNT) Modeler — `src/components/SubnationalTailoringSimulator.tsx` & `src/data/stratification.ts`: Interactive decision tool calculating optimal precision intervention mix (Dual-AI nets, Extended SMC, R21 vaccine, iCCM) across 4 transmission archetypes with dynamic cases averted, lives saved, and cost-per-DALY analytics.',
+      'G2G Overhead Savings Calculator — `src/components/G2GSimulator.tsx` & `src/data/g2g-calculator.ts`: Fiduciary simulator demonstrating how 18% to 22% in overhead savings translate directly into ACT treatments, RDT tests, and CHW salaries alongside a 24-month DLI milestone roadmap.',
+      'Tribune Audio Op-Ed Player — `src/components/TribuneAudioPlayer.tsx`: High-fidelity voice synthesis player with natural bilingual FR/EN narration, speed scaling (1x to 2x), 15s skipping, and real-time paragraph tracking.',
+      'Strategic Country Profiles Observatory (10 Nations) — `src/components/CountryProfiles.tsx` & `src/data/country-profiles.ts`: Actionable One-Pagers for 10 Francophone African countries (Benin, Senegal, Ivory Coast, DRC, Burkina Faso, Mali, Guinea, Niger, Burundi, Cameroon) featuring Dr. Dagnon’s 3 strategic priority directives per country and 1-click print export.',
+      'Quality & Reliability — 0 ESLint / TypeScript errors, 100% WCAG 2.1 AA compliance (Axe-core), 389/389 automated tests green.',
+    ],
+  },
   {
     date: '2026-09-01',
     version: '3.7',

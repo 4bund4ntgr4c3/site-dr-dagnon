@@ -8,6 +8,7 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { FontSizeControl } from '@/components/FontSizeControl';
 import { SelectionQuote } from '@/components/SelectionQuote';
 import { ArticleAudio } from '@/components/ArticleAudio';
+import { TribuneAudioPlayer } from '@/components/TribuneAudioPlayer';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
@@ -111,6 +112,13 @@ export default function TribuneArticle() {
             <h1 className="mt-7 font-display text-[2.2rem] leading-[1.08] font-medium text-pine-100 sm:text-5xl lg:text-[3.4rem]">
               {entry.title[lang]}
             </h1>
+            <div className="mt-8">
+              <TribuneAudioPlayer
+                title={entry.title[lang]}
+                byline={body[lang].find((b) => b.kind === 'byline')?.text}
+                blocks={body[lang]}
+              />
+            </div>
           </Reveal>
         </div>
       </section>

@@ -4,6 +4,9 @@ import { Reveal } from '@/components/Reveal';
 import { MalariaBarometer } from '@/components/MalariaBarometer';
 import { AfricaImpactMap } from '@/components/AfricaImpactMap';
 import { HealthEconomicsSimulator } from '@/components/HealthEconomicsSimulator';
+import { SubnationalTailoringSimulator } from '@/components/SubnationalTailoringSimulator';
+import { G2GSimulator } from '@/components/G2GSimulator';
+import { CountryProfiles } from '@/components/CountryProfiles';
 import { PolicyBriefGenerator } from '@/components/PolicyBriefGenerator';
 import { MalariaRadar } from '@/components/MalariaRadar';
 import { CountryPolicyBenchmark } from '@/components/CountryPolicyBenchmark';
@@ -77,11 +80,38 @@ export default function Impact() {
         </div>
       </section>
 
+      {/* WHO 2025 Subnational Tailoring (SNT) Simulator */}
+      <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <Reveal>
+            <SubnationalTailoringSimulator />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* G2G Direct Financing & Overhead Savings Calculator */}
+      <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <Reveal>
+            <G2GSimulator />
+          </Reveal>
+        </div>
+      </section>
+
       {/* Regional Country Policy Benchmark */}
       <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
             <CountryPolicyBenchmark />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Strategic Country Profiles & Actionable Directives (10 Countries) */}
+      <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <Reveal>
+            <CountryProfiles />
           </Reveal>
         </div>
       </section>
