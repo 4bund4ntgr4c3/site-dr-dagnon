@@ -1,20 +1,24 @@
 import { Link } from 'react-router';
 import { TrendingUp, ArrowUpRight, BarChart3, Award } from 'lucide-react';
+import { lazy, Suspense } from 'react';
 import { Reveal } from '@/components/Reveal';
-import { MalariaBarometer } from '@/components/MalariaBarometer';
-import { AfricaImpactMap } from '@/components/AfricaImpactMap';
-import { HealthEconomicsSimulator } from '@/components/HealthEconomicsSimulator';
-import { SubnationalTailoringSimulator } from '@/components/SubnationalTailoringSimulator';
-import { G2GSimulator } from '@/components/G2GSimulator';
-import { CountryProfiles } from '@/components/CountryProfiles';
-import { PolicyBriefGenerator } from '@/components/PolicyBriefGenerator';
-import { MalariaRadar } from '@/components/MalariaRadar';
-import { CountryPolicyBenchmark } from '@/components/CountryPolicyBenchmark';
-import { GenomicsExplorer } from '@/components/GenomicsExplorer';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { localePath } from '@/i18n/routing';
 import { IMPACT_STATS, IMPACT_RESULTS } from '@/data/impact';
+
+const MalariaBarometer = lazy(() => import('@/components/MalariaBarometer').then((m) => ({ default: m.MalariaBarometer })));
+const AfricaImpactMap = lazy(() => import('@/components/AfricaImpactMap').then((m) => ({ default: m.AfricaImpactMap })));
+const HealthEconomicsSimulator = lazy(() => import('@/components/HealthEconomicsSimulator').then((m) => ({ default: m.HealthEconomicsSimulator })));
+const SubnationalTailoringSimulator = lazy(() => import('@/components/SubnationalTailoringSimulator').then((m) => ({ default: m.SubnationalTailoringSimulator })));
+const G2GSimulator = lazy(() => import('@/components/G2GSimulator').then((m) => ({ default: m.G2GSimulator })));
+const CountryProfiles = lazy(() => import('@/components/CountryProfiles').then((m) => ({ default: m.CountryProfiles })));
+const PolicyBriefGenerator = lazy(() => import('@/components/PolicyBriefGenerator').then((m) => ({ default: m.PolicyBriefGenerator })));
+const MalariaRadar = lazy(() => import('@/components/MalariaRadar').then((m) => ({ default: m.MalariaRadar })));
+const CountryPolicyBenchmark = lazy(() => import('@/components/CountryPolicyBenchmark').then((m) => ({ default: m.CountryPolicyBenchmark })));
+const GenomicsExplorer = lazy(() => import('@/components/GenomicsExplorer').then((m) => ({ default: m.GenomicsExplorer })));
+
+const Fallback = () => <div className="mx-auto h-64 max-w-3xl animate-pulse rounded-2xl bg-white/5" aria-hidden="true" />;
 
 export default function Impact() {
   const { lang } = useLang();
@@ -66,7 +70,9 @@ export default function Impact() {
       <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
-            <AfricaImpactMap />
+            <Suspense fallback={<Fallback />}>
+              <AfricaImpactMap />
+            </Suspense>
           </Reveal>
         </div>
       </section>
@@ -75,7 +81,9 @@ export default function Impact() {
       <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
-            <HealthEconomicsSimulator />
+            <Suspense fallback={<Fallback />}>
+              <HealthEconomicsSimulator />
+            </Suspense>
           </Reveal>
         </div>
       </section>
@@ -84,7 +92,9 @@ export default function Impact() {
       <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
-            <SubnationalTailoringSimulator />
+            <Suspense fallback={<Fallback />}>
+              <SubnationalTailoringSimulator />
+            </Suspense>
           </Reveal>
         </div>
       </section>
@@ -93,7 +103,9 @@ export default function Impact() {
       <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
-            <G2GSimulator />
+            <Suspense fallback={<Fallback />}>
+              <G2GSimulator />
+            </Suspense>
           </Reveal>
         </div>
       </section>
@@ -102,7 +114,9 @@ export default function Impact() {
       <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
-            <CountryPolicyBenchmark />
+            <Suspense fallback={<Fallback />}>
+              <CountryPolicyBenchmark />
+            </Suspense>
           </Reveal>
         </div>
       </section>
@@ -111,7 +125,9 @@ export default function Impact() {
       <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
-            <CountryProfiles />
+            <Suspense fallback={<Fallback />}>
+              <CountryProfiles />
+            </Suspense>
           </Reveal>
         </div>
       </section>
@@ -120,7 +136,9 @@ export default function Impact() {
       <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
-            <GenomicsExplorer />
+            <Suspense fallback={<Fallback />}>
+              <GenomicsExplorer />
+            </Suspense>
           </Reveal>
         </div>
       </section>
@@ -129,7 +147,9 @@ export default function Impact() {
       <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
-            <PolicyBriefGenerator />
+            <Suspense fallback={<Fallback />}>
+              <PolicyBriefGenerator />
+            </Suspense>
           </Reveal>
         </div>
       </section>
@@ -138,7 +158,9 @@ export default function Impact() {
       <section className="bg-pine-950 py-16 lg:py-24 border-b border-gold-500/20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <Reveal>
-            <MalariaRadar />
+            <Suspense fallback={<Fallback />}>
+              <MalariaRadar />
+            </Suspense>
           </Reveal>
         </div>
       </section>
@@ -147,7 +169,9 @@ export default function Impact() {
       <section className="bg-ivory py-12 lg:py-16">
         <div className="mx-auto max-w-5xl px-5 lg:px-8">
           <Reveal>
-            <MalariaBarometer />
+            <Suspense fallback={<Fallback />}>
+              <MalariaBarometer />
+            </Suspense>
           </Reveal>
         </div>
       </section>
