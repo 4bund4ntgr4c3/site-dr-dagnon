@@ -1,10 +1,11 @@
 {
   "id": "/",
-  "lang": "fr",
+  "lang": "en",
   "name": "Dr. Seynudé Jean-Fortuné DAGNON",
   "short_name": "Dr. Dagnon",
-  "description": "Leader en santé publique et lutte contre le paludisme.",
+  "description": "Leader en santé publique et lutte contre le paludisme. / Public Health & Malaria Leader.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0c2e2a",
   "theme_color": "#0c2e2a",

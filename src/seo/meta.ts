@@ -1216,16 +1216,15 @@ export function buildPodcastRss(): string {
 
 /* ── Agenda events (JSON-LD) ───────────────────────────────────── */
 
-/* Future events only: a listing of past appearances has no business
-   appearing in a search result as an upcoming event. Start dates are
-   compared lexically (ISO strings), the same way the agenda page splits
-   upcoming from past. Null when nothing is upcoming — an empty @graph is
-   noise, and the agenda page falls back to its contact call-to-action. */
+/* All events with correct status: upcoming = EventScheduled, past = EventCompleted.
+   Returning a graph even when nothing is upcoming preserves structured data on the
+   agenda page year-round (past events still validate as historical Event entities). */
 export function eventsJsonLd(lang: Lang): object | null {
   const today = new Date();
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-  const upcoming = AGENDA_ITEMS.filter((e) => e.date > todayStr)
-    .sort((a, b) => a.date.localeCompare(b.date))
+  const events = [...AGENDA_ITEMS]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 20)
     .map((e) => ({
       '@type': 'Event',
       '@id': absUrl(lang, '/agenda') + `#${e.id}`,
@@ -1242,10 +1241,10 @@ export function eventsJsonLd(lang: Lang): object | null {
         url: absUrl(lang, '/'),
       },
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      eventStatus: 'https://schema.org/EventScheduled',
+      eventStatus: e.date > todayStr ? 'https://schema.org/EventScheduled' : 'https://schema.org/EventCompleted',
       url: absUrl(lang, '/agenda') + `#${e.id}`,
     }));
-  return upcoming.length === 0 ? null : { '@context': 'https://schema.org', '@graph': upcoming };
+  return events.length === 0 ? null : { '@context': 'https://schema.org', '@graph': events };
 }
 
 /* ── Press kit FAQ (JSON-LD) ───────────────────────────────────── */
