@@ -918,11 +918,22 @@ export function publicationsPageJsonLd(lang: Lang, url: string) {
         '@type': 'ListItem',
         position: idx + 1,
         item: {
-          '@type': 'ScholarlyArticle',
+          '@type': ['ScholarlyArticle', 'MedicalScholarlyArticle'],
           headline: item.title[lang],
           name: item.title[lang],
           description: item.description[lang],
           datePublished: String(item.year),
+          about: [
+            {
+              '@type': 'MedicalCondition',
+              name: lang === 'fr' ? 'Paludisme' : 'Malaria',
+              code: {
+                '@type': 'MedicalCode',
+                code: 'Q12156',
+                codingSystem: 'https://www.wikidata.org/wiki/Q12156',
+              },
+            },
+          ],
           author: item.authors[lang]
             .split(/[,·;]/)
             .map((a) => a.trim().replace(/^…\s*/, '').replace(/\s*…$/, ''))
@@ -1030,6 +1041,14 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
 }
 
 export function articleJsonLd(lang: Lang, entry: (typeof TRIBUNES)[number], url: string) {
+  const isLekeCoauthored = entry.slug === 'from-malaria-control-to-elimination';
+  const authors = isLekeCoauthored
+    ? [
+        { '@type': 'Person', name: 'Professor Rose Leke' },
+        { '@type': 'Person', name: fullName(lang) },
+      ]
+    : [{ '@type': 'Person', name: fullName(lang) }];
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -1037,12 +1056,7 @@ export function articleJsonLd(lang: Lang, entry: (typeof TRIBUNES)[number], url:
     description: entry.description[lang],
     datePublished: entry.date,
     inLanguage: [lang],
-    /* co-authors, including the site's owner — the reprint is attributed in
-       full rather than presented as a solo piece */
-    author: [
-      { '@type': 'Person', name: 'Professor Rose Leke' },
-      { '@type': 'Person', name: 'Seynudé Jean-Fortuné Dagnon' },
-    ],
+    author: authors,
     publisher: { '@type': 'Organization', name: entry.source.name, url: entry.source.url },
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
@@ -1515,6 +1529,12 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
       { name: 'citation_author', content: 'Dagnon, Seynudé Jean-Fortuné' },
       { name: 'citation_author_institution', content: 'Bill & Melinda Gates Foundation' },
       { name: 'citation_author_orcid', content: 'https://orcid.org/0009-0006-5022-1399' },
+    ] : tribune ? [
+      { name: 'citation_title', content: tribune.title[lang] },
+      { name: 'citation_author', content: 'Dagnon, Seynudé Jean-Fortuné' },
+      { name: 'citation_publication_date', content: tribune.date.replace(/-/g, '/') },
+      { name: 'citation_journal_title', content: tribune.source.name },
+      { name: 'citation_public_url', content: url },
     ] : [],
     jsonLd: {
       person: personJsonLd(lang),
