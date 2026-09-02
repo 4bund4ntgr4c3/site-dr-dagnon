@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import { animate, useInView, useReducedMotion } from 'framer-motion';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -6,48 +7,26 @@ import { STATS } from '@/data/site';
 
 function Counter({ value, locale }: { value: number; locale: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [inView, setInView] = useState(false);
-  const reducedMotion =
-    typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-
-  useEffect(() => {
-    if (inView) return;
-    const el = ref.current;
-    if (!el) return;
-    if (typeof IntersectionObserver === 'undefined') {
-      setInView(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setInView(true);
-          obs.disconnect();
-        }
-      },
-      { rootMargin: '-40px' },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [inView]);
+  const inView = useInView(ref, { once: true, margin: '-40px' });
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (!inView || !ref.current) return;
+    /* reduced motion: jump straight to the final number */
     if (reducedMotion) {
       ref.current.textContent = value.toLocaleString(locale);
       return;
     }
-    let raf = 0;
-    const start = performance.now();
-    const dur = 1800;
-    const ease = (t: number) => 1 - Math.pow(1 - t, 3);
-    const tick = (now: number) => {
-      const p = Math.min((now - start) / dur, 1);
-      if (ref.current) ref.current.textContent = Math.round(ease(p) * value).toLocaleString(locale);
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    const controls = animate(0, value, {
+      duration: 1.8,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => {
+        if (ref.current) {
+          ref.current.textContent = Math.round(v).toLocaleString(locale);
+        }
+      },
+    });
+    return () => controls.stop();
   }, [inView, value, locale, reducedMotion]);
 
   return <span ref={ref}>0</span>;

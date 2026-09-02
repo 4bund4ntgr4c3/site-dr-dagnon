@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
+import { motion } from 'framer-motion';
 import { Linkedin, Mail, ArrowDown, MapPin, Award, BookOpen, Play, X } from 'lucide-react';
 import { LINKS } from '@/data/content';
 import { PUB_ITEMS } from '@/data/publications';
@@ -8,26 +9,10 @@ import { UI } from '@/i18n/translations';
 import { NameHighlight } from '@/components/NameHighlight';
 import { localePath } from '@/i18n/routing';
 
-const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
-function FadeUp({ children, delay = 0, className, as: Tag = 'div' }: { children: React.ReactNode; delay?: number; className?: string; as?: 'div' | 'h1' | 'p' }) {
-  const [shown, setShown] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setShown(true), 10 + delay * 1000);
-    return () => clearTimeout(t);
-  }, [delay]);
-  return (
-    <Tag
-      className={className}
-      style={{
-        opacity: shown ? 1 : 0,
-        transform: shown ? 'none' : 'translateY(30px)',
-        transition: `opacity 0.7s ${EASE} ${delay}s, transform 0.7s ${EASE} ${delay}s`,
-      }}
-    >
-      {children}
-    </Tag>
-  );
-}
+const fadeUp = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0 },
+};
 
 const YOUTUBE_VIDEO_ID = '0fRIhntULPg';
 
@@ -62,26 +47,42 @@ export function Hero() {
         <div className="grid items-center gap-14 lg:grid-cols-[1.25fr_1fr]">
           {/* Left : text */}
           <div>
-            <FadeUp delay={0}>
+            <motion.div {...fadeUp} transition={{ duration: 0.7, ease: 'easeOut' }}>
               <span className="inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-300">
                 <span className="h-1.5 w-1.5 rounded-full bg-gold-400" />
                 {t['hero.badge']}
               </span>
-            </FadeUp>
+            </motion.div>
 
-            <FadeUp delay={0.12} as="h1" className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-ivory sm:text-6xl lg:text-[4.4rem]">
+            <motion.h1
+              {...fadeUp}
+              transition={{ duration: 0.7, delay: 0.12, ease: 'easeOut' }}
+              className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-ivory sm:text-6xl lg:text-[4.4rem]"
+            >
               <NameHighlight />
-            </FadeUp>
+            </motion.h1>
 
-            <FadeUp delay={0.22} as="p" className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl">
+            <motion.p
+              {...fadeUp}
+              transition={{ duration: 0.7, delay: 0.22, ease: 'easeOut' }}
+              className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl"
+            >
               {t['hero.subtitle']}
-            </FadeUp>
+            </motion.p>
 
-            <FadeUp delay={0.32} as="p" className="mt-6 max-w-xl text-[15px] leading-relaxed text-pine-100/75 sm:text-base">
+            <motion.p
+              {...fadeUp}
+              transition={{ duration: 0.7, delay: 0.32, ease: 'easeOut' }}
+              className="mt-6 max-w-xl text-[15px] leading-relaxed text-pine-100/75 sm:text-base"
+            >
               {t['hero.intro']}
-            </FadeUp>
+            </motion.p>
 
-            <FadeUp delay={0.42} className="mt-9 flex flex-wrap items-center gap-4">
+            <motion.div
+              {...fadeUp}
+              transition={{ duration: 0.7, delay: 0.42, ease: 'easeOut' }}
+              className="mt-9 flex flex-wrap items-center gap-4"
+            >
               <a
                 href={LINKS.linkedin}
                 target="_blank"
@@ -98,9 +99,13 @@ export function Hero() {
                 <Mail size={17} />
                 {t['hero.contact']}
               </Link>
-            </FadeUp>
+            </motion.div>
 
-            <FadeUp delay={0.52} className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-[13px] text-pine-100/85">
+            <motion.div
+              {...fadeUp}
+              transition={{ duration: 0.7, delay: 0.52, ease: 'easeOut' }}
+              className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-[13px] text-pine-100/85"
+            >
               <span className="inline-flex items-center gap-2">
                 <MapPin size={14} className="text-gold-400" /> {t['hero.based']}
               </span>
@@ -110,17 +115,22 @@ export function Hero() {
               <span className="inline-flex items-center gap-2">
                 <BookOpen size={14} className="text-gold-400" /> {t['hero.pubs'].replace('{count}', String(pubCount))}
               </span>
-            </FadeUp>
+            </motion.div>
           </div>
 
           {/* Right : visual composition */}
-          <div className="relative mx-auto w-full max-w-[400px] opacity-0 animate-[heroIn_0.9s_cubic-bezier(0.22,1,0.36,1)_0.3s_forwards]" style={{ opacity: 0 }}>
-            <style>{`@keyframes heroIn{to{opacity:1;transform:scale(1)}} @keyframes floatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}} @keyframes floatB{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}} @keyframes arrowNudge{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}`}</style>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="relative mx-auto w-full max-w-[400px]"
+          >
             <div className="relative overflow-hidden rounded-[2rem] border-2 border-gold-400/70 shadow-2xl shadow-black/40">
               {/* photo layer */}
-              <div
-                className="relative cursor-pointer transition-opacity duration-600"
-                style={{ opacity: showVideo ? 0 : 1, pointerEvents: showVideo ? 'none' : 'auto' }}
+              <motion.div
+                className="relative cursor-pointer"
+                animate={{ opacity: showVideo ? 0 : 1 }}
+                transition={{ duration: 0.6, ease: 'easeInOut' }}
                 onClick={() => setShowVideo(true)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
@@ -131,6 +141,7 @@ export function Hero() {
                 role="button"
                 tabIndex={showVideo ? -1 : 0}
                 aria-label={t['hero.videoTitle']}
+                style={{ pointerEvents: showVideo ? 'none' : 'auto' }}
               >
                 <img
                   src="/dr-seynude-dagnon.webp"
@@ -142,16 +153,22 @@ export function Hero() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-pine-950/70 via-pine-950/10 to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gold-500/90 shadow-lg shadow-gold-600/30 backdrop-blur-sm transition-transform hover:scale-110 active:scale-95">
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex h-16 w-16 items-center justify-center rounded-full bg-gold-500/90 shadow-lg shadow-gold-600/30 backdrop-blur-sm"
+                  >
                     <Play size={28} className="ml-1 text-pine-950" fill="currentColor" />
-                  </div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* video layer */}
-              <div
-                className="absolute inset-0 transition-opacity duration-600"
-                style={{ opacity: showVideo ? 1 : 0, pointerEvents: showVideo ? 'auto' : 'none' }}
+              <motion.div
+                className="absolute inset-0"
+                animate={{ opacity: showVideo ? 1 : 0 }}
+                transition={{ duration: 0.6, ease: 'easeInOut' }}
+                style={{ pointerEvents: showVideo ? 'auto' : 'none' }}
               >
                     <button
                       type="button"
@@ -162,7 +179,7 @@ export function Hero() {
                   <X size={16} />
                 </button>
                 {/* mounted on demand: otherwise the YouTube player is fetched
-                     on every home-page visit, for a video most people never open */}
+                    on every home-page visit, for a video most people never open */}
                 {showVideo && (
                   <iframe
                     src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&rel=0`}
@@ -172,31 +189,42 @@ export function Hero() {
                     allowFullScreen
                   />
                 )}
-              </div>
+              </motion.div>
             </div>
 
             {/* floating badges */}
-            <div className="absolute -left-4 top-6 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md" style={{ animation: 'floatA 4.5s ease-in-out infinite' }}>
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute -left-4 top-6 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md"
+            >
               <p className="font-display text-xl font-semibold text-gold-400">17+</p>
               <p className="text-[9px] uppercase tracking-widest text-pine-100/70">{t['hero.exp']}</p>
-            </div>
-            <div className="absolute -bottom-5 -right-4 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md" style={{ animation: 'floatB 5s ease-in-out 1s infinite' }}>
+            </motion.div>
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+              className="absolute -bottom-5 -right-4 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md"
+            >
               <p className="font-display text-xl font-semibold text-gold-400">27</p>
               <p className="text-[9px] uppercase tracking-widest text-pine-100/70">{t['hero.pmi']}</p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
 
         {/* scroll cue */}
-        <a
+        <motion.a
           href="#apropos"
-          className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-pine-100/85 transition-colors hover:text-gold-400 md:flex opacity-0 animate-[fadeIn_0.8s_ease_1.2s_forwards]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-pine-100/85 transition-colors hover:text-gold-400 md:flex"
         >
           <span className="text-[10px] uppercase tracking-[0.3em]">{t['hero.discover']}</span>
-          <span style={{ animation: 'arrowNudge 1.8s ease-in-out infinite' }}>
+          <motion.span animate={{ y: [0, 6, 0] }} transition={{ duration: 1.8, repeat: Infinity }}>
             <ArrowDown size={16} />
-          </span>
-        </a>
+          </motion.span>
+        </motion.a>
       </div>
     </section>
   );
