@@ -130,9 +130,9 @@ export default function ProjectArticle() {
           {/* the dark hero is hidden when printing; the title, tag and period
               are re-printed here in ink-friendly form */}
           <div className="hidden print:block">
-            <h1 className="font-display text-[1.7rem] leading-snug font-semibold text-pine-900">
+            <p role="heading" aria-level={1} className="font-display text-[1.7rem] leading-snug font-semibold text-pine-900">
               {entry.title[lang]}
-            </h1>
+            </p>
             <p className="mt-3 text-[12.5px] text-pine-900/70">
               {entry.tag[lang]} · {t['projetsPage.period']} : {entry.period[lang]} · {entry.location[lang]}
             </p>

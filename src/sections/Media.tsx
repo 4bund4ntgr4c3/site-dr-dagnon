@@ -60,9 +60,11 @@ function MediaCard({ m, watchLabel, downloadLabel, onPlay }: { m: MediaItem; wat
           href={m.url}
           target="_blank"
           rel="noreferrer"
+          aria-label={`${isVideo ? watchLabel : downloadLabel} : ${m.title}`}
           className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-pine-100/85 transition-colors hover:text-gold-300"
         >
           {isVideo ? watchLabel : downloadLabel}
+          <span className="sr-only"> : {m.title}</span>
           <ArrowUpRight size={13} />
         </a>
       </div>
@@ -99,28 +101,29 @@ export function Media() {
             rel="noreferrer"
             className="group mt-14 flex flex-col gap-6 overflow-hidden rounded-2xl border border-gold-500/30 bg-gradient-to-r from-pine-900 to-pine-950 p-8 transition-all duration-300 hover:border-gold-500/60 lg:flex-row lg:items-center lg:p-10"
           >
-            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gold-500 text-pine-950">
-              <Newspaper size={24} />
-            </span>
-            <div className="flex-1">
-              <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-400">
-                {t['media.oped']}
-              </p>
-              <h3 className="mt-2 font-display text-2xl font-semibold leading-snug text-ivory lg:text-[1.7rem]">
-                {t['media.opedTitle']}
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gold-500 text-pine-950">
+              <Newspaper size={26} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-400">
+                {t['media.featuredOpEd']} · Africa Health Watch
+              </span>
+              <h3 className="mt-1 font-display text-xl sm:text-2xl font-semibold text-ivory">
+                « {t['media.featuredQuote']} »
               </h3>
-              <p className="mt-2 text-sm text-pine-100/85">
-                {t['media.opedText']}
+              <p className="mt-2 text-sm text-pine-100/70 line-clamp-2">
+                {t['media.featuredSummary']}
               </p>
             </div>
-            <span className="inline-flex items-center gap-2 self-start rounded-full border border-gold-500/50 px-5 py-2.5 text-sm font-semibold text-gold-300 transition-all group-hover:bg-gold-500 group-hover:text-pine-950 lg:self-center">
-              {t['media.opedBtn']} <ArrowUpRight size={16} />
+            <span className="inline-flex items-center gap-2 rounded-full bg-gold-500 px-5 py-2.5 text-xs font-semibold text-pine-950 transition-transform group-hover:scale-105 shrink-0">
+              {t['media.readOpEd']}
+              <ArrowUpRight size={14} />
             </span>
           </a>
         </Reveal>
 
-        {/* videos grid */}
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* media grid */}
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {MEDIA[lang].map((m, i) => (
             <Reveal key={m.title} delay={0.15 + i * 0.08}>
               <MediaCard
@@ -138,9 +141,11 @@ export function Media() {
           <div className="mt-10 text-center">
             <Link
               to={localePath(lang, '/media/speaking')}
+              aria-label={`${t['media.viewMore']} : ${t['media.title']}`}
               className="inline-flex items-center gap-2 rounded-full border border-gold-500/50 px-6 py-3 text-sm font-semibold text-gold-300 transition-all hover:bg-gold-500 hover:text-pine-950"
             >
               {t['media.viewMore']}
+              <span className="sr-only"> : {t['media.title']}</span>
               <ArrowUpRight size={16} />
             </Link>
           </div>

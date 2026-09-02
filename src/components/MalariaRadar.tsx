@@ -43,9 +43,9 @@ export function MalariaRadar() {
             <Radio size={13} className="animate-pulse text-gold-400" />
             {isFr ? 'Veille Scientifique & Stratégique' : 'Malaria Intelligence Radar'}
           </span>
-          <h3 className="mt-3 font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
+          <h2 className="mt-3 font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
             {isFr ? 'Radar des Avancées Mondiales sur le Paludisme' : 'Global Malaria Breakthroughs & Intelligence'}
-          </h3>
+          </h2>
           <p className="mt-2 max-w-2xl text-[14px] text-pine-200/80 leading-relaxed">
             {isFr
               ? 'Analyse critique des dernières alertes épidémiologiques, innovations vaccinales, génomiques et modèles de financement bilatéraux.'
@@ -112,9 +112,9 @@ export function MalariaRadar() {
                 </div>
 
                 {/* Title */}
-                <h4 className="mt-4 font-display text-lg font-bold text-pine-100 leading-snug">
+                <h3 className="mt-4 font-display text-lg font-bold text-pine-100 leading-snug">
                   {item.title[lang]}
-                </h4>
+                </h3>
 
                 {/* Summary */}
                 <p className="mt-2 text-xs leading-relaxed text-pine-200/80">

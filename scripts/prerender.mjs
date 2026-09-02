@@ -76,6 +76,9 @@ function headBlock(meta, image, { indexable = true, feedUrl = null, icsUrl = nul
           `    <link rel="alternate" type="application/rss+xml" title="${escapeAttr(meta.title)}" href="${escapeAttr(feedUrl)}" />`,
         ]
       : []),
+    ...(meta.citations && meta.citations.length > 0
+      ? meta.citations.map((c) => tag(c.name, c.content))
+      : []),
     ...(icsUrl
       ? [
           `    <link rel="alternate" type="text/calendar" title="${escapeAttr(meta.title)}" href="${escapeAttr(icsUrl)}" />`,

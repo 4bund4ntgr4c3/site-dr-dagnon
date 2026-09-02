@@ -83,9 +83,11 @@ export function MediaCard({
             href={m.url}
             target="_blank"
             rel="noreferrer"
+            aria-label={`${m.category === 'press' ? t['mediaPage.readMore'] : t['mediaPage.download']} : ${m.title[lang]}`}
             className="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-700 transition-colors hover:text-gold-500"
           >
             {m.category === 'press' ? t['mediaPage.readMore'] : t['mediaPage.download']}
+            <span className="sr-only"> : {m.title[lang]}</span>
             <ArrowUpRight size={13} />
           </a>
         )}

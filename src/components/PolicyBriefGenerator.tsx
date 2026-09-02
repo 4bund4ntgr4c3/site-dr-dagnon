@@ -371,9 +371,9 @@ ${lang === 'fr' ? 'Site officiel : https://seynudedagnon.com' : 'Official websit
             <FileText size={13} />
             {isFr ? 'Aide à la Décision & Stratégie' : 'Strategic Policy Briefing'}
           </span>
-          <h3 className="mt-3 font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
+          <h2 className="mt-3 font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
             {isFr ? 'Générateur de Mémorandums & Policy Briefs' : 'Executive Policy Brief & Memo Generator'}
-          </h3>
+          </h2>
           <p className="mt-2 max-w-2xl text-[14px] text-pine-200/80 leading-relaxed">
             {isFr
               ? 'Générez et imprimez en 1 clic un mémorandum stratégique officiel prêt à l’usage des ministères de la santé et des bailleurs internationaux.'
@@ -438,9 +438,9 @@ ${lang === 'fr' ? 'Site officiel : https://seynudedagnon.com' : 'Official websit
                 {selectedBrief.category}
               </span>
             </div>
-            <h4 className="mt-2 font-display text-xl sm:text-2xl font-bold text-pine-950 leading-tight">
+            <h3 className="mt-2 font-display text-xl sm:text-2xl font-bold text-pine-950 leading-tight">
               {selectedBrief.title[lang]}
-            </h4>
+            </h3>
             <p className="text-xs font-semibold text-pine-700 italic mt-1">
               {selectedBrief.subtitle[lang]}
             </p>
@@ -462,10 +462,10 @@ ${lang === 'fr' ? 'Site officiel : https://seynudedagnon.com' : 'Official websit
 
         {/* Section 1: Executive Context & Diagnosis */}
         <div className="mt-6">
-          <h5 className="font-display text-sm font-bold uppercase tracking-wider text-pine-900 border-b border-pine-900/10 pb-1 flex items-center gap-1.5">
+          <h4 className="font-display text-sm font-bold uppercase tracking-wider text-pine-900 border-b border-pine-900/10 pb-1 flex items-center gap-1.5">
             <ShieldCheck size={14} className="text-gold-700" />
             {isFr ? '1. Contexte & Diagnostic Stratégique' : '1. Strategic Context & Diagnosis'}
-          </h5>
+          </h4>
           <p className="mt-2 text-xs sm:text-sm leading-relaxed text-ink/85 text-justify">
             {selectedBrief.context[lang]}
           </p>
@@ -473,10 +473,10 @@ ${lang === 'fr' ? 'Site officiel : https://seynudedagnon.com' : 'Official websit
 
         {/* Section 2: Actionable Recommendations */}
         <div className="mt-6">
-          <h5 className="font-display text-sm font-bold uppercase tracking-wider text-pine-900 border-b border-pine-900/10 pb-1 flex items-center gap-1.5">
+          <h4 className="font-display text-sm font-bold uppercase tracking-wider text-pine-900 border-b border-pine-900/10 pb-1 flex items-center gap-1.5">
             <Sparkles size={14} className="text-gold-700" />
             {isFr ? '2. Recommandations Politiques & Actions Concrètes' : '2. Actionable Policy Recommendations'}
-          </h5>
+          </h4>
           <div className="mt-3 grid gap-3">
             {selectedBrief.recommendations.map((rec, i) => (
               <div key={i} className="rounded-xl border border-pine-900/10 bg-white p-3.5 shadow-sm">
@@ -489,10 +489,10 @@ ${lang === 'fr' ? 'Site officiel : https://seynudedagnon.com' : 'Official websit
 
         {/* Section 3: Target KPIs & Impact Metrics */}
         <div className="mt-6 pt-4 border-t border-pine-900/15">
-          <h5 className="font-display text-xs font-bold uppercase tracking-wider text-pine-900 mb-3 flex items-center gap-1.5">
+          <h4 className="font-display text-xs font-bold uppercase tracking-wider text-pine-900 mb-3 flex items-center gap-1.5">
             <TrendingUp size={13} className="text-gold-700" />
             {isFr ? '3. Cibles d’Impact & Indicateurs de Performance' : '3. Target Performance Indicators'}
-          </h5>
+          </h4>
           <div className="grid grid-cols-3 gap-3">
             {selectedBrief.indicators.map((ind, i) => (
               <div key={i} className="rounded-lg bg-pine-900/5 p-2.5 text-center">

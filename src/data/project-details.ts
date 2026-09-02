@@ -1,4 +1,4 @@
-﻿import type { Lang } from '@/i18n/lang';
+import type { Lang } from '@/i18n/lang';
 import type { ProjectResult, ProjectEvidence } from '@/data/projects';
 
 /* Deep-dive sections of the case studies, keyed by project slug. Split
@@ -40,7 +40,10 @@ export const PROJECT_DETAILS: Record<string, ProjectDetails> = {
       { value: '3', label: { fr: 'subventions : digitalisation, plateforme intégrée, interopérabilité', en: 'grants: digitization, integrated platform, interoperability' } },
       { value: 'MILDA', label: { fr: 'campagnes de distribution digitalisées au Bénin', en: 'distribution campaigns digitized in Benin' } },
     ],
-    evidence: [],
+    evidence: [
+      { label: { fr: 'Étude sur la durabilité des moustiquaires imprégnées au Bénin (Journal of Biology and Life Science)', en: 'Study on LLIN durability in Benin (Journal of Biology and Life Science)' }, url: 'https://doi.org/10.5296/jbls.v11i2.17645' },
+      { label: { fr: 'Ressources de l’Alliance pour la Prévention du Paludisme (AMP)', en: 'Alliance for Malaria Prevention (AMP) Resources' }, url: 'https://allianceformalariaprevention.com/' },
+    ],
   },
   'recherche-cps-smc': {
     context: {

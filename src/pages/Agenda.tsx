@@ -341,9 +341,11 @@ function EventCard({
             href={e.link}
             target="_blank"
             rel="noreferrer"
+            aria-label={`${t['agendaPage.details']} : ${e.title[lang]}`}
             className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-700 transition-colors group-hover:text-gold-500"
           >
             {t['agendaPage.details']}
+            <span className="sr-only"> : {e.title[lang]}</span>
             <ArrowUpRight size={13} />
           </a>
         )}

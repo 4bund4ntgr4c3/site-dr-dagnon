@@ -16,15 +16,16 @@ const { personJsonLd, routeLastmod } = await import(pathToFileURL(bundle).href);
 for (const lang of ['fr', 'en']) {
   const ld = personJsonLd(lang);
 
-  test(`personJsonLd(${lang}) is a valid schema.org Person`, () => {
+  test(`personJsonLd(${lang}) is a valid schema.org Person & Physician`, () => {
     assert.equal(ld['@context'], 'https://schema.org');
-    assert.equal(ld['@type'], 'Person');
+    assert.ok(Array.isArray(ld['@type']) ? ld['@type'].includes('Person') && ld['@type'].includes('Physician') : ld['@type'] === 'Person');
     assert.ok(ld.name && ld.name.length > 5, 'name');
     assert.equal(ld.givenName, 'Seynudé');
     assert.equal(ld.familyName, 'Dagnon');
     assert.ok(Array.isArray(ld.additionalName) && ld.additionalName.length === 2, 'additionalName');
     assert.equal(ld.honorificPrefix, 'Dr.');
     assert.equal(ld.honorificSuffix, 'MD, MPH');
+    assert.equal(ld.medicalSpecialty, 'https://schema.org/PublicHealth');
   });
 
   test(`personJsonLd(${lang}) alternateName covers common spellings`, () => {
@@ -71,7 +72,7 @@ test('personJsonLd snapshot does not silently lose critical fields', () => {
   // A structural snapshot: if a future refactor drops a block, this fails.
   const en = personJsonLd('en');
   const keys = Object.keys(en).sort();
-  const required = ['@context', '@type', 'additionalName', 'address', 'alternateName', 'alumniOf', 'award', 'familyName', 'givenName', 'hasCredential', 'hasOccupation', 'honorificPrefix', 'honorificSuffix', 'image', 'jobTitle', 'knowsAbout', 'knowsLanguage', 'mainEntityOfPage', 'memberOf', 'name', 'nationality', 'sameAs', 'url', 'worksFor'];
+  const required = ['@context', '@type', 'additionalName', 'address', 'alternateName', 'alumniOf', 'award', 'familyName', 'givenName', 'hasCredential', 'hasOccupation', 'honorificPrefix', 'honorificSuffix', 'image', 'jobTitle', 'knowsAbout', 'knowsLanguage', 'mainEntityOfPage', 'medicalSpecialty', 'memberOf', 'name', 'nationality', 'sameAs', 'url', 'worksFor'];
   for (const k of required) assert.ok(keys.includes(k), `missing key: ${k}`);
 });
 

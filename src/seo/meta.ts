@@ -56,12 +56,12 @@ export const CONTACT_SEO: Record<Lang, { title: string; description: string; key
 
 export const MEDIA_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
-    title: 'Médias — Interviews, Conférences & Engagements du Dr. Dagnon',
+    title: 'Médias & Conférences — Dr. Seynudé Dagnon',
     description: 'Interviews, conférences, discours, presse et engagement communautaire du Dr. Seynudé Jean-Fortuné Dagnon sur le paludisme et la santé publique en Afrique.',
     keywords: 'interviews Dr Dagnon, Seynude Dagnon interviews, conférences paludisme, discours santé publique, presse Bénin, engagements communautaires, Nuit du Paludisme, media malaria Africa, Fortuné Dagnon médias, DAGNON vidéo',
   },
   en: {
-    title: 'Media — Interviews, Conferences & Engagements of Dr. Dagnon',
+    title: 'Media & Speeches — Dr. Seynudé Dagnon',
     description: 'Interviews, conferences, speeches, press coverage and community engagement by Dr. Seynudé Jean-Fortuné Dagnon on malaria and public health in Africa.',
     keywords: 'Dr Dagnon interviews, Seynude Dagnon media, malaria conferences, public health speeches, press Benin, community engagement, Night Against Malaria, media malaria Africa, Fortune Dagnon video, DAGNON media',
   },
@@ -119,10 +119,17 @@ export const PHOTO_DIMS: Record<string, { width: number; height: number }> = {
 const photoTitleShort = (lang: Lang, photo: MediaEntry) => {
   const caption = photo.title[lang];
   const parts = caption.split(' — ');
-  const candidate = parts.length > 1 && parts.slice(1).join(' — ').length >= 25 ? parts.slice(1).join(' — ') : caption;
-  if (candidate.length <= 58) return candidate;
-  const cut = candidate.slice(0, 58).lastIndexOf(' ');
-  return `${candidate.slice(0, cut > 40 ? cut : 58)}…`;
+  let candidate = parts.length > 1 && parts.slice(1).join(' — ').length >= 25 ? parts.slice(1).join(' — ') : caption;
+  if (candidate.length < 32 && !candidate.includes('Dagnon')) {
+    const brand = ' — Dr. Dagnon';
+    if (candidate.length + brand.length <= 54) {
+      candidate = `${candidate}${brand}`;
+    }
+  }
+  if (candidate.length <= 54) return candidate;
+  const cut = candidate.slice(0, 54).lastIndexOf(' ');
+  const trimmed = candidate.slice(0, cut > 35 ? cut : 54).replace(/(\s+(&|and|et)?)$/i, '');
+  return `${trimmed}…`;
 };
 
 const photoDescription = (lang: Lang, photo: MediaEntry) =>
@@ -192,12 +199,12 @@ export const AGENDA_SEO: Record<Lang, { title: string; description: string; keyw
 
 export const PRESSE_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
-    title: 'Kit de presse — Dr. Dagnon',
+    title: 'Kit de presse & Bio — Dr. Seynudé Dagnon',
     description: "Kit de presse du Dr. Seynudé Jean-Fortuné Dagnon : biographie, chiffres clés, photo et contact pour les journalistes et les médias.",
     keywords: 'kit de presse Dr Dagnon, kit presse Seynude Dagnon, biographie paludisme, photo presse, contact médias, expert paludisme Afrique, porte-parole santé publique, Fortuné Dagnon presse, DAGNON bio',
   },
   en: {
-    title: 'Press Kit — Seynudé Dagnon',
+    title: 'Press Kit & Biography — Dr. Seynudé Dagnon',
     description: "Press kit for Dr. Seynudé Jean-Fortuné Dagnon: biography, key figures, photo and contact for journalists and media teams.",
     keywords: 'Dr Dagnon press kit, Seynude Dagnon press kit, malaria biography, press photo, media contact, malaria expert Africa, public health spokesperson, Fortune Dagnon press, DAGNON bio',
   },
@@ -231,12 +238,12 @@ export const COLLAB_SEO: Record<Lang, { title: string; description: string; keyw
 
 export const NEWSLETTER_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
-    title: 'Newsletter — Dr. Dagnon',
+    title: 'Newsletter & Analyses — Dr. Seynudé Dagnon',
     description: "Archives de la newsletter du Dr. Seynudé Dagnon : analyses, dates clés et avancées de la lutte contre le paludisme en Afrique.",
     keywords: 'newsletter Dr Dagnon, newsletter Seynude Dagnon, archive newsletter paludisme, lettre information santé publique, veille malaria Afrique, actualités santé Afrique francophone, Fortuné Dagnon newsletter, DAGNON lettre',
   },
   en: {
-    title: 'Newsletter — Seynudé Dagnon',
+    title: 'Newsletter & Insights — Dr. Seynudé Dagnon',
     description: "Archive of Dr. Seynudé Dagnon's newsletter: analysis, key dates and progress in the malaria fight across Africa.",
     keywords: 'Dr Dagnon newsletter, Seynude Dagnon newsletter, malaria newsletter archive, public health newsletter, malaria news Africa, health policy insights, Fortune Dagnon newsletter, DAGNON updates',
   },
@@ -244,12 +251,12 @@ export const NEWSLETTER_SEO: Record<Lang, { title: string; description: string; 
 
 export const IMPACT_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
-    title: 'Impact & résultats — Dr. Dagnon',
+    title: 'Impact & Résultats — Dr. Seynudé Dagnon',
     description: "Résultats mesurables du Dr. Seynudé Dagnon : 1 114 centres de santé, complétude des données de 35 % à 94 %, économies de 3 M$ et portefeuille de 180 M$.",
     keywords: 'impact Dr Dagnon, impact Seynude Dagnon, résultats paludisme, données de santé Bénin, IRS nord Bénin, digitalisation MILDA, économies G2G, portfolio Fondation Gates, indicateurs santé publique Afrique, Fortuné Dagnon impact, DAGNON réalisations',
   },
   en: {
-    title: 'Impact & Results — Seynudé Dagnon',
+    title: 'Impact & Results — Dr. Seynudé Dagnon',
     description: "Measurable results by Dr. Seynudé Dagnon: 1,114 health facilities, data completeness from 35% to 94%, $3M in savings and a $180M portfolio.",
     keywords: 'Dr Dagnon impact, Seynude Dagnon impact, malaria results, health data Benin, IRS northern Benin, LLIN digitization, G2G savings, Gates Foundation portfolio, public health metrics Africa, Fortune Dagnon results, DAGNON achievements',
   },
@@ -471,7 +478,7 @@ export const TOOLKIT_SEO: Record<Lang, { title: string; description: string; key
 
 export const MENTORSHIP_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
-    title: 'Boussole & Mentorat en Santé Mondiale — Dr. Seynudé Dagnon',
+    title: 'Mentorat en Santé Mondiale — Dr. Seynudé Dagnon',
     description: 'Guide de mentorat et carrières en santé mondiale du Dr. Seynudé Dagnon : recherche (PhD), programmes bilatéraux (USAID) et philanthropie (Gates Foundation).',
     keywords: 'mentorat santé mondiale, carrières santé publique Afrique, PhD économie de la santé, USAID PMI carrières, Fondation Gates recrutement, Dr Dagnon mentorat, Fortuné Dagnon',
   },
@@ -504,7 +511,8 @@ const fullName = (lang: Lang) => (lang === 'fr' ? 'Dr. Seynudé Jean-Fortuné DA
 export function personJsonLd(lang: Lang) {
   return {
     '@context': 'https://schema.org',
-    '@type': 'Person',
+    '@type': ['Person', 'Physician'],
+    medicalSpecialty: 'https://schema.org/PublicHealth',
     name: fullName(lang),
     givenName: 'Seynudé',
     familyName: 'Dagnon',
@@ -825,6 +833,76 @@ export function profilePageJsonLd(lang: Lang, url: string) {
   };
 }
 
+export function invitePageJsonLd(lang: Lang, url: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: INVITER_SEO[lang].title,
+    description: INVITER_SEO[lang].description,
+    url,
+    author: { '@type': 'Person', name: fullName(lang) },
+    inLanguage: [lang],
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          position: 1,
+          name: lang === 'fr' ? 'Conférence ou keynote' : 'Conference or keynote',
+          description: lang === 'fr'
+            ? 'Vision et leçons de 17 ans de programmes paludisme en Afrique : élimination, données et digitalisation des campagnes.'
+            : 'Vision and lessons from 17+ years of malaria programs in Africa: elimination, data and campaign digitalization.',
+          offeredBy: { '@type': 'Person', name: fullName(lang) },
+        },
+        {
+          '@type': 'Offer',
+          position: 2,
+          name: lang === 'fr' ? "Panel d'experts" : 'Expert panel',
+          description: lang === 'fr'
+            ? "Débat avec décideurs, bailleurs et partenaires sur le financement durable et l'équité d'accès aux interventions."
+            : 'Debate with policymakers, funders and partners on sustainable financing and equitable access to interventions.',
+          offeredBy: { '@type': 'Person', name: fullName(lang) },
+        },
+        {
+          '@type': 'Offer',
+          position: 3,
+          name: lang === 'fr' ? 'Formation ou atelier' : 'Training or workshop',
+          description: lang === 'fr'
+            ? 'Ateliers pratiques sur la chimioprévention saisonnière, la qualité des données et la gestion de programmes.'
+            : 'Hands-on sessions on seasonal chemoprevention, data quality and program management.',
+          offeredBy: { '@type': 'Person', name: fullName(lang) },
+        },
+        {
+          '@type': 'Offer',
+          position: 4,
+          name: lang === 'fr' ? 'Interview média' : 'Media interview',
+          description: lang === 'fr'
+            ? "Commentaires d'expert en français ou en anglais sur l'actualité du paludisme et des systèmes de santé."
+            : 'Expert commentary in French or English on malaria and health system news.',
+          offeredBy: { '@type': 'Person', name: fullName(lang) },
+        },
+      ],
+    },
+  };
+}
+
+export function mentorshipPageJsonLd(lang: Lang, url: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: MENTORSHIP_SEO[lang].title,
+    description: MENTORSHIP_SEO[lang].description,
+    url,
+    author: { '@type': 'Person', name: fullName(lang) },
+    inLanguage: [lang],
+    about: [
+      { '@type': 'Thing', name: lang === 'fr' ? 'Santé mondiale' : 'Global Health' },
+      { '@type': 'Thing', name: lang === 'fr' ? 'Mentorat de carrière' : 'Career Mentorship' },
+      { '@type': 'Thing', name: lang === 'fr' ? 'Économie de la santé' : 'Health Economics' },
+    ],
+  };
+}
+
 export function publicationsPageJsonLd(lang: Lang, url: string) {
   return {
     '@context': 'https://schema.org',
@@ -845,12 +923,16 @@ export function publicationsPageJsonLd(lang: Lang, url: string) {
           name: item.title[lang],
           description: item.description[lang],
           datePublished: String(item.year),
-          author: { '@type': 'Person', name: item.authors[lang] },
+          author: item.authors[lang]
+            .split(/[,·;]/)
+            .map((a) => a.trim().replace(/^…\s*/, '').replace(/\s*…$/, ''))
+            .filter(Boolean)
+            .map((name) => ({ '@type': 'Person', name })),
           publication: {
             '@type': 'PublicationIssue',
             name: item.journal[lang],
           },
-          ...(item.url ? { url: item.url } : {}),
+          ...(item.url ? { url: item.url, sameAs: item.url, identifier: item.url } : {}),
         },
       })),
     },
@@ -1245,6 +1327,7 @@ export interface PageMeta {
   ogLocale: string;
   ogLocaleAlternate: string;
   siteName: string;
+  citations?: { name: string; content: string }[];
   jsonLd: {
     person: object;
     website: object;
@@ -1428,6 +1511,11 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
     ogLocale: SEO[lang].ogLocale,
     ogLocaleAlternate: SEO[lang === 'fr' ? 'en' : 'fr'].ogLocale,
     siteName: fullName(lang),
+    citations: (isPub || isBibliography || isPublicationsPdf) ? [
+      { name: 'citation_author', content: 'Dagnon, Seynudé Jean-Fortuné' },
+      { name: 'citation_author_institution', content: 'Bill & Melinda Gates Foundation' },
+      { name: 'citation_author_orcid', content: 'https://orcid.org/0009-0006-5022-1399' },
+    ] : [],
     jsonLd: {
       person: personJsonLd(lang),
       website: webSiteJsonLd(lang),
@@ -1440,17 +1528,21 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
           ? contactPageJsonLd(lang)
           : isCv
             ? profilePageJsonLd(lang, url)
-            : isPub || isBibliography || isPublicationsPdf
-              ? publicationsPageJsonLd(lang, url)
-              : tribune
-                ? articleJsonLd(lang, tribune, url)
-                : project
-                  ? projectJsonLd(lang, project, url)
-                  : photo
-                    ? imageObjectJsonLd(lang, photo, url)
-                    : isMedia || isAgenda || isTribunes || isProjects || isPresse || isInvite || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio || isOffline || isCareer || isPodcasts
-                      ? collectionPageJsonLd(lang, data.title, data.description, url)
-                      : null,
+            : isInvite
+              ? invitePageJsonLd(lang, url)
+              : isMentorship
+                ? mentorshipPageJsonLd(lang, url)
+                : isPub || isBibliography || isPublicationsPdf
+                  ? publicationsPageJsonLd(lang, url)
+                  : tribune
+                    ? articleJsonLd(lang, tribune, url)
+                    : project
+                      ? projectJsonLd(lang, project, url)
+                      : photo
+                        ? imageObjectJsonLd(lang, photo, url)
+                        : isMedia || isAgenda || isTribunes || isProjects || isPresse || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio || isOffline || isCareer || isPodcasts || isConnect || isToolkit
+                          ? collectionPageJsonLd(lang, data.title, data.description, url)
+                          : null,
     },
   };
 }

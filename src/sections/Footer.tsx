@@ -116,6 +116,13 @@ export function Footer() {
             </a>
           </p>
         </div>
+
+        {/* medical & public health disclaimer */}
+        <div className="mt-8 border-t border-white/5 pt-6 text-center">
+          <p className="text-[11px] leading-relaxed text-pine-100/45">
+            {t['footer.disclaimer']}
+          </p>
+        </div>
       </div>
     </footer>
   );

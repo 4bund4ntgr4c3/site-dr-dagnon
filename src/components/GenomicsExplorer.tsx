@@ -28,9 +28,9 @@ export function GenomicsExplorer() {
           <Dna size={13} />
           {isFr ? 'Génomique & Surveillance Moléculaire' : 'Molecular & Genomics Surveillance'}
         </span>
-        <h3 className="mt-3 font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
+        <h2 className="mt-3 font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
           {isFr ? 'Explorateur de Données Génomiques & Résistance' : 'Genomics & Resistance Data Explorer'}
-        </h3>
+        </h2>
         <p className="mt-2 max-w-2xl text-[14px] text-pine-200/80 leading-relaxed">
           {isFr
             ? 'Visualisation des mutations génétiques de Plasmodium falciparum et des mécanismes de résistance vectorielle en Afrique subsaharienne.'
@@ -68,16 +68,16 @@ export function GenomicsExplorer() {
               <span className="font-mono text-xs text-gold-400 font-semibold">{selectedMarker.scientificName}</span>
               {getThreatBadge(selectedMarker.threatLevel)}
             </div>
-            <h4 className="font-display text-2xl font-bold text-pine-100">{selectedMarker.title[lang]}</h4>
+            <h3 className="font-display text-2xl font-bold text-pine-100">{selectedMarker.title[lang]}</h3>
           </div>
         </div>
 
         {/* Mechanism & Biological Impact */}
         <div className="mt-6">
-          <h5 className="text-xs font-bold uppercase tracking-wider text-pine-300 flex items-center gap-1.5 mb-2">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-pine-300 flex items-center gap-1.5 mb-2">
             <Microscope size={14} className="text-gold-400" />
             {isFr ? 'Mécanisme Biologique & Conséquences Cliniques' : 'Biological Mechanism & Clinical Impact'}
-          </h5>
+          </h4>
           <p className="text-xs sm:text-sm text-pine-100 leading-relaxed bg-pine-900/40 p-4 rounded-xl border border-white/5">
             {selectedMarker.mechanism[lang]}
           </p>

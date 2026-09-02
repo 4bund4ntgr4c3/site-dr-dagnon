@@ -407,6 +407,8 @@ function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) 
                   <img
                     src={r.thumb}
                     alt=""
+                    width={56}
+                    height={40}
                     className="h-10 w-14 shrink-0 rounded-lg object-cover"
                   />
                 ) : (

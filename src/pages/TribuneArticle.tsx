@@ -128,9 +128,9 @@ export default function TribuneArticle() {
           {/* the dark hero is hidden when printing; the title, date and source
               are re-printed here in ink-friendly form */}
           <div className="hidden print:block">
-            <h1 className="font-display text-[1.7rem] leading-snug font-semibold text-pine-900">
+            <p role="heading" aria-level={1} className="font-display text-[1.7rem] leading-snug font-semibold text-pine-900">
               {entry.title[lang]}
-            </h1>
+            </p>
             <p className="mt-3 text-[12.5px] text-pine-900/70">
               {t['tribunesPage.published']} {dateLabel} · {entry.source.name}
             </p>

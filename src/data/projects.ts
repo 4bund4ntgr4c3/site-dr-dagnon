@@ -1,4 +1,4 @@
-﻿import type { Lang } from '@/i18n/lang';
+import type { Lang } from '@/i18n/lang';
 
 /* Case studies ("projets") — projects Dr. Dagnon has led, funded or shaped,
    with measurable results. Each entry is fully bilingual and becomes a
@@ -91,8 +91,8 @@ export const PROJECTS: ProjectEntry[] = [
       en: 'Making Benin\'s malaria data reliable',
     },
     description: {
-      fr: 'Responsable suivi-évaluation d\'ARM3 : hausse de la complétude des données de routine et baisse spectaculaire des erreurs.',
-      en: 'As ARM3 M&E lead: raising routine data completeness while slashing the national error rate.',
+      fr: 'Responsable suivi-évaluation d\'ARM3 : complétude des données de 35 % à 94 % et fiabilisation du système d\'information sanitaire.',
+      en: 'As ARM3 M&E lead: raising routine health data completeness from 35% to 94% while dramatically reducing national error rates in Benin.',
     },
   },
   {
@@ -107,8 +107,8 @@ export const PROJECTS: ProjectEntry[] = [
       en: 'Indoor residual spraying in northern Benin',
     },
     description: {
-      fr: 'Pilotage des campagnes PMI de pulvérisation intradomiciliaire et production d\'une base de preuves entomologiques au nord du Bénin.',
-      en: 'Leading PMI indoor residual spraying campaigns and building an entomological evidence base in northern Benin.',
+      fr: 'Pilotage des campagnes PMI de pulvérisation intradomiciliaire et constitution d\'une base solide de preuves entomologiques au nord du Bénin.',
+      en: 'Leading PMI indoor residual spraying campaigns and building an actionable entomological evidence base across high-burden zones in northern Benin.',
     },
   },
   {
@@ -123,8 +123,8 @@ export const PROJECTS: ProjectEntry[] = [
       en: 'Epidemic preparedness and response in Benin',
     },
     description: {
-      fr: 'Coordination de la réponse USAID aux épidémies émergentes (Ebola, fièvre de Lassa, COVID-19) et continuité des services paludisme.',
-      en: 'Coordinating the USAID response to emerging epidemics (Ebola, Lassa fever, COVID-19) while keeping malaria services running.',
+      fr: 'Coordination de la réponse USAID aux épidémies émergentes (Ebola, Lassa, COVID-19) et maintien de la continuité des services antipaludiques.',
+      en: 'Coordinating USAID response to emerging outbreaks (Ebola, Lassa, COVID-19) while safeguarding the continuity of malaria prevention services.',
     },
   },
   {
@@ -139,8 +139,8 @@ export const PROJECTS: ProjectEntry[] = [
       en: 'A G2G contract with Benin\'s NMCP',
     },
     description: {
-      fr: 'Négociation d\'un contrat G2G entre l\'USAID et le PNLP du Bénin, avec des économies majeures pour le gouvernement américain.',
-      en: 'Negotiating a government-to-government contract between USAID and Benin\'s NMCP, with major savings for the U.S. government.',
+      fr: 'Négociation du contrat G2G entre l\'USAID et le PNLP du Bénin, générant plus de 3 millions de dollars d\'économies pour les bailleurs.',
+      en: 'Negotiating the G2G direct financing agreement between USAID and Benin\'s NMCP, unlocking over $3M in cost savings and national ownership.',
     },
   },
 ];

@@ -34,7 +34,6 @@ export const MORE_PAGES: NavPage[] = [
   { id: 'publications-pdf', path: '/publications-pdf', label: 'pubPdf.badge' },
   { id: 'legal', path: '/legal', label: 'footer.linkLegal' },
   { id: 'accessibility', path: '/accessibility', label: 'footer.linkAccessibility' },
-  { id: 'changelog', path: '/changelog', label: 'footer.linkChangelog' },
 ];
 
 /* Footer bottom bar = dynamic NAV links (apropos etc. filtered) + MORE_PAGES.

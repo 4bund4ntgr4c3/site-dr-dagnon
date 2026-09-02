@@ -176,6 +176,8 @@ export function PhotoLightbox({
                   src={photo.src}
                   alt=""
                   aria-hidden="true"
+                  width={1280}
+                  height={853}
                   loading={i === index ? 'eager' : 'lazy'}
                   decoding="async"
                   className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-2xl"
@@ -183,6 +185,8 @@ export function PhotoLightbox({
                 <img
                   src={photo.src}
                   alt={photo.title[lang]}
+                  width={1280}
+                  height={853}
                   loading={i === index ? 'eager' : 'lazy'}
                   decoding="async"
                   className="absolute inset-0 m-auto max-h-full max-w-full object-contain"

@@ -143,6 +143,8 @@ export function PhotoView({ photo, lang, t }: { photo: MediaEntry; lang: 'fr' | 
                 <img
                   src={p.src}
                   alt={p.title[lang]}
+                  width={400}
+                  height={300}
                   loading="lazy"
                   decoding="async"
                   className="aspect-[4/3] h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"

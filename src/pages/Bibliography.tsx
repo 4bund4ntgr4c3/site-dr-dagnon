@@ -179,8 +179,10 @@ export default function Bibliography() {
               {t['bibliographyPage.empty']}
             </p>
           ) : (
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              {filtered.map((p, i) => (
+            <div className="mt-8">
+              <h2 className="sr-only">{lang === 'fr' ? 'Publications et références bibliographiques' : 'Publications and bibliographic references'}</h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {filtered.map((p, i) => (
                 <Reveal key={p.id} delay={Math.min(i * 0.03, 0.3)}>
                   <div className="relative">
                     <BibCard p={p} lang={lang} t={t} />
@@ -195,6 +197,7 @@ export default function Bibliography() {
                   </div>
                 </Reveal>
               ))}
+              </div>
             </div>
           )}
         </div>

@@ -70,9 +70,9 @@ export default function Mentorship() {
                     <span className="text-xs font-bold uppercase tracking-wider text-gold-400">
                       FILIÈRE {track.id === 'academic-health-economics' ? '1' : track.id === 'bilateral-program-management' ? '2' : '3'}
                     </span>
-                    <h3 className="font-display text-base font-bold text-pine-100 mt-1">
+                    <span className="block font-display text-base font-bold text-pine-100 mt-1">
                       {track.title[lang].replace(/^[0-9]\.\s*/, '')}
-                    </h3>
+                    </span>
                   </div>
                   <p className="text-xs text-pine-300/80 mt-2 line-clamp-2">
                     {track.subtitle[lang]}

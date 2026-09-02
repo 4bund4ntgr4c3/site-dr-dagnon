@@ -57,6 +57,8 @@ export default function Connect() {
               <img
                 src="/portrait-seynude-dagnon.jpg"
                 alt="Dr. Seynudé Jean-Fortuné Dagnon"
+                width={112}
+                height={112}
                 className="h-24 w-24 sm:h-28 sm:w-28 rounded-2xl object-cover border-2 border-gold-400/60 shadow-xl"
                 onError={(e) => {
                   // Fallback avatar if local portrait path differs
@@ -127,6 +129,8 @@ export default function Connect() {
                 <img
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(connectUrl)}&color=0c2e2a`}
                   alt="QR Code Dr. Seynudé Dagnon"
+                  width={160}
+                  height={160}
                   className="h-40 w-40"
                 />
               </div>

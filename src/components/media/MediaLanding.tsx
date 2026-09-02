@@ -66,9 +66,9 @@ export function MediaLanding({ lang, t }: { lang: 'fr' | 'en'; t: T }) {
                 </span>
 
                 {/* Title on image */}
-                <h3 className="absolute bottom-4 left-4 right-4 font-display text-xl font-semibold text-white drop-shadow-lg">
+                <h2 className="absolute bottom-4 left-4 right-4 font-display text-xl font-semibold text-white drop-shadow-lg">
                   {t[catLabelKey(cat.key) as keyof typeof t] || cat.key}
-                </h3>
+                </h2>
               </div>
 
               {/* Description */}

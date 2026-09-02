@@ -74,9 +74,9 @@ export function HealthEconomicsSimulator() {
             <Calculator size={13} />
             {isFr ? 'Modélisation & Économie de la Santé' : 'Health Economics Modeling'}
           </span>
-          <h3 className="mt-3 font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
+          <h2 className="mt-3 font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
             {isFr ? 'Simulateur d’Impact & Rentabilité Sanitaire' : 'Malaria Intervention Impact Simulator'}
-          </h3>
+          </h2>
           <p className="mt-2 max-w-xl text-[14px] text-pine-200/80">
             {isFr
               ? 'Ajustez la population et les combinaisons stratégiques d’interventions pour estimer les cas évités, les vies sauvées et le retour sur investissement.'
@@ -98,10 +98,10 @@ export function HealthEconomicsSimulator() {
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.05fr_1.15fr] items-start">
         {/* Left: Interactive Controls */}
         <div className="space-y-6 rounded-2xl border border-white/10 bg-pine-950/70 p-6">
-          <h4 className="font-display text-base font-semibold text-pine-100 flex items-center gap-2">
+          <h3 className="font-display text-base font-semibold text-pine-100 flex items-center gap-2">
             <Activity size={16} className="text-gold-400" />
             {isFr ? '1. Paramètres de la Population Cible' : '1. Target Population Parameters'}
-          </h4>
+          </h3>
 
           {/* Population Slider */}
           <div>
@@ -125,10 +125,10 @@ export function HealthEconomicsSimulator() {
             </div>
           </div>
 
-          <h4 className="font-display text-base font-semibold text-pine-100 pt-3 border-t border-white/10 flex items-center gap-2">
+          <h3 className="font-display text-base font-semibold text-pine-100 pt-3 border-t border-white/10 flex items-center gap-2">
             <Shield size={16} className="text-gold-400" />
             {isFr ? '2. Paquet d’Interventions Combinées' : '2. Strategic Intervention Package'}
-          </h4>
+          </h3>
 
           {/* Toggle: Dual-AI Nets */}
           <div className="flex items-center justify-between p-3 rounded-xl border border-white/5 bg-pine-900/50">
@@ -246,9 +246,9 @@ export function HealthEconomicsSimulator() {
                 <p className="text-xs font-semibold uppercase tracking-wider text-gold-400">
                   {isFr ? 'Résultats de la Simulation' : 'Simulation Impact Model'}
                 </p>
-                <h4 className="font-display text-xl font-bold text-pine-100 sm:text-2xl mt-0.5">
+                <h3 className="font-display text-xl font-bold text-pine-100 sm:text-2xl mt-0.5">
                   {results.casesAverted.toLocaleString()} {isFr ? 'Cas de Paludisme Évités' : 'Malaria Cases Averted'}
-                </h4>
+                </h3>
               </div>
               <div className="text-right">
                 <span className="inline-block rounded-full bg-emerald-500/20 border border-emerald-500/40 px-3 py-1 text-xs font-bold text-emerald-300">

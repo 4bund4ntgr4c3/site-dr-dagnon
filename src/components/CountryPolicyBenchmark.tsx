@@ -32,9 +32,9 @@ export function CountryPolicyBenchmark() {
           <Globe2 size={13} />
           {isFr ? 'Benchmark Régional & Politiques Publiques' : 'Regional Policy Benchmark'}
         </span>
-        <h3 className="mt-3 font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
+        <h2 className="mt-3 font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
           {isFr ? 'Comparateur de Politiques Sanitaires en Afrique' : 'African National Malaria Policy Benchmark'}
-        </h3>
+        </h2>
         <p className="mt-2 max-w-2xl text-[14px] text-pine-200/80 leading-relaxed">
           {isFr
             ? 'Évaluation comparative des standards antipaludiques, de la digitalisation et des financements directs G2G à travers 6 pays clés.'
@@ -72,7 +72,7 @@ export function CountryPolicyBenchmark() {
             <span className="text-4xl sm:text-5xl">{selectedCountry.flag}</span>
             <div>
               <div className="flex items-center gap-2">
-                <h4 className="font-display text-2xl font-bold text-pine-100">{selectedCountry.name[lang]}</h4>
+                <h3 className="font-display text-2xl font-bold text-pine-100">{selectedCountry.name[lang]}</h3>
                 <span className="rounded bg-white/10 px-2 py-0.5 text-[11px] font-mono text-gold-300">
                   {selectedCountry.population} {isFr ? 'hab.' : 'pop.'}
                 </span>

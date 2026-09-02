@@ -197,9 +197,9 @@ export function AfricaImpactMap() {
             <MapPin size={13} />
             {lang === 'fr' ? 'Empreinte Continentale' : 'Continental Footprint'}
           </span>
-          <h3 className="mt-3 font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
+          <h2 className="mt-3 font-display text-2xl font-semibold text-pine-100 sm:text-3xl">
             {lang === 'fr' ? 'Carte Interactive de l’Impact en Afrique' : 'Interactive Africa Impact Map'}
-          </h3>
+          </h2>
           <p className="mt-2 max-w-xl text-[14px] text-pine-200/80">
             {lang === 'fr'
               ? 'Explorez les pays d’intervention, les budgets gérés, les systèmes digitalisés et les populations protégées sous le leadership du Dr. Seynudé Dagnon.'
@@ -299,9 +299,9 @@ export function AfricaImpactMap() {
                 <div className="flex items-center gap-3">
                   <span className="text-3xl">{selectedCountry.flag}</span>
                   <div>
-                    <h4 className="font-display text-xl font-bold text-pine-100 sm:text-2xl">
+                    <h3 className="font-display text-xl font-bold text-pine-100 sm:text-2xl">
                       {selectedCountry.name[lang]}
-                    </h4>
+                    </h3>
                     <p className="text-[12px] font-medium text-gold-400">
                       {selectedCountry.role[lang]}
                     </p>

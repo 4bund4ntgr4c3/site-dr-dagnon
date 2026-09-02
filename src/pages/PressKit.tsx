@@ -49,6 +49,8 @@ export default function PressKit() {
                 <img
                   src="/dr-seynude-dagnon.webp"
                   alt="Dr. Seynudé Jean-Fortuné Dagnon"
+                  width={800}
+                  height={1000}
                   className="aspect-[4/5] w-full object-cover"
                 />
                 <figcaption className="flex items-center justify-between gap-3 p-4">
