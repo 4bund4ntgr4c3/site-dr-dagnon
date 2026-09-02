@@ -1,4 +1,3 @@
-import { MotionConfig } from 'framer-motion';
 import { lazy, Suspense } from 'react';
 import { Hero } from '@/sections/Hero';
 import { Stats } from '@/sections/Stats';
@@ -23,11 +22,6 @@ const SectionFallback = () => <div className="h-64 animate-pulse bg-pine-950/5" 
 export default function Home() {
   useSectionTracking();
   return (
-    /* reducedMotion="user" makes the Hero and Stats animations respect
-       prefers-reduced-motion. It lives here, in the Home chunk, so the
-       framer-motion import stays out of the main bundle (see AfricaMap —
-       the Footer's copy of the same logic cannot import framer-motion). */
-    <MotionConfig reducedMotion="user">
       <main id="main-content" tabIndex={-1} className="min-h-screen bg-ivory">
         <Hero />
         <Stats />
@@ -74,6 +68,5 @@ export default function Home() {
           <Newsletter />
         </Suspense>
       </main>
-    </MotionConfig>
   );
 }
