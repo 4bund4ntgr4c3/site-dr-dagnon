@@ -264,10 +264,11 @@ async function run() {
       const alts = meta.alternates
         .map(({ hreflang, href }) => `<xhtml:link rel="alternate" hreflang="${hreflang}" href="${href}"/>`)
         .join('');
-      return `  <url><loc>${meta.url}</loc><lastmod>${lm}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority>${alts}</url>`;
+      const img = meta.ogImage ? `<image:image><image:loc>${escapeAttr(meta.ogImage)}</image:loc><image:title><![CDATA[${meta.title}]]></image:title><image:caption><![CDATA[${meta.description}]]></image:caption></image:image>` : '';
+      return `  <url><loc>${meta.url}</loc><lastmod>${lm}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority>${alts}${img}</url>`;
     }),
   );
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`;
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls.join('\n')}\n</urlset>\n`;
   fs.writeFileSync(path.join(dist, 'sitemap.xml'), sitemap, 'utf-8');
 
   /* RSS — same single source of truth as the sitemap: everything the feed

@@ -1,0 +1,16 @@
+/* TEAM */
+Lead & Content: Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Senior Program Officer, Malaria & Public Health (Francophone Africa), Gates Foundation
+Site: https://seynudedagnon.com/cv
+
+/* DESIGN & BUILD */
+Design & Engineering: Studio26 Africa — https://studio26.africa
+Stack: Vite 7 + React 19 + TypeScript + Tailwind CSS — SSR prerender (scripts/prerender.mjs) — Vercel CDN
+
+/* THANKS */
+Photography: ONG Reel Concept & Plus, Icône 360, AIRID, PAMCA contributors
+Data: ORCID 0009-0006-5022-1399 — Wikidata Q141154548 — Google Scholar Q6NT-4gAAAAJ
+
+/* SITE */
+Standards: HTML5, CSS3, WCAG 2.2 AA, RSS 2.0, iCal, Schema.org JSON-LD, llms.txt
+Languages: fr, en (hreflang + x-default)
+Contact: https://seynudedagnon.com/contact

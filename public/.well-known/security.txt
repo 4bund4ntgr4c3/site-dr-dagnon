@@ -1,0 +1,6 @@
+Contact: https://seynudedagnon.com/contact
+Contact: mailto:contact@seynudedagnon.com
+Expires: 2027-09-02T00:00:00.000Z
+Acknowledgments: https://seynudedagnon.com/legal
+Preferred-Languages: fr, en
+Canonical: https://seynudedagnon.com/.well-known/security.txt
