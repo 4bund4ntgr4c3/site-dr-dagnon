@@ -272,7 +272,11 @@ async function run() {
 
   /* RSS — same single source of truth as the sitemap: everything the feed
      lists must be an actual prerendered page. */
-  fs.writeFileSync(path.join(dist, 'feed.xml'), buildRss(), 'utf-8');
+  const rssXml = buildRss();
+  fs.writeFileSync(path.join(dist, 'feed.xml'), rssXml, 'utf-8');
+  if (fs.existsSync(path.join(dist, 'fr'))) {
+    fs.writeFileSync(path.join(dist, 'fr', 'feed.xml'), rssXml, 'utf-8');
+  }
 
   /* Podcast RSS — tribunes as audio episodes (YouTube audio + future TTS).
      Valid RSS 2.0 with iTunes namespace so Apple Podcasts / Spotify can ingest. */

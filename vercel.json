@@ -198,6 +198,10 @@
   ],
   "rewrites": [
     {
+      "source": "/fr/feed.xml",
+      "destination": "/feed.xml"
+    },
+    {
       "source": "/api/newsletter-confirm",
       "destination": "/api/newsletter"
     },

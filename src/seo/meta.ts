@@ -143,6 +143,30 @@ export const CAT_NAMES: Record<string, { fr: string; en: string }> = {
   community: { fr: 'Engagement communautaire et philanthropique', en: 'Community and Philanthropic Engagement' },
 };
 
+/** Rich, high-CTR page titles (45-55 chars) for category index pages. */
+export const CAT_TITLES: Record<string, { fr: string; en: string }> = {
+  interview: {
+    fr: 'Interviews & Interventions Médias — Dr. Seynudé Dagnon',
+    en: 'Interviews & Media Appearances — Dr. Seynudé Dagnon',
+  },
+  conference: {
+    fr: 'Conférences & Présentations — Dr. Seynudé Dagnon',
+    en: 'Conferences & Presentations — Dr. Seynudé Dagnon',
+  },
+  speaking: {
+    fr: 'Discours Publics & Allocutions — Dr. Seynudé Dagnon',
+    en: 'Public Speaking & Keynotes — Dr. Seynudé Dagnon',
+  },
+  press: {
+    fr: 'Articles de Presse & Médias — Dr. Seynudé Dagnon',
+    en: 'Press Coverage & Media Mentions — Dr. Seynudé Dagnon',
+  },
+  community: {
+    fr: 'Engagement Communautaire & Philanthropie — Dr. Dagnon',
+    en: 'Community Engagement & Philanthropy — Dr. Dagnon',
+  },
+};
+
 export const CAT_DESCRIPTIONS: Record<string, { fr: string; en: string; keywords: string }> = {
   interview: {
     fr: "Interviews du Dr. Seynudé Jean-Fortuné Dagnon sur la lutte contre le paludisme et les systèmes de santé en Afrique francophone.",
@@ -950,6 +974,37 @@ export function publicationsPageJsonLd(lang: Lang, url: string) {
   };
 }
 
+/** VideoObject for YouTube-hosted media — enables video rich results on category pages */
+export function videoObjectJsonLd(lang: Lang, entry: MediaEntry) {
+  if (!entry.youtubeId) return null;
+  return {
+    '@type': 'VideoObject' as const,
+    name: entry.title[lang],
+    description: entry.description?.[lang] || entry.title[lang],
+    thumbnailUrl: entry.thumb ? [entry.thumb] : [],
+    uploadDate: entry.date,
+    contentUrl: `https://www.youtube.com/watch?v=${entry.youtubeId}`,
+    embedUrl: `https://www.youtube-nocookie.com/embed/${entry.youtubeId}`,
+    publisher: { '@type': 'Person' as const, name: fullName(lang) },
+    isAccessibleForFree: true,
+    inLanguage: [lang],
+  };
+}
+
+export function mediaCollectionJsonLd(lang: Lang, category: string | null, url: string, title: string, description: string) {
+  const base = collectionPageJsonLd(lang, title, description, url);
+  const videos = MEDIA_ITEMS.filter((m) => m.youtubeId && (!category || m.category === category))
+    .slice(0, 12)
+    .map((m) => videoObjectJsonLd(lang, m)!)
+    .filter(Boolean);
+  if (videos.length === 0) return base;
+  // Graph keeps CollectionPage as first node so validators see it, videos as peer nodes
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [base, ...videos],
+  };
+}
+
 /** One page per community photo, so every caption is crawlable text and
     every image has its own addressable, shareable URL. */
 export function imageObjectJsonLd(lang: Lang, photo: MediaEntry, url: string) {
@@ -968,6 +1023,9 @@ export function imageObjectJsonLd(lang: Lang, photo: MediaEntry, url: string) {
     inLanguage: [lang],
     author: { '@type': 'Person', name: fullName(lang) },
     creator: { '@type': 'Person', name: fullName(lang) },
+    creditText: 'Dr. Seynudé Dagnon Official Archive',
+    copyrightHolder: { '@type': 'Person', name: fullName(lang) },
+    acquireLicensePage: absUrl(lang, '/presse'),
   };
 }
 
@@ -1061,6 +1119,10 @@ export function articleJsonLd(lang: Lang, entry: (typeof TRIBUNES)[number], url:
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     image: `${SITE_URL}/og/${entry.slug}.${lang}.jpg`,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '.article-lead', '.article-content'],
+    },
   };
 }
 
@@ -1430,10 +1492,8 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
         }
       : isMedia && catName
       ? {
-          /* the brand name, not the generic "Media"/"Médias" suffix every
-             category used to share — that gave /media/press a 15-char title
-             with no differentiator and no brand */
-          title: `${catName[lang]} — ${shortName(lang)}`,
+          /* use descriptive, high-CTR titles (45-55 chars) covering category & entity */
+          title: (mediaCategory && CAT_TITLES[mediaCategory]?.[lang]) || `${catName[lang]} — ${shortName(lang)}`,
           description: catDesc?.[lang] || MEDIA_SEO[lang].description,
           keywords: catDesc?.keywords || MEDIA_SEO[lang].keywords,
         }
@@ -1559,7 +1619,9 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                       ? projectJsonLd(lang, project, url)
                       : photo
                         ? imageObjectJsonLd(lang, photo, url)
-                        : isMedia || isAgenda || isTribunes || isProjects || isPresse || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio || isOffline || isCareer || isPodcasts || isConnect || isToolkit
+                        : isMedia
+                          ? mediaCollectionJsonLd(lang, mediaCategory, url, data.title, data.description)
+                          : isAgenda || isTribunes || isProjects || isPresse || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio || isOffline || isCareer || isPodcasts || isConnect || isToolkit
                           ? collectionPageJsonLd(lang, data.title, data.description, url)
                           : null,
     },
