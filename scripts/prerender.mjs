@@ -33,6 +33,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import crypto from 'node:crypto';
 import { build } from 'vite';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -78,6 +79,11 @@ function headBlock(meta, image, { indexable = true, feedUrl = null, icsUrl = nul
       : []),
     ...(meta.citations && meta.citations.length > 0
       ? meta.citations.map((c) => tag(c.name, c.content))
+      : []),
+    ...(meta.url && (meta.url.endsWith('/publications') || meta.url.endsWith('/bibliography') || meta.url.endsWith('/publications-pdf'))
+      ? [
+          `    <link rel="alternate" type="application/x-bibtex" title="Dr. Seynudé Dagnon — Publications (BibTeX)" href="https://seynudedagnon.com/dagnon-publications.bib" />`,
+        ]
       : []),
     ...(icsUrl
       ? [
@@ -255,7 +261,7 @@ async function run() {
      drift from what is actually deployed. Each route gets its own lastmod:
      entity pages use their publication date, collection pages use the newest
      item they list, everything else falls back to the build date. */
-  const lastmodFallback = new Date().toISOString().slice(0, 10);
+  const lastmodFallback = '2026-09-04';
   const urls = PRERENDER_LANGS.flatMap((lang) =>
     PRERENDER_ROUTES.map((route) => {
       const meta = pageMeta(lang, route);
@@ -284,8 +290,8 @@ async function run() {
   try {
     const { buildPodcastRss } = __meta;
     if (typeof buildPodcastRss === 'function') {
-      fs.writeFileSync(path.join(dist, 'podcast.xml'), buildPodcastRss(), 'utf-8');
-      fs.writeFileSync(path.join(dist, 'podcast-fr.xml'), buildPodcastRss(), 'utf-8');
+      fs.writeFileSync(path.join(dist, 'podcast.xml'), buildPodcastRss('en'), 'utf-8');
+      fs.writeFileSync(path.join(dist, 'podcast-fr.xml'), buildPodcastRss('fr'), 'utf-8');
     }
   } catch (e) { void e; }
 
@@ -293,53 +299,37 @@ async function run() {
      and generated from the same data file as the page itself. */
   fs.writeFileSync(path.join(dist, 'agenda.ics'), buildIcsFeed(), 'utf-8');
 
-  /* PWA service worker — regenerated from the same route list, so the
-     precache can never drift from what is actually deployed. Every page and
-     asset that exists in dist/ ends up in the precache list. */
-  const precache = [
-    ...PRERENDER_LANGS.flatMap((lang) =>
-      PRERENDER_ROUTES.map((route) => (localePath(lang, route) === '/' ? '/' : localePath(lang, route))),
-    ),
+  /* Keep installation light: only the app shell and explicit offline pages
+     are mandatory. Other pages/media are cached after a visitor opens them. */
+  const shellAssets = [...template.matchAll(/(?:src|href)="(\/(?:assets|fonts)\/[^"?#]+)[^"\s]*"/g)].map((m) => m[1]);
+  const precache = [...new Set([
+    '/',
+    '/fr',
+    '/offline',
+    '/fr/offline',
     '/favicon.png',
     '/icon-512.png',
-    '/og-image.jpg',
     '/manifest.webmanifest',
     '/dr-seynude-dagnon.webp',
-    '/agenda.ics',
-    '/presse/press-kit.zip',
-    ...(fs.existsSync(path.join(dist, 'fonts'))
-      ? fs.readdirSync(path.join(dist, 'fonts')).map((f) => `/fonts/${f}`)
-      : []),
-    ...(fs.existsSync(path.join(dist, 'presse'))
-      ? ['/presse/press-kit-fr.pdf', '/presse/press-kit-en.pdf']
-      : []),
-    ...(fs.existsSync(path.join(dist, 'cv')) ? ['/cv/cv-fr.pdf', '/cv/cv-en.pdf'] : []),
-    ...(fs.existsSync(path.join(dist, 'publications'))
-      ? ['/publications/publications-fr.pdf', '/publications/publications-en.pdf']
-      : []),
-    ...(fs.existsSync(path.join(dist, 'assets'))
-      ? fs.readdirSync(path.join(dist, 'assets')).map((f) => `/assets/${f}`)
-      : []),
-    /* Heavy binary media is deliberately NOT precached: community photos,
-       og share images and the press kit only render when their page is
-       visited. Downloading all of them on the first visit added multi-MB and
-       dozens of requests to the initial load (they were the bulk of the
-       "Total Page Size / # requests" GTmetrix numbers). The fetch handler
-       runtime-caches them cache-first when each page actually loads, so the
-       PWA stays offline-capable — just for the media the visitor has seen
-       rather than the entire library up front. */
-  ];
+    ...shellAssets,
+  ])];
 
-  const hash = (s) => {
-    let h = 0;
-    for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
-    return (h >>> 0).toString(36);
-  };
+  const fingerprint = crypto.createHash('sha256');
+  for (const url of precache) {
+    const relative = url.replace(/^\//, '');
+    const candidate = path.join(dist, relative);
+    const file = fs.existsSync(candidate) && fs.statSync(candidate).isFile()
+      ? candidate
+      : path.join(candidate, 'index.html');
+    if (!fs.existsSync(file)) die(`precache target missing: ${url}`);
+    fingerprint.update(url).update(fs.readFileSync(file));
+  }
+  const cacheVersion = fingerprint.digest('hex').slice(0, 16);
 
   const sw = `/* Service worker generated by scripts/prerender.mjs — do not hand-edit.
    Every deploy re-version it by hashing the precache list, so the cache name
    changes exactly when the content does. */
-const VERSION = '${hash(precache.join('|'))}';
+const VERSION = '${cacheVersion}';
 const CACHE = 'dagnon-v' + VERSION;
 const PRECACHE = ${JSON.stringify(precache, null, 2)};
 
@@ -347,10 +337,7 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE);
-      /* allSettled, not all: one URL failing (a deploy racing an update) must
-         not make the whole install fail and strand the old worker forever. */
-      await Promise.allSettled(PRECACHE.map((url) => cache.add(url).catch(() => undefined)));
-      await self.skipWaiting();
+      await Promise.all(PRECACHE.map((url) => cache.add(url)));
     })(),
   );
 });
@@ -359,10 +346,14 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     (async () => {
       const keys = await caches.keys();
-      await Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)));
+      await Promise.all(keys.filter((k) => k.startsWith('dagnon-v') && k !== CACHE).map((k) => caches.delete(k)));
       await self.clients.claim();
     })(),
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 /* Web push — the payload comes from scripts/send-newsletter.mjs as a JSON
@@ -432,13 +423,13 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  /* cache-first for everything else: the versioned assets and pages never
-     change, so a cache hit is always the right answer. */
+  /* Fingerprinted Vite assets are immutable. Everything else is network-first
+     so a stable URL can never remain stale indefinitely. */
   event.respondWith(
     (async () => {
       const cache = await caches.open(CACHE);
       const cached = await cache.match(request);
-      if (cached) return cached;
+      if (url.pathname.startsWith('/assets/') && cached) return cached;
       try {
         const fresh = await fetch(request);
         if (fresh.ok) cache.put(request, fresh.clone());

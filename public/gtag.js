@@ -7,5 +7,5 @@ gtag('consent', 'default', {
   'analytics_storage': 'denied',
   'wait_for_update': 500
 });
-gtag('js', new Date());
-gtag('config', 'G-S4KYJWSXBJ', { 'anonymize_ip': true });
+/* The consent utility loads and configures Google Analytics only after the
+   visitor explicitly accepts. This local bootstrap never sends a request. */

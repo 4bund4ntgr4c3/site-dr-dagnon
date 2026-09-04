@@ -56,15 +56,15 @@ globalThis.fetch = async (url, opts) => {
 const searchLog = await import(pathToFileURL(path.resolve('node_modules/.tmp/api/search-log.js')).href);
 const handler = searchLog.default;
 
-const call = async ({ method = 'POST', body = {}, ip } = {}) => {
+const call = async ({ method = 'POST', body = {}, ip = '203.0.113.10', origin = 'https://seynudedagnon.com' } = {}) => {
   const out = { code: 0, payload: null };
   const res = {
     status(c) { out.code = c; return res; },
     json(d) { out.payload = d; },
     setHeader() {},
   };
-  const headers = {};
-  if (ip) headers['x-forwarded-for'] = ip;
+  const headers = { origin };
+  if (ip) headers['x-vercel-forwarded-for'] = ip;
   await handler({ method, body, headers }, res);
   return out;
 };
@@ -117,12 +117,32 @@ test('normalizes queries to lowercase and trims', async () => {
   assert.equal(store.hashes.get('search:counts')['dagnon'], 1);
 });
 
-test('truncates queries longer than 200 characters', async () => {
+test('truncates queries longer than 80 characters', async () => {
   reset();
   const long = 'a'.repeat(300);
   await call({ body: { query: long } });
   const recent = JSON.parse(store.strings.get('search:recent'));
-  assert.equal(recent[0].length, 200);
+  assert.equal(recent[0].length, 80);
+});
+
+test('rejects a numeric query without writing', async () => {
+  reset();
+  const out = await call({ body: { query: 42 } });
+  assert.equal(out.code, 400);
+  assert.equal(store.counters.get('search:total'), undefined, 'only the abuse-prevention rate-limit may write');
+  assert.equal(store.hashes.has('search:counts'), false);
+  assert.equal(store.strings.has('search:recent'), false);
+});
+
+test('rejects missing origin and prefers the Vercel client IP header', async () => {
+  assert.equal((await call({ body: { query: 'malaria' }, origin: '' })).code, 403);
+});
+
+test('redacts long number-like identifiers before storage', async () => {
+  reset();
+  await call({ body: { query: 'patient 0612345678 malaria' } });
+  const recent = JSON.parse(store.strings.get('search:recent'));
+  assert.equal(recent[0], 'patient number malaria');
 });
 
 test('caps recent queries at 20', async () => {

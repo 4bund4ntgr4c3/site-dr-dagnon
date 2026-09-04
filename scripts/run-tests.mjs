@@ -40,7 +40,7 @@ function compile(label, files, rootDir, outDir) {
   fs.writeFileSync(path.join(outDir, 'package.json'), '{"type":"module"}\n');
 }
 
-compile('api/', ['api/contact.ts', 'api/newsletter.ts', 'api/push.ts', 'api/search-log.ts', 'api/admin.ts', 'api/changelog.ts', 'api/_origin.ts', 'api/_alert.ts'], 'api', path.join(tmp, 'api'));
+compile('api/', ['api/contact.ts', 'api/newsletter.ts', 'api/push.ts', 'api/search-log.ts', 'api/admin.ts', 'api/changelog.ts', 'api/_origin.ts', 'api/_alert.ts', 'api/_fetch.ts'], 'api', path.join(tmp, 'api'));
 compile('src/i18n/routing.ts', ['src/i18n/routing.ts'], 'src/i18n', path.join(tmp, 'i18n'));
 compile('src/lib/citations.ts', ['src/lib/citations.ts'], 'src/lib', path.join(tmp, 'citations'));
 compile('src/lib/calendar-links.ts', ['src/lib/calendar-links.ts'], 'src/lib', path.join(tmp, 'calendar-links'));
@@ -57,7 +57,7 @@ compile('src/lib/calendar-links.ts', ['src/lib/calendar-links.ts'], 'src/lib', p
 function compileAgendaReminders() {
   const proj = path.join(tmp, 'agenda-reminders');
   fs.rmSync(proj, { recursive: true, force: true });
-  for (const f of ['api/agenda-reminders.ts', 'api/event-reminders.ts', 'api/_tokens.ts', 'api/_alert.ts', 'api/_rate-limit.ts', 'api/_push-guard.ts', 'api/_headers.ts', 'api/_ip.ts', 'api/_origin.ts', 'src/data/agenda.ts', 'src/i18n/lang.ts', 'src/lib/calendar-links.ts']) {
+  for (const f of ['api/agenda-reminders.ts', 'api/event-reminders.ts', 'api/_tokens.ts', 'api/_alert.ts', 'api/_rate-limit.ts', 'api/_push-guard.ts', 'api/_headers.ts', 'api/_ip.ts', 'api/_origin.ts', 'api/_fetch.ts', 'src/data/agenda.ts', 'src/i18n/lang.ts', 'src/lib/calendar-links.ts']) {
     const dest = path.join(proj, f);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.copyFileSync(path.join(root, f), dest);
@@ -83,7 +83,7 @@ function compileAgendaReminders() {
   console.log('[test] compiling api/agenda-reminders.ts and the event-reminder function with its data');
   execFileSync(process.execPath, [tsc, '-p', path.join(proj, 'tsconfig.json')], { cwd: root, stdio: 'inherit' });
   const out = path.join(proj, 'out');
-  for (const rel of ['api/agenda-reminders.js', 'api/event-reminders.js', 'api/_tokens.js', 'api/_alert.js', 'api/_rate-limit.js', 'api/_push-guard.js', 'api/_headers.js', 'api/_ip.js', 'api/_origin.js', 'src/data/agenda.js', 'src/lib/calendar-links.js']) {
+  for (const rel of ['api/agenda-reminders.js', 'api/event-reminders.js', 'api/_tokens.js', 'api/_alert.js', 'api/_rate-limit.js', 'api/_push-guard.js', 'api/_headers.js', 'api/_ip.js', 'api/_origin.js', 'api/_fetch.js', 'src/data/agenda.js', 'src/lib/calendar-links.js']) {
     const dest = path.join(tmp, rel);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.copyFileSync(path.join(out, rel), dest);

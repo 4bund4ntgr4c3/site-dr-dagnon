@@ -376,23 +376,22 @@ test('a filled honeypot is dropped silently, without storing or sending', async 
   });
 });
 
-test('subscriptions still work when the store is down', async () => {
+test('a store outage fails before sending an unusable confirmation link', async () => {
   await withNewsletterKv(async () => {
     kvResponder = () => ({ ok: false, json: async () => ({}) });
     const before = sent.length;
     const out = await call(newsletter, { email: 'outage@example.test' }, { ip: '10.6.0.7' });
-    assert.equal(out.code, 200, 'a store outage must not block the subscription');
-    assert.equal(out.body.pending, true);
-    assert.equal(sent.length, before + 1, 'the confirmation email should still go out');
+    assert.equal(out.code, 503);
+    assert.equal(sent.length, before, 'no unusable confirmation email should go out');
   });
 });
 
-test('subscriptions still work with no store configured at all', async () => {
+test('subscriptions fail closed when no store is configured', async () => {
   const beforeSent = sent.length;
   const beforeKv = kvCalls.length;
   const out = await call(newsletter, { email: 'nokv@example.test' }, { ip: '10.6.0.8' });
-  assert.equal(out.code, 200);
-  assert.equal(sent.length, beforeSent + 1);
+  assert.equal(out.code, 503);
+  assert.equal(sent.length, beforeSent);
   assert.equal(kvCalls.length, beforeKv, 'no store configured, so nothing should be sent');
 });
 
@@ -416,8 +415,22 @@ test('a failed provider send alerts the owner, at most once per window', async (
   const before = sent.length;
   resendOk = false;
   try {
-    await call(newsletter, { email: 'alert@example.test', lang: 'en' }, { ip: '10.8.0.1' });
-    await call(newsletter, { email: 'alert2@example.test', lang: 'en' }, { ip: '10.8.0.2' });
+    await withKv(async () => {
+      let alertChecks = 0;
+      kvResponder = () => {
+        const commands = kvCalls.at(-1)?.commands ?? [];
+        if (commands[0]?.[0] === 'SISMEMBER') {
+          return { ok: true, json: async () => [{ result: 0 }, { result: 'OK' }] };
+        }
+        const isAlertLimit = String(commands[0]?.[1] ?? '').includes('alert:newsletter confirmation');
+        return {
+          ok: true,
+          json: async () => [{ result: 'OK' }, { result: isAlertLimit ? ++alertChecks : 1 }],
+        };
+      };
+      await call(newsletter, { email: 'alert@example.test', lang: 'en' }, { ip: '10.8.0.1' });
+      await call(newsletter, { email: 'alert2@example.test', lang: 'en' }, { ip: '10.8.0.2' });
+    });
     const alerts = sent.slice(before).filter((m) => m.subject?.startsWith('[Site] API failure'));
     assert.equal(alerts.length, 1, 'a burst of failures must produce one alert, not one per request');
     assert.match(alerts[0].subject, /newsletter confirmation/);
@@ -441,13 +454,16 @@ const newsletterUnsubscribe = newsletterConfirm;
 
 /** subscribes through the full flow and returns { out, href }; the address
  *  is treated as new, so a fresh confirmation email is always the last one */
-const subscribeAndGetHref = async (email, { lang = 'en', ip = '10.7.0.1' } = {}) => {
+let confirmRequestIndex = 1;
+const subscribeAndGetHref = async (email, { lang = 'en', ip } = {}) => {
+  const requestIp = ip ?? `10.7.${Math.floor(confirmRequestIndex / 250)}.${(confirmRequestIndex++ % 250) + 1}`;
   process.env.KV_REST_API_URL = 'https://fake-kv.upstash.io/';
   process.env.KV_REST_API_TOKEN = 'fake-token';
   kvCalls.length = 0;
   kvResponder = () => ({ ok: true, json: async () => [{ result: 0 }, { result: 'OK' }] });
   try {
-    const out = await call(newsletter, { email, lang }, { ip });
+    const out = await call(newsletter, { email, lang }, { ip: requestIp });
+    assert.equal(out.code, 200, `failed to stage ${email}`);
     return { out, href: lastConfirmHref() };
   } finally {
     delete process.env.KV_REST_API_URL;
@@ -457,15 +473,21 @@ const subscribeAndGetHref = async (email, { lang = 'en', ip = '10.7.0.1' } = {})
 };
 
 /** clicks a confirmation link against the real store contract */
-const clickConfirm = async (href, { saddResult = 1, pendingLang = null } = {}) => {
+const clickConfirm = async (href, { saddResult = 1, pendingLang = 'en' } = {}) => {
   const url = new URL(href);
   process.env.KV_REST_API_URL = 'https://fake-kv.upstash.io/';
   process.env.KV_REST_API_TOKEN = 'fake-token';
   kvCalls.length = 0;
-  kvResponder = () => ({
-    ok: true,
-    json: async () => [{ result: pendingLang }, { result: saddResult }, { result: 'OK' }, { result: 'OK' }],
-  });
+  let callIndex = 0;
+  kvResponder = () => {
+    callIndex++;
+    return {
+      ok: true,
+      json: async () => callIndex === 1
+        ? [{ result: pendingLang }, { result: pendingLang ? 0 : saddResult === 0 ? 1 : 0 }]
+        : [{ result: saddResult }, { result: 1 }, { result: 'OK' }],
+    };
+  };
   try {
     return await callGet(newsletterConfirm, url.pathname + url.search);
   } finally {
@@ -486,13 +508,12 @@ test('clicking the confirmation link subscribes the address and sends the welcom
   assert.match(clicked.html, /Subscription confirmed/);
 
   const sadd = kvCalls.find((c) => c.commands?.some((cmd) => cmd[0] === 'SADD'));
-  assert.deepEqual(sadd.commands[0], ['GET', 'newsletter:pending:clicks@example.test'], 'the pending language is read first');
-  assert.deepEqual(sadd.commands[1], ['SADD', 'newsletter:emails', 'clicks@example.test']);
-  assert.deepEqual(sadd.commands[2], ['DEL', 'newsletter:pending:clicks@example.test']);
-  assert.deepEqual(sadd.commands[3][0], 'SET');
-  assert.equal(sadd.commands[3][1], 'newsletter:lang:clicks@example.test');
-  assert.equal(sadd.commands[3][2], 'en', 'the confirmed language is persisted for the digest');
-  assert.equal(sadd.commands[3][4], '7776000', 'the language TTL matches the 90-day unsubscribe token lifetime');
+  assert.deepEqual(kvCalls[0].commands[0], ['GET', 'newsletter:pending:clicks@example.test'], 'the pending language is checked before writing');
+  assert.deepEqual(sadd.commands[0], ['SADD', 'newsletter:emails', 'clicks@example.test']);
+  assert.deepEqual(sadd.commands[1], ['DEL', 'newsletter:pending:clicks@example.test']);
+  assert.deepEqual(sadd.commands[2][0], 'SET');
+  assert.equal(sadd.commands[2][1], 'newsletter:lang:clicks@example.test');
+  assert.equal(sadd.commands[2][2], 'en', 'the confirmed language is persisted for the subscription lifetime');
 
   assert.equal(sent.length, beforeSent + 1, 'the welcome email should go out on confirmation');
   assert.match(lastEmail().subject, /Welcome to Dr\. Dagnon/);
@@ -513,10 +534,18 @@ test('the pending key is the authoritative language when it differs from the lin
 test('a second click is idempotent and does not welcome twice', async () => {
   const { href } = await subscribeAndGetHref('twice@example.test');
   const beforeSent = sent.length;
-  const clicked = await clickConfirm(href, { saddResult: 0 });
+  const clicked = await clickConfirm(href, { saddResult: 0, pendingLang: null });
   assert.equal(clicked.code, 200);
   assert.match(clicked.html, /Subscription confirmed/);
   assert.equal(sent.length, beforeSent, 'no second welcome email');
+});
+
+test('a consumed confirmation link cannot recreate a removed subscription', async () => {
+  const { href } = await subscribeAndGetHref('removed@example.test');
+  const clicked = await clickConfirm(href, { saddResult: 1, pendingLang: null });
+  assert.equal(clicked.code, 400);
+  assert.match(clicked.html, /already used or expired/);
+  assert.equal(kvCalls.some((c) => c.commands?.some((cmd) => cmd[0] === 'SADD')), false);
 });
 
 test('a tampered token is refused before any store write or email', async () => {
@@ -534,19 +563,17 @@ test('a tampered token is refused before any store write or email', async () => 
 test('an expired link is refused as expired', async () => {
   const { href } = await subscribeAndGetHref('expired@example.test');
   const url = new URL(href);
-  /* re-sign a payload with an expiry in the past, using the same scheme and
-     secret the server uses — proves the expiry check itself, not the
-     signature one */
-  const secret = process.env.VERIFY_SECRET;
-  const hmac = (data) =>
-    Buffer.from(crypto.createHmac('sha256', secret).update(data).digest()).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  const exp = Date.now() - 1000;
-  const payload = Buffer.from(JSON.stringify({
-    p: 'nl-confirm', e: 'expired@example.test', x: exp,
-    h: hmac(`nl-confirm|expired@example.test|${exp}`),
-  })).toString('base64url');
-  const forged = `${payload}.${hmac(payload)}`;
-  url.searchParams.set('token', forged);
+  /* Issue a genuine token with the clock moved beyond its TTL. This tests
+     expiry without duplicating the private token serialization in the test. */
+  const now = Date.now;
+  Date.now = () => now() - (8 * 24 * 60 * 60 * 1000);
+  let expiredToken;
+  try {
+    expiredToken = issueToken('nl-confirm', 'expired@example.test');
+  } finally {
+    Date.now = now;
+  }
+  url.searchParams.set('token', expiredToken);
   const beforeSent = sent.length;
   const clicked = await callGet(newsletterConfirm, url.pathname + url.search);
   assert.equal(clicked.code, 400);

@@ -40,6 +40,16 @@ function upsertJsonLd(id: string, data: object | null) {
   el.textContent = data ? JSON.stringify(data) : '';
 }
 
+function replaceCitations(citations: { name: string; content: string }[] | undefined) {
+  document.head.querySelectorAll('meta[name^="citation_"]').forEach((el) => el.remove());
+  for (const citation of citations ?? []) {
+    const el = document.createElement('meta');
+    el.setAttribute('name', citation.name);
+    el.setAttribute('content', citation.content);
+    document.head.appendChild(el);
+  }
+}
+
 export function Seo() {
   const { pathname } = useLocation();
 
@@ -72,6 +82,7 @@ export function Seo() {
     upsertMeta('meta[name="twitter:description"]', meta.description);
     upsertMeta('meta[name="twitter:image"]', meta.ogImage || image);
     upsertMeta('meta[name="twitter:image:alt"]', meta.title);
+    replaceCitations(meta.citations);
 
     /* Reasserted on every navigation so a noindex cannot outlive the page
        that set it — and so an unknown route keeps its noindex even though

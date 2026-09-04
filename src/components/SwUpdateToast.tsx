@@ -3,26 +3,27 @@ import { RefreshCw, X } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 
-/* The service worker (written by scripts/prerender.mjs) skips waiting and
-   claims clients on every deploy, so the new version is already installed
-   when this toast appears — reloading is all the user has to do. The
-   controller check keeps the toast off first visits, where there is nothing
-   to update yet. Safe to render server-side: nothing here touches the DOM
-   before the effect runs. */
+/* A new worker waits until the visitor explicitly accepts the refresh. */
 export function SwUpdateToast() {
   const { lang } = useLang();
   const t = UI[lang];
   const [updateAvailable, setUpdateAvailable] = useState(false);
+  const [waiting, setWaiting] = useState<ServiceWorker | null>(null);
 
   useEffect(() => {
     let disposed = false;
     navigator.serviceWorker?.getRegistration().then((reg) => {
       if (disposed || !reg) return;
+      if (reg.waiting && navigator.serviceWorker.controller) {
+        setWaiting(reg.waiting);
+        setUpdateAvailable(true);
+      }
       reg.addEventListener('updatefound', () => {
         const worker = reg.installing;
         if (!worker) return;
         worker.addEventListener('statechange', () => {
           if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+            setWaiting(reg.waiting || worker);
             setUpdateAvailable(true);
           }
         });
@@ -36,10 +37,13 @@ export function SwUpdateToast() {
   if (!updateAvailable) return null;
 
   const reload = () => {
-    /* the new worker already skipped waiting and claimed the page (the
-       generated sw.js does both on install/activate), so a plain reload
-       lands on the new version — nothing to negotiate here */
-    window.location.reload();
+    let reloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (reloading) return;
+      reloading = true;
+      window.location.reload();
+    });
+    waiting?.postMessage({ type: 'SKIP_WAITING' });
   };
 
   return (

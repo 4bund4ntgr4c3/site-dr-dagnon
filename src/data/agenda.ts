@@ -41,7 +41,7 @@ export const AGENDA_ITEMS: AgendaEntry[] = [
       en: 'Visit to AIRID — Research partnerships',
     },
     location: { fr: 'Cotonou, Bénin', en: 'Cotonou, Benin' },
-    description: { fr: 'Visite de l\'Institut africain de recherche en intelligence des données (AIRID) pour renforcer les partenariats de recherche et l\'innovation scientifique au service de la santé au Bénin.', en: 'Visit to the African Institute for Research in Data Intelligence (AIRID) to strengthen research partnerships and advance scientific innovation for health outcomes in Benin.' },
+    description: { fr: 'Visite de l’Institut africain de recherche sur les maladies infectieuses (AIRID) pour renforcer les partenariats de recherche et l’innovation scientifique au service de la santé au Bénin.', en: 'Visit to the African Institute for Research in Infectious Diseases (AIRID) to strengthen research partnerships and advance scientific innovation for health outcomes in Benin.' },
     link: 'https://airid-africa.com/public/news/28-airid-welcomes-dr-seynude-jean-fortune-dagnon-from-the-gates-foundation',
   },
   {

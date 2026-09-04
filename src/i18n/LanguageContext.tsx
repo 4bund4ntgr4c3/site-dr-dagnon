@@ -53,7 +53,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const redirect = shouldRedirectToFrench(lang, readChoice(), languageTags(), redirectChecked.current);
     redirectChecked.current = true;
-    if (redirect) navigate(localePath('fr', path) + window.location.hash, { replace: true });
+    if (redirect) navigate(localePath('fr', path) + window.location.search + window.location.hash, { replace: true });
   }, [lang, path, navigate]);
 
   const value = useMemo<LangContextValue>(() => {
@@ -62,7 +62,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
          stops second-guessing a visitor who is already where they want to be */
       rememberChoice(target);
       if (target === lang) return;
-      navigate(localePath(target, path) + window.location.hash);
+      navigate(localePath(target, path) + window.location.search + window.location.hash);
     };
     return { lang, setLang: go, toggle: () => go(lang === 'fr' ? 'en' : 'fr') };
   }, [lang, path, navigate]);

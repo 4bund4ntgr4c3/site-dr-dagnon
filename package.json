@@ -4,16 +4,20 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.22.0 <25"
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node scripts/prerender.mjs && node scripts/send-newsletter.mjs && (node scripts/indexnow.mjs || true)",
+    "build": "tsc -b && vite build && node scripts/prerender.mjs",
     "gen:og": "node scripts/gen-og.mjs",
+    "gen:article-og": "node scripts/gen-article-og.mjs",
     "gen:pdfs": "node scripts/gen-pdfs.mjs",
     "images": "node scripts/optimize-images.mjs",
     "prerender": "node scripts/prerender.mjs",
     "indexnow": "node scripts/indexnow.mjs",
+    "notify:newsletter": "node scripts/send-newsletter.mjs",
+    "notify:search": "node scripts/indexnow.mjs",
+    "postdeploy:notify": "npm run notify:newsletter && npm run notify:search",
     "sync:orcid": "node scripts/sync-orcid.mjs",
     "test": "npm run build && node scripts/run-tests.mjs",
     "test:only": "node scripts/run-tests.mjs",

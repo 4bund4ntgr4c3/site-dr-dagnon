@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from './_fetch.js';
+
 /* Rate limiting shared by the two handlers.
  *
  * The underscore prefix keeps Vercel from turning this file into a route

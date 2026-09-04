@@ -13,6 +13,18 @@ const SLOTS = [
 export function BookingWidget() {
   const { lang } = useLang();
   const [picked, setPicked] = useState<number | null>(null);
+  const [openedAt] = useState(() => Date.now());
+  const slots = SLOTS.filter((slot) => new Date(`${slot.date}T${slot.time}:00+01:00`).getTime() > openedAt);
+  const selected = picked === null ? null : slots[picked] ?? null;
+  const contactParams = new URLSearchParams({
+    type: 'speaking',
+    subject: lang === 'fr' ? 'Demande de rendez-vous' : 'Meeting request',
+    message: selected
+      ? (lang === 'fr'
+          ? `Bonjour, je souhaite demander le créneau du ${selected.date} à ${selected.time} ${selected.tz} (${selected.type}, 30 min).`
+          : `Hello, I would like to request the ${selected.date} at ${selected.time} ${selected.tz} slot (${selected.type}, 30 min).`)
+      : '',
+  });
 
   return (
     <div className="rounded-2xl border border-pine-900/10 bg-white p-5 shadow-card sm:p-6">
@@ -27,7 +39,7 @@ export function BookingWidget() {
       </p>
 
       <div className="mt-4 grid gap-2">
-        {SLOTS.map((s, i) => (
+        {slots.map((s, i) => (
           <button
             key={`${s.date}-${s.time}`}
             type="button"
@@ -46,13 +58,19 @@ export function BookingWidget() {
         ))}
       </div>
 
+      {slots.length === 0 && (
+        <p className="mt-4 rounded-xl bg-pine-50 p-4 text-sm text-pine-900/70">
+          {lang === 'fr' ? 'Aucun créneau indicatif n’est actuellement publié. Envoyez une demande pour convenir d’une date.' : 'No indicative slot is currently published. Send a request to arrange a date.'}
+        </p>
+      )}
+
       <Link
-        to={`${localePath(lang, '/inviter')}?slot=${picked !== null ? SLOTS[picked].date : ''}`}
-        className={`mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all ${picked !== null ? 'bg-gold-500 text-pine-950 hover:bg-gold-400 hover:-translate-y-0.5' : 'bg-pine-100 text-pine-900/40'}`}
-        aria-disabled={picked === null}
-        onClick={(e) => { if (picked === null) e.preventDefault(); }}
+        to={`${localePath(lang, '/contact')}?${contactParams.toString()}`}
+        className={`mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all ${selected || slots.length === 0 ? 'bg-gold-500 text-pine-950 hover:bg-gold-400 hover:-translate-y-0.5' : 'bg-pine-100 text-pine-900/40'}`}
+        aria-disabled={!selected && slots.length > 0}
+        onClick={(e) => { if (!selected && slots.length > 0) e.preventDefault(); }}
       >
-        {lang === 'fr' ? 'Demander ce créneau' : 'Request this slot'}
+        {selected ? (lang === 'fr' ? 'Demander ce créneau' : 'Request this slot') : (lang === 'fr' ? 'Proposer une autre date' : 'Suggest another date')}
         <ArrowUpRight size={16} />
       </Link>
       <p className="mt-2 text-center text-[11px] text-pine-900/50">

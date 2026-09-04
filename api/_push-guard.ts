@@ -86,7 +86,7 @@ export async function isSafePushEndpoint(
   const host = new URL(endpoint).hostname.toLowerCase();
   try {
     const addresses = await lookup(host, { all: true, verbatim: true });
-    return addresses.some(({ address }) => !isPrivateAddress(address));
+    return addresses.length > 0 && addresses.every(({ address }) => !isPrivateAddress(address));
   } catch {
     return false;
   }

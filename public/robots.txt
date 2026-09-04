@@ -1,21 +1,23 @@
 User-agent: *
 Allow: /
 
-# AI crawlers — explicitly allowed (see /llms.txt for preferred citation)
-User-agent: GPTBot
+# User-requested retrieval and AI search are allowed.
+User-agent: OAI-SearchBot
 Allow: /
+User-agent: GPTBot
+Disallow: /
 User-agent: ChatGPT-User
 Allow: /
 User-agent: ClaudeBot
-Allow: /
+Disallow: /
 User-agent: Anthropic-AI
-Allow: /
+Disallow: /
 User-agent: PerplexityBot
 Allow: /
 User-agent: Google-Extended
-Allow: /
+Disallow: /
 User-agent: CCBot
-Allow: /
+Disallow: /
 
 User-agent: *
 Disallow: /api/

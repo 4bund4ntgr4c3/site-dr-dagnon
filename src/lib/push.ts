@@ -47,7 +47,11 @@ export async function subscribeToPush(): Promise<PushResult> {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ subscription: subscription.toJSON() }),
     });
-    return res.ok ? { ok: true } : { ok: false, reason: 'error' };
+    if (!res.ok) {
+      await subscription.unsubscribe().catch(() => false);
+      return { ok: false, reason: 'error' };
+    }
+    return { ok: true };
   } catch {
     const denied = typeof Notification !== 'undefined' && Notification.permission === 'denied';
     return { ok: false, reason: denied ? 'denied' : 'error' };
@@ -61,12 +65,14 @@ export async function unsubscribeFromPush(): Promise<PushResult> {
     const subscription = await reg.pushManager.getSubscription();
     if (subscription) {
       const endpoint = subscription.endpoint;
-      await subscription.unsubscribe();
-      await fetch('/api/push-subscribe', {
+      const response = await fetch('/api/push-subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ unsubscribe: true, endpoint }),
       });
+      if (!response.ok) return { ok: false, reason: 'error' };
+      const removed = await subscription.unsubscribe();
+      if (!removed) return { ok: false, reason: 'error' };
     }
     return { ok: true };
   } catch {

@@ -28,6 +28,11 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import webPush from 'web-push';
 
+const fetch = (input, init = {}) => globalThis.fetch(input, {
+  ...init,
+  signal: init.signal ?? AbortSignal.timeout(10_000),
+});
+
 /* ── constants ──────────────────────────────────────────────────── */
 
 const SITE_URL = 'https://seynudedagnon.com';
@@ -37,9 +42,8 @@ const PUSH_KEY = 'push:subs';
 const PUSH_PREFIX = 'push:sub:';
 const LANG_KEY = 'newsletter:lang:';
 const PREFS_KEY = 'newsletter:prefs:';
-/* month (YYYY-MM) of the last digest that included monthly subscribers —
-   monthly recipients get the digest once per calendar month at most */
-const MONTHLY_KEY = 'newsletter:last-monthly';
+const RUN_LOCK_KEY = 'newsletter:send-lock';
+const DELIVERY_PREFIX = 'newsletter:delivered:';
 
 const C = { pine950: '#0c2e2a', pine900: '#133e38', gold500: '#c9a24b', gold400: '#d4b36a', ivory: '#faf8f4', white: '#ffffff', ink: '#3a3a3a', muted: '#6b7280' };
 const ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
@@ -256,6 +260,51 @@ async function saveState(ids) {
   return results?.[0]?.result === 'OK';
 }
 
+const subscriberKey = (email) => DELIVERY_PREFIX + crypto.createHash('sha256').update(email).digest('hex');
+
+async function loadDeliveryState(email, baselineIds) {
+  const results = await kvPipeline([['GET', subscriberKey(email)]]);
+  const raw = results?.[0]?.result;
+  if (typeof raw !== 'string') return { ids: baselineIds, lastSent: '' };
+  try {
+    const parsed = JSON.parse(raw);
+    return {
+      ids: Array.isArray(parsed?.ids) ? parsed.ids.filter((id) => typeof id === 'string') : baselineIds,
+      lastSent: typeof parsed?.lastSent === 'string' ? parsed.lastSent : '',
+    };
+  } catch {
+    return { ids: baselineIds, lastSent: '' };
+  }
+}
+
+async function saveDeliveryState(email, ids, lastSent) {
+  const results = await kvPipeline([['SET', subscriberKey(email), JSON.stringify({ ids: ids.slice(-500), lastSent })]]);
+  return results?.[0]?.result === 'OK';
+}
+
+const isoWeek = (iso) => {
+  const date = new Date(`${iso}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+  return `${date.getUTCFullYear()}-${String(Math.ceil((((date - yearStart) / 86400000) + 1) / 7)).padStart(2, '0')}`;
+};
+
+export function frequencyDue(frequency, lastSent, today) {
+  if (!lastSent) return true;
+  return frequency === 'monthly'
+    ? lastSent.slice(0, 7) !== today.slice(0, 7)
+    : isoWeek(lastSent) !== isoWeek(today);
+}
+
+async function acquireRunLock(token) {
+  const result = await kvPipeline([['SET', RUN_LOCK_KEY, token, 'NX', 'EX', '300']]);
+  return result?.[0]?.result === 'OK';
+}
+
+async function releaseRunLock(token) {
+  await kvPipeline([['EVAL', "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end", '1', RUN_LOCK_KEY, token]]);
+}
+
 async function loadSubscribers() {
   const results = await kvPipeline([['SMEMBERS', SUBS_KEY]]);
   return Array.isArray(results?.[0]?.result) ? results[0].result.filter((s) => typeof s === 'string') : [];
@@ -301,16 +350,6 @@ async function loadSubscriberPrefs(subscribers) {
   return prefs;
 }
 
-const currentMonth = () => new Date().toISOString().slice(0, 7);
-
-/** true when a digest may include monthly subscribers: the month recorded in
-    KV differs from the current one (or nothing was ever recorded) */
-async function monthlyDueNow() {
-  const results = await kvPipeline([['GET', MONTHLY_KEY]]);
-  const last = typeof results?.[0]?.result === 'string' ? results[0].result : '';
-  return currentMonth() !== last;
-}
-
 /** Splits subscribers into who gets this digest: weekly subscribers always,
  *  monthly ones only when a monthly digest is due. Returns the recipients
  *  (with their language and sections) and whether any monthly subscriber was
@@ -331,11 +370,10 @@ export function planRecipients(subscribers, langs, prefs, monthlyDue) {
 
 /* ── sending ────────────────────────────────────────────────────── */
 
-async function sendDigest({ send, owner, apiKey }) {
+async function sendDigest({ send, allItems, baselineIds, owner, apiKey }) {
   const subscribers = await loadSubscribers();
   const langs = await loadSubscriberLangs(subscribers);
   const prefs = await loadSubscriberPrefs(subscribers);
-  const { recipients, includedMonthly } = planRecipients(subscribers, langs, prefs, await monthlyDueNow());
 
   /** Map item kind to section id for filtering */
   const kindToSection = (kind) => {
@@ -347,16 +385,31 @@ async function sendDigest({ send, owner, apiKey }) {
   /* per-recipient sends so each copy carries its own one-click unsubscribe
      and preferences links — the owner gets a copy too, they may not be in
      the subscriber set */
-  const ownerObj = { email: owner, lang: 'both', sections: ['publications', 'tribunes', 'agenda', 'projets'] };
-  const allRecipients = [ownerObj, ...recipients];
   const from = process.env.NEWSLETTER_FROM_EMAIL || 'Dr. Seynudé Dagnon <admin@seynudedagnon.com>';
-  for (const [i, r] of allRecipients.entries()) {
+  const today = new Date().toISOString().slice(0, 10);
+  const recipients = [{ email: owner, lang: 'both', sections: ['publications', 'tribunes', 'agenda', 'projets'], items: send, owner: true }];
+  for (const email of subscribers) {
+    const p = prefs.get(email) ?? { frequency: 'weekly', sections: ['publications', 'tribunes', 'agenda', 'projets'] };
+    const delivery = await loadDeliveryState(email, baselineIds);
+    if (!frequencyDue(p.frequency, delivery.lastSent, today)) continue;
+    const known = new Set(delivery.ids);
+    const candidates = allItems.filter((item) => !known.has(itemId(item)));
+    recipients.push({ email, lang: langs.get(email) ?? 'both', sections: p.sections, items: candidates, owner: false, delivery });
+  }
+
+  let sentCount = 0;
+  for (const [i, r] of recipients.entries()) {
     /* filter items by recipient's sections */
-    const filtered = send.filter((item) => {
+    const filtered = r.items.filter((item) => {
       const section = kindToSection(item.kind);
       return section ? r.sections.includes(section) : true;
     });
-    if (filtered.length === 0) continue;
+    if (filtered.length === 0) {
+      if (!r.owner && r.delivery && !(await saveDeliveryState(r.email, allItems.map(itemId), today))) {
+        throw new Error('unable to save recipient delivery cursor');
+      }
+      continue;
+    }
     const href = unsubHref(r.email);
     const prefHref = prefsHref(r.email);
     const body = {
@@ -368,22 +421,24 @@ async function sendDigest({ send, owner, apiKey }) {
     };
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'Idempotency-Key': `digest-${crypto.createHash('sha256').update(`${r.email}|${filtered.map(itemId).join('|')}`).digest('hex').slice(0, 48)}`,
+      },
       body: JSON.stringify(body),
     });
     if (!response.ok) {
       const err = await response.text();
-      throw new Error(`Resend recipient ${i + 1}/${allRecipients.length} failed: ${err}`);
+      throw new Error(`Resend recipient ${i + 1}/${recipients.length} failed: ${err}`);
     }
-    console.log(`[newsletter] sent to ${i + 1}/${allRecipients.length} (${filtered.length} items)`);
+    if (!r.owner && !(await saveDeliveryState(r.email, allItems.map(itemId), today))) {
+      throw new Error('digest sent but recipient delivery cursor was not saved');
+    }
+    sentCount++;
+    console.log(`[newsletter] sent to ${i + 1}/${recipients.length} (${filtered.length} items)`);
   }
-  /* monthly subscribers are a month window, not a per-send one: record the
-     month only when the digest actually included them */
-  if (includedMonthly) {
-    await kvPipeline([['SET', MONTHLY_KEY, currentMonth()]]);
-    console.log(`[newsletter] monthly digest month recorded: ${currentMonth()}`);
-  }
-  return allRecipients.length;
+  return sentCount;
 }
 
 /* ── web push endpoint guard ──────────────────────────────────────
@@ -446,7 +501,7 @@ async function isSafePushEndpoint(endpoint) {
   const host = new URL(endpoint).hostname.toLowerCase();
   try {
     const addresses = await dns.lookup(host, { all: true, verbatim: true });
-    return addresses.some(({ address }) => !isPrivateAddress(address));
+    return addresses.length > 0 && addresses.every(({ address }) => !isPrivateAddress(address));
   } catch {
     return false; // resolution failure fails closed
   }
@@ -601,32 +656,33 @@ async function main() {
     return;
   }
 
-  const { pubsUrl, tribunesUrl } = compileData();
-  const { PUB_ITEMS } = await import(pathToFileURL(pubsUrl).href);
-  const { TRIBUNES } = await import(pathToFileURL(tribunesUrl).href);
-  const items = buildItems(PUB_ITEMS, TRIBUNES);
-
-  const state = await loadState();
-  const { firstRun, send } = plan(items, state);
-  if (firstRun) {
-    await saveState(items.map(itemId));
-    console.log(`[newsletter] baseline established (${items.length} items), nothing sent`);
+  const lockToken = crypto.randomUUID();
+  if (!(await acquireRunLock(lockToken))) {
+    console.log('[newsletter] another delivery job is already running');
     return;
   }
-  if (send.length === 0) {
-    console.log('[newsletter] no new content since the last send');
-    return;
-  }
+  try {
+    const { pubsUrl, tribunesUrl } = compileData();
+    const { PUB_ITEMS } = await import(pathToFileURL(pubsUrl).href);
+    const { TRIBUNES } = await import(pathToFileURL(tribunesUrl).href);
+    const items = buildItems(PUB_ITEMS, TRIBUNES);
 
-  const sent = await sendDigest({ send, owner, apiKey });
-  const pushed = await sendPushNotifications(send);
+    const state = await loadState();
+    const { firstRun, send } = plan(items, state);
+    if (firstRun) {
+      await saveState(items.map(itemId));
+      console.log(`[newsletter] baseline established (${items.length} items), nothing sent`);
+      return;
+    }
 
-  const known = state.ids;
-  const nextIds = [...known, ...send.map(itemId)].slice(-500);
-  if (!(await saveState(nextIds))) {
-    throw new Error('digest sent but state not saved — the next push will resend it');
+    const sent = await sendDigest({ send, allItems: items, baselineIds: state.ids, owner, apiKey });
+    const pushed = send.length > 0 ? await sendPushNotifications(send) : 0;
+    const nextIds = [...state.ids, ...send.map(itemId)].slice(-500);
+    if (!(await saveState(nextIds))) throw new Error('digest processed but global state was not saved');
+    console.log(`[newsletter] processed ${send.length} new item(s), mailed ${sent} recipient(s), ${pushed} push notification(s)`);
+  } finally {
+    await releaseRunLock(lockToken);
   }
-  console.log(`[newsletter] sent ${send.length} item(s) to ${sent} subscriber(s), ${pushed} push notification(s)`);
 }
 
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href;

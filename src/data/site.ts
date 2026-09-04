@@ -3,13 +3,13 @@ import type { Lang } from '@/i18n/lang';
 export const STATS: Record<Lang, { value: number; suffix: string; label: string; detail: string }[]> = {
   fr: [
     { value: 17, suffix: '+', label: "années d'expérience", detail: 'Programmes paludisme, VIH/SIDA, NTN et santé MNI à travers l’Afrique' },
-    { value: 17, suffix: '', label: 'publications scientifiques', detail: 'Malaria Journal, Parasites & Vectors, Frontiers…' },
+    { value: 16, suffix: '', label: 'publications de recherche', detail: 'Plus un article de blog identifié séparément' },
     { value: 1114, suffix: '', label: 'centres de santé couverts', detail: 'Complétude du système d’information : 35 % → 94 %' },
     { value: 27, suffix: '', label: 'pays PMI — distinction 2020', detail: 'FSN Employee of the Year, U.S. President’s Malaria Initiative' },
   ],
   en: [
     { value: 17, suffix: '+', label: 'years of experience', detail: 'Malaria, HIV/AIDS, NTD and MNCH programs across Africa' },
-    { value: 17, suffix: '', label: 'scientific publications', detail: 'Malaria Journal, Parasites & Vectors, Frontiers…' },
+    { value: 16, suffix: '', label: 'research publications', detail: 'Plus one blog article identified separately' },
     { value: 1114, suffix: '', label: 'health facilities covered', detail: 'Routine information system completeness: 35% → 94%' },
     { value: 27, suffix: '', label: 'PMI countries — 2020 award', detail: 'FSN Employee of the Year, U.S. President’s Malaria Initiative' },
   ],

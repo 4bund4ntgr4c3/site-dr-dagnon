@@ -4,6 +4,7 @@ import { originAllowed } from './_origin.js';
 import { alertOwner } from './_alert.js';
 import { clientIp } from './_ip.js';
 import { applyJsonHeaders } from './_headers.js';
+import { fetchWithTimeout as fetch } from './_fetch.js';
 
 /* Two endpoints in one function, so the deploy stays under the 12-function
  * Hobby limit: /api/contact (the contact form: admin notification +
@@ -50,7 +51,8 @@ const MAX_EMAIL = 254;
 const MAX_PHONE = 30;
 const MAX_SUBJECT = 500;
 const MAX_MESSAGE = 5000;
-const sanitize = (s: string) => s.replace(/[\r\n\t]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, MAX_MESSAGE);
+const sanitizeLine = (s: string) => s.replace(/[\r\n\t]/g, ' ').replace(/\s+/g, ' ').trim();
+const sanitizeMessage = (s: string) => s.replace(/\r\n?/g, '\n').replace(/\t/g, ' ').trim();
 const validPhone = (s: string) => {
   const digits = (s.match(/\d/g) || []).length;
   return /^[+\d][\d\s().-]*$/.test(s) && digits >= 6 && digits <= 15;
@@ -87,15 +89,15 @@ async function contactHandler(req: Req, res: Res): Promise<void> {
 
     if (!name || !email || !phone || !message) { res.status(400).json({ error: 'Missing required fields' }); return; }
 
-    const cleanName = sanitize(String(name)).slice(0, MAX_NAME);
-    const cleanEmail = sanitize(String(email)).slice(0, MAX_EMAIL);
-    const cleanPhone = sanitize(String(phone)).slice(0, MAX_PHONE);
-    const cleanSubject = sanitize(String(subject || '')).slice(0, MAX_SUBJECT);
-    const cleanMessage = sanitize(String(message)).slice(0, MAX_MESSAGE);
+    const cleanName = sanitizeLine(String(name)).slice(0, MAX_NAME);
+    const cleanEmail = sanitizeLine(String(email)).slice(0, MAX_EMAIL);
+    const cleanPhone = sanitizeLine(String(phone)).slice(0, MAX_PHONE);
+    const cleanSubject = sanitizeLine(String(subject || '')).slice(0, MAX_SUBJECT);
+    const cleanMessage = sanitizeMessage(String(message)).slice(0, MAX_MESSAGE);
     /* a recognized request type from our own list only — anything else is
        treated as a general message; the label is display-only and escaped */
     const cleanType = ALLOWED_TYPES.includes(String(type || 'general')) ? String(type) : 'general';
-    const cleanTypeLabel = cleanType !== 'general' ? sanitize(String(typeLabel || '')).slice(0, 60) : '';
+    const cleanTypeLabel = cleanType !== 'general' ? sanitizeLine(String(typeLabel || '')).slice(0, 60) : '';
 
     if (!cleanName || !cleanEmail || !cleanPhone || !cleanMessage) { res.status(400).json({ error: 'Missing required fields' }); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) { res.status(400).json({ error: 'Invalid email' }); return; }
@@ -114,7 +116,11 @@ async function contactHandler(req: Req, res: Res): Promise<void> {
     // 1) admin notification
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'Idempotency-Key': `contact-${crypto.createHash('sha256').update(`${cleanEmail}|${cleanMessage}|${new Date().toISOString().slice(0, 10)}`).digest('hex').slice(0, 48)}`,
+      },
       body: JSON.stringify({
         from, to: [to], reply_to: cleanEmail,
         subject: subjectLine,
@@ -128,7 +134,11 @@ async function contactHandler(req: Req, res: Res): Promise<void> {
     try {
       await fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'Idempotency-Key': `reply-${crypto.createHash('sha256').update(`${cleanEmail}|${cleanMessage}|${new Date().toISOString().slice(0, 10)}`).digest('hex').slice(0, 48)}`,
+        },
         body: JSON.stringify({
           from, to: [cleanEmail],
           subject: `Thank you for contacting Dr. Dagnon — ${cleanSubject || 'Your message'}`,
@@ -248,7 +258,11 @@ async function verifyHandler(req: Req, res: Res): Promise<void> {
     try {
       const r = await fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'Idempotency-Key': `verify-${crypto.createHash('sha256').update(`${cleanEmail}|${verificationCode}`).digest('hex').slice(0, 48)}`,
+        },
         body: JSON.stringify({
           from, to: [cleanEmail], subject: 'Your verification code — Seynudé Dagnon',
           html: verifyHtml(verificationCode),

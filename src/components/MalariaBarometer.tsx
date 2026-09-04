@@ -1,9 +1,8 @@
 import { useLang } from '@/i18n/useLang';
 import { TrendingDown, TrendingUp, Activity, Info } from 'lucide-react';
-import { LiveIndicator } from '@/components/LiveIndicator';
 
-/* Minimal WHO-inspired series (source: World Malaria Report). Static,
-   no network dependency — the PWA and the prerender stay deterministic. */
+/* Deliberately synthetic series used to demonstrate the chart interaction.
+   It is not surveillance data and must not be presented as such. */
 const SERIES = {
   casesM: [241, 242, 247, 249, 263], // global cases, millions
   years: ['2019', '2020', '2021', '2022', '2023'],
@@ -20,7 +19,7 @@ export function MalariaBarometer() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-pine-600">
-            <Activity size={14} /> {lang === 'fr' ? 'Baromètre paludisme' : 'Malaria barometer'}
+            <Activity size={14} /> {lang === 'fr' ? 'Scénario illustratif' : 'Illustrative scenario'}
           </p>
           <h3 className="mt-2 font-display text-xl font-semibold text-pine-950">
             {lang === 'fr' ? 'Où en est la lutte ?' : 'Where does the fight stand?'}
@@ -28,9 +27,8 @@ export function MalariaBarometer() {
         </div>
         <div className="flex flex-col items-end gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-pine-950 px-3 py-1 text-[11px] font-semibold text-gold-400">
-            <Info size={12} /> WHO WMR 2023
+            <Info size={12} /> {lang === 'fr' ? 'Données fictives' : 'Synthetic data'}
           </span>
-          <LiveIndicator source="WHO WMR" />
         </div>
       </div>
 
@@ -56,7 +54,7 @@ export function MalariaBarometer() {
             ))}
           </div>
           <p className="mt-3 text-xs leading-relaxed text-pine-900/60">
-            {lang === 'fr' ? 'Hausse post-COVID, puis plateau : l’élimination exigera plus que le contrôle.' : 'Post-COVID rise then plateau: elimination will take more than control.'}
+            {lang === 'fr' ? 'Exemple de hausse puis de plateau, uniquement destiné à illustrer la visualisation.' : 'Example rise and plateau, shown only to demonstrate the visualization.'}
           </p>
         </div>
 
@@ -81,14 +79,14 @@ export function MalariaBarometer() {
             ))}
           </div>
           <p className="mt-3 text-xs leading-relaxed text-pine-900/60">
-            {lang === 'fr' ? 'Baisse régulière : effet combiné MILDA digitalisées, CPS et IRS au nord.' : 'Steady decline: combined effect of digital LLIN, SMC and northern IRS.'}
+            {lang === 'fr' ? 'Exemple de tendance décroissante ; aucun effet causal ni résultat national réel n’est revendiqué.' : 'Example downward trend; it does not claim a causal effect or real national result.'}
           </p>
         </div>
       </div>
 
       <div className="mt-5 flex flex-wrap gap-2 text-[11px] text-pine-900/55">
-        <span className="rounded-full border border-pine-900/10 px-2.5 py-1">{lang === 'fr' ? 'Source : OMS' : 'Source: WHO'} · World Malaria Report 2023</span>
-        <span className="rounded-full border border-pine-900/10 px-2.5 py-1">{lang === 'fr' ? 'Mise à jour : manuelle, à chaque WMR' : 'Updated manually on each WMR'}</span>
+        <span className="rounded-full border border-pine-900/10 px-2.5 py-1">{lang === 'fr' ? 'Démonstration — pas une source de surveillance' : 'Demonstration — not a surveillance source'}</span>
+        <span className="rounded-full border border-pine-900/10 px-2.5 py-1">{lang === 'fr' ? 'Ne pas utiliser pour une décision sanitaire' : 'Not for health decision-making'}</span>
       </div>
     </div>
   );

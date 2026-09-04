@@ -222,12 +222,12 @@ export function Navbar() {
               : 'rounded-3xl border border-transparent bg-pine-950/40 backdrop-blur-sm'
           }`}
         >
-          <Link to={localePath(lang, '/')} className="flex min-w-0 items-center gap-3 group">
+          <Link to={localePath(lang, '/')} aria-label={`${t['name.short']} — ${t['nav.subtitle']}`} className="flex min-w-0 items-center gap-3 group">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gold-500 font-display text-sm font-semibold text-pine-950 transition-transform group-hover:scale-105">
               SD
             </span>
             {logoLines < 4 && (
-              <span className="leading-tight min-w-0">
+              <span className="hidden min-w-0 leading-tight sm:block">
                 <span ref={logoNameRef} className="block font-display text-[15px] font-medium text-ivory">
                   {t['name.short']}
                 </span>
@@ -415,7 +415,7 @@ export function Navbar() {
 
         {/* drawer panel */}
         <aside
-          className={`absolute inset-y-0 right-0 flex w-[85vw] sm:w-[80vw] max-w-md flex-col border-l border-white/10 bg-pine-950/[0.97] shadow-2xl shadow-pine-950/60 backdrop-blur-xl transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          className={`absolute inset-y-0 right-0 flex w-[85vw] sm:w-[80vw] max-w-md flex-col border-l border-white/10 bg-pine-950/[0.97] shadow-2xl shadow-pine-950/60 backdrop-blur-xl transition-transform duration-500 [transition-timing-function:cubic-bezier(0.32,0.72,0,1)] ${
             open ? 'translate-x-0' : 'translate-x-full'
           }`}
         >

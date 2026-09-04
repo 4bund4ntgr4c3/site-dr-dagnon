@@ -7,7 +7,7 @@ export interface LegalSection {
 }
 
 /** Last substantive revision of the legal pages (ISO date, shown verbatim). */
-export const LEGAL_LAST_UPDATED = '2026-08-02';
+export const LEGAL_LAST_UPDATED = '2026-09-04';
 
 export const LEGAL_SECTIONS: LegalSection[] = [
   {
@@ -46,18 +46,18 @@ export const LEGAL_SECTIONS: LegalSection[] = [
     body: {
       fr: [
         'Conformément au Règlement (UE) 2016/679 (RGPD), les données collectées sur ce site et leur traitement sont décrits ci-dessous.',
-        'Formulaire de contact : nom, adresse e-mail et message. Finalité : répondre à votre demande. Base légale : intérêt légitime (art. 6.1.f). Données conservées jusqu\'au traitement de la demande, puis supprimées.',
+        'Formulaire de contact : nom, adresse e-mail, numéro de téléphone, objet et message. Finalité : répondre à votre demande. Base légale : intérêt légitime (art. 6.1.f). Données conservées jusqu\'au traitement de la demande, puis supprimées.',
         'Newsletter : adresse e-mail, langue choisie et préférence de fréquence (hebdomadaire ou mensuelle). Finalité : envoi de la lettre d\'information demandée. Base légale : consentement (art. 6.1.a) via le double opt-in. Données conservées jusqu\'à votre désabonnement, à tout moment via le lien prévu dans chaque message.',
         'Abonnements de rappel d\'agenda (push) : abonnement au service de notifications du navigateur. Finalité : rappels des événements à venir. Base légale : consentement (art. 6.1.a). Abonnements conservés 24 mois au maximum.',
-        'Mesure d\'audience : données d\'usage agrégées et anonymisées (pages visitées, durée de session, approximative géographique) via Google Analytics 4 et Vercel Analytics. Finalité : améliorer le site. Base légale : intérêt légitime (art. 6.1.f). Ces données ne permettent pas de vous identifier personnellement.',
+        'Mesure d\'audience : après votre consentement explicite (art. 6.1.a), Google Analytics 4 et Vercel Analytics peuvent traiter des données d\'usage (pages visitées, durée de session, zone géographique approximative). Les recherches internes sont journalisées uniquement avec ce consentement, après réduction des données sensibles apparentes, et supprimées au plus tard après 90 jours.',
         'Aucune donnée n\'est vendue ni cédée à des tiers à des fins commerciales.',
       ],
       en: [
         'In accordance with Regulation (EU) 2016/679 (GDPR), the data collected on this site and how it is processed are described below.',
-        'Contact form: name, e-mail address and message. Purpose: to answer your request. Legal basis: legitimate interest (art. 6.1.f). Data is kept until the request is handled, then deleted.',
+        'Contact form: name, e-mail address, phone number, subject and message. Purpose: to answer your request. Legal basis: legitimate interest (art. 6.1.f). Data is kept until the request is handled, then deleted.',
         'Newsletter: e-mail address, chosen language and frequency preference (weekly or monthly). Purpose: sending the requested newsletter. Legal basis: consent (art. 6.1.a) via double opt-in. Data is kept until you unsubscribe, at any time via the link provided in every message.',
         'Agenda reminder subscriptions (push): browser notification service subscription. Purpose: reminders of upcoming events. Legal basis: consent (art. 6.1.a). Subscriptions are kept for up to 24 months.',
-        'Audience measurement: aggregated and anonymized usage data (pages visited, session duration, approximate geography) via Google Analytics 4 and Vercel Analytics. Purpose: improving the site. Legal basis: legitimate interest (art. 6.1.f). This data does not allow you to be personally identified.',
+        'Audience measurement: after your explicit consent (art. 6.1.a), Google Analytics 4 and Vercel Analytics may process usage data (pages visited, session duration, approximate geography). Internal searches are logged only with this consent, after apparent sensitive data is minimized, and deleted within 90 days.',
         'No data is sold or transferred to third parties for commercial purposes.',
       ],
     },
@@ -67,13 +67,13 @@ export const LEGAL_SECTIONS: LegalSection[] = [
     title: { fr: 'Cookies et traceurs', en: 'Cookies and trackers' },
     body: {
       fr: [
-        'Ce site n\'utilise pas de cookies publicitaires. Les seuls cookies déposés sont strictement nécessaires au fonctionnement (thème choisi, langue) ou à la mesure d\'audience anonymisée (Google Analytics, Vercel Analytics).',
-        'Vous pouvez à tout moment : configurer votre navigateur pour bloquer les cookies (les fonctionnalités essentielles restent utilisables) ; installer le module de désactivation de Google Analytics (gaoptout) ; ou utiliser le mode de navigation privée.',
+        'Ce site n\'utilise aucun stockage publicitaire. Le thème et la langue sont conservés localement pour le fonctionnement du site. Google Analytics et Vercel Analytics ne sont chargés qu\'après votre accord explicite.',
+        'Vous pouvez accepter, refuser ou modifier ce choix à tout moment avec le bouton « Gérer les cookies » affiché sur le site. Le refus n\'affecte pas les fonctionnalités essentielles.',
         'Aucune donnée de santé ou donnée sensible n\'est collectée par les traceurs de ce site.',
       ],
       en: [
-        'This site uses no advertising cookies. The only cookies set are strictly necessary for operation (chosen theme, language) or for anonymized audience measurement (Google Analytics, Vercel Analytics).',
-        'At any time you can: configure your browser to block cookies (essential features remain usable); install the Google Analytics opt-out add-on (gaoptout); or use private browsing mode.',
+        'This site uses no advertising storage. Theme and language are stored locally for site operation. Google Analytics and Vercel Analytics load only after your explicit agreement.',
+        'You can accept, decline or change this choice at any time using the “Manage cookies” button shown on the site. Declining does not affect essential features.',
         'No health or sensitive data is collected by this site\'s trackers.',
       ],
     },

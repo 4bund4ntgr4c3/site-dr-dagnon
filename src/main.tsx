@@ -1,11 +1,10 @@
 import { lazy, StrictMode, type ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/react'
 import './index.css'
 import App, { type AppPages } from './App.tsx'
 import { registerPreload, initGlobalLinkPreload } from './lib/preload.ts'
+import { ConsentAnalytics } from './components/ConsentAnalytics.tsx'
 
 /* Apply the saved or system theme before the first paint (the strict CSP
    forbids inline scripts, so this runs from the entry module). The meta
@@ -84,8 +83,7 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <App pages={pages} />
     </BrowserRouter>
-    <Analytics />
-    <SpeedInsights />
+    <ConsentAnalytics />
   </StrictMode>,
 )
 

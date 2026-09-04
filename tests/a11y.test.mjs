@@ -212,3 +212,94 @@ test('axe: no violations in the photo lightbox overlay', async () => {
     await page.close();
   }
 });
+
+test('axe: lazy impact tools remain accessible after they load', async () => {
+  const page = await context.newPage();
+  try {
+    const response = await page.goto(`http://localhost:${PORT}/impact`, { waitUntil: 'domcontentloaded' });
+    assert.ok(response && response.ok());
+    await page.locator('footer').scrollIntoViewIfNeeded();
+    await page.getByRole('switch').first().waitFor({ state: 'visible' });
+    assert.equal(await page.getByRole('switch').count(), 3);
+    const results = await new AxeBuilder({ page }).analyze();
+    const bad = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
+    assert.deepEqual(bad.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`), []);
+  } finally {
+    await page.close();
+  }
+});
+
+test('blocked storage never blanks the page', async () => {
+  const page = await context.newPage();
+  await page.addInitScript(() => {
+    Storage.prototype.getItem = () => { throw new Error('storage blocked'); };
+    Storage.prototype.setItem = () => { throw new Error('storage blocked'); };
+  });
+  try {
+    const response = await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'domcontentloaded' });
+    assert.ok(response && response.ok());
+    await page.locator('h1').waitFor({ state: 'visible' });
+    assert.ok((await page.locator('main').innerText()).length > 500);
+  } finally {
+    await page.close();
+  }
+});
+
+test('analytics requests are consent-gated and advertising consent stays denied', async () => {
+  const page = await context.newPage();
+  const external = [];
+  page.on('request', (request) => {
+    if (/googletagmanager|google-analytics|vercel-insights/.test(request.url())) external.push(request.url());
+  });
+  try {
+    await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(250);
+    assert.deepEqual(external, []);
+    await page.getByRole('button', { name: 'Accept' }).click();
+    await page.waitForTimeout(250);
+    assert.ok(external.some((url) => url.includes('googletagmanager.com')));
+  } finally {
+    await page.close();
+  }
+});
+
+test('language switching preserves security-sensitive query parameters and the hash', async () => {
+  const page = await context.newPage();
+  try {
+    await page.goto(`http://localhost:${PORT}/contact?email=reader%40example.test&token=signed-token#settings`, { waitUntil: 'domcontentloaded' });
+    await page.getByRole('button', { name: 'FR', exact: true }).click();
+    await page.waitForURL(/\/fr\/contact\?email=reader%40example\.test&token=signed-token#settings$/);
+  } finally {
+    await page.close();
+  }
+});
+
+test('critical home content stays visible without JavaScript', async () => {
+  const noJs = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
+  const page = await noJs.newPage();
+  try {
+    const response = await page.goto(`http://localhost:${PORT}/fr`, { waitUntil: 'domcontentloaded' });
+    assert.ok(response && response.ok());
+    const h1 = page.locator('h1').first();
+    await h1.waitFor({ state: 'visible' });
+    assert.equal(await h1.evaluate((el) => el.ownerDocument.defaultView.getComputedStyle(el).opacity), '1');
+    assert.ok(await page.getByRole('link', { name: /LinkedIn/i }).first().isVisible());
+  } finally {
+    await noJs.close();
+  }
+});
+
+test('mobile header keeps the full name out of the action controls', async () => {
+  const page = await context.newPage();
+  await page.setViewportSize({ width: 390, height: 844 });
+  try {
+    await page.goto(`http://localhost:${PORT}/fr`, { waitUntil: 'domcontentloaded' });
+    const logo = page.getByRole('link', { name: /Seynudé/ }).first();
+    const search = page.getByRole('button', { name: /Rechercher|Search/ }).first();
+    const [logoBox, searchBox] = await Promise.all([logo.boundingBox(), search.boundingBox()]);
+    assert.ok(logoBox && searchBox);
+    assert.ok(logoBox.x + logoBox.width <= searchBox.x, 'logo link overlaps the search control');
+  } finally {
+    await page.close();
+  }
+});

@@ -9,6 +9,7 @@ export interface PodcastItem {
   host: Record<Lang, string>;
   duration?: string;
   audioSrc?: string;
+  audioBytes?: number;
   youtubeId?: string;
   youtubeUrl?: string;
   thumb?: string;
@@ -35,6 +36,7 @@ export const PODCAST_EPISODES: PodcastItem[] = [
     },
     duration: '31:29',
     audioSrc: '/podcast-ndep-ep5.mp3',
+    audioBytes: 22675437,
     youtubeId: 'IenUdkxFqNE',
     youtubeUrl: 'https://www.youtube.com/watch?v=IenUdkxFqNE',
     thumb: 'https://img.youtube.com/vi/IenUdkxFqNE/hqdefault.jpg',

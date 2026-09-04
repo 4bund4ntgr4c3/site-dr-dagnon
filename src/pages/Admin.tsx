@@ -20,11 +20,14 @@ interface Dashboard {
 }
 
 const AUTH_KEY = 'admin-auth';
+const readToken = () => { try { return sessionStorage.getItem(AUTH_KEY) ?? ''; } catch { return ''; } };
+const saveToken = (value: string) => { try { sessionStorage.setItem(AUTH_KEY, value); } catch { /* session-only fallback */ } };
+const clearToken = () => { try { sessionStorage.removeItem(AUTH_KEY); } catch { /* already unavailable */ } };
 
 export default function Admin() {
   const { lang } = useLang();
   const t = UI[lang];
-  const [token, setToken] = useState(() => sessionStorage.getItem(AUTH_KEY) ?? '');
+  const [token, setToken] = useState(readToken);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [data, setData] = useState<Dashboard | null>(null);
@@ -56,7 +59,7 @@ export default function Admin() {
       }
       const body = (await response.json()) as Dashboard;
       setData(body);
-      sessionStorage.setItem(AUTH_KEY, secret);
+      saveToken(secret);
     } catch {
       setError(t['admin.errorNetwork']);
     } finally {
@@ -71,7 +74,7 @@ export default function Admin() {
   };
 
   const logout = () => {
-    sessionStorage.removeItem(AUTH_KEY);
+    clearToken();
     setToken('');
     setData(null);
   };

@@ -16,6 +16,7 @@ import { PUB_ITEMS } from '@/data/publications';
 import { MEDIA_ITEMS } from '@/data/media';
 import { AGENDA_ITEMS } from '@/data/agenda';
 import type { Lang } from '@/i18n/lang';
+import { readAnalyticsConsent } from '@/lib/consent';
 
 interface SearchEntry {
   id: string;
@@ -300,7 +301,7 @@ function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) 
   /* Site-search analytics, debounced so every keystroke does not fire a hit */
   useEffect(() => {
     const q = query.trim();
-    if (q.length < 2) return;
+    if (q.length < 2 || readAnalyticsConsent() !== 'granted') return;
     const t = window.setTimeout(() => {
       track('site_search', { event_category: 'engagement', event_label: q });
       fetch('/api/search-log', {

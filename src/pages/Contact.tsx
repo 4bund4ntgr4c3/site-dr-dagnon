@@ -291,9 +291,9 @@ export default function Contact() {
                             type="text"
                             value={verifyCode}
                             onChange={(e) => { setVerifyCode(e.target.value.toUpperCase()); setVerifyError(''); }}
-                            placeholder={lang === 'fr' ? 'Entrez le code à 6 caractères' : 'Enter the 6-character code'}
+                            placeholder={lang === 'fr' ? 'Entrez le code à 10 caractères' : 'Enter the 10-character code'}
                             aria-label={lang === 'fr' ? 'Code de vérification' : 'Verification code'}
-                            maxLength={6}
+                            maxLength={10}
                             autoComplete="one-time-code"
                             className="w-full min-w-0 rounded-xl border border-pine-900/15 bg-white px-3 py-2 text-sm uppercase tracking-[0.2em] text-pine-900 placeholder:normal-case placeholder:tracking-normal placeholder:text-pine-900/65 outline-none focus:border-gold-500/40 focus:ring-1 focus:ring-gold-500/10"
                           />
@@ -466,6 +466,7 @@ export default function Contact() {
                         onChange={(e) => update('name', e.target.value)}
                         className={fieldClass}
                         placeholder={t['contact.name']}
+                        maxLength={200}
                         aria-required="true"
                         aria-invalid={!!errors.name}
                       />
@@ -484,6 +485,7 @@ export default function Contact() {
                           onChange={(e) => update('email', e.target.value)}
                           className={fieldClass}
                           placeholder="name@email.com"
+                          maxLength={254}
                           aria-required="true"
                           aria-invalid={!!errors.email}
                         />
@@ -503,6 +505,7 @@ export default function Contact() {
                           onChange={(e) => update('phone', e.target.value)}
                           className={fieldClass}
                           placeholder={t['contact.phoneField']}
+                          maxLength={30}
                           aria-required="true"
                           aria-invalid={!!errors.phone}
                         />
@@ -521,6 +524,7 @@ export default function Contact() {
                         onChange={(e) => update('subject', e.target.value)}
                         className={fieldClass}
                         placeholder={t['contact.subject']}
+                        maxLength={500}
                       />
                     </div>
 
@@ -551,6 +555,7 @@ export default function Contact() {
                         onChange={(e) => update('message', e.target.value)}
                         className={`${fieldClass} resize-none`}
                         placeholder={t['contact.message']}
+                        maxLength={5000}
                         aria-required="true"
                         aria-invalid={!!errors.message}
                       />

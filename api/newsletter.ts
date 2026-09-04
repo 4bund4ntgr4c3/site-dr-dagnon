@@ -4,6 +4,8 @@ import { issueToken, checkToken } from './_tokens.js';
 import { alertOwner } from './_alert.js';
 import { clientIp } from './_ip.js';
 import { applyJsonHeaders, applyPageHeaders } from './_headers.js';
+import { fetchWithTimeout as fetch } from './_fetch.js';
+import crypto from 'node:crypto';
 
 /* Four endpoints in one function, so the deploy stays under the 12-function
  * Hobby limit: /api/newsletter (double opt-in subscribe), /api/newsletter-confirm
@@ -16,8 +18,8 @@ import { applyJsonHeaders, applyPageHeaders } from './_headers.js';
  * with its expiry, never added to the subscriber set itself — the
  * confirmation link in the email does that. Addresses already in the set
  * are told they are subscribed and asked nothing. When no KV store is
- * configured — or it is down — the flow still works: the confirmation link
- * itself is the gate.
+ * configured — or it is down — the request fails before sending an unusable
+ * confirmation link.
  *
  * The confirm click is a GET on purpose: mail clients fetch links with
  * plain GETs. The token is the gate — it carries its purpose, the address,
@@ -98,7 +100,7 @@ function welcomeHtml(lang: 'fr' | 'en'): string {
 /* ── subscriber store ───────────────────────────────────────────── */
 
 type StageVerdict = 'already' | 'staged' | 'unavailable';
-type StoreVerdict = 'added' | 'exists' | 'unavailable';
+type StoreVerdict = 'added' | 'exists' | 'missing' | 'unavailable';
 
 const PENDING_TTL_S = 7 * 24 * 60 * 60;
 
@@ -125,44 +127,42 @@ async function stageSubscriber(email: string, lang: string): Promise<StageVerdic
   }
 }
 
-/* Persists the language the subscriber signed up in (`newsletter:lang:<email>`),
-   read from the pending key staged at subscribe time — the digest then goes
-   out in that language only. The 90-day TTL matches the unsubscribe token's
-   lifetime: an address that stays subscribed past it re-lands on the
-   bilingual digest, which is the safe default. */
-const LANG_TTL_S = 90 * 24 * 60 * 60;
+/* Persists the confirmed language for the lifetime of the subscription. */
 
 async function confirmSubscriber(email: string, lang: 'fr' | 'en'): Promise<StoreVerdict> {
   const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
   if (!url || !token) return 'unavailable';
   try {
-    const response = await fetch(`${url.replace(/\/$/, '')}/pipeline`, {
+    const pendingResponse = await fetch(`${url.replace(/\/$/, '')}/pipeline`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify([
         ['GET', `newsletter:pending:${email}`],
+        ['SISMEMBER', 'newsletter:emails', email],
+      ]),
+    });
+    if (!pendingResponse.ok) return 'unavailable';
+    const pendingResults = (await pendingResponse.json()) as { result?: unknown }[];
+    const pendingLang = pendingResults?.[0]?.result;
+    if (pendingLang !== 'fr' && pendingLang !== 'en') {
+      return Number(pendingResults?.[1]?.result) === 1 ? 'exists' : 'missing';
+    }
+
+    const response = await fetch(`${url.replace(/\/$/, '')}/pipeline`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify([
         ['SADD', 'newsletter:emails', email],
         ['DEL', `newsletter:pending:${email}`],
-        ['SET', `newsletter:lang:${email}`, lang, 'EX', String(LANG_TTL_S)],
+        ['SET', `newsletter:lang:${email}`, pendingLang],
       ]),
     });
     if (!response.ok) return 'unavailable';
     const results = (await response.json()) as { result?: unknown }[];
-    const pendingLang = typeof results?.[0]?.result === 'string' ? results[0].result : null;
-    const added = Number(results?.[1]?.result);
+    const added = Number(results?.[0]?.result);
     if (!Number.isFinite(added)) return 'unavailable';
-    /* the pending key is the authoritative language: it was written at
-       subscribe time from the form, the ?lang param is only its echo */
-    if (pendingLang === 'fr' || pendingLang === 'en') {
-      if (pendingLang !== lang) {
-        await fetch(`${url.replace(/\/$/, '')}/pipeline`, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify([['SET', `newsletter:lang:${email}`, pendingLang, 'EX', String(LANG_TTL_S)]]),
-        }).catch(() => {});
-      }
-    }
+    void lang;
     return added > 0 ? 'added' : 'exists';
   } catch {
     return 'unavailable';
@@ -240,6 +240,7 @@ async function subscribeHandler(req: Req, res: Res): Promise<void> {
     /* identical body on every branch: whether the address was already on the
        list must not be answerable by an unauthenticated probe */
     if (staged === 'already') { res.status(200).json({ ok: true, pending: true }); return; }
+    if (staged === 'unavailable') { res.status(503).json({ error: 'Storage unavailable' }); return; }
 
     const token = issueToken('nl-confirm', cleanEmail);
     if (!token) { res.status(500).json({ error: 'Verification not configured' }); return; }
@@ -248,7 +249,11 @@ async function subscribeHandler(req: Req, res: Res): Promise<void> {
 
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'Idempotency-Key': `confirm-${crypto.createHash('sha256').update(token).digest('hex').slice(0, 48)}`,
+      },
       body: JSON.stringify({
         from,
         to: [cleanEmail],
@@ -309,11 +314,22 @@ async function confirmHandler(req: Req, res: Res): Promise<void> {
       ));
       return;
     }
+    if (stored === 'missing') {
+      res.status(400).send(page(
+        'Link already used or expired',
+        'This confirmation request is no longer active. Please subscribe again from the website if you want to join the newsletter.',
+      ));
+      return;
+    }
     if (stored === 'added') {
       const from = process.env.CONTACT_FROM_EMAIL || 'Dr. Seynudé Dagnon <admin@seynudedagnon.com>';
       const r = await fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'Idempotency-Key': `welcome-${crypto.createHash('sha256').update(token).digest('hex').slice(0, 48)}`,
+        },
         body: JSON.stringify({
           from,
           to: [cleanEmail],
@@ -371,7 +387,11 @@ async function unsubscribeHandler(req: Req, res: Res): Promise<void> {
   }
 
   try {
-    await removeSubscriber(cleanEmail);
+    const removed = await removeSubscriber(cleanEmail);
+    if (!removed) {
+      res.status(503).send(page('Something went wrong', 'We could not update your subscription right now. Please try again in a few minutes.'));
+      return;
+    }
     res.status(200).send(page(
       'Unsubscribed',
       'You have been unsubscribed from the newsletter of Dr. Seynudé Dagnon. You will no longer receive the digest or event reminders. If this was a mistake, you can subscribe again at any time.',
@@ -390,7 +410,6 @@ type Frequency = (typeof FREQUENCIES)[number];
 const VALID_SECTIONS = ['publications', 'tribunes', 'agenda', 'projets'] as const;
 type Section = (typeof VALID_SECTIONS)[number];
 
-const PREFS_TTL_S = 365 * 24 * 60 * 60;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function kv() {
@@ -435,7 +454,7 @@ async function savePrefs(email: string, frequency: Frequency, sections: Section[
       method: 'POST',
       headers: { Authorization: `Bearer ${store.token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify([
-        ['SET', `newsletter:prefs:${email}`, JSON.stringify({ frequency, sections }), 'EX', String(PREFS_TTL_S)],
+        ['SET', `newsletter:prefs:${email}`, JSON.stringify({ frequency, sections })],
       ]),
     });
     if (!response.ok) return false;
@@ -478,7 +497,8 @@ async function prefsHandler(req: Req, res: Res): Promise<void> {
   /* POST — save preferences */
   let body: { frequency?: unknown; sections?: unknown };
   try {
-    body = JSON.parse(typeof req.body === 'string' ? req.body : '') as { frequency?: unknown; sections?: unknown };
+    body = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body) as { frequency?: unknown; sections?: unknown };
+    if (!body || typeof body !== 'object' || Array.isArray(body)) throw new Error('invalid body');
   } catch {
     res.status(400).json({ error: 'Invalid request' });
     return;

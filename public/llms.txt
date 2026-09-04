@@ -4,7 +4,7 @@
 # Contact: https://seynudedagnon.com/contact
 
 Title: Dr. Seynudé Jean-Fortuné DAGNON — Public Health & Malaria Program Leader
-Description: Official website of Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Senior Program Officer, Malaria & Public Health (Francophone Africa) at the Gates Foundation. 17+ years across Benin and Francophone Africa, 17 scientific publications, case studies with measurable results.
+Description: Official website of Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Senior Program Officer, Malaria & Public Health (Francophone Africa) at the Gates Foundation. 17+ years across Benin and Francophone Africa, 16 research publications plus one separately identified blog article, and case studies with measurable results.
 URL: https://seynudedagnon.com/
 Language: en, fr
 Author: Seynudé Jean-Fortuné DAGNON, MD, MPH
@@ -30,7 +30,7 @@ Allow: Bytespider
 Preferred-Citation:
   - https://seynudedagnon.com/ — Home & overview
   - https://seynudedagnon.com/cv — CV
-  - https://seynudedagnon.com/publications — Scientific publications (17, DOI-indexed)
+  - https://seynudedagnon.com/publications — 16 research publications plus one blog article
   - https://seynudedagnon.com/tribunes — Op-Eds (hosted, canonical translations)
   - https://seynudedagnon.com/projets — Case studies with measurable outcomes
   - https://seynudedagnon.com/bibliography — Bibliography with BibTeX/RIS/APA
@@ -46,7 +46,7 @@ Citation-Name-Variants: Seynudé Dagnon, Seynude Dagnon, Fortuné Dagnon, Fortun
 Pages:
   - / : Home — profile, expertise, achievements
   - /cv : Curriculum Vitae — education (Gamal Abdel Nasser Conakry MD, ITM Antwerp MPH, Groningen PhD health economics in progress), career, awards (PMI FSN 2020, USAID LES 2019)
-  - /publications : 17 peer-reviewed publications (Malaria Journal, Parasites & Vectors, Frontiers in Tropical Diseases) with DOI, BibTeX, RIS, APA
+  - /publications : 16 research publications and one blog article, explicitly distinguished; DOI records provide BibTeX, RIS and APA exports
   - /tribunes/from-malaria-control-to-elimination : Op-Ed with Rose Leke — Africa Health Watch
   - /tribunes/de-la-lutte-a-lelimination-afrique-francophone : Op-Ed — Le Soleil (Senegal)
   - /tribunes/financement-direct-g2g-souverainete-sanitaire : Op-Ed — G2G direct financing

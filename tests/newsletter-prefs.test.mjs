@@ -84,14 +84,14 @@ test('POST rejects an unknown frequency', async () => {
   assert.equal(res.code, 400);
 });
 
-test('POST saves the preference with a one-year TTL', async () => {
+test('POST accepts Vercel parsed JSON and keeps preferences for the subscription lifetime', async () => {
   kvCalls.length = 0;
   kvResponder = () => ({ ok: true, json: async () => [{ result: 'OK' }] });
   const token = issueToken('nl-prefs', 'reader@example.test');
   const res = await call(prefsHandler, {
     method: 'POST',
     url: prefsUrl('reader@example.test', token),
-    body: JSON.stringify({ frequency: 'monthly' }),
+    body: { frequency: 'monthly' },
   });
   assert.equal(res.code, 200);
   assert.equal(res.body.ok, true);
@@ -100,8 +100,7 @@ test('POST saves the preference with a one-year TTL', async () => {
   assert.equal(saved.frequency, 'monthly');
   assert.ok(Array.isArray(saved.sections));
   assert.equal(saved.sections.length, 4);
-  assert.equal(kvCalls.at(-1).commands[0][3], 'EX');
-  assert.equal(kvCalls.at(-1).commands[0][4], '31536000');
+  assert.equal(kvCalls.at(-1).commands[0].length, 3);
 });
 
 test('POST fails closed when KV is down', async () => {

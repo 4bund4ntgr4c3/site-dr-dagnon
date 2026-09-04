@@ -10,7 +10,7 @@ import { NameHighlight } from '@/components/NameHighlight';
 import { localePath } from '@/i18n/routing';
 
 const fadeUp = {
-  initial: { opacity: 0, y: 30 },
+  initial: false as const,
   animate: { opacity: 1, y: 0 },
 };
 
@@ -60,6 +60,7 @@ export function Hero() {
               className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-ivory sm:text-6xl lg:text-[4.4rem]"
             >
               <NameHighlight />
+              <span className="sr-only"> — {lang === 'fr' ? 'Leader en santé publique et élimination du paludisme en Afrique' : 'Public Health & Malaria Program Leader in Africa'}</span>
             </motion.h1>
 
             <motion.p
@@ -120,7 +121,7 @@ export function Hero() {
 
           {/* Right : visual composition */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.94 }}
+            initial={false}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="relative mx-auto w-full max-w-[400px]"
@@ -215,7 +216,7 @@ export function Hero() {
         {/* scroll cue */}
         <motion.a
           href="#apropos"
-          initial={{ opacity: 0 }}
+          initial={false}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
           className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-pine-100/85 transition-colors hover:text-gold-400 md:flex"

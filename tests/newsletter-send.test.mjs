@@ -4,7 +4,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { plan, chunk, buildItems, digestHtml, digestText, subjectLine } from '../scripts/send-newsletter.mjs';
+import { plan, chunk, buildItems, digestHtml, digestText, subjectLine, frequencyDue } from '../scripts/send-newsletter.mjs';
 
 const pub = (id) => ({ id, kind: 'publication', url: `https://seynudedagnon.com/publications`, title: { fr: `Titre ${id}`, en: `Title ${id}` }, description: { fr: `Description ${id}`, en: `Description ${id}` } });
 const trib = (slug) => ({ id: slug, kind: 'tribune', url: `https://seynudedagnon.com/tribunes/${slug}`, title: { fr: `Tribune ${slug}`, en: `Op-ed ${slug}` }, description: { fr: 'Description FR', en: 'Description EN' } });
@@ -26,6 +26,13 @@ test('nothing is sent when everything is already known', () => {
   const items = [pub('a'), trib('c')];
   const { send } = plan(items, { ids: ['pub:a', 'trib:c'] });
   assert.deepEqual(send, []);
+});
+
+test('frequency windows allow at most one weekly or monthly delivery', () => {
+  assert.equal(frequencyDue('weekly', '2026-09-01', '2026-09-03'), false);
+  assert.equal(frequencyDue('weekly', '2026-09-01', '2026-09-08'), true);
+  assert.equal(frequencyDue('monthly', '2026-09-01', '2026-09-30'), false);
+  assert.equal(frequencyDue('monthly', '2026-09-30', '2026-10-01'), true);
 });
 
 test('a publication id and a tribune slug cannot collide', () => {

@@ -12,6 +12,7 @@ import { MEDIA_ITEMS, type MediaEntry } from '@/data/media';
 import { AGENDA_ITEMS } from '@/data/agenda';
 import { FAQ_ITEMS } from '@/data/faq';
 import { PUB_ITEMS } from '@/data/publications';
+import { PODCAST_EPISODES } from '@/data/podcasts';
 
 export const SITE_URL = 'https://seynudedagnon.com';
 
@@ -29,14 +30,14 @@ export const SEO: Record<Lang, { title: string; description: string; keywords: s
     title: 'Dr. Seynudé Dagnon — Santé Publique & Paludisme',
     description:
       "Site officiel du Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Leader en santé publique et lutte contre le paludisme en Afrique (Fondation Gates, USAID, PMI).",
-    keywords: 'Dr. Seynudé Dagnon, Dr Seynudé Dagnon, Seynudé Dagnon, Seynude Dagnon, Dr Dagnon, Fortuné Dagnon, Jean-Fortuné Dagnon, Dr. Fortuné Dagnon, DAGNON, site officiel Seynudé Dagnon, paludisme, santé publique, Fondation Gates, USAID, PMI, Bénin, Afrique francophone',
+    keywords: 'Dr. Seynudé Jean-Fortuné Dagnon, paludisme, santé publique, élimination du paludisme, Fondation Gates, USAID, PMI, Bénin, Afrique francophone',
     ogLocale: 'fr_FR',
   },
   en: {
     title: 'Dr. Seynudé Dagnon — Public Health & Malaria Leader',
     description:
       'Official website of Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Public Health & Malaria Leader in Africa (Gates Foundation, USAID, PMI).',
-    keywords: 'Dr. Seynude Dagnon, Dr Seynude Dagnon, Seynudé Dagnon, Seynude Dagnon, Dr Dagnon, Fortuné Dagnon, Fortune Dagnon, Jean-Fortuné Dagnon, Dr. Fortune Dagnon, DAGNON, official website Seynude Dagnon, malaria, public health, Gates Foundation, USAID, PMI, Benin, Francophone Africa',
+    keywords: 'Dr. Seynudé Jean-Fortuné Dagnon, malaria elimination, public health leader, Gates Foundation, USAID, PMI, Benin, Francophone Africa',
     ogLocale: 'en_US',
   },
 };
@@ -938,7 +939,7 @@ export function publicationsPageJsonLd(lang: Lang, url: string) {
     inLanguage: [lang],
     mainEntity: {
       '@type': 'ItemList',
-      itemListElement: PUB_ITEMS.map((item, idx) => ({
+      itemListElement: PUB_ITEMS.filter((item) => item.type === 'publication').map((item, idx) => ({
         '@type': 'ListItem',
         position: idx + 1,
         item: {
@@ -967,7 +968,7 @@ export function publicationsPageJsonLd(lang: Lang, url: string) {
             '@type': 'PublicationIssue',
             name: item.journal[lang],
           },
-          ...(item.url ? { url: item.url, sameAs: item.url, identifier: item.url } : {}),
+          ...(item.url ? { '@id': item.url, url: item.url, sameAs: item.url, identifier: item.url } : {}),
         },
       })),
     },
@@ -1098,6 +1099,34 @@ export function breadcrumbJsonLd(lang: Lang, path: string) {
   };
 }
 
+export function podcastPageJsonLd(lang: Lang, url: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'PodcastEpisode',
+    name: lang === 'fr' ? 'N’Djamena Débats & Perspectives — Épisode 5' : 'N’Djamena Debates & Perspectives — Episode 5',
+    description: lang === 'fr'
+      ? 'Intervention du Dr Seynudé Dagnon sur le paludisme et les financements directs en santé publique.'
+      : 'Dr. Seynudé Dagnon on malaria elimination and direct G2G financing in public health.',
+    url,
+    inLanguage: [lang],
+    datePublished: '2024-11-15',
+    partOfSeries: {
+      '@type': 'PodcastSeries',
+      name: 'N’Djamena Débats & Perspectives',
+      url: `${SITE_URL}/podcasts`,
+    },
+    associatedMedia: {
+      '@type': 'AudioObject',
+      contentUrl: `${SITE_URL}/podcast-ndep-ep5.mp3`,
+      encodingFormat: 'audio/mpeg',
+    },
+    creator: {
+      '@type': 'Person',
+      name: fullName(lang),
+    },
+  };
+}
+
 export function articleJsonLd(lang: Lang, entry: (typeof TRIBUNES)[number], url: string) {
   const isLekeCoauthored = entry.slug === 'from-malaria-control-to-elimination';
   const authors = isLekeCoauthored
@@ -1113,9 +1142,18 @@ export function articleJsonLd(lang: Lang, entry: (typeof TRIBUNES)[number], url:
     headline: entry.title[lang],
     description: entry.description[lang],
     datePublished: entry.date,
+    dateModified: entry.date,
     inLanguage: [lang],
     author: authors,
-    publisher: { '@type': 'Organization', name: entry.source.name, url: entry.source.url },
+    publisher: {
+      '@type': 'Organization',
+      name: entry.source.name,
+      url: entry.source.url,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/favicon.png`,
+      },
+    },
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     image: `${SITE_URL}/og/${entry.slug}.${lang}.jpg`,
@@ -1133,8 +1171,18 @@ export function projectJsonLd(lang: Lang, entry: (typeof PROJECTS)[number], url:
     headline: entry.title[lang],
     description: entry.description[lang],
     datePublished: entry.date,
+    dateModified: entry.date,
     inLanguage: [lang],
     author: { '@type': 'Person', name: fullName(lang) },
+    publisher: {
+      '@type': 'Organization',
+      name: fullName(lang),
+      url: SITE_URL,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/favicon.png`,
+      },
+    },
     about: { '@type': 'Thing', name: entry.tag[lang] },
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
@@ -1236,23 +1284,27 @@ export function buildRss(): string {
   ].join('\n');
 }
 
-export function buildPodcastRss(): string {
+export function buildPodcastRss(lang: Lang = 'en'): string {
   const xmlEscape = (s: string) =>
     String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const rfc822 = (iso: string) => new Date(`${iso}T00:00:00Z`).toUTCString();
-  const items = [...TRIBUNES]
+  const episodes = PODCAST_EPISODES.filter((episode) => episode.audioSrc && episode.audioBytes);
+  const items = episodes
     .sort((a, b) => b.date.localeCompare(a.date))
-    .map((t) => {
-      const link = `${SITE_URL}/tribunes/${t.slug}`;
+    .map((episode) => {
+      const link = absUrl(lang, '/podcasts');
+      const audioUrl = `${SITE_URL}${episode.audioSrc}`;
       return `  <item>
-    <title>${xmlEscape(t.title.en)}</title>
+    <title>${xmlEscape(episode.title[lang])}</title>
     <link>${link}</link>
-    <guid isPermaLink="true">${link}</guid>
-    <pubDate>${rfc822(t.date)}</pubDate>
-    <description>${xmlEscape(t.description.en)}</description>
-    <itunes:author>${xmlEscape(fullName('en'))}</itunes:author>
-    <itunes:summary>${xmlEscape(t.description.en)}</itunes:summary>
-    <enclosure url="${link}" type="text/html" length="0" />
+    <guid isPermaLink="false">${xmlEscape(episode.id)}</guid>
+    <pubDate>${rfc822(episode.date)}</pubDate>
+    <description>${xmlEscape(episode.description[lang])}</description>
+    <itunes:author>${xmlEscape(fullName(lang))}</itunes:author>
+    <itunes:summary>${xmlEscape(episode.description[lang])}</itunes:summary>
+    ${episode.duration ? `<itunes:duration>${xmlEscape(episode.duration)}</itunes:duration>` : ''}
+    <itunes:explicit>false</itunes:explicit>
+    <enclosure url="${audioUrl}" type="audio/mpeg" length="${episode.audioBytes}" />
   </item>`;
     })
     .join('\n');
@@ -1260,12 +1312,12 @@ export function buildPodcastRss(): string {
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom">',
     '  <channel>',
-    `    <title>${xmlEscape('Seynudé Dagnon — Tribunes & Talks')}</title>`,
-    `    <link>${SITE_URL}/tribunes</link>`,
-    `    <description>${xmlEscape('Op-eds and talks by Dr. Seynudé Dagnon on malaria and public health — audio companion.')}</description>`,
-    '    <language>en</language>',
-    `    <lastBuildDate>${rfc822(new Date().toISOString().slice(0, 10))}</lastBuildDate>`,
-    `    <atom:link href="${SITE_URL}/podcast.xml" rel="self" type="application/rss+xml"/>`,
+    `    <title>${xmlEscape(lang === 'fr' ? 'Seynudé Dagnon — Podcasts et entretiens' : 'Seynudé Dagnon — Podcasts & Interviews')}</title>`,
+    `    <link>${absUrl(lang, '/podcasts')}</link>`,
+    `    <description>${xmlEscape(lang === 'fr' ? 'Entretiens audio du Dr. Seynudé Dagnon sur le paludisme et la santé publique.' : 'Audio conversations with Dr. Seynudé Dagnon on malaria and public health.')}</description>`,
+    `    <language>${lang}</language>`,
+    `    <lastBuildDate>${rfc822(episodes[0]?.date ?? '2026-01-01')}</lastBuildDate>`,
+    `    <atom:link href="${SITE_URL}/${lang === 'fr' ? 'podcast-fr.xml' : 'podcast.xml'}" rel="self" type="application/rss+xml"/>`,
     '    <itunes:author>Seynudé Dagnon</itunes:author>',
     '    <itunes:category text="Science" />',
     `    <itunes:image href="${SITE_URL}/og-image.jpg" />`,
@@ -1285,7 +1337,8 @@ export function eventsJsonLd(lang: Lang): object | null {
   const today = new Date();
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
   const events = [...AGENDA_ITEMS]
-    .sort((a, b) => b.date.localeCompare(a.date))
+    .filter((e) => e.date >= todayStr)
+    .sort((a, b) => a.date.localeCompare(b.date))
     .slice(0, 20)
     .map((e) => ({
       '@type': 'Event',
@@ -1303,7 +1356,7 @@ export function eventsJsonLd(lang: Lang): object | null {
         url: absUrl(lang, '/'),
       },
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      eventStatus: e.date > todayStr ? 'https://schema.org/EventScheduled' : 'https://schema.org/EventCompleted',
+      eventStatus: 'https://schema.org/EventScheduled',
       url: absUrl(lang, '/agenda') + `#${e.id}`,
     }));
   return events.length === 0 ? null : { '@context': 'https://schema.org', '@graph': events };
@@ -1584,11 +1637,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
     ogLocale: SEO[lang].ogLocale,
     ogLocaleAlternate: SEO[lang === 'fr' ? 'en' : 'fr'].ogLocale,
     siteName: fullName(lang),
-    citations: (isPub || isBibliography || isPublicationsPdf) ? [
-      { name: 'citation_author', content: 'Dagnon, Seynudé Jean-Fortuné' },
-      { name: 'citation_author_institution', content: 'Bill & Melinda Gates Foundation' },
-      { name: 'citation_author_orcid', content: 'https://orcid.org/0009-0006-5022-1399' },
-    ] : tribune ? [
+    citations: tribune ? [
       { name: 'citation_title', content: tribune.title[lang] },
       { name: 'citation_author', content: 'Dagnon, Seynudé Jean-Fortuné' },
       { name: 'citation_publication_date', content: tribune.date.replace(/-/g, '/') },
@@ -1621,9 +1670,11 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
                         ? imageObjectJsonLd(lang, photo, url)
                         : isMedia
                           ? mediaCollectionJsonLd(lang, mediaCategory, url, data.title, data.description)
-                          : isAgenda || isTribunes || isProjects || isPresse || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio || isOffline || isCareer || isPodcasts || isConnect || isToolkit
-                          ? collectionPageJsonLd(lang, data.title, data.description, url)
-                          : null,
+                          : isPodcasts
+                            ? podcastPageJsonLd(lang, url)
+                            : isAgenda || isTribunes || isProjects || isPresse || isCollaborate || isNewsletter || isImpact || isLegal || isAccessibility || isPortfolio || isOffline || isCareer || isConnect || isToolkit
+                            ? collectionPageJsonLd(lang, data.title, data.description, url)
+                            : null,
     },
   };
 }
@@ -1769,7 +1820,7 @@ export function routeLastmod(route: string, fallback: string): string {
     const max = items.reduce((m, e) => (e.date > m ? e.date : m), '1970-01-01');
     if (max !== '1970-01-01') return max;
   }
-  return fallback;
+  return fallback || '2026-09-04';
 }
 
 /* re-exported so scripts/prerender.mjs works from this module alone */

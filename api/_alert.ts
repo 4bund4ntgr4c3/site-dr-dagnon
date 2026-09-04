@@ -1,4 +1,5 @@
 import { rateLimit } from './_rate-limit.js';
+import { fetchWithTimeout as fetch } from './_fetch.js';
 
 /* Best-effort owner alerts.
  *

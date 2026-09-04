@@ -33,8 +33,8 @@ export function GenomicsExplorer() {
         </h2>
         <p className="mt-2 max-w-2xl text-[14px] text-pine-200/80 leading-relaxed">
           {isFr
-            ? 'Visualisation des mutations génétiques de Plasmodium falciparum et des mécanismes de résistance vectorielle en Afrique subsaharienne.'
-            : 'Interactive tracking of Plasmodium falciparum genomic mutations, diagnostic escape, and vector resistance mechanisms.'}
+            ? 'Démonstration pédagogique utilisant des exemples statiques. Ce module ne diffuse pas de données de surveillance en temps réel et ne doit pas guider une réponse sanitaire.'
+            : 'Educational demonstration using static examples. This module does not provide real-time surveillance data and must not guide a health response.'}
         </p>
       </div>
 
@@ -94,8 +94,8 @@ export function GenomicsExplorer() {
             <div className="space-y-2.5">
               {selectedMarker.dataPoints.map((dp, idx) => (
                 <div key={idx} className="flex justify-between items-center bg-pine-950/80 p-2.5 rounded-lg border border-white/5">
-                  <span className="text-xs font-semibold text-pine-200">{dp.region}</span>
-                  <span className="text-xs font-mono text-gold-300">{dp.prevalence}</span>
+                  <span className="text-xs font-semibold text-pine-200">{dp.region[lang]}</span>
+                  <span className="text-xs font-mono text-gold-300">{dp.prevalence[lang]}</span>
                 </div>
               ))}
             </div>
@@ -122,13 +122,13 @@ export function GenomicsExplorer() {
         <div className="mt-6 rounded-2xl border border-gold-500/40 bg-gold-500/10 p-5">
           <p className="text-xs font-bold text-gold-300 uppercase tracking-wider flex items-center gap-2 mb-1.5">
             <Sparkles size={14} className="text-gold-400" />
-            {isFr ? 'Directives & Réponse Opérationnelle Recommandée :' : 'Operational Response Guidelines:'}
+            {isFr ? 'Exemple de réponse à examiner :' : 'Example response for review:'}
           </p>
           <p className="text-xs sm:text-sm text-pine-100 italic leading-relaxed">
             « {selectedMarker.operationalResponse[lang]} »
           </p>
           <p className="text-[11px] font-semibold text-gold-400/90 mt-2 font-display">
-            — Protocole de surveillance translationnelle Dr. Seynudé Jean-Fortuné DAGNON
+            — {isFr ? 'Scénario illustratif non validé' : 'Unvalidated illustrative scenario'}
           </p>
         </div>
       </div>

@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from './_fetch.js';
+
 /* Private dashboard endpoint: aggregate health figures for the newsletter,
  * push and agenda state, fetched by the /admin page. Protected by a bearer
  * secret — ADMIN_SECRET, falling back to CRON_SECRET so the owner can reuse

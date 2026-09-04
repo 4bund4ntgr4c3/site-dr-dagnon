@@ -118,7 +118,7 @@ export function PodcastSection() {
             {isFr ? 'Tous les podcasts & audios' : 'All podcasts & audio'} →
           </Link>
           <a
-            href="/podcast.xml"
+            href={isFr ? '/podcast-fr.xml' : '/podcast.xml'}
             className="inline-flex items-center gap-1.5 rounded-full bg-pine-950 px-3.5 py-1.5 text-xs font-semibold text-gold-400 transition-colors hover:bg-pine-900"
             title={isFr ? 'Flux RSS du podcast' : 'Podcast RSS Feed'}
           >
@@ -306,7 +306,7 @@ export function PodcastSection() {
           <p className="text-xs font-bold uppercase tracking-wider text-pine-700">
             {isFr ? 'Lectures audio des tribunes' : 'Audio op-ed readings'}
           </p>
-          <span className="text-[11px] text-pine-900/50">
+          <span className="text-[11px] text-pine-900/75">
             {isFr ? 'Flux RSS 2.0 + Apple/Spotify' : 'RSS 2.0 + Apple/Spotify feed'}
           </span>
         </div>
@@ -325,7 +325,7 @@ export function PodcastSection() {
                 <span className="block line-clamp-2 break-words pr-1 text-sm font-semibold leading-snug text-pine-950 group-hover:text-gold-700">
                   {t.title[lang]}
                 </span>
-                <span className="block truncate pr-1 text-xs text-pine-900/60">
+                <span className="block truncate pr-1 text-xs text-pine-900/75">
                   {t.date} · {t.source.name}
                 </span>
               </span>

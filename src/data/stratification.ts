@@ -16,17 +16,17 @@ export interface DistrictArchetype {
     vectorControl: {
       tool: Record<Lang, string>;
       rationale: Record<Lang, string>;
-      coverageTarget: string;
+      coverageTarget: Record<Lang, string>;
     };
     chemoprevention: {
       tool: Record<Lang, string>;
       rationale: Record<Lang, string>;
-      cycles: string;
+      cycles: Record<Lang, string>;
     };
     vaccination: {
       tool: Record<Lang, string>;
       rationale: Record<Lang, string>;
-      target: string;
+      target: Record<Lang, string>;
     };
     surveillanceAndCommunity: {
       tool: Record<Lang, string>;
@@ -83,7 +83,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
           fr: 'Le chlorfénapyr court-circuite la résistance métabolique et rétablit une mortalité vectorielle > 85%.',
           en: 'Chlorfenapyr bypasses metabolic resistance pathways, restoring vector mortality above 85%.',
         },
-        coverageTarget: '1 MILDA / 2 personnes (100% foyers)',
+        coverageTarget: { fr: '1 MILDA / 2 personnes (100% des foyers)', en: '1 LLIN per 2 people (100% of households)' },
       },
       chemoprevention: {
         tool: {
@@ -94,7 +94,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
           fr: 'Couvre la période de transmission prolongée d’août à décembre chez les enfants de 3 à 59 mois.',
           en: 'Shields children from August through December during lengthened transmission peaks.',
         },
-        cycles: '5 cycles mensuels',
+        cycles: { fr: '5 cycles mensuels', en: '5 monthly cycles' },
       },
       vaccination: {
         tool: {
@@ -105,7 +105,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
           fr: 'Protection synergique avec la CPS conférant jusqu’à 75% de protection pédiatrique cumulée.',
           en: 'Synergistic protection alongside SMC delivering up to 75% cumulative child protection.',
         },
-        target: 'Enfants de 5 à 18 mois',
+        target: { fr: 'Enfants de 5 à 18 mois', en: 'Children aged 5 to 18 months' },
       },
       surveillanceAndCommunity: {
         tool: {
@@ -152,7 +152,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
         fr: 'Résistance croisée pyréthrinoïdes, organophosphorés et carbamates',
         en: 'Cross-resistance across pyrethroids, organophosphates, and carbamates',
       },
-      primaryVector: 'Anopheles stephensi & Culex quinquefasciatus',
+      primaryVector: 'Anopheles stephensi',
       seasonalPattern: {
         fr: 'Transmission liée aux stockages d’eau artificiels et chantiers urbains',
         en: 'Transmission driven by artificial water tanks and urban construction sites',
@@ -169,7 +169,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
           fr: 'Le Bti détruit les larves dans les citernes et chantiers sans polluer l’eau potable.',
           en: 'Bti eliminates mosquito larvae in storage tanks without contaminating municipal water.',
         },
-        coverageTarget: '> 90% des réservoirs urbains traités',
+        coverageTarget: { fr: '> 90% des réservoirs urbains traités', en: '> 90% of urban water containers treated' },
       },
       chemoprevention: {
         tool: {
@@ -180,7 +180,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
           fr: 'Évite l’installation de foyers de transmission résiduels dans les quartiers denses.',
           en: 'Prevents localized transmission clusters in dense informal urban settlements.',
         },
-        cycles: 'Focalisé sur détection',
+        cycles: { fr: 'Focalisé selon la détection', en: 'Focused according to detection' },
       },
       vaccination: {
         tool: {
@@ -191,7 +191,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
           fr: 'Maintien d’une immunité pédiatrique de base dans les centres de PMI urbains.',
           en: 'Sustains baseline pediatric immunity in urban maternal health clinics.',
         },
-        target: 'Enfants de 6 à 24 mois',
+        target: { fr: 'Enfants de 6 à 24 mois', en: 'Children aged 6 to 24 months' },
       },
       surveillanceAndCommunity: {
         tool: {
@@ -255,7 +255,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
           fr: 'Le PBO inhibe les enzymes de résistance des anophèles sahéliens pendant le pic des pluies.',
           en: 'PBO synergists neutralize metabolic detoxifying enzymes in Sahelian vectors.',
         },
-        coverageTarget: '> 95% des foyers couverts avant le 15 juillet',
+        coverageTarget: { fr: '> 95% des foyers couverts avant le 15 juillet', en: '> 95% of households covered before 15 July' },
       },
       chemoprevention: {
         tool: {
@@ -266,7 +266,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
           fr: 'L’administration mensuelle de SPAQ protège 98% des enfants contre les formes graves de paludisme.',
           en: 'Monthly SPAQ administration protects 98% of children against severe malaria episodes.',
         },
-        cycles: '4 passages rigoureux (Juil - Oct)',
+        cycles: { fr: '4 passages rigoureux (juillet–octobre)', en: '4 scheduled rounds (July–October)' },
       },
       vaccination: {
         tool: {
@@ -277,7 +277,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
           fr: 'Dose de rappel administrée fin juin juste avant le déclenchement des pluies.',
           en: 'Booster timed in late June just ahead of the seasonal rainfall peak.',
         },
-        target: 'Enfants de 5 à 36 mois',
+        target: { fr: 'Enfants de 5 à 36 mois', en: 'Children aged 5 to 36 months' },
       },
       surveillanceAndCommunity: {
         tool: {
@@ -341,7 +341,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
           fr: 'Évite toute reprise de la transmission vectorielle dans les zones réceptives.',
           en: 'Prevents resurgence in receptive ecological niches.',
         },
-        coverageTarget: '100% dans les micro-foyers actifs',
+        coverageTarget: { fr: '100% dans les micro-foyers actifs', en: '100% in active micro-hotspots' },
       },
       chemoprevention: {
         tool: {
@@ -352,7 +352,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
           fr: 'Bloque l’importation de parasites depuis les pays voisins à forte charge.',
           en: 'Blocks parasite reintroduction from neighboring high-burden border zones.',
         },
-        cycles: 'À la demande selon flux migratoires',
+        cycles: { fr: 'À la demande selon les flux migratoires', en: 'As needed according to migration flows' },
       },
       vaccination: {
         tool: {
@@ -363,7 +363,7 @@ export const DISTRICT_ARCHETYPES: DistrictArchetype[] = [
           fr: 'Sanctuaire immunitaire empêchant la réinstallation de chaînes de transmission locales.',
           en: 'Immune barrier preventing local parasite establishment.',
         },
-        target: 'Enfants de 6 à 18 mois',
+        target: { fr: 'Enfants de 6 à 18 mois', en: 'Children aged 6 to 18 months' },
       },
       surveillanceAndCommunity: {
         tool: {

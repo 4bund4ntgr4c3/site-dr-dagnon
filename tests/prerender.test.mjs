@@ -468,7 +468,7 @@ test('the press kit pages carry FAQPage JSON-LD matching the visible FAQ', () =>
   });
 });
 
-test('the styled PDFs exist, are well-formed and are precached', () => {
+test('the styled PDFs exist and are well-formed without bloating the app-shell precache', () => {
   const pdfs = ['/presse/press-kit-fr.pdf', '/presse/press-kit-en.pdf', '/cv/cv-fr.pdf', '/cv/cv-en.pdf', '/publications/publications-fr.pdf', '/publications/publications-en.pdf'];
   for (const p of pdfs) {
     const file = path.join(dist, ...p.split('/').filter(Boolean));
@@ -477,9 +477,7 @@ test('the styled PDFs exist, are well-formed and are precached', () => {
     assert.match(head, /^%PDF-/, `${p} does not start with the PDF magic bytes`);
   }
   const sw = fs.readFileSync(path.join(dist, 'sw.js'), 'utf-8');
-  for (const p of pdfs) {
-    assert.ok(sw.includes(`"${p}"`), `sw.js does not precache ${p}`);
-  }
+  for (const p of pdfs) assert.ok(!sw.includes(`"${p}"`), `sw.js should runtime-cache ${p}`);
 });
 
 test('the agenda pages announce the subscribable iCal feed', () => {
@@ -514,24 +512,31 @@ test('agenda.ics is a well-formed calendar with one event per agenda item', () =
     assert.ok(line.replace(/\r$/, '').length <= 75, 'a folded iCal line exceeds the 75-octet limit');
   }
   assert.ok(/^\s/m.test(ics), 'agenda.ics must actually contain a folded continuation line');
-  /* the service worker precaches it so the calendar works offline */
+  /* downloads are runtime-cached after use, not pulled into every install */
   const sw = fs.readFileSync(path.join(dist, 'sw.js'), 'utf-8');
-  assert.ok(sw.includes('"/agenda.ics"'), 'sw.js does not precache agenda.ics');
+  assert.ok(!sw.includes('"/agenda.ics"'), 'sw.js should not precache agenda.ics');
 });
 
-test('the service worker exists, is versioned and precaches every route', () => {
+test('podcast feeds contain real MP3 enclosures in their own language', () => {
+  for (const [file, language] of [['podcast.xml', 'en'], ['podcast-fr.xml', 'fr']]) {
+    const xml = fs.readFileSync(path.join(dist, file), 'utf-8');
+    assert.match(xml, new RegExp(`<language>${language}</language>`));
+    assert.match(xml, /<enclosure url="https:\/\/seynudedagnon\.com\/podcast-ndep-ep5\.mp3" type="audio\/mpeg" length="22675437" \/>/);
+    assert.doesNotMatch(xml, /type="text\/html"/);
+  }
+});
+
+test('the service worker versions a small, complete app shell', () => {
   const sw = fs.readFileSync(path.join(dist, 'sw.js'), 'utf-8');
   assert.match(sw, /self\.addEventListener\('install'/, 'sw.js must handle install');
   assert.match(sw, /self\.addEventListener\('activate'/, 'sw.js must handle activate');
   assert.match(sw, /self\.addEventListener\('fetch'/, 'sw.js must handle fetch');
   assert.match(sw, /const CACHE = 'dagnon-v'\s*\+ VERSION/, 'sw.js must use a versioned cache name');
   assert.doesNotMatch(sw, /const VERSION = ''/, 'sw.js version must not be empty');
-  for (const lang of LANGS) {
-    for (const route of ROUTES) {
-      const urlPath = localePath(lang, route);
-      assert.ok(sw.includes(`"${urlPath}"`), `sw.js does not precache ${urlPath}`);
-    }
-  }
+  for (const urlPath of ['/', '/fr', '/offline', '/fr/offline']) assert.ok(sw.includes(`"${urlPath}"`));
+  assert.ok(!sw.includes('"/contact"'), 'ordinary pages must be runtime-cached');
+  assert.match(sw, /Promise\.all\(PRECACHE/, 'a partial shell install must fail atomically');
+  assert.match(sw, /SKIP_WAITING/, 'activation must wait for an explicit UI action');
   /* the precache must cover the app shell itself, not just the pages */
   const hashedAsset = [...fs.readdirSync(path.join(dist, 'assets'))].find((f) => /^index-.+\.js$/.test(f));
   assert.ok(hashedAsset, 'dist/assets must contain the hashed entry chunk');

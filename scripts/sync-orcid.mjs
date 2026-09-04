@@ -12,6 +12,10 @@ import { fileURLToPath } from 'node:url';
 
 const ORCID = '0009-0006-5022-1399';
 const outBib = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'public', 'dagnon-publications.bib');
+const fetch = (input, init = {}) => globalThis.fetch(input, {
+  ...init,
+  signal: init.signal ?? AbortSignal.timeout(10_000),
+});
 
 async function fetchWorks() {
   const url = `https://pub.orcid.org/v3.0/${ORCID}/works`;

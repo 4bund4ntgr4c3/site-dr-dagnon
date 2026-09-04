@@ -9,6 +9,7 @@ import { clientIp } from './_ip.js';
 import { applyJsonHeaders, applyPageHeaders } from './_headers.js';
 import crypto from 'node:crypto';
 import webPush from 'web-push';
+import { fetchWithTimeout as fetch } from './_fetch.js';
 
 /* Two endpoints in one function, so the deploy stays under the 12-function
  * Hobby limit: /api/event-remind (the "Remind me" opt-in button + the
@@ -299,7 +300,11 @@ export async function run({ items = AGENDA_ITEMS, from = new Date(), apiKey }: {
       };
       const response = await fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'Idempotency-Key': `event-${crypto.createHash('sha256').update(`${event.id}|${to}`).digest('hex').slice(0, 48)}`,
+        },
         body: JSON.stringify(body),
       });
       if (!response.ok) {

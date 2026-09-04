@@ -7,8 +7,8 @@ export interface GenomicsMarker {
   geographicalHotspots: { fr: string[]; en: string[] };
   threatLevel: 'critical' | 'high' | 'monitored';
   dataPoints: {
-    region: string;
-    prevalence: string;
+    region: Record<'fr' | 'en', string>;
+    prevalence: Record<'fr' | 'en', string>;
     trend: 'up' | 'stable' | 'down';
   }[];
   operationalResponse: { fr: string; en: string };
@@ -33,9 +33,9 @@ export const GENOMICS_MARKERS: GenomicsMarker[] = [
     },
     threatLevel: 'critical',
     dataPoints: [
-      { region: 'Bénin Sud', prevalence: '> 85% de survie aux pyréthrinoïdes', trend: 'up' },
-      { region: 'Burkina Faso Ouest', prevalence: '> 90% de résistance kdr/CYP', trend: 'up' },
-      { region: 'Sénégal Est', prevalence: '35% à 50% de résistance émergente', trend: 'up' },
+      { region: { fr: 'Bénin Sud', en: 'Southern Benin' }, prevalence: { fr: '> 85% de survie aux pyréthrinoïdes', en: '> 85% survival after pyrethroid exposure' }, trend: 'up' },
+      { region: { fr: 'Burkina Faso Ouest', en: 'Western Burkina Faso' }, prevalence: { fr: '> 90% de résistance kdr/CYP', en: '> 90% kdr/CYP resistance' }, trend: 'up' },
+      { region: { fr: 'Sénégal Est', en: 'Eastern Senegal' }, prevalence: { fr: '35% à 50% de résistance émergente', en: '35% to 50% emerging resistance' }, trend: 'up' },
     ],
     operationalResponse: {
       fr: 'Remplacement immédiat et à 100% des moustiquaires simples par des MILDA Dual-AI (Chlorfenapyr + Alpha-cyperméthrine ou PBO) et pulvérisation ciblée de Pirimiphos-méthyle.',
@@ -60,9 +60,9 @@ export const GENOMICS_MARKERS: GenomicsMarker[] = [
     },
     threatLevel: 'high',
     dataPoints: [
-      { region: 'Corne de l’Afrique', prevalence: '12% à 25% de faux négatifs TDR', trend: 'up' },
-      { region: 'Bassin du Congo', prevalence: '1% à 3% de délétions détectées', trend: 'stable' },
-      { region: 'Afrique de l’Ouest', prevalence: '< 1% (Surveillance sentinelle active)', trend: 'stable' },
+      { region: { fr: 'Corne de l’Afrique', en: 'Horn of Africa' }, prevalence: { fr: '12% à 25% de faux négatifs TDR', en: '12% to 25% RDT false negatives' }, trend: 'up' },
+      { region: { fr: 'Bassin du Congo', en: 'Congo Basin' }, prevalence: { fr: '1% à 3% de délétions détectées', en: '1% to 3% detected deletions' }, trend: 'stable' },
+      { region: { fr: 'Afrique de l’Ouest', en: 'West Africa' }, prevalence: { fr: '< 1% (surveillance sentinelle active)', en: '< 1% (active sentinel surveillance)' }, trend: 'stable' },
     ],
     operationalResponse: {
       fr: 'Introduction de tests TDR double antigène combinant HRP2 et pLDH (Pan-LDH / Pf-LDH) et équipement des laboratoires de référence nationaux pour le séquençage PCR de routine.',
@@ -87,9 +87,9 @@ export const GENOMICS_MARKERS: GenomicsMarker[] = [
     },
     threatLevel: 'critical',
     dataPoints: [
-      { region: 'Grands Lacs (Rwanda/Ouganda)', prevalence: 'Jusqu’à 15-20% de mutations K13', trend: 'up' },
-      { region: 'Afrique de l’Est côtière', prevalence: '5% à 8% de détection', trend: 'up' },
-      { region: 'Afrique francophone', prevalence: '< 1% (efficacité thérapeutique conservée > 95%)', trend: 'stable' },
+      { region: { fr: 'Grands Lacs (Rwanda/Ouganda)', en: 'Great Lakes (Rwanda/Uganda)' }, prevalence: { fr: 'Jusqu’à 15-20% de mutations K13', en: 'Up to 15–20% K13 mutations' }, trend: 'up' },
+      { region: { fr: 'Afrique de l’Est côtière', en: 'Coastal East Africa' }, prevalence: { fr: '5% à 8% de détection', en: '5% to 8% detection' }, trend: 'up' },
+      { region: { fr: 'Afrique francophone', en: 'Francophone Africa' }, prevalence: { fr: '< 1% (efficacité thérapeutique conservée > 95%)', en: '< 1% (therapeutic efficacy remains above 95%)' }, trend: 'stable' },
     ],
     operationalResponse: {
       fr: 'Diversification des ACT (alternance Arteméther-Luméfantrine / Artésunate-Amodiaquine / Dihydroartémisinine-Pipéraquine) et études annuelles d’efficacité thérapeutique (EET).',

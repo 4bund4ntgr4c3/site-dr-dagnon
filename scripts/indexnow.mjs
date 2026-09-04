@@ -15,6 +15,10 @@ const sitemapPath = path.join(dist, 'sitemap.xml');
 const HOST = 'seynudedagnon.com';
 const KEY = '92d9c43333334113b7144ad3b6688a8c';
 const KEY_LOCATION = `https://${HOST}/${KEY}.txt`;
+const fetch = (input, init = {}) => globalThis.fetch(input, {
+  ...init,
+  signal: init.signal ?? AbortSignal.timeout(10_000),
+});
 
 async function main() {
   if (!fs.existsSync(sitemapPath)) {

@@ -333,7 +333,7 @@ export function PolicyBriefGenerator() {
 
   const copyContent = async () => {
     const text = `
-POLICY BRIEF EXÉCUTIF - DR. SEYNUDÉ JEAN-FORTUNÉ DAGNON
+DRAFT / BROUILLON NON VALIDÉ — POLICY BRIEF
 ------------------------------------------------------
 Titre: ${selectedBrief.title[lang]}
 Sous-titre: ${selectedBrief.subtitle[lang]}
@@ -350,7 +350,7 @@ ${selectedBrief.indicators.map((ind) => `- ${ind.label[lang]}: ${ind.target}`).j
 
 ${lang === 'fr' ? 'Auteur : Dr. Seynudé Jean-Fortuné DAGNON' : 'Author: Seynudé Jean-Fortuné DAGNON, MD, MPH'}
 ${lang === 'fr' ? 'Senior Program Officer — Paludisme & Santé Publique | Fondation Bill & Melinda Gates' : 'Senior Program Officer — Malaria & Public Health | Bill & Melinda Gates Foundation'}
-${lang === 'fr' ? 'Site officiel : https://seynudedagnon.com' : 'Official website: https://seynudedagnon.com'}
+${lang === 'fr' ? 'Démonstration : hypothèses à vérifier avant toute utilisation. https://seynudedagnon.com' : 'Demonstration: verify every assumption before use. https://seynudedagnon.com'}
     `.trim();
 
     try {
@@ -376,8 +376,8 @@ ${lang === 'fr' ? 'Site officiel : https://seynudedagnon.com' : 'Official websit
           </h2>
           <p className="mt-2 max-w-2xl text-[14px] text-pine-200/80 leading-relaxed">
             {isFr
-              ? 'Générez et imprimez en 1 clic un mémorandum stratégique officiel prêt à l’usage des ministères de la santé et des bailleurs internationaux.'
-              : 'Generate and print 1-page executive policy memos formatted for health ministries, bilateral donors, and global partners.'}
+              ? 'Créez un brouillon de travail à relire, sourcer et valider avant toute diffusion ou décision.'
+              : 'Create a working draft that must be reviewed, sourced, and validated before circulation or decision-making.'}
           </p>
         </div>
 
@@ -432,7 +432,7 @@ ${lang === 'fr' ? 'Site officiel : https://seynudedagnon.com' : 'Official websit
           <div>
             <div className="flex items-center gap-2">
               <span className="rounded-full bg-gold-600 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-ivory">
-                POLICY BRIEF · {selectedBrief.date}
+                {isFr ? 'BROUILLON NON VALIDÉ' : 'UNVALIDATED DRAFT'} · {selectedBrief.date}
               </span>
               <span className="text-[11px] font-bold uppercase tracking-wider text-pine-700">
                 {selectedBrief.category}
@@ -511,8 +511,8 @@ ${lang === 'fr' ? 'Site officiel : https://seynudedagnon.com' : 'Official websit
             <p className="text-gold-800 font-mono mt-0.5">https://seynudedagnon.com/impact</p>
           </div>
           <div className="text-right">
-            <p className="italic">{isFr ? 'Document officiel d’orientation stratégique' : 'Official strategic guidance document'}</p>
-            <p className="font-mono">ASTMH · PAMCA · RBM Partnership</p>
+            <p className="italic">{isFr ? 'Démonstration — validation scientifique et institutionnelle requise' : 'Demonstration — scientific and institutional validation required'}</p>
+            <p className="font-mono">{isFr ? 'Ne pas diffuser tel quel' : 'Do not distribute as-is'}</p>
           </div>
         </div>
       </div>

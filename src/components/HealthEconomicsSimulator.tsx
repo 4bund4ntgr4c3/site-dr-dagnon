@@ -111,6 +111,7 @@ export function HealthEconomicsSimulator() {
             </div>
             <input
               type="range"
+              aria-label={isFr ? 'Population totale couverte' : 'Total population covered'}
               min={250000}
               max={5000000}
               step={100000}
@@ -142,6 +143,9 @@ export function HealthEconomicsSimulator() {
             </div>
             <button
               type="button"
+              role="switch"
+              aria-checked={dualAiNets}
+              aria-label={isFr ? 'Activer les moustiquaires nouvelle génération' : 'Enable next-generation mosquito nets'}
               onClick={() => setDualAiNets(!dualAiNets)}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
                 dualAiNets ? 'bg-gold-500' : 'bg-pine-800'
@@ -199,6 +203,9 @@ export function HealthEconomicsSimulator() {
             </div>
             <button
               type="button"
+              role="switch"
+              aria-checked={targetedIrs}
+              aria-label={isFr ? 'Activer la pulvérisation intradomiciliaire ciblée' : 'Enable targeted indoor residual spraying'}
               onClick={() => setTargetedIrs(!targetedIrs)}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
                 targetedIrs ? 'bg-gold-500' : 'bg-pine-800'
@@ -224,6 +231,9 @@ export function HealthEconomicsSimulator() {
             </div>
             <button
               type="button"
+              role="switch"
+              aria-checked={digitalTracking}
+              aria-label={isFr ? 'Activer la traçabilité numérique' : 'Enable digital tracking'}
               onClick={() => setDigitalTracking(!digitalTracking)}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
                 digitalTracking ? 'bg-gold-500' : 'bg-pine-800'
@@ -315,8 +325,8 @@ export function HealthEconomicsSimulator() {
             <Info size={14} className="shrink-0 mt-0.5 text-gold-400" />
             <span>
               {isFr
-                ? 'Modèle basé sur les méthodologies de micro-simulation en économie de la santé et les données opérationnelles des programmes paludisme en Afrique de l’Ouest (Univ. Groningen / OMS).'
-                : 'Model grounded in health economics micro-simulation methodologies and West African operational malaria data (Univ. of Groningen / WHO).'}
+                ? 'Démonstrateur pédagogique fondé sur des hypothèses simplifiées visibles dans le code. Résultats non validés, non prédictifs et impropres à une décision clinique, programmatique ou budgétaire.'
+                : 'Educational demonstrator using simplified assumptions visible in the source code. Results are unvalidated, non-predictive, and not suitable for clinical, programmatic, or budget decisions.'}
             </span>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { isSafePushEndpoint } from './_push-guard.js';
 import { applyJsonHeaders } from './_headers.js';
 import crypto from 'node:crypto';
 import webPush from 'web-push';
+import { fetchWithTimeout as fetch } from './_fetch.js';
 
 /* Weekly cron endpoint: reminds newsletter subscribers of upcoming public
  * events. Wired in vercel.json (`crons`) — Vercel attaches
@@ -229,7 +230,19 @@ async function saveState(ids: string[]): Promise<boolean> {
 
 async function loadSubscribers(): Promise<string[]> {
   const results = await kvPipeline([['SMEMBERS', SUBS_KEY]]);
-  return Array.isArray(results?.[0]?.result) ? results[0].result.filter((s) => typeof s === 'string') : [];
+  const emails = Array.isArray(results?.[0]?.result) ? results[0].result.filter((s): s is string => typeof s === 'string') : [];
+  if (emails.length === 0) return [];
+  const prefs = await kvPipeline(emails.map((email) => ['GET', `newsletter:prefs:${email}`]));
+  return emails.filter((_email, index) => {
+    const raw = prefs?.[index]?.result;
+    if (typeof raw !== 'string') return true;
+    try {
+      const parsed = JSON.parse(raw) as { sections?: unknown };
+      return !Array.isArray(parsed.sections) || parsed.sections.includes('agenda');
+    } catch {
+      return true;
+    }
+  });
 }
 
 /* ── run ────────────────────────────────────────────────────────── */
@@ -266,7 +279,11 @@ export async function run({ items = AGENDA_ITEMS, from = new Date(), owner, apiK
     };
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'Idempotency-Key': `agenda-${crypto.createHash('sha256').update(`${to}|${send.map((event) => event.id).join('|')}`).digest('hex').slice(0, 48)}`,
+      },
       body: JSON.stringify(body),
     });
     if (!response.ok) {

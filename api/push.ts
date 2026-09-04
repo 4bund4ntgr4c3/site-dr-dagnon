@@ -6,6 +6,7 @@ import { applyJsonHeaders } from './_headers.js';
 import { isAllowedPushEndpoint, isSafePushEndpoint } from './_push-guard.js';
 import { alertOwner } from './_alert.js';
 import webPush from 'web-push';
+import { fetchWithTimeout as fetch } from './_fetch.js';
 
 /* Two endpoints in one function, so the deploy stays under the 12-function
  * Hobby limit: /api/push-subscribe (the browser registers a push
@@ -59,7 +60,7 @@ function validSubscription(s: unknown): s is PushSubscription {
   );
 }
 
-async function kvPipeline(commands: (string | number)[][]): Promise<{ result?: unknown }[] | null> {
+async function kvPipeline(commands: (string | number)[][]): Promise<{ result?: unknown; error?: unknown }[] | null> {
   const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
   if (!url || !token) return null;
@@ -70,7 +71,7 @@ async function kvPipeline(commands: (string | number)[][]): Promise<{ result?: u
       body: JSON.stringify(commands),
     });
     if (!response.ok) return null;
-    return (await response.json()) as { result?: unknown }[];
+    return (await response.json()) as { result?: unknown; error?: unknown }[];
   } catch {
     return null;
   }
@@ -113,20 +114,26 @@ async function subscribeHandler(req: Req, res: Res): Promise<void> {
   if (unsubscribe) {
     if (!endpoint || typeof endpoint !== 'string') { res.status(400).json({ error: 'Missing endpoint' }); return; }
     const hash = hashOf(endpoint);
-    await kvPipeline([
+    const stored = await kvPipeline([
       ['SREM', SUBS_KEY, hash],
       ['DEL', `${SUB_PREFIX}${hash}`],
     ]);
+    if (!stored || stored.some((entry) => entry.error !== undefined || entry.result === undefined)) {
+      res.status(503).json({ error: 'Storage unavailable' }); return;
+    }
     res.status(200).json({ ok: true });
     return;
   }
 
   if (!validSubscription(subscription)) { res.status(400).json({ error: 'Invalid subscription' }); return; }
   const hash = hashOf(subscription.endpoint);
-  await kvPipeline([
+  const stored = await kvPipeline([
     ['SADD', SUBS_KEY, hash],
     ['SET', `${SUB_PREFIX}${hash}`, JSON.stringify(subscription), 'EX', String(SUB_TTL_S)],
   ]);
+  if (!stored || stored.some((entry) => entry.error !== undefined || entry.result === undefined)) {
+    res.status(503).json({ error: 'Storage unavailable' }); return;
+  }
   res.status(200).json({ ok: true });
 }
 
