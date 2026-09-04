@@ -50,6 +50,61 @@
       "source": "/fr/podcast",
       "destination": "/fr/podcasts",
       "permanent": true
+    },
+    {
+      "source": "/projects",
+      "destination": "/projets",
+      "permanent": true
+    },
+    {
+      "source": "/press",
+      "destination": "/presse",
+      "permanent": true
+    },
+    {
+      "source": "/career",
+      "destination": "/parcours",
+      "permanent": true
+    },
+    {
+      "source": "/mentorship",
+      "destination": "/mentorat",
+      "permanent": true
+    },
+    {
+      "source": "/invite",
+      "destination": "/inviter",
+      "permanent": true
+    },
+    {
+      "source": "/op-eds",
+      "destination": "/tribunes",
+      "permanent": true
+    },
+    {
+      "source": "/oped",
+      "destination": "/tribunes",
+      "permanent": true
+    },
+    {
+      "source": "/opeds",
+      "destination": "/tribunes",
+      "permanent": true
+    },
+    {
+      "source": "/insights",
+      "destination": "/tribunes",
+      "permanent": true
+    },
+    {
+      "source": "/en",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/:path*",
+      "destination": "/:path*",
+      "permanent": true
     }
   ],
   "headers": [

@@ -39,7 +39,7 @@ if (!fs.existsSync(metaBundle)) {
 }
 const { TRIBUNES, PROJECTS } = await import(pathToFileURL(metaBundle).href);
 
-const NAME = 'Seynudé Jean-Fortuné <b>DAGNON</b>, PhD';
+const NAME = 'Seynudé Jean-Fortuné <b>DAGNON</b>, MD, MPH';
 const DOMAIN = 'seynudedagnon.com';
 
 const card = (kicker, title, lang) => `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><style>
@@ -111,6 +111,10 @@ for (const item of items) {
     await page.waitForTimeout(60);
     const out = path.join(outDir, `${item.slug}.${lang}.jpg`);
     await page.screenshot({ path: out, type: 'jpeg', quality: 90, clip: { x: 0, y: 0, width: 1200, height: 630 } });
+    const distOg = path.join(root, 'dist', 'og');
+    if (fs.existsSync(distOg)) {
+      fs.copyFileSync(out, path.join(distOg, `${item.slug}.${lang}.jpg`));
+    }
     fs.unlinkSync(tmp);
     written++;
   }

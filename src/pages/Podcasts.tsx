@@ -117,7 +117,7 @@ export default function Podcasts() {
   };
 
   const handleCopyRss = () => {
-    const rssUrl = `${window.location.origin}/podcast.xml`;
+    const rssUrl = `${window.location.origin}/${isFr ? 'podcast-fr.xml' : 'podcast.xml'}`;
     navigator.clipboard.writeText(rssUrl).then(() => {
       setCopiedRss(true);
       setTimeout(() => setCopiedRss(false), 2000);
@@ -619,12 +619,12 @@ export default function Podcasts() {
                 </button>
 
                 <a
-                  href="/podcast.xml"
+                  href={isFr ? '/podcast-fr.xml' : '/podcast.xml'}
                   target="_blank"
                   className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-white/10"
                 >
                   <Rss size={14} />
-                  {isFr ? 'Ouvrir podcast.xml' : 'Open podcast.xml'}
+                  {isFr ? 'Ouvrir podcast-fr.xml' : 'Open podcast.xml'}
                 </a>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { StaticRouter } from 'react-router';
 import App, { type AppPages } from './App';
-import Home from './pages/Home';
+import Home from './pages/Home.server';
 import Contact from './pages/Contact';
 import Media from './pages/Media';
 import Publications from './pages/Publications';
@@ -15,7 +15,7 @@ import PressKit from './pages/PressKit';
 import Invite from './pages/Invite';
 import Collaborate from './pages/Collaborate';
 import NewsletterArchive from './pages/NewsletterArchive';
-import Impact from './pages/Impact';
+import Impact from './pages/Impact.server';
 import Legal from './pages/Legal';
 import Accessibility from './pages/Accessibility';
 import Bibliography from './pages/Bibliography';
@@ -29,7 +29,9 @@ import Toolkit from './pages/Toolkit';
 import Mentorship from './pages/Mentorship';
 
 /* Plain imports, not React.lazy() — see the comment on AppPages in App.tsx
-   for why renderToStaticMarkup needs this. */
+   for why renderToStaticMarkup needs this. Home and Impact use dedicated
+   .server variants so their below-the-fold sections are statically rendered
+   rather than falling back to pulse skeleton loaders. */
 const pages: AppPages = { Home, Contact, Media, Publications, Agenda, Tribunes, TribuneArticle, Projects, ProjectArticle, Cv, PressKit, Invite, Collaborate, NewsletterArchive, Impact, Legal, Accessibility, Bibliography, Portfolio, Offline, Career, PublicationsPdf, Podcasts, Connect, Toolkit, Mentorship };
 
 /* Renders a route to plain HTML for scripts/prerender.mjs to embed in each
