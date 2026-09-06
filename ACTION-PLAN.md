@@ -1,5 +1,7 @@
 # Plan d’action — audit du 4 septembre 2026
 
+> **Suivi du 5 septembre 2026 :** ce plan est historique. Consulter [le plan de validation de production](reports/production-2026-09-05/ACTION-PLAN.md), qui distingue les correctifs locaux et les vérifications encore nécessaires sur le site public.
+
 Ce plan découle du [rapport complet](<D:/Studio26/Portfolio/Dr Seynude Dagnon/site-dr-dagnon/FULL-AUDIT-REPORT.md>) : **37 constats étayés, dont 10 P1, 21 P2 et 6 P3**. Aucun correctif n’a été appliqué. Il s’agit d’un ordre de traitement proposé, pas d’une autorisation de modifier le projet ni d’un devis.
 
 ## Décision de validation

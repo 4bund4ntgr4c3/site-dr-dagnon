@@ -1,5 +1,7 @@
 # Audit transversal du projet Dr Seynudé Dagnon
 
+> **Suivi du 5 septembre 2026 :** ce rapport décrit l’état historique avant correctifs. Consulter [le rapport de production](reports/production-2026-09-05/FULL-AUDIT-REPORT.md) pour les résultats actuels et les correctifs locaux à déployer.
+
 Date : **4 septembre 2026**. Périmètre : site complet (« full-site »), code local dans son état modifié, API, génération statique, tests, navigation et échantillon public de production. Ce rapport couvre les domaines examinables depuis ce dépôt ; il ne certifie pas l’absence de défauts et distingue les limites d’accès. Aucun correctif applicatif ni déploiement n’a été effectué.
 
 ## A. Synthèse de l’audit

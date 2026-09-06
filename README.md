@@ -9,7 +9,7 @@ npm run dev      # dev server on :3000
 npm run build    # side-effect-free: typecheck, bundle and prerender pages/feeds/PWA
 npm test         # build, then the complete Node/Playwright suite
 npm run lint
-npm run indexnow # submit sitemap URLs to IndexNow (Bing/Yandex) — 130 URLs, needs dist/sitemap.xml
+npm run indexnow # submit sitemap URLs to IndexNow (Bing/Yandex) — 128 URLs, needs dist/sitemap.xml
 npm run postdeploy:notify # explicitly send the newsletter digest, then notify IndexNow
 npm run images   # one-off: convert public/ photos to WebP (see below)
 npm run gen:og   # one-off: regenerate og-image.jpg
@@ -103,6 +103,9 @@ log (the former standalone `CHANGELOG.html` is gone).
 **Routes are listed explicitly in `vercel.json`** rather than relying on a
 catch-all rewrite, so a URL that does not exist gets a real 404 instead of a
 soft 200. A test keeps that list in sync with the prerendered routes.
+With `cleanUrls: true`, HTML rewrite destinations omit `.html`. Admin,
+changelog and newsletter preferences receive localized, empty client shells
+with `noindex` in the initial HTML; private content is never prerendered.
 
 **Images are converted once and committed.** `npm run images` reads `public/`
 and writes WebP at quality 72 — chosen by measuring these files, not by
@@ -118,3 +121,16 @@ curl -sI https://seynudedagnon.com/this-does-not-exist | head -1
 ```
 
 Expected: the French contact title, `application/xml`, and `HTTP/2 404`.
+
+Run the read-only production audit and save HTTP evidence, browser checks
+and screenshots in a chosen output directory:
+
+```bash
+node scripts/audit-production.mjs node_modules/.tmp/production-audit
+```
+
+It checks all sitemap routes plus private entry points, consent, language
+parameters and sampled mobile accessibility. It never submits forms. Browser
+timings are laboratory observations, not field Core Web Vitals. After routing
+changes, also verify that `/admin`, `/changelog`, `/newsletter/preferences`
+and their `/fr` counterparts return 200, while an unknown route returns 404.

@@ -39,15 +39,37 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Official Website & Institutional Platform — seynudedagnon.com',
   },
   stats: [
-    { value: { fr: '330', en: '330' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '40', en: '40' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '331', en: '331' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '41', en: '41' }, label: { fr: 'versions', en: 'versions' } },
     { value: { fr: '389', en: '389' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
-    { value: { fr: '130', en: '130' }, label: { fr: 'pages prérendues', en: 'prerendered pages' } },
-    { value: { fr: '16 juil – 1 sept 2026', en: '16 Jul – 1 Sep 2026' } },
+    { value: { fr: '136', en: '136' }, label: { fr: 'pages prérendues (128 sitemap)', en: 'prerendered pages (128 sitemap)' } },
+    { value: { fr: '16 juil – 6 sept 2026', en: '16 Jul – 6 Sep 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-09-06',
+    version: '3.9',
+    label: { fr: '6 septembre 2026', en: '6 September 2026' },
+    title: { fr: 'Audit SEO & PageSpeed 100 — Robots.txt RFC 9309, Indexabilité Sitemap (128p) & Citations Scholar', en: 'SEO & PageSpeed 100 Audit — RFC 9309 Robots.txt, Sitemap Clean Indexing (128p) & Scholar Citations' },
+    fr: [
+      'Audit SEO & Indexabilité — Élimination de la balise titre vide `<h3>«  »</h3>` sur la page d’accueil par l’ajout des clés de traduction bilingues de la tribune à la une co-signée avec la Pr. Rose Leke (`media.featuredOpEd`, `media.featuredQuote`, `media.featuredSummary`, `media.readOpEd`).',
+      'Conformité Robots.txt RFC 9309 — Unification en un seul bloc `User-agent: *`, exclusion explicite des routes `/offline`, distinction entre moteurs de recherche / grounding IA (`OAI-SearchBot`, `ChatGPT-User`, `PerplexityBot` autorisés avec `/llms.txt`) et scrapers d’entraînement brut bloqués.',
+      'Nettoyage du Sitemap & PWA Shell — Exclusion des routes utilitaires `/offline` du `sitemap.xml` (recalibré à 128 URLs 100% indexables) tout en conservant la pré-génération statique avec `<meta name="robots" content="noindex, follow">` pour le pré-cache du Service Worker.',
+      'Métadonnées Académiques & Schémas — Intégration des balises de citation Google Scholar (`citation_author`, `citation_title`, `citation_journal_title`, `citation_publication_date`), normalisation du schéma éditorial `Article` et `Project` avec attribution `isBasedOn` de la source originelle.',
+      'Performance & Télémétrie — Optimisation PageSpeed (score mobile 100/100, LCP 412 ms), chargement de Vercel Analytics et Speed Insights, ajustement des règles CSP dans `vercel.json` pour autoriser Cloudflare Insights.',
+      'Architecture & Routage Vercel — Déploiement propre avec `cleanUrls: true` (omission du `.html` dans les destinations de réécriture) et injection de coquilles client sécurisées `noindex` pour les routes privées (`/admin`, `/changelog`, `/newsletter/preferences`).',
+    ],
+    en: [
+      'SEO & Indexing Audit — Resolved empty `<h3>«  »</h3>` heading bug on the home page by adding complete bilingual translation keys for the featured op-ed co-authored with Prof. Rose Leke (`media.featuredOpEd`, `media.featuredQuote`, `media.featuredSummary`, `media.readOpEd`).',
+      'RFC 9309 Robots.txt Standardization — Consolidated into a single canonical `User-agent: *` block, explicitly disallowed `/offline` routes, cleanly separated AI search/citation agents (`OAI-SearchBot`, `ChatGPT-User`, `PerplexityBot` allowed via `/llms.txt`) from restricted model scrapers.',
+      'Clean Sitemap & PWA Shell — Removed `/offline` utility routes from `sitemap.xml` (calibrated to 128 purely indexable URLs) while retaining static prerendered shells with `<meta name="robots" content="noindex, follow">` for Service Worker precaching.',
+      'Academic Metadata & Schema — Added Google Scholar Highwire citation tags (`citation_*`), normalized Article and Project Schema.org publisher identity with `isBasedOn` attribution linking to original publishers.',
+      'Performance & Telemetry — PageSpeed 100/100 mobile optimization (LCP 412 ms on French home), integrated Vercel Analytics and Speed Insights, updated CSP in `vercel.json` for Cloudflare Insights.',
+      'Vercel Routing Architecture — Streamlined clean URL rewriting (`cleanUrls: true`) and localized private client shells (`/admin`, `/changelog`, `/newsletter/preferences`) booting with explicit `noindex` meta.',
+    ],
+  },
   {
     date: '2026-09-01',
     version: '3.8',
