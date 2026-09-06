@@ -37,8 +37,8 @@ export function ConsentBanner() {
       <div className="mx-auto flex max-w-3xl flex-col gap-3 rounded-2xl border border-pine-900/10 bg-white p-5 shadow-xl sm:flex-row sm:items-center sm:justify-between">
         <p className="text-[13px] leading-relaxed text-pine-900/80">
           {lang === 'fr'
-            ? 'Avec votre accord, nous utilisons Google Analytics et Vercel Analytics pour mesurer l’audience et améliorer le site. Aucun stockage publicitaire n’est activé.'
-            : 'With your permission, we use Google Analytics and Vercel Analytics to measure traffic and improve the site. Advertising storage is never enabled.'}
+            ? 'Avec votre accord, nous utilisons Google Analytics pour mesurer l’audience et améliorer le site. Une mesure sans cookies (Vercel Analytics) fonctionne sans accord. Aucun stockage publicitaire n’est activé.'
+            : 'With your permission, we use Google Analytics to measure traffic and improve the site. Cookieless measurement (Vercel Analytics) runs without permission. Advertising storage is never enabled.'}
           <a href={lang === 'fr' ? '/fr/legal' : '/legal'} className="ml-1 underline decoration-gold-500/50 underline-offset-4 hover:text-gold-700">
             {lang === 'fr' ? 'En savoir plus sur les cookies' : 'Learn more about our cookie policy'}
           </a>

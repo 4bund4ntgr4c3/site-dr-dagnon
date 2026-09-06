@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import { ANALYTICS_CONSENT_EVENT, readAnalyticsConsent } from '@/lib/consent';
 
+/* Vercel's scripts are cookieless measurement (no cross-site tracking, no
+   identifier stored), so they load for every visitor without consent.
+   Google Analytics stays consent-gated — see src/lib/consent.ts, which only
+   injects gtag after an explicit grant. */
 export function ConsentAnalytics() {
-  const [enabled, setEnabled] = useState(() => readAnalyticsConsent() === 'granted');
-
-  useEffect(() => {
-    const update = () => setEnabled(readAnalyticsConsent() === 'granted');
-    window.addEventListener(ANALYTICS_CONSENT_EVENT, update);
-    return () => window.removeEventListener(ANALYTICS_CONSENT_EVENT, update);
-  }, []);
-
-  return enabled ? <><Analytics /><SpeedInsights /></> : null;
+  return (
+    <>
+      <Analytics />
+      <SpeedInsights />
+    </>
+  );
 }

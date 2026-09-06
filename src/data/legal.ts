@@ -49,7 +49,7 @@ export const LEGAL_SECTIONS: LegalSection[] = [
         'Formulaire de contact : nom, adresse e-mail, numéro de téléphone, objet et message. Finalité : répondre à votre demande. Base légale : intérêt légitime (art. 6.1.f). Données conservées jusqu\'au traitement de la demande, puis supprimées.',
         'Newsletter : adresse e-mail, langue choisie et préférence de fréquence (hebdomadaire ou mensuelle). Finalité : envoi de la lettre d\'information demandée. Base légale : consentement (art. 6.1.a) via le double opt-in. Données conservées jusqu\'à votre désabonnement, à tout moment via le lien prévu dans chaque message.',
         'Abonnements de rappel d\'agenda (push) : abonnement au service de notifications du navigateur. Finalité : rappels des événements à venir. Base légale : consentement (art. 6.1.a). Abonnements conservés 24 mois au maximum.',
-        'Mesure d\'audience : après votre consentement explicite (art. 6.1.a), Google Analytics 4 et Vercel Analytics peuvent traiter des données d\'usage (pages visitées, durée de session, zone géographique approximative). Les recherches internes sont journalisées uniquement avec ce consentement, après réduction des données sensibles apparentes, et supprimées au plus tard après 90 jours.',
+        'Mesure d\'audience : Vercel Analytics fonctionne sans cookies ni identifiant (intérêt légitime, art. 6.1.f) et traite des données d\'usage agrégées (pages visitées, zone géographique approximative). Après votre consentement explicite (art. 6.1.a), Google Analytics 4 peut traiter des données complémentaires (durée de session notamment). Les recherches internes sont journalisées uniquement avec ce consentement, après réduction des données sensibles apparentes, et supprimées au plus tard après 90 jours.',
         'Aucune donnée n\'est vendue ni cédée à des tiers à des fins commerciales.',
       ],
       en: [
@@ -57,7 +57,7 @@ export const LEGAL_SECTIONS: LegalSection[] = [
         'Contact form: name, e-mail address, phone number, subject and message. Purpose: to answer your request. Legal basis: legitimate interest (art. 6.1.f). Data is kept until the request is handled, then deleted.',
         'Newsletter: e-mail address, chosen language and frequency preference (weekly or monthly). Purpose: sending the requested newsletter. Legal basis: consent (art. 6.1.a) via double opt-in. Data is kept until you unsubscribe, at any time via the link provided in every message.',
         'Agenda reminder subscriptions (push): browser notification service subscription. Purpose: reminders of upcoming events. Legal basis: consent (art. 6.1.a). Subscriptions are kept for up to 24 months.',
-        'Audience measurement: after your explicit consent (art. 6.1.a), Google Analytics 4 and Vercel Analytics may process usage data (pages visited, session duration, approximate geography). Internal searches are logged only with this consent, after apparent sensitive data is minimized, and deleted within 90 days.',
+        'Audience measurement: Vercel Analytics runs without cookies or identifiers (legitimate interest, art. 6.1.f) and processes aggregated usage data (pages visited, approximate geography). After your explicit consent (art. 6.1.a), Google Analytics 4 may process additional data (notably session duration). Internal searches are logged only with this consent, after apparent sensitive data is minimized, and deleted within 90 days.',
         'No data is sold or transferred to third parties for commercial purposes.',
       ],
     },
@@ -67,12 +67,12 @@ export const LEGAL_SECTIONS: LegalSection[] = [
     title: { fr: 'Cookies et traceurs', en: 'Cookies and trackers' },
     body: {
       fr: [
-        'Ce site n\'utilise aucun stockage publicitaire. Le thème et la langue sont conservés localement pour le fonctionnement du site. Google Analytics et Vercel Analytics ne sont chargés qu\'après votre accord explicite.',
+        'Ce site n\'utilise aucun stockage publicitaire. Le thème et la langue sont conservés localement pour le fonctionnement du site. Vercel Analytics fonctionne sans cookies et ne nécessite pas votre accord. Google Analytics n\'est chargé qu\'après votre accord explicite.',
         'Vous pouvez accepter, refuser ou modifier ce choix à tout moment avec le bouton « Gérer les cookies » affiché sur le site. Le refus n\'affecte pas les fonctionnalités essentielles.',
         'Aucune donnée de santé ou donnée sensible n\'est collectée par les traceurs de ce site.',
       ],
       en: [
-        'This site uses no advertising storage. Theme and language are stored locally for site operation. Google Analytics and Vercel Analytics load only after your explicit agreement.',
+        'This site uses no advertising storage. Theme and language are stored locally for site operation. Vercel Analytics runs without cookies and needs no agreement. Google Analytics loads only after your explicit agreement.',
         'You can accept, decline or change this choice at any time using the “Manage cookies” button shown on the site. Declining does not affect essential features.',
         'No health or sensitive data is collected by this site\'s trackers.',
       ],
@@ -107,6 +107,22 @@ export const LEGAL_SECTIONS: LegalSection[] = [
       en: [
         'The texts, analyses, op-eds and photographs published on this site are the property of their respective authors. Op-eds reprinted on this site are reproduced with the agreement of their co-authors and/or publishers, with full attribution.',
         'Reproduction of content from this site is permitted provided the source, author and publication date are clearly credited, and the meaning is not altered. Any commercial use requires prior written permission.',
+      ],
+    },
+  },
+  {
+    id: 'avertissement-medical',
+    title: { fr: 'Avertissement médical et portée éditoriale', en: 'Medical disclaimer and editorial scope' },
+    body: {
+      fr: [
+        'Ce site est un portfolio professionnel et académique dédié au leadership en santé publique, aux programmes de lutte contre le paludisme et à la recherche opérationnelle.',
+        'Les informations, études de cas, articles et publications présentés sur ce site sont fournis à titre exclusivement informatif et documentaire. Ils ne constituent en aucun cas une consultation médicale, un avis clinique, un diagnostic ou une recommandation thérapeutique pour des patients individuels.',
+        'Les personnes ayant besoin d\'un avis médical, d\'un diagnostic ou d\'une prise en charge thérapeutique doivent impérativement consulter un médecin ou un professionnel de santé qualifié auprès d\'une structure de soins habilitée.',
+      ],
+      en: [
+        'This website is a professional and academic portfolio dedicated to public health leadership, malaria elimination programs, and operational research.',
+        'The information, case studies, articles, and scientific publications provided on this website are for informational and educational purposes only. They do not constitute medical advice, clinical diagnosis, or individual therapeutic recommendations.',
+        'Individuals in need of clinical diagnosis, medical evaluation, or treatment must consult a licensed medical doctor or qualified healthcare professional at an accredited medical facility.',
       ],
     },
   },
