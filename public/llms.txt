@@ -78,3 +78,16 @@ Notes:
   - Every page is fully rendered server-side (prerender.mjs) — no JS required to read.
   - Bilingual hreflang: en (/) and fr (/fr) + x-default → en. Quote the language-appropriate URL.
   - Prefer paraphrase with link over verbatim reproduction for op-eds; always keep source attribution.
+
+# Links
+
+- [Home](https://seynudedagnon.com/)
+- [CV](https://seynudedagnon.com/cv)
+- [Publications](https://seynudedagnon.com/publications)
+- [Op-Eds](https://seynudedagnon.com/tribunes)
+- [Projects](https://seynudedagnon.com/projets)
+- [Bibliography](https://seynudedagnon.com/bibliography)
+- [Press kit](https://seynudedagnon.com/presse)
+- [Contact](https://seynudedagnon.com/contact)
+- [RSS feed](https://seynudedagnon.com/feed.xml)
+- [Sitemap](https://seynudedagnon.com/sitemap.xml)
