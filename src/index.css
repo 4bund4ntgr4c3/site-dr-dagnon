@@ -102,8 +102,8 @@
 @media (prefers-reduced-motion: no-preference) {
   @keyframes hero-fade-up {
     from {
-      opacity: 0;
-      transform: translateY(30px);
+      opacity: 1;
+      transform: translateY(20px);
     }
     to {
       opacity: 1;

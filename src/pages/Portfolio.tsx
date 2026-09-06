@@ -54,7 +54,7 @@ export default function Portfolio() {
               {EXPERIENCE[lang].slice(0, 3).map((e) => (
                 <div key={e.org} className="rounded-xl border border-pine-900/10 bg-white p-4">
                   <p className="text-sm font-semibold text-pine-950">{e.role} — {e.org}</p>
-                  <p className="text-xs text-pine-900/60">{e.period}</p>
+                  <p className="text-xs text-pine-900/75">{e.period}</p>
                   <p className="mt-1 text-sm text-pine-900/70 line-clamp-2">{e.text}</p>
                 </div>
               ))}
@@ -67,7 +67,7 @@ export default function Portfolio() {
               {projs.map((p) => (
                 <Link key={p.slug} to={localePath(lang, `/projets/${p.slug}`)} className="rounded-xl border border-pine-900/10 bg-white p-4 hover:border-gold-500/30">
                   <p className="text-sm font-semibold text-pine-950">{p.title[lang]}</p>
-                  <p className="text-xs text-pine-900/60">{p.location[lang]} · {p.period[lang]}</p>
+                  <p className="text-xs text-pine-900/75">{p.location[lang]} · {p.period[lang]}</p>
                 </Link>
               ))}
             </div>
@@ -79,7 +79,7 @@ export default function Portfolio() {
               {pubs.map((p) => (
                 <div key={p.id} className="rounded-xl border border-pine-900/5 bg-white px-4 py-3">
                   <p className="text-sm font-medium text-pine-950">{p.title[lang]}</p>
-                  <p className="text-xs text-pine-900/60">{p.journal[lang]} · {p.year}</p>
+                  <p className="text-xs text-pine-900/75">{p.journal[lang]} · {p.year}</p>
                 </div>
               ))}
             </div>

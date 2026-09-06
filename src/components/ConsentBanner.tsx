@@ -35,14 +35,19 @@ export function ConsentBanner() {
   return (
     <div role="region" aria-label={lang === 'fr' ? 'Préférences de cookies' : 'Cookie preferences'} className="fixed inset-x-0 bottom-0 z-[90] p-4">
       <div className="mx-auto flex max-w-3xl flex-col gap-3 rounded-2xl border border-pine-900/10 bg-white p-5 shadow-xl sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-[13px] leading-relaxed text-pine-900/80">
-          {lang === 'fr'
-            ? 'Avec votre accord, nous utilisons Google Analytics pour mesurer l’audience et améliorer le site. Une mesure sans cookies (Vercel Analytics) fonctionne sans accord. Aucun stockage publicitaire n’est activé.'
-            : 'With your permission, we use Google Analytics to measure traffic and improve the site. Cookieless measurement (Vercel Analytics) runs without permission. Advertising storage is never enabled.'}
-          <a href={lang === 'fr' ? '/fr/legal' : '/legal'} className="ml-1 underline decoration-gold-500/50 underline-offset-4 hover:text-gold-700">
-            {lang === 'fr' ? 'En savoir plus sur les cookies' : 'Learn more about our cookie policy'}
-          </a>
-        </p>
+        <div className="text-xs text-pine-900/80 leading-relaxed">
+          <p className="font-semibold text-pine-950">
+            {lang === 'fr' ? 'Mesure d’audience & cookies' : 'Audience measurement & cookies'}
+          </p>
+          <p className="mt-1">
+            {lang === 'fr'
+              ? 'Avec votre accord, Google Analytics mesure l’audience. Vercel Analytics fonctionne sans cookies. Aucun profilage publicitaire.'
+              : 'With your permission, Google Analytics measures audience. Vercel Analytics runs cookieless. No ad profiling.'}
+            <a href={lang === 'fr' ? '/fr/legal' : '/legal'} className="ml-1 underline decoration-gold-500/50 underline-offset-4 hover:text-gold-700">
+              {lang === 'fr' ? 'En savoir plus' : 'Learn more'}
+            </a>
+          </p>
+        </div>
         <div className="flex shrink-0 gap-2">
           <button type="button" onClick={deny} className="rounded-full border border-pine-900/15 px-4 py-2 text-sm font-semibold text-pine-900 hover:bg-pine-50">
             {lang === 'fr' ? 'Refuser' : 'Decline'}

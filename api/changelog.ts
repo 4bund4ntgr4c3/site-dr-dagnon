@@ -39,15 +39,33 @@ export const CHANGELOG_HEADER: ChangelogHeader = {
     en: 'Official Website & Institutional Platform — seynudedagnon.com',
   },
   stats: [
-    { value: { fr: '332', en: '332' }, label: { fr: 'commits', en: 'commits' } },
-    { value: { fr: '43', en: '43' }, label: { fr: 'versions', en: 'versions' } },
-    { value: { fr: '389', en: '389' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
+    { value: { fr: '333', en: '333' }, label: { fr: 'commits', en: 'commits' } },
+    { value: { fr: '44', en: '44' }, label: { fr: 'versions', en: 'versions' } },
+    { value: { fr: '409', en: '409' }, label: { fr: 'tests automatisés', en: 'automated tests' } },
     { value: { fr: '136', en: '136' }, label: { fr: 'pages prérendues (128 sitemap)', en: 'prerendered pages (128 sitemap)' } },
     { value: { fr: '16 juil – 6 sept 2026', en: '16 Jul – 6 Sep 2026' } },
   ],
 };
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
+  {
+    date: '2026-09-06',
+    version: '4.2',
+    label: { fr: '6 septembre 2026', en: '6 September 2026' },
+    title: { fr: 'Audit SEO & Core Web Vitals, Élimination du Hijacking LCP Mobile & Accessibilité WCAG AA 100%', en: 'SEO & Core Web Vitals Audit, Mobile LCP Hijacking Elimination & 100% WCAG AA A11y' },
+    fr: [
+      'Optimisation Mobile LCP Bannière Consentement — Restructuration du texte de consentement en blocs hiérarchisés compacts, réduisant la surface de rendu sous le seuil du titre Hero (~13 000 px² vs ~24 000 px²). Élimination totale du détournement du candidat LCP mobile lors de l’hydratation React (LCP stabilisé à ~630 ms).',
+      'Accessibilité & Conformité WCAG AA — Mise en conformité stricte des ratios de contraste texte (passage de 60% à 75% d’opacité sur fond blanc dans `/offline`, `/portfolio` et `ProjectsMap`). Correction de l’arbre sémantique SVG dans `ProjectsMap` (suppression du conflit `nested-interactive` via navigation programmatique et masquage d’assistance de la carte graphique au profit de la liste accessible).',
+      'Affichage & Résilience sans JavaScript — Maintien de l’opacité native à 100% lors de l’animation de montée du Hero, garantissant la visibilité instantanée du H1 pour les robots d’indexation et utilisateurs sans JavaScript.',
+      'Validation Intégrale de la Suite de Tests — 100% de succès sur les 409 tests automatisés répartis sur 17 suites (accessibilité Axe-core sur l’ensemble des 136 routes, prérendu SSR, performance Core Web Vitals, budgets SERP et intégrité sémantique).',
+    ],
+    en: [
+      'Mobile LCP Consent Banner Optimization — Refactored consent banner layout into structured, concise text blocks, reducing bounding surface below the Hero heading threshold (~13,000 px² vs ~24,000 px²). Completely eliminated mobile LCP hijacking during React hydration (mobile LCP stabilized at ~630ms).',
+      'WCAG AA Accessibility Compliance — Enforced strict color contrast ratios (upgraded text opacity from 60% to 75% on white backgrounds across `/offline`, `/portfolio`, and `ProjectsMap`). Fixed SVG semantic accessibility tree in `ProjectsMap` (resolved `nested-interactive` violation via programmatic navigation and assistive decoupling in favor of the structured adjacent list).',
+      'Zero-JS Visibility & Resilience — Preserved native 100% opacity during the Hero slide-up animation, guaranteeing immediate H1 paint and visibility for search engine crawlers and users without JavaScript.',
+      'Complete Test Suite Verification — 100% pass rate across all 409 automated tests in 17 suites (Axe-core accessibility across all 136 routes, SSR prerendering, Core Web Vitals performance budgets, SERP metadata, and semantic integrity).',
+    ],
+  },
   {
     date: '2026-09-06',
     version: '4.1',

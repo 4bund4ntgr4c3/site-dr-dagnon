@@ -37,7 +37,7 @@ export default function Offline() {
                 <div key={c.title} className="rounded-2xl border border-pine-900/10 bg-white p-5 text-center">
                   <c.icon size={20} className="mx-auto text-gold-600" />
                   <p className="mt-2 text-sm font-semibold text-pine-950">{c.title}</p>
-                  <p className="text-xs text-pine-900/60">{c.desc}</p>
+                  <p className="text-xs text-pine-900/75">{c.desc}</p>
                 </div>
               ))}
             </div>
