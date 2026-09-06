@@ -112,6 +112,10 @@ and writes WebP at quality 72 — chosen by measuring these files, not by
 habit; the reasoning is in `scripts/optimize-images.mjs`. Deploys never depend
 on `sharp` being installable.
 
+**AI discovery and search engines are strictly partitioned.** `/llms.txt` provides markdown navigation for LLMs. Search and citation agents (`OAI-SearchBot`, `ChatGPT-User`, `PerplexityBot`) are explicitly allowed in `public/robots.txt` under RFC 9309 rules, while raw model training scrapers (`GPTBot`, `ClaudeBot`, `Google-Extended`, etc.) are disallowed.
+
+**Privacy-first telemetry.** Vercel Web Analytics and Speed Insights collect anonymous performance and Core Web Vitals metrics without cookies or personal tracking, ensuring full GDPR compliance without an invasive consent gate.
+
 ## After deploying
 
 ```bash
