@@ -1,9 +1,9 @@
-import { MotionConfig } from 'framer-motion';
 import { lazy, Suspense } from 'react';
 import { Hero } from '@/sections/Hero';
-import { Stats } from '@/sections/Stats';
 import { About } from '@/sections/About';
 import { useSectionTracking } from '@/hooks/useSectionTracking';
+
+const Stats = lazy(() => import('@/sections/Stats').then((m) => ({ default: m.Stats })));
 
 const Expertise = lazy(() => import('@/sections/Expertise').then((m) => ({ default: m.Expertise })));
 const Experience = lazy(() => import('@/sections/Experience').then((m) => ({ default: m.Experience })));
@@ -23,57 +23,53 @@ const SectionFallback = () => <div className="h-64 animate-pulse bg-pine-950/5" 
 export default function Home() {
   useSectionTracking();
   return (
-    /* reducedMotion="user" makes the Hero and Stats animations respect
-       prefers-reduced-motion. It lives here, in the Home chunk, so the
-       framer-motion import stays out of the main bundle (see AfricaMap —
-       the Footer's copy of the same logic cannot import framer-motion). */
-    <MotionConfig reducedMotion="user">
-      <main id="main-content" tabIndex={-1} className="min-h-screen bg-ivory">
-        <Hero />
+    <main id="main-content" tabIndex={-1} className="min-h-screen bg-ivory">
+      <Hero />
+      <Suspense fallback={<SectionFallback />}>
         <Stats />
-        <About />
-        <Suspense fallback={<SectionFallback />}>
-          <Expertise />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Experience />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Achievements />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Education />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Publications />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <LatestTribune />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <PressQuotes />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Media />
-        </Suspense>
-        <section className="bg-pine-50 py-12 lg:py-16">
-          <div className="mx-auto max-w-4xl px-5 lg:px-8">
-            <Suspense fallback={<SectionFallback />}>
-              <PodcastSection />
-            </Suspense>
-          </div>
-        </section>
-        <section className="bg-white py-12 lg:py-16">
-          <div className="mx-auto max-w-4xl px-5 lg:px-8">
-            <Suspense fallback={<SectionFallback />}>
-              <LinkedinFeed />
-            </Suspense>
-          </div>
-        </section>
-        <Suspense fallback={<SectionFallback />}>
-          <Newsletter />
-        </Suspense>
-      </main>
-    </MotionConfig>
+      </Suspense>
+      <About />
+      <Suspense fallback={<SectionFallback />}>
+        <Expertise />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Experience />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Achievements />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Education />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Publications />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <LatestTribune />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <PressQuotes />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Media />
+      </Suspense>
+      <section className="bg-pine-50 py-12 lg:py-16">
+        <div className="mx-auto max-w-4xl px-5 lg:px-8">
+          <Suspense fallback={<SectionFallback />}>
+            <PodcastSection />
+          </Suspense>
+        </div>
+      </section>
+      <section className="bg-white py-12 lg:py-16">
+        <div className="mx-auto max-w-4xl px-5 lg:px-8">
+          <Suspense fallback={<SectionFallback />}>
+            <LinkedinFeed />
+          </Suspense>
+        </div>
+      </section>
+      <Suspense fallback={<SectionFallback />}>
+        <Newsletter />
+      </Suspense>
+    </main>
   );
 }

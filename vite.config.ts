@@ -16,12 +16,17 @@ export default defineConfig(({ command }) => ({
     },
   },
   build: {
+    // No polyfill: modern browsers support <link rel="modulepreload"> natively.
+    // Saves one extra request (vite/preload-helper) on every navigation.
+    modulePreload: { polyfill: false },
     rollupOptions: {
       output: {
         // Group tiny many-file packages into single requests instead of one per
         // icon/component. lucide-react alone would emit ~30 requests; react +
         // router + framer-motion dominate the main vendor chunk (~415 kB
         // before this split). Gzip compresses each grouped chunk very well.
+        // Hero now CSS-only, so motion is only needed for below-fold Stats
+        // (lazy) and a few toolkits — not preloaded for LCP.
         manualChunks(id) {
           if (id.includes("node_modules/lucide-react")) return "lucide-icons";
           if (id.includes("node_modules/framer-motion")) return "motion";

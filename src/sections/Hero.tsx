@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { motion } from 'framer-motion';
 import { Linkedin, Mail, ArrowDown, MapPin, Award, BookOpen, Play, X } from 'lucide-react';
 import { LINKS } from '@/data/content';
 import { PUB_ITEMS } from '@/data/publications';
@@ -8,11 +7,6 @@ import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
 import { NameHighlight } from '@/components/NameHighlight';
 import { localePath } from '@/i18n/routing';
-
-const fadeUp = {
-  initial: false as const,
-  animate: { opacity: 1, y: 0 },
-};
 
 const YOUTUBE_VIDEO_ID = '0fRIhntULPg';
 
@@ -47,43 +41,36 @@ export function Hero() {
         <div className="grid items-center gap-14 lg:grid-cols-[1.25fr_1fr]">
           {/* Left : text */}
           <div>
-            <motion.div {...fadeUp} transition={{ duration: 0.7, ease: 'easeOut' }}>
+            <div className="hero-reveal" style={{ animationDelay: '0s' }}>
               <span className="inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-300">
                 <span className="h-1.5 w-1.5 rounded-full bg-gold-400" />
                 {t['hero.badge']}
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h1
-              {...fadeUp}
-              transition={{ duration: 0.7, delay: 0.12, ease: 'easeOut' }}
-              className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-ivory sm:text-6xl lg:text-[4.4rem]"
+            <h1
+              className="hero-reveal mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-ivory sm:text-6xl lg:text-[4.4rem]"
+              style={{ animationDelay: '0.08s' }}
             >
               <NameHighlight />
               <span className="sr-only"> — {lang === 'fr' ? 'Leader en santé publique et élimination du paludisme en Afrique' : 'Public Health & Malaria Program Leader in Africa'}</span>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              {...fadeUp}
-              transition={{ duration: 0.7, delay: 0.22, ease: 'easeOut' }}
-              className="mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl"
+            <p
+              className="hero-reveal mt-4 font-display text-lg italic text-pine-200/90 sm:text-xl"
+              style={{ animationDelay: '0.16s' }}
             >
               {t['hero.subtitle']}
-            </motion.p>
+            </p>
 
-            <motion.p
-              {...fadeUp}
-              transition={{ duration: 0.7, delay: 0.32, ease: 'easeOut' }}
-              className="mt-6 max-w-xl text-[15px] leading-relaxed text-pine-100/75 sm:text-base"
+            <p
+              className="hero-reveal mt-6 max-w-xl text-[15px] leading-relaxed text-pine-100/75 sm:text-base"
+              style={{ animationDelay: '0.24s' }}
             >
               {t['hero.intro']}
-            </motion.p>
+            </p>
 
-            <motion.div
-              {...fadeUp}
-              transition={{ duration: 0.7, delay: 0.42, ease: 'easeOut' }}
-              className="mt-9 flex flex-wrap items-center gap-4"
-            >
+            <div className="hero-reveal mt-9 flex flex-wrap items-center gap-4" style={{ animationDelay: '0.32s' }}>
               <a
                 href={LINKS.linkedin}
                 target="_blank"
@@ -100,12 +87,11 @@ export function Hero() {
                 <Mail size={17} />
                 {t['hero.contact']}
               </Link>
-            </motion.div>
+            </div>
 
-            <motion.div
-              {...fadeUp}
-              transition={{ duration: 0.7, delay: 0.52, ease: 'easeOut' }}
-              className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-[13px] text-pine-100/85"
+            <div
+              className="hero-reveal mt-10 flex flex-wrap gap-x-8 gap-y-3 text-[13px] text-pine-100/85"
+              style={{ animationDelay: '0.40s' }}
             >
               <span className="inline-flex items-center gap-2">
                 <MapPin size={14} className="text-gold-400" /> {t['hero.based']}
@@ -116,22 +102,15 @@ export function Hero() {
               <span className="inline-flex items-center gap-2">
                 <BookOpen size={14} className="text-gold-400" /> {t['hero.pubs'].replace('{count}', String(pubCount))}
               </span>
-            </motion.div>
+            </div>
           </div>
 
           {/* Right : visual composition */}
-          <motion.div
-            initial={false}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto w-full max-w-[400px]"
-          >
+          <div className="hero-visual relative mx-auto w-full max-w-[400px]" style={{ animationDelay: '0.20s' }}>
             <div className="relative overflow-hidden rounded-[2rem] border-2 border-gold-400/70 shadow-2xl shadow-black/40">
               {/* photo layer */}
-              <motion.div
-                className="relative cursor-pointer"
-                animate={{ opacity: showVideo ? 0 : 1 }}
-                transition={{ duration: 0.6, ease: 'easeInOut' }}
+              <div
+                className="relative cursor-pointer transition-opacity duration-600 ease-in-out"
                 onClick={() => setShowVideo(true)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
@@ -142,41 +121,38 @@ export function Hero() {
                 role="button"
                 tabIndex={showVideo ? -1 : 0}
                 aria-label={t['hero.videoTitle']}
-                style={{ pointerEvents: showVideo ? 'none' : 'auto' }}
+                style={{ opacity: showVideo ? 0 : 1, pointerEvents: showVideo ? 'none' : 'auto' }}
               >
                 <img
                   src="/dr-seynude-dagnon.webp"
+                  srcSet="/dr-seynude-dagnon-400.webp 400w, /dr-seynude-dagnon.webp 694w"
+                  sizes="(max-width: 1024px) 368px, 400px"
                   alt={lang === 'fr' ? 'Portrait du Dr. Seynudé Jean-Fortuné Dagnon' : 'Portrait of Dr. Seynudé Jean-Fortuné Dagnon'}
                   width={400}
-                  height={400}
+                  height={599}
                   fetchPriority="high"
-                  className="w-full object-cover"
+                  decoding="async"
+                  className="w-full object-cover aspect-[400/599]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-pine-950/70 via-pine-950/10 to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex h-16 w-16 items-center justify-center rounded-full bg-gold-500/90 shadow-lg shadow-gold-600/30 backdrop-blur-sm"
-                  >
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gold-500/90 shadow-lg shadow-gold-600/30 backdrop-blur-sm transition-transform duration-200 hover:scale-110 active:scale-95">
                     <Play size={28} className="ml-1 text-pine-950" fill="currentColor" />
-                  </motion.div>
+                  </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* video layer */}
-              <motion.div
-                className="absolute inset-0"
-                animate={{ opacity: showVideo ? 1 : 0 }}
-                transition={{ duration: 0.6, ease: 'easeInOut' }}
-                style={{ pointerEvents: showVideo ? 'auto' : 'none' }}
+              <div
+                className="absolute inset-0 transition-opacity duration-600 ease-in-out"
+                style={{ opacity: showVideo ? 1 : 0, pointerEvents: showVideo ? 'auto' : 'none' }}
               >
-                    <button
-                      type="button"
-                      onClick={() => setShowVideo(false)}
-                      className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-pine-950/80 text-ivory transition-colors hover:bg-gold-500 hover:text-pine-950"
-                      aria-label={t['media.close']}
-                    >
+                <button
+                  type="button"
+                  onClick={() => setShowVideo(false)}
+                  className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-pine-950/80 text-ivory transition-colors hover:bg-gold-500 hover:text-pine-950"
+                  aria-label={t['media.close']}
+                >
                   <X size={16} />
                 </button>
                 {/* mounted on demand: otherwise the YouTube player is fetched
@@ -190,42 +166,31 @@ export function Hero() {
                     allowFullScreen
                   />
                 )}
-              </motion.div>
+              </div>
             </div>
 
             {/* floating badges */}
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -left-4 top-6 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md"
-            >
+            <div className="hero-float absolute -left-4 top-6 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md">
               <p className="font-display text-xl font-semibold text-gold-400">17+</p>
               <p className="text-[9px] uppercase tracking-widest text-pine-100/70">{t['hero.exp']}</p>
-            </motion.div>
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-              className="absolute -bottom-5 -right-4 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md"
-            >
+            </div>
+            <div className="hero-float-reverse absolute -bottom-5 -right-4 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md">
               <p className="font-display text-xl font-semibold text-gold-400">27</p>
               <p className="text-[9px] uppercase tracking-widest text-pine-100/70">{t['hero.pmi']}</p>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
 
         {/* scroll cue */}
-        <motion.a
+        <a
           href="#apropos"
-          initial={false}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-pine-100/85 transition-colors hover:text-gold-400 md:flex"
+          className="hero-scroll absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-pine-100/85 transition-colors hover:text-gold-400 md:flex"
         >
           <span className="text-[10px] uppercase tracking-[0.3em]">{t['hero.discover']}</span>
-          <motion.span animate={{ y: [0, 6, 0] }} transition={{ duration: 1.8, repeat: Infinity }}>
+          <span className="hero-bounce">
             <ArrowDown size={16} />
-          </motion.span>
-        </motion.a>
+          </span>
+        </a>
       </div>
     </section>
   );

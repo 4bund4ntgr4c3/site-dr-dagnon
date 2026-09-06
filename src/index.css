@@ -96,6 +96,90 @@
   }
 }
 
+/* Hero — CSS-only reveal to keep framer-motion out of the critical path.
+   Lighthouse flagged LCP 6.4s with elementRenderDelay 4251ms because the H1
+   waited for motion-DrlOdhd4.js (134KB). These keyframes run without JS. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes hero-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes hero-scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes hero-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  @keyframes hero-float-reverse {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(8px);
+    }
+  }
+  @keyframes hero-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(6px);
+    }
+  }
+  .hero-reveal {
+    animation: hero-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .hero-visual {
+    animation: hero-scale-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .hero-float {
+    animation: hero-float 4.5s ease-in-out infinite;
+  }
+  .hero-float-reverse {
+    animation: hero-float-reverse 5s ease-in-out 1s infinite;
+  }
+  .hero-bounce {
+    display: inline-flex;
+    animation: hero-bounce 1.8s ease-in-out infinite;
+  }
+  .hero-scroll {
+    animation: hero-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.2s both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-reveal,
+  .hero-visual,
+  .hero-float,
+  .hero-float-reverse,
+  .hero-bounce,
+  .hero-scroll {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
