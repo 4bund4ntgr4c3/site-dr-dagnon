@@ -26,7 +26,7 @@ export function LinkedinFeed() {
             </span>
             <span className="min-w-0 flex-1">
               <span className="block text-sm font-medium leading-tight text-pine-950">{p.text[lang]}</span>
-              <span className="block text-xs text-pine-900/60">{p.date}</span>
+              <span className="block text-xs font-medium text-pine-800">{p.date}</span>
             </span>
             <ExternalLink size={14} className="mt-1 shrink-0 text-pine-900/25" />
           </a>

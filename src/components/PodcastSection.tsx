@@ -95,14 +95,15 @@ export function PodcastSection() {
 
   return (
     <div className="rounded-2xl border border-pine-900/10 bg-white p-6 shadow-card sm:p-8">
-      {/* Hidden HTML5 Audio Element */}
+      {/* Hidden HTML5 Audio Element — preload none to avoid 22MB fetch on page load (Lighthouse ERR_CONNECTION_FAILED) */}
       <audio
         ref={audioRef}
         src="/podcast-ndep-ep5.mp3"
-        preload="metadata"
+        preload="none"
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
         onEnded={() => setIsPlaying(false)}
+        onError={() => {}}
       />
 
       {/* Header */}
@@ -306,7 +307,7 @@ export function PodcastSection() {
           <p className="text-xs font-bold uppercase tracking-wider text-pine-700">
             {isFr ? 'Lectures audio des tribunes' : 'Audio op-ed readings'}
           </p>
-          <span className="text-[11px] text-pine-900/75">
+          <span className="text-[11px] font-medium text-pine-800">
             {isFr ? 'Flux RSS 2.0 + Apple/Spotify' : 'RSS 2.0 + Apple/Spotify feed'}
           </span>
         </div>
@@ -325,7 +326,7 @@ export function PodcastSection() {
                 <span className="block line-clamp-2 break-words pr-1 text-sm font-semibold leading-snug text-pine-950 group-hover:text-gold-700">
                   {t.title[lang]}
                 </span>
-                <span className="block truncate pr-1 text-xs text-pine-900/75">
+                <span className="block truncate pr-1 text-xs font-medium text-pine-800">
                   {t.date} · {t.source.name}
                 </span>
               </span>

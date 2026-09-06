@@ -22,6 +22,36 @@
   },
   "redirects": [
     {
+      "source": "/articles",
+      "destination": "/publications",
+      "permanent": true
+    },
+    {
+      "source": "/fr/articles",
+      "destination": "/fr/publications",
+      "permanent": true
+    },
+    {
+      "source": "/en/articles",
+      "destination": "/publications",
+      "permanent": true
+    },
+    {
+      "source": "/blog",
+      "destination": "/tribunes",
+      "permanent": true
+    },
+    {
+      "source": "/fr/blog",
+      "destination": "/fr/tribunes",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog",
+      "destination": "/tribunes",
+      "permanent": true
+    },
+    {
       "source": "/media/publication",
       "destination": "/media",
       "permanent": true
@@ -155,7 +185,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400, stale-while-revalidate=604800"
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     },
@@ -338,543 +368,543 @@
     },
     {
       "source": "/contact",
-      "destination": "/contact/index.html"
+      "destination": "/contact/index"
     },
     {
       "source": "/cv",
-      "destination": "/cv/index.html"
+      "destination": "/cv/index"
     },
     {
       "source": "/media",
-      "destination": "/media/index.html"
+      "destination": "/media/index"
     },
     {
       "source": "/media/interview",
-      "destination": "/media/interview/index.html"
+      "destination": "/media/interview/index"
     },
     {
       "source": "/media/conference",
-      "destination": "/media/conference/index.html"
+      "destination": "/media/conference/index"
     },
     {
       "source": "/media/speaking",
-      "destination": "/media/speaking/index.html"
+      "destination": "/media/speaking/index"
     },
     {
       "source": "/media/press",
-      "destination": "/media/press/index.html"
+      "destination": "/media/press/index"
     },
     {
       "source": "/media/community",
-      "destination": "/media/community/index.html"
+      "destination": "/media/community/index"
     },
     {
       "source": "/publications",
-      "destination": "/publications/index.html"
+      "destination": "/publications/index"
     },
     {
       "source": "/tribunes",
-      "destination": "/tribunes/index.html"
+      "destination": "/tribunes/index"
     },
     {
       "source": "/tribunes/from-malaria-control-to-elimination",
-      "destination": "/tribunes/from-malaria-control-to-elimination/index.html"
+      "destination": "/tribunes/from-malaria-control-to-elimination/index"
     },
     {
       "source": "/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
-      "destination": "/tribunes/de-la-lutte-a-lelimination-afrique-francophone/index.html"
+      "destination": "/tribunes/de-la-lutte-a-lelimination-afrique-francophone/index"
     },
     {
       "source": "/tribunes/financement-direct-g2g-souverainete-sanitaire",
-      "destination": "/tribunes/financement-direct-g2g-souverainete-sanitaire/index.html"
+      "destination": "/tribunes/financement-direct-g2g-souverainete-sanitaire/index"
     },
     {
       "source": "/projets",
-      "destination": "/projets/index.html"
+      "destination": "/projets/index"
     },
     {
       "source": "/projets/digitalisation-milda-benin",
-      "destination": "/projets/digitalisation-milda-benin/index.html"
+      "destination": "/projets/digitalisation-milda-benin/index"
     },
     {
       "source": "/projets/recherche-cps-smc",
-      "destination": "/projets/recherche-cps-smc/index.html"
+      "destination": "/projets/recherche-cps-smc/index"
     },
     {
       "source": "/projets/malariya-pi-burundi",
-      "destination": "/projets/malariya-pi-burundi/index.html"
+      "destination": "/projets/malariya-pi-burundi/index"
     },
     {
       "source": "/projets/arm3-systeme-information-benin",
-      "destination": "/projets/arm3-systeme-information-benin/index.html"
+      "destination": "/projets/arm3-systeme-information-benin/index"
     },
     {
       "source": "/projets/irs-nord-benin",
-      "destination": "/projets/irs-nord-benin/index.html"
+      "destination": "/projets/irs-nord-benin/index"
     },
     {
       "source": "/projets/reponse-epidemies-benin",
-      "destination": "/projets/reponse-epidemies-benin/index.html"
+      "destination": "/projets/reponse-epidemies-benin/index"
     },
     {
       "source": "/projets/contrat-g2g-pnlp-benin",
-      "destination": "/projets/contrat-g2g-pnlp-benin/index.html"
+      "destination": "/projets/contrat-g2g-pnlp-benin/index"
     },
     {
       "source": "/agenda",
-      "destination": "/agenda/index.html"
+      "destination": "/agenda/index"
     },
     {
       "source": "/presse",
-      "destination": "/presse/index.html"
+      "destination": "/presse/index"
     },
     {
       "source": "/inviter",
-      "destination": "/inviter/index.html"
+      "destination": "/inviter/index"
     },
     {
       "source": "/collaborate",
-      "destination": "/collaborate/index.html"
+      "destination": "/collaborate/index"
     },
     {
       "source": "/newsletter",
-      "destination": "/newsletter/index.html"
+      "destination": "/newsletter/index"
     },
     {
       "source": "/impact",
-      "destination": "/impact/index.html"
+      "destination": "/impact/index"
     },
     {
       "source": "/legal",
-      "destination": "/legal/index.html"
+      "destination": "/legal/index"
     },
     {
       "source": "/accessibility",
-      "destination": "/accessibility/index.html"
+      "destination": "/accessibility/index"
     },
     {
       "source": "/bibliography",
-      "destination": "/bibliography/index.html"
+      "destination": "/bibliography/index"
     },
     {
       "source": "/portfolio",
-      "destination": "/portfolio/index.html"
+      "destination": "/portfolio/index"
     },
     {
       "source": "/offline",
-      "destination": "/offline/index.html"
+      "destination": "/offline/index"
     },
     {
       "source": "/parcours",
-      "destination": "/parcours/index.html"
+      "destination": "/parcours/index"
     },
     {
       "source": "/publications-pdf",
-      "destination": "/publications-pdf/index.html"
+      "destination": "/publications-pdf/index"
     },
     {
       "source": "/podcasts",
-      "destination": "/podcasts/index.html"
+      "destination": "/podcasts/index"
     },
     {
       "source": "/connect",
-      "destination": "/connect/index.html"
+      "destination": "/connect/index"
     },
     {
       "source": "/toolkit",
-      "destination": "/toolkit/index.html"
+      "destination": "/toolkit/index"
     },
     {
       "source": "/mentorat",
-      "destination": "/mentorat/index.html"
+      "destination": "/mentorat/index"
     },
     {
       "source": "/fr",
-      "destination": "/fr/index.html"
+      "destination": "/fr/index"
     },
     {
       "source": "/fr/contact",
-      "destination": "/fr/contact/index.html"
+      "destination": "/fr/contact/index"
     },
     {
       "source": "/fr/cv",
-      "destination": "/fr/cv/index.html"
+      "destination": "/fr/cv/index"
     },
     {
       "source": "/fr/media",
-      "destination": "/fr/media/index.html"
+      "destination": "/fr/media/index"
     },
     {
       "source": "/fr/media/interview",
-      "destination": "/fr/media/interview/index.html"
+      "destination": "/fr/media/interview/index"
     },
     {
       "source": "/fr/media/conference",
-      "destination": "/fr/media/conference/index.html"
+      "destination": "/fr/media/conference/index"
     },
     {
       "source": "/fr/media/speaking",
-      "destination": "/fr/media/speaking/index.html"
+      "destination": "/fr/media/speaking/index"
     },
     {
       "source": "/fr/media/press",
-      "destination": "/fr/media/press/index.html"
+      "destination": "/fr/media/press/index"
     },
     {
       "source": "/fr/media/community",
-      "destination": "/fr/media/community/index.html"
+      "destination": "/fr/media/community/index"
     },
     {
       "source": "/fr/publications",
-      "destination": "/fr/publications/index.html"
+      "destination": "/fr/publications/index"
     },
     {
       "source": "/fr/tribunes",
-      "destination": "/fr/tribunes/index.html"
+      "destination": "/fr/tribunes/index"
     },
     {
       "source": "/fr/tribunes/from-malaria-control-to-elimination",
-      "destination": "/fr/tribunes/from-malaria-control-to-elimination/index.html"
+      "destination": "/fr/tribunes/from-malaria-control-to-elimination/index"
     },
     {
       "source": "/fr/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
-      "destination": "/fr/tribunes/de-la-lutte-a-lelimination-afrique-francophone/index.html"
+      "destination": "/fr/tribunes/de-la-lutte-a-lelimination-afrique-francophone/index"
     },
     {
       "source": "/fr/tribunes/financement-direct-g2g-souverainete-sanitaire",
-      "destination": "/fr/tribunes/financement-direct-g2g-souverainete-sanitaire/index.html"
+      "destination": "/fr/tribunes/financement-direct-g2g-souverainete-sanitaire/index"
     },
     {
       "source": "/fr/projets",
-      "destination": "/fr/projets/index.html"
+      "destination": "/fr/projets/index"
     },
     {
       "source": "/fr/projets/digitalisation-milda-benin",
-      "destination": "/fr/projets/digitalisation-milda-benin/index.html"
+      "destination": "/fr/projets/digitalisation-milda-benin/index"
     },
     {
       "source": "/fr/projets/recherche-cps-smc",
-      "destination": "/fr/projets/recherche-cps-smc/index.html"
+      "destination": "/fr/projets/recherche-cps-smc/index"
     },
     {
       "source": "/fr/projets/malariya-pi-burundi",
-      "destination": "/fr/projets/malariya-pi-burundi/index.html"
+      "destination": "/fr/projets/malariya-pi-burundi/index"
     },
     {
       "source": "/fr/projets/arm3-systeme-information-benin",
-      "destination": "/fr/projets/arm3-systeme-information-benin/index.html"
+      "destination": "/fr/projets/arm3-systeme-information-benin/index"
     },
     {
       "source": "/fr/projets/irs-nord-benin",
-      "destination": "/fr/projets/irs-nord-benin/index.html"
+      "destination": "/fr/projets/irs-nord-benin/index"
     },
     {
       "source": "/fr/projets/reponse-epidemies-benin",
-      "destination": "/fr/projets/reponse-epidemies-benin/index.html"
+      "destination": "/fr/projets/reponse-epidemies-benin/index"
     },
     {
       "source": "/fr/projets/contrat-g2g-pnlp-benin",
-      "destination": "/fr/projets/contrat-g2g-pnlp-benin/index.html"
+      "destination": "/fr/projets/contrat-g2g-pnlp-benin/index"
     },
     {
       "source": "/fr/agenda",
-      "destination": "/fr/agenda/index.html"
+      "destination": "/fr/agenda/index"
     },
     {
       "source": "/fr/presse",
-      "destination": "/fr/presse/index.html"
+      "destination": "/fr/presse/index"
     },
     {
       "source": "/fr/inviter",
-      "destination": "/fr/inviter/index.html"
+      "destination": "/fr/inviter/index"
     },
     {
       "source": "/fr/collaborate",
-      "destination": "/fr/collaborate/index.html"
+      "destination": "/fr/collaborate/index"
     },
     {
       "source": "/fr/newsletter",
-      "destination": "/fr/newsletter/index.html"
+      "destination": "/fr/newsletter/index"
     },
     {
       "source": "/fr/impact",
-      "destination": "/fr/impact/index.html"
+      "destination": "/fr/impact/index"
     },
     {
       "source": "/fr/legal",
-      "destination": "/fr/legal/index.html"
+      "destination": "/fr/legal/index"
     },
     {
       "source": "/fr/accessibility",
-      "destination": "/fr/accessibility/index.html"
+      "destination": "/fr/accessibility/index"
     },
     {
       "source": "/fr/bibliography",
-      "destination": "/fr/bibliography/index.html"
+      "destination": "/fr/bibliography/index"
     },
     {
       "source": "/fr/portfolio",
-      "destination": "/fr/portfolio/index.html"
+      "destination": "/fr/portfolio/index"
     },
     {
       "source": "/fr/offline",
-      "destination": "/fr/offline/index.html"
+      "destination": "/fr/offline/index"
     },
     {
       "source": "/fr/parcours",
-      "destination": "/fr/parcours/index.html"
+      "destination": "/fr/parcours/index"
     },
     {
       "source": "/fr/publications-pdf",
-      "destination": "/fr/publications-pdf/index.html"
+      "destination": "/fr/publications-pdf/index"
     },
     {
       "source": "/fr/podcasts",
-      "destination": "/fr/podcasts/index.html"
+      "destination": "/fr/podcasts/index"
     },
     {
       "source": "/fr/connect",
-      "destination": "/fr/connect/index.html"
+      "destination": "/fr/connect/index"
     },
     {
       "source": "/fr/toolkit",
-      "destination": "/fr/toolkit/index.html"
+      "destination": "/fr/toolkit/index"
     },
     {
       "source": "/fr/mentorat",
-      "destination": "/fr/mentorat/index.html"
+      "destination": "/fr/mentorat/index"
     },
     {
       "source": "/admin",
-      "destination": "/index.html"
+      "destination": "/admin/index"
     },
     {
       "source": "/fr/admin",
-      "destination": "/index.html"
+      "destination": "/fr/admin/index"
     },
     {
       "source": "/changelog",
-      "destination": "/index.html"
+      "destination": "/changelog/index"
     },
     {
       "source": "/fr/changelog",
-      "destination": "/index.html"
+      "destination": "/fr/changelog/index"
     },
     {
       "source": "/newsletter/preferences",
-      "destination": "/index.html"
+      "destination": "/newsletter/preferences/index"
     },
     {
       "source": "/fr/newsletter/preferences",
-      "destination": "/index.html"
+      "destination": "/fr/newsletter/preferences/index"
     },
     {
       "source": "/media/community/nuit-paludisme-1",
-      "destination": "/media/community/nuit-paludisme-1/index.html"
+      "destination": "/media/community/nuit-paludisme-1/index"
     },
     {
       "source": "/media/community/nuit-paludisme-2",
-      "destination": "/media/community/nuit-paludisme-2/index.html"
+      "destination": "/media/community/nuit-paludisme-2/index"
     },
     {
       "source": "/media/community/nuit-paludisme-3",
-      "destination": "/media/community/nuit-paludisme-3/index.html"
+      "destination": "/media/community/nuit-paludisme-3/index"
     },
     {
       "source": "/media/community/nuit-paludisme-4",
-      "destination": "/media/community/nuit-paludisme-4/index.html"
+      "destination": "/media/community/nuit-paludisme-4/index"
     },
     {
       "source": "/media/community/nuit-paludisme-5",
-      "destination": "/media/community/nuit-paludisme-5/index.html"
+      "destination": "/media/community/nuit-paludisme-5/index"
     },
     {
       "source": "/media/community/nuit-paludisme-5e-1",
-      "destination": "/media/community/nuit-paludisme-5e-1/index.html"
+      "destination": "/media/community/nuit-paludisme-5e-1/index"
     },
     {
       "source": "/media/community/nuit-paludisme-5e-2",
-      "destination": "/media/community/nuit-paludisme-5e-2/index.html"
+      "destination": "/media/community/nuit-paludisme-5e-2/index"
     },
     {
       "source": "/media/community/nuit-paludisme-5e-3",
-      "destination": "/media/community/nuit-paludisme-5e-3/index.html"
+      "destination": "/media/community/nuit-paludisme-5e-3/index"
     },
     {
       "source": "/media/community/nuit-paludisme-5e-4",
-      "destination": "/media/community/nuit-paludisme-5e-4/index.html"
+      "destination": "/media/community/nuit-paludisme-5e-4/index"
     },
     {
       "source": "/media/community/nuit-paludisme-5e-5",
-      "destination": "/media/community/nuit-paludisme-5e-5/index.html"
+      "destination": "/media/community/nuit-paludisme-5e-5/index"
     },
     {
       "source": "/media/community/nuit-paludisme-5e-6",
-      "destination": "/media/community/nuit-paludisme-5e-6/index.html"
+      "destination": "/media/community/nuit-paludisme-5e-6/index"
     },
     {
       "source": "/media/community/nuit-paludisme-5e-7",
-      "destination": "/media/community/nuit-paludisme-5e-7/index.html"
+      "destination": "/media/community/nuit-paludisme-5e-7/index"
     },
     {
       "source": "/media/community/nuit-paludisme-5e-8",
-      "destination": "/media/community/nuit-paludisme-5e-8/index.html"
+      "destination": "/media/community/nuit-paludisme-5e-8/index"
     },
     {
       "source": "/media/community/philantropie-1",
-      "destination": "/media/community/philantropie-1/index.html"
+      "destination": "/media/community/philantropie-1/index"
     },
     {
       "source": "/media/community/philantropie-2",
-      "destination": "/media/community/philantropie-2/index.html"
+      "destination": "/media/community/philantropie-2/index"
     },
     {
       "source": "/media/community/philantropie-3",
-      "destination": "/media/community/philantropie-3/index.html"
+      "destination": "/media/community/philantropie-3/index"
     },
     {
       "source": "/media/community/philantropie-4",
-      "destination": "/media/community/philantropie-4/index.html"
+      "destination": "/media/community/philantropie-4/index"
     },
     {
       "source": "/media/community/philantropie-5",
-      "destination": "/media/community/philantropie-5/index.html"
+      "destination": "/media/community/philantropie-5/index"
     },
     {
       "source": "/media/community/philantropie-6",
-      "destination": "/media/community/philantropie-6/index.html"
+      "destination": "/media/community/philantropie-6/index"
     },
     {
       "source": "/media/community/philantropie-7",
-      "destination": "/media/community/philantropie-7/index.html"
+      "destination": "/media/community/philantropie-7/index"
     },
     {
       "source": "/media/community/genies-1",
-      "destination": "/media/community/genies-1/index.html"
+      "destination": "/media/community/genies-1/index"
     },
     {
       "source": "/media/community/genies-2",
-      "destination": "/media/community/genies-2/index.html"
+      "destination": "/media/community/genies-2/index"
     },
     {
       "source": "/media/community/genies-3",
-      "destination": "/media/community/genies-3/index.html"
+      "destination": "/media/community/genies-3/index"
     },
     {
       "source": "/media/community/genies-4",
-      "destination": "/media/community/genies-4/index.html"
+      "destination": "/media/community/genies-4/index"
     },
     {
       "source": "/media/community/genies-5",
-      "destination": "/media/community/genies-5/index.html"
+      "destination": "/media/community/genies-5/index"
     },
     {
       "source": "/media/community/genies-6",
-      "destination": "/media/community/genies-6/index.html"
+      "destination": "/media/community/genies-6/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-1",
-      "destination": "/fr/media/community/nuit-paludisme-1/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-1/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-2",
-      "destination": "/fr/media/community/nuit-paludisme-2/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-2/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-3",
-      "destination": "/fr/media/community/nuit-paludisme-3/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-3/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-4",
-      "destination": "/fr/media/community/nuit-paludisme-4/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-4/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-5",
-      "destination": "/fr/media/community/nuit-paludisme-5/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-5/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-5e-1",
-      "destination": "/fr/media/community/nuit-paludisme-5e-1/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-5e-1/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-5e-2",
-      "destination": "/fr/media/community/nuit-paludisme-5e-2/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-5e-2/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-5e-3",
-      "destination": "/fr/media/community/nuit-paludisme-5e-3/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-5e-3/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-5e-4",
-      "destination": "/fr/media/community/nuit-paludisme-5e-4/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-5e-4/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-5e-5",
-      "destination": "/fr/media/community/nuit-paludisme-5e-5/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-5e-5/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-5e-6",
-      "destination": "/fr/media/community/nuit-paludisme-5e-6/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-5e-6/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-5e-7",
-      "destination": "/fr/media/community/nuit-paludisme-5e-7/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-5e-7/index"
     },
     {
       "source": "/fr/media/community/nuit-paludisme-5e-8",
-      "destination": "/fr/media/community/nuit-paludisme-5e-8/index.html"
+      "destination": "/fr/media/community/nuit-paludisme-5e-8/index"
     },
     {
       "source": "/fr/media/community/philantropie-1",
-      "destination": "/fr/media/community/philantropie-1/index.html"
+      "destination": "/fr/media/community/philantropie-1/index"
     },
     {
       "source": "/fr/media/community/philantropie-2",
-      "destination": "/fr/media/community/philantropie-2/index.html"
+      "destination": "/fr/media/community/philantropie-2/index"
     },
     {
       "source": "/fr/media/community/philantropie-3",
-      "destination": "/fr/media/community/philantropie-3/index.html"
+      "destination": "/fr/media/community/philantropie-3/index"
     },
     {
       "source": "/fr/media/community/philantropie-4",
-      "destination": "/fr/media/community/philantropie-4/index.html"
+      "destination": "/fr/media/community/philantropie-4/index"
     },
     {
       "source": "/fr/media/community/philantropie-5",
-      "destination": "/fr/media/community/philantropie-5/index.html"
+      "destination": "/fr/media/community/philantropie-5/index"
     },
     {
       "source": "/fr/media/community/philantropie-6",
-      "destination": "/fr/media/community/philantropie-6/index.html"
+      "destination": "/fr/media/community/philantropie-6/index"
     },
     {
       "source": "/fr/media/community/philantropie-7",
-      "destination": "/fr/media/community/philantropie-7/index.html"
+      "destination": "/fr/media/community/philantropie-7/index"
     },
     {
       "source": "/fr/media/community/genies-1",
-      "destination": "/fr/media/community/genies-1/index.html"
+      "destination": "/fr/media/community/genies-1/index"
     },
     {
       "source": "/fr/media/community/genies-2",
-      "destination": "/fr/media/community/genies-2/index.html"
+      "destination": "/fr/media/community/genies-2/index"
     },
     {
       "source": "/fr/media/community/genies-3",
-      "destination": "/fr/media/community/genies-3/index.html"
+      "destination": "/fr/media/community/genies-3/index"
     },
     {
       "source": "/fr/media/community/genies-4",
-      "destination": "/fr/media/community/genies-4/index.html"
+      "destination": "/fr/media/community/genies-4/index"
     },
     {
       "source": "/fr/media/community/genies-5",
-      "destination": "/fr/media/community/genies-5/index.html"
+      "destination": "/fr/media/community/genies-5/index"
     },
     {
       "source": "/fr/media/community/genies-6",
-      "destination": "/fr/media/community/genies-6/index.html"
+      "destination": "/fr/media/community/genies-6/index"
     }
   ]
 }
