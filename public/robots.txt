@@ -1,25 +1,5 @@
 User-agent: *
 Allow: /
-
-# User-requested retrieval and AI search are allowed.
-User-agent: OAI-SearchBot
-Allow: /
-User-agent: GPTBot
-Disallow: /
-User-agent: ChatGPT-User
-Allow: /
-User-agent: ClaudeBot
-Disallow: /
-User-agent: Anthropic-AI
-Disallow: /
-User-agent: PerplexityBot
-Allow: /
-User-agent: Google-Extended
-Disallow: /
-User-agent: CCBot
-Disallow: /
-
-User-agent: *
 Disallow: /api/
 Disallow: /admin
 Disallow: /fr/admin
@@ -27,5 +7,33 @@ Disallow: /changelog
 Disallow: /fr/changelog
 Disallow: /newsletter/preferences
 Disallow: /fr/newsletter/preferences
+Disallow: /offline
+Disallow: /fr/offline
+
+# AI search & retrieval — allowed for search, citation & grounding (see /llms.txt)
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+
+# AI scrapers & training bots — restricted from model training
+User-agent: GPTBot
+Disallow: /
+User-agent: ClaudeBot
+Disallow: /
+User-agent: Anthropic-AI
+Disallow: /
+User-agent: Google-Extended
+Disallow: /
+User-agent: CCBot
+Disallow: /
+User-agent: Bytespider
+Disallow: /
+User-agent: Amazonbot
+Disallow: /
+User-agent: Applebot-Extended
+Disallow: /
 
 Sitemap: https://seynudedagnon.com/sitemap.xml

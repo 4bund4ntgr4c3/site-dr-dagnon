@@ -263,6 +263,27 @@ async function run() {
     }
   }
 
+  /* Utility routes (e.g. offline fallback) — rendered with full body content,
+     localized metadata, but with noindex so search engines never index them. */
+  const UTILITY_ROUTES = ['/offline'];
+  for (const lang of PRERENDER_LANGS) {
+    for (const route of UTILITY_ROUTES) {
+      const meta = pageMeta(lang, route);
+      const urlPath = localePath(lang, route);
+      const bodyHtml = renderPage(urlPath);
+      const html = withBody(
+        before + headBlock(meta, image) + after,
+        bodyHtml,
+      )
+        .replace(/<html lang="[^"]*"/, `<html lang="${lang}"`)
+        .replace(/<meta name="robots" content="[^"]*"/, '<meta name="robots" content="noindex, follow"');
+      const outFile = path.join(dist, urlPath, 'index.html');
+      fs.mkdirSync(path.dirname(outFile), { recursive: true });
+      fs.writeFileSync(outFile, html, 'utf-8');
+      written++;
+    }
+  }
+
   /* 404.html — Vercel serves it with a real 404 status for anything that
      matched no route, instead of the soft 200 the SPA fallback produced.
      Rendered from the same unmatched path pageMeta already treats as 404, so

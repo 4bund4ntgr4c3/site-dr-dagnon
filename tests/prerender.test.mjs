@@ -75,7 +75,6 @@ const ROUTES = [
   '/accessibility',
   '/bibliography',
   '/portfolio',
-  '/offline',
   '/parcours',
   '/publications-pdf',
   '/podcasts',
@@ -581,7 +580,7 @@ test('vercel.json serves every prerendered route explicitly', () => {
     for (const route of ROUTES) {
       const urlPath = localePath(lang, route);
       if (urlPath === '/') continue; /* the root needs no rewrite */
-      assert.equal(rewrites.get(urlPath), `${urlPath}/index.html`, `vercel.json is missing a rewrite for ${urlPath}`);
+      assert.equal(rewrites.get(urlPath), `${urlPath}/index`, `vercel.json is missing a cleanUrls rewrite for ${urlPath}`);
     }
   }
 
@@ -592,8 +591,27 @@ test('vercel.json serves every prerendered route explicitly', () => {
      are exempt: they target serverless functions, not prerendered files */
   for (const [source, destination] of rewrites) {
     if (destination.startsWith('/api/')) continue;
-    const target = path.join(dist, destination);
+    assert.doesNotMatch(destination, /\.html$/, 'cleanUrls rewrites must omit the HTML extension');
+    const target = path.join(dist, path.extname(destination) ? destination : `${destination}.html`);
     assert.ok(fs.existsSync(target), `${source} → ${destination}, which does not exist in dist/`);
+  }
+});
+
+test('private routes boot from localized noindex shells without exposing content', () => {
+  const config = JSON.parse(fs.readFileSync(path.resolve('vercel.json'), 'utf-8'));
+  const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf-8');
+  for (const lang of LANGS) {
+    for (const route of ['/admin', '/changelog', '/newsletter/preferences']) {
+      const urlPath = localePath(lang, route);
+      assert.equal(config.rewrites.find((r) => r.source === urlPath)?.destination, `${urlPath}/index`);
+      const html = fs.readFileSync(path.join(dist, urlPath, 'index.html'), 'utf-8');
+      assert.ok(html.includes(`<html lang="${lang}"`));
+      assert.match(html, /<meta name="robots" content="noindex, follow"/);
+      assert.match(html, /<div id="root"><\/div>/);
+      assert.match(html, /<script type="module"[^>]*src="\/assets\//);
+      assert.doesNotMatch(html, /rel="canonical"|application\/ld\+json/);
+      assert.ok(!sitemap.includes(`<loc>https://seynudedagnon.com${urlPath}</loc>`));
+    }
   }
 });
 

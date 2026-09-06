@@ -537,6 +537,7 @@ export function personJsonLd(lang: Lang) {
   return {
     '@context': 'https://schema.org',
     '@type': ['Person', 'Physician'],
+    '@id': `${SITE_URL}/#person`,
     medicalSpecialty: 'https://schema.org/PublicHealth',
     name: fullName(lang),
     givenName: 'Seynudé',
@@ -806,10 +807,12 @@ export function webSiteJsonLd(lang: Lang) {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
     name: SEO[lang].title,
     url: homeUrl(lang),
     description: SEO[lang].description,
-    author: { '@type': 'Person', name: fullName(lang) },
+    publisher: { '@id': `${SITE_URL}/#person` },
+    author: { '@type': 'Person', '@id': `${SITE_URL}/#person`, name: fullName(lang) },
     inLanguage: [lang],
     /* No SearchAction here: the site has no query-param-driven search route
        for Google to link to. The filters on /media and /publications are
@@ -1132,13 +1135,15 @@ export function articleJsonLd(lang: Lang, entry: (typeof TRIBUNES)[number], url:
   const authors = isLekeCoauthored
     ? [
         { '@type': 'Person', name: 'Professor Rose Leke' },
-        { '@type': 'Person', name: fullName(lang) },
+        { '@type': 'Person', '@id': `${SITE_URL}/#person`, name: fullName(lang) },
       ]
-    : [{ '@type': 'Person', name: fullName(lang) }];
+    : [{ '@type': 'Person', '@id': `${SITE_URL}/#person`, name: fullName(lang) }];
 
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
+    '@id': `${url}#article`,
+    isPartOf: { '@id': `${SITE_URL}/#website` },
     headline: entry.title[lang],
     description: entry.description[lang],
     datePublished: entry.date,
@@ -1147,13 +1152,14 @@ export function articleJsonLd(lang: Lang, entry: (typeof TRIBUNES)[number], url:
     author: authors,
     publisher: {
       '@type': 'Organization',
-      name: entry.source.name,
-      url: entry.source.url,
+      name: 'Dr. Seynudé Dagnon',
+      url: SITE_URL,
       logo: {
         '@type': 'ImageObject',
         url: `${SITE_URL}/favicon.png`,
       },
     },
+    isBasedOn: entry.source.url,
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     image: `${SITE_URL}/og/${entry.slug}.${lang}.jpg`,
@@ -1168,15 +1174,17 @@ export function projectJsonLd(lang: Lang, entry: (typeof PROJECTS)[number], url:
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
+    '@id': `${url}#article`,
+    isPartOf: { '@id': `${SITE_URL}/#website` },
     headline: entry.title[lang],
     description: entry.description[lang],
     datePublished: entry.date,
     dateModified: entry.date,
     inLanguage: [lang],
-    author: { '@type': 'Person', name: fullName(lang) },
+    author: { '@type': 'Person', '@id': `${SITE_URL}/#person`, name: fullName(lang) },
     publisher: {
       '@type': 'Organization',
-      name: fullName(lang),
+      name: 'Dr. Seynudé Dagnon',
       url: SITE_URL,
       logo: {
         '@type': 'ImageObject',
@@ -1497,7 +1505,7 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
   const isAdmin = route === '/admin';
   const isPreferences = route === '/newsletter/preferences';
   const isChangelog = route === '/changelog';
-  const isNoindex = isAdmin || isPreferences || isChangelog;
+  const isNoindex = isAdmin || isPreferences || isChangelog || isOffline;
   const isTribunes = route === '/tribunes';
   const isTribuneArticle = route.startsWith('/tribunes/') && !isTribunes;
   const tribuneSlug = isTribuneArticle ? route.split('/tribunes/')[1]?.split('/')[0] || null : null;
@@ -1643,6 +1651,12 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
       { name: 'citation_publication_date', content: tribune.date.replace(/-/g, '/') },
       { name: 'citation_journal_title', content: tribune.source.name },
       { name: 'citation_public_url', content: url },
+    ] : (isPub || isBibliography || isPublicationsPdf) ? [
+      { name: 'citation_author', content: 'Dagnon, Seynudé Jean-Fortuné' },
+      { name: 'citation_title', content: PUB_SEO[lang].title },
+      { name: 'citation_public_url', content: url },
+      { name: 'citation_publication_date', content: '2026/09/01' },
+      { name: 'citation_language', content: lang },
     ] : [],
     jsonLd: {
       person: personJsonLd(lang),
@@ -1708,7 +1722,6 @@ export const PRERENDER_ROUTES = [
   '/accessibility',
   '/bibliography',
   '/portfolio',
-  '/offline',
   '/parcours',
   '/publications-pdf',
   '/podcasts',

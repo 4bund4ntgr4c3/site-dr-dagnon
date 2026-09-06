@@ -4,6 +4,7 @@
    like the prerender suites. The server is a local static file server so
    the test has no dependency on vite or network access. */
 
+/* global document */
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
@@ -99,12 +100,36 @@ after(async () => {
   await new Promise((resolve) => server.close(resolve));
 });
 
+test('mobile home content and cookie banner remain accessible after loading', async () => {
+  for (const route of ['/', '/fr']) {
+    const page = await context.newPage();
+    try {
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'networkidle' });
+      const results = await new AxeBuilder({ page }).analyze();
+      const bad = results.violations.filter((v) => ['critical', 'serious'].includes(v.impact) || v.id === 'region');
+      assert.deepEqual(bad.map((v) => `${v.id}: ${v.nodes.map((n) => n.html).join(', ')}`), [], route);
+    } finally {
+      await page.close();
+    }
+  }
+});
+
 for (const route of ROUTES) {
   test(`axe: no critical or serious violations on ${route}`, async () => {
     const page = await context.newPage();
     try {
-      const response = await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'domcontentloaded' });
+      const response = await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'networkidle' });
       assert.ok(response && response.ok(), `${route} did not load`);
+      // Contrast must be measured after finite reveal transitions finish,
+      // not at an arbitrary intermediate opacity during React's first mount.
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+        await Promise.all(document.getAnimations()
+          .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
+          .map((animation) => animation.finished.catch(() => {})));
+      });
       const results = await new AxeBuilder({ page }).analyze();
       const bad = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
       assert.deepEqual(
