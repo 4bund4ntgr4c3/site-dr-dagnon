@@ -37,12 +37,12 @@ export function ConsentBanner() {
       <div className="mx-auto flex max-w-3xl flex-col gap-3 rounded-2xl border border-pine-900/10 bg-white p-5 shadow-xl sm:flex-row sm:items-center sm:justify-between">
         <div className="text-xs text-pine-900/80 leading-relaxed">
           <p className="font-semibold text-pine-950">
-            {lang === 'fr' ? 'Mesure d’audience & cookies' : 'Audience measurement & cookies'}
+            {lang === 'fr' ? 'Respect de votre vie privée' : 'Your privacy matters'}
           </p>
           <p className="mt-1">
             {lang === 'fr'
-              ? 'Avec votre accord, Google Analytics mesure l’audience. Vercel Analytics fonctionne sans cookies. Aucun profilage publicitaire.'
-              : 'With your permission, Google Analytics measures audience. Vercel Analytics runs cookieless. No ad profiling.'}
+              ? 'Afin d’améliorer votre confort de navigation, nous mesurons la fréquentation du site dans le strict respect de votre vie privée. Zéro publicité, aucun profilage commercial.'
+              : 'To improve your browsing experience, we measure site visits with strict respect for your privacy. Zero ads, no commercial profiling.'}
             <a href={lang === 'fr' ? '/fr/legal' : '/legal'} className="ml-1 underline decoration-gold-500/50 underline-offset-4 hover:text-gold-700">
               {lang === 'fr' ? 'En savoir plus' : 'Learn more'}
             </a>
