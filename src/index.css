@@ -329,11 +329,47 @@
 .dark .bg-white\/30 {
   background-color: rgba(32, 42, 40, 0.3);
 }
+.dark .bg-pine-50\/50 {
+  background-color: rgba(19, 26, 24, 0.5);
+}
+.dark .bg-pine-50\/60 {
+  background-color: rgba(19, 26, 24, 0.6);
+}
+.dark .bg-pine-50\/70 {
+  background-color: rgba(19, 26, 24, 0.7);
+}
+.dark .bg-pine-100 {
+  background-color: #1e2825;
+}
+.dark .bg-pine-200 {
+  background-color: #2b3834;
+}
+.dark .bg-gold-100 {
+  background-color: rgba(201, 162, 75, 0.18);
+}
+.dark .bg-emerald-100 {
+  background-color: rgba(16, 185, 129, 0.18);
+}
+.dark .bg-rose-100 {
+  background-color: rgba(244, 63, 94, 0.18);
+}
+.dark .bg-purple-100 {
+  background-color: rgba(168, 85, 247, 0.18);
+}
+.dark .hover\:bg-pine-100:hover {
+  background-color: #2b3834;
+}
 .dark .hover\:bg-pine-50:hover {
   background-color: #2b3533;
 }
 .dark .focus\:bg-pine-50:focus {
   background-color: #2b3533;
+}
+.dark .hover\:bg-white:hover {
+  background-color: #2b3533;
+}
+.dark .focus\:bg-white:focus {
+  background-color: #202a28;
 }
 .dark .hover\:bg-pine-900\/5:hover {
   background-color: rgba(255, 255, 255, 0.08);
@@ -366,6 +402,9 @@
   color: rgba(236, 236, 236, 0.6);
 }
 .dark .text-pine-600 {
+  color: #8dbcb4;
+}
+.dark .text-pine-700 {
   color: #8dbcb4;
 }
 .dark .text-pine-700\/80 {
@@ -424,12 +463,25 @@
 .dark .text-gold-700\/80 {
   color: rgba(217, 187, 120, 0.8);
 }
+.dark .text-gold-800 {
+  color: #d9bb78;
+}
+.dark .text-emerald-700,
+.dark .text-emerald-800 {
+  color: #34d399;
+}
+.dark .text-rose-700 {
+  color: #fb7185;
+}
+.dark .text-purple-700 {
+  color: #c084fc;
+}
 .dark .text-red-500,
 .dark .text-red-600 {
   color: #f87171;
 }
 .dark .bg-gold-100.text-gold-700 {
-  color: #86652d;
+  color: #e3c983;
 }
 /* Gold gradient text — the dark mode's signature accent. Only applied to
    plain gold labels (eyebrows, taglines); backgrounds clip to glyphs so
