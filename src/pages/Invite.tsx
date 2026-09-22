@@ -9,13 +9,13 @@ import type { Lang } from '@/i18n/lang';
 
 const FORMATS: Record<Lang, { icon: typeof Mic; title: string; text: string }[]> = {
   fr: [
-    { icon: Presentation, title: 'Conférence ou keynote', text: 'Vision et leçons de 17 ans de programmes paludisme en Afrique : élimination, données et digitalisation des campagnes.' },
+    { icon: Presentation, title: 'Conférence ou keynote', text: 'Vision et leçons de 20 ans de programmes paludisme en Afrique : élimination, données et digitalisation des campagnes.' },
     { icon: Users, title: 'Panel d\'experts', text: 'Débat avec décideurs, bailleurs et partenaires sur le financement durable et l\'équité d\'accès aux interventions.' },
     { icon: Mic, title: 'Formation ou atelier', text: 'Ateliers pratiques sur la chimioprévention saisonnière, la qualité des données et la gestion de programmes.' },
     { icon: MessagesSquare, title: 'Interview média', text: 'Commentaires d\'expert en français ou en anglais sur l\'actualité du paludisme et des systèmes de santé.' },
   ],
   en: [
-    { icon: Presentation, title: 'Conference or keynote', text: 'Vision and lessons from 17+ years of malaria programs in Africa: elimination, data and campaign digitalization.' },
+    { icon: Presentation, title: 'Conference or keynote', text: 'Vision and lessons from 20+ years of malaria programs in Africa: elimination, data and campaign digitalization.' },
     { icon: Users, title: 'Expert panel', text: 'Debate with policymakers, funders and partners on sustainable financing and equitable access to interventions.' },
     { icon: Mic, title: 'Training or workshop', text: 'Hands-on sessions on seasonal chemoprevention, data quality and program management.' },
     { icon: MessagesSquare, title: 'Media interview', text: 'Expert commentary in French or English on malaria and health system news.' },

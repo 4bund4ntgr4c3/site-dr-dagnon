@@ -426,12 +426,12 @@ export const PROJETS_SEO: Record<Lang, { title: string; description: string; key
 export const CV_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Curriculum Vitae — Dr. Seynudé Dagnon',
-    description: 'CV complet du Dr. Seynudé Dagnon : 17 ans dans les programmes paludisme, formation, enseignements, distinctions et publications. Imprimable en PDF.',
+    description: 'CV complet du Dr. Seynudé Dagnon : 20 ans dans les programmes paludisme, formation, enseignements, distinctions et publications. Imprimable en PDF.',
     keywords: 'CV Dr Dagnon, CV Seynude Dagnon, curriculum vitae santé publique, parcours paludisme, expérience Fondation Gates, Gates Foundation Senior Program Officer, USAID PMI Resident Advisor, formation Groningen doctorat, ITG Anvers MPH, médecin Cotonou Bénin, Fortuné Dagnon CV, Jean-Fortuné Dagnon CV, DAGNON parcours professionnel',
   },
   en: {
     title: 'Resume — Dr. Seynudé Dagnon, malaria program leader',
-    description: 'Full resume of Dr. Seynudé Dagnon: 17+ years in malaria programs, education, teaching, awards and publications. Print-ready PDF version.',
+    description: 'Full resume of Dr. Seynudé Dagnon: 20 years in malaria programs, education, teaching, awards and publications. Print-ready PDF version.',
     keywords: 'Dr Dagnon resume, Seynude Dagnon CV, public health resume, malaria career track record, Gates Foundation Senior Program Officer, USAID PMI Resident Advisor, Groningen PhD, ITG Antwerp MPH, medical doctor Benin, Fortune Dagnon resume, Jean-Fortune Dagnon CV, DAGNON professional profile',
   },
 };
@@ -464,13 +464,13 @@ export const OFFLINE_SEO: Record<Lang, { title: string; description: string; key
 
 export const CAREER_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
-    title: 'Parcours — 17 ans en santé publique & paludisme',
-    description: 'Frise interactive du parcours du Dr. Seynudé Dagnon : Fondation Gates, USAID/PMI, MCDI/ARM3 — 17 ans, 6 postes, distinctions et projets.',
+    title: 'Parcours — 20 ans en santé publique & paludisme',
+    description: 'Frise interactive du parcours du Dr. Seynudé Dagnon : Fondation Gates, USAID/PMI, MCDI/ARM3 — 20 ans, 6 postes, distinctions et projets.',
     keywords: 'parcours Dr Dagnon, carrière Seynude Dagnon, Gates Foundation, USAID PMI, MCDI ARM3, timeline carrière, santé publique, Bénin, Fortuné Dagnon parcours',
   },
   en: {
-    title: 'Career — 17 years in public health & malaria',
-    description: 'Interactive career timeline of Dr. Seynudé Dagnon: Gates Foundation, USAID/PMI, MCDI/ARM3 — 17 years, 6 roles, awards and projects.',
+    title: 'Career — 20 years in public health & malaria',
+    description: 'Interactive career timeline of Dr. Seynudé Dagnon: Gates Foundation, USAID/PMI, MCDI/ARM3 — 20 years, 6 roles, awards and projects.',
     keywords: 'Seynude Dagnon career, Dr Dagnon timeline, Gates Foundation, USAID PMI, MCDI ARM3, career timeline, public health, Benin, Fortune Dagnon career',
   },
 };
@@ -878,8 +878,8 @@ export function invitePageJsonLd(lang: Lang, url: string) {
           position: 1,
           name: lang === 'fr' ? 'Conférence ou keynote' : 'Conference or keynote',
           description: lang === 'fr'
-            ? 'Vision et leçons de 17 ans de programmes paludisme en Afrique : élimination, données et digitalisation des campagnes.'
-            : 'Vision and lessons from 17+ years of malaria programs in Africa: elimination, data and campaign digitalization.',
+            ? 'Vision et leçons de 20 ans de programmes paludisme en Afrique : élimination, données et digitalisation des campagnes.'
+            : 'Vision and lessons from 20+ years of malaria programs in Africa: elimination, data and campaign digitalization.',
           offeredBy: { '@type': 'Person', name: fullName(lang) },
         },
         {

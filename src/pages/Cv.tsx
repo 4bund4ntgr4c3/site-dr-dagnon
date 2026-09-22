@@ -310,7 +310,7 @@ export default function Cv() {
             {lang === 'fr' ? 'Parcours en frise' : 'Career timeline'}
           </h2>
           <p className="mt-2 text-sm text-pine-900/65">
-            {lang === 'fr' ? '17 ans — survolez et dépliez chaque étape.' : '17 years — hover and expand each step.'}
+            {lang === 'fr' ? '20 ans — survolez et dépliez chaque étape.' : '20 years — hover and expand each step.'}
           </p>
           <div className="mt-8">
             <CareerTimeline />

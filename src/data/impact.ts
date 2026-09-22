@@ -77,9 +77,9 @@ export const IMPACT_RESULTS: Record<Lang, ImpactResult[]> = {
     },
     {
       id: 'g2g-pnlp',
-      metric: '3 000 000 $',
+      metric: '2 000 000 $',
       title: { fr: 'Contrat G2G avec le PNLP Bénin', en: 'G2G contract with Benin\'s NMCP' },
-      text: { fr: 'Négociation d\'un contrat de gouvernement à gouvernement générant jusqu\'à 3 000 000 $ d\'économies sur 5 ans.', en: 'Negotiated a government-to-government contract saving the U.S. government up to $3,000,000 over 5 years.' },
+      text: { fr: 'Négociation d\'un contrat de gouvernement à gouvernement générant 2 000 000 $ d\'économies pour le gouvernement américain.', en: 'Negotiated a government-to-government contract delivering US$2,000,000 in savings for the U.S. government.' },
       href: '/projets/contrat-g2g-pnlp-benin',
     },
   ],
@@ -121,9 +121,9 @@ export const IMPACT_RESULTS: Record<Lang, ImpactResult[]> = {
     },
     {
       id: 'g2g-pnlp',
-      metric: '$3,000,000',
+      metric: '$2,000,000',
       title: { fr: 'Contrat G2G avec le PNLP Bénin', en: 'G2G contract with Benin\'s NMCP' },
-      text: { fr: 'Négociation d\'un contrat de gouvernement à gouvernement générant jusqu\'à 3 000 000 $ d\'économies sur 5 ans.', en: 'Negotiated a government-to-government contract saving the U.S. government up to $3,000,000 over 5 years.' },
+      text: { fr: 'Négociation d\'un contrat de gouvernement à gouvernement générant 2 000 000 $ d\'économies pour le gouvernement américain.', en: 'Negotiated a government-to-government contract delivering US$2,000,000 in savings for the U.S. government.' },
       href: '/projets/contrat-g2g-pnlp-benin',
     },
   ],

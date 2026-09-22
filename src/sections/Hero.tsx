@@ -171,7 +171,7 @@ export function Hero() {
 
             {/* floating badges */}
             <div className="hero-float absolute -left-4 top-6 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md">
-              <p className="font-display text-xl font-semibold text-gold-400">17+</p>
+              <p className="font-display text-xl font-semibold text-gold-400">20+</p>
               <p className="text-[9px] uppercase tracking-widest text-pine-100/70">{t['hero.exp']}</p>
             </div>
             <div className="hero-float-reverse absolute -bottom-5 -right-4 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md">

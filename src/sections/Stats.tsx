@@ -11,12 +11,7 @@ function Counter({ value, locale }: { value: number; locale: string }) {
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!inView || !ref.current) return;
-    /* reduced motion: jump straight to the final number */
-    if (reducedMotion) {
-      ref.current.textContent = value.toLocaleString(locale);
-      return;
-    }
+    if (!inView || !ref.current || reducedMotion) return;
     const controls = animate(0, value, {
       duration: 1.8,
       ease: [0.22, 1, 0.36, 1],
@@ -29,7 +24,7 @@ function Counter({ value, locale }: { value: number; locale: string }) {
     return () => controls.stop();
   }, [inView, value, locale, reducedMotion]);
 
-  return <span ref={ref}>0</span>;
+  return <span ref={ref}>{value.toLocaleString(locale)}</span>;
 }
 
 export function Stats() {

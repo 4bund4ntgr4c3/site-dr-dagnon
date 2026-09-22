@@ -199,7 +199,7 @@ export const PROJECT_DETAILS: Record<string, ProjectDetails> = {
       ],
     },
     results: [
-      { value: '3 000 000 $', label: { fr: 'd\'économies sur 5 ans pour le gouvernement américain', en: 'in savings over 5 years for the U.S. government' } },
+      { value: '2 000 000 $', label: { fr: 'd\'économies pour le gouvernement américain', en: 'in savings for the U.S. government' } },
       { value: '2', label: { fr: 'accords G2G supervisés : PNLP et CREC', en: 'G2G agreements overseen: NMCP and CREC' } },
     ],
     evidence: [],

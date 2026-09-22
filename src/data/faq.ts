@@ -17,8 +17,8 @@ export const FAQ_ITEMS: FaqEntry[] = [
       en: 'Who is Dr. Seynudé Jean-Fortuné Dagnon?',
     },
     answer: {
-      fr: 'Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH, est Senior Program Officer — Paludisme / Afrique francophone à la Fondation Gates. Depuis plus de 17 ans, il pilote des programmes de lutte contre le paludisme en Afrique de l\'Ouest et centrale : digitalisation des campagnes, chimioprévention saisonnière, lutte antivectorielle et systèmes de données. Il a dirigé des programmes USAID/PMI au Bénin et a été distingué FSN Employee of the Year 2020.',
-      en: 'Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH, is Senior Program Officer — Malaria / Francophone Africa at the Gates Foundation. For over 17 years he has led malaria programs across West and Central Africa: campaign digitalization, seasonal chemoprevention, vector control and data systems. He directed USAID/PMI programs in Benin and was named FSN Employee of the Year 2020.',
+      fr: 'Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH, est Senior Program Officer — Paludisme / Afrique francophone à la Fondation Gates. Depuis 20 ans, il pilote des programmes de lutte contre le paludisme en Afrique de l\'Ouest et centrale : digitalisation des campagnes, chimioprévention saisonnière, lutte antivectorielle et systèmes de données. Il a dirigé des programmes USAID/PMI au Bénin et a été distingué FSN Employee of the Year 2020.',
+      en: 'Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH, is Senior Program Officer — Malaria / Francophone Africa at the Gates Foundation. For 20 years he has led malaria programs across West and Central Africa: campaign digitalization, seasonal chemoprevention, vector control and data systems. He directed USAID/PMI programs in Benin and was named FSN Employee of the Year 2020.',
     },
   },
   {

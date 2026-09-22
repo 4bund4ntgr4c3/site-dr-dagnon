@@ -21,7 +21,7 @@ export default function Career() {
               {lang === 'fr' ? 'Parcours' : 'Career'}
             </span>
             <h1 className="mt-7 font-display text-[2.6rem] leading-[1.05] font-medium text-pine-100 sm:text-6xl lg:text-[4.4rem]">
-              {lang === 'fr' ? '17 ans au service de la santé publique' : '17 years in public health'}
+              {lang === 'fr' ? '20 ans au service de la santé publique' : '20 years in public health'}
             </h1>
             <p className="mt-4 max-w-2xl font-display text-lg italic text-pine-200/90 sm:text-xl">
               {lang === 'fr'

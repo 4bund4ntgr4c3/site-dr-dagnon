@@ -2,14 +2,14 @@ import type { Lang } from '@/i18n/lang';
 
 export const STATS: Record<Lang, { value: number; suffix: string; label: string; detail: string }[]> = {
   fr: [
-    { value: 17, suffix: '+', label: "années d'expérience", detail: 'Programmes paludisme, VIH/SIDA, NTN et santé MNI à travers l’Afrique' },
-    { value: 16, suffix: '', label: 'publications de recherche', detail: 'Plus un article de blog identifié séparément' },
+    { value: 20, suffix: '+', label: "années d'expérience", detail: 'Programmes paludisme, VIH/SIDA, NTN et santé MNI à travers l’Afrique' },
+    { value: 14, suffix: '', label: 'publications scientifiques', detail: 'Revues à comité de lecture · Plus 2 préprints, 1 tribune et 1 présentation' },
     { value: 1114, suffix: '', label: 'centres de santé couverts', detail: 'Complétude du système d’information : 35 % → 94 %' },
     { value: 27, suffix: '', label: 'pays PMI — distinction 2020', detail: 'FSN Employee of the Year, U.S. President’s Malaria Initiative' },
   ],
   en: [
-    { value: 17, suffix: '+', label: 'years of experience', detail: 'Malaria, HIV/AIDS, NTD and MNCH programs across Africa' },
-    { value: 16, suffix: '', label: 'research publications', detail: 'Plus one blog article identified separately' },
+    { value: 20, suffix: '+', label: 'years of experience', detail: 'Malaria, HIV/AIDS, NTD and MNCH programs across Africa' },
+    { value: 14, suffix: '', label: 'peer-reviewed publications', detail: 'Peer-reviewed articles · Plus 2 preprints, 1 op-ed and 1 presentation' },
     { value: 1114, suffix: '', label: 'health facilities covered', detail: 'Routine information system completeness: 35% → 94%' },
     { value: 27, suffix: '', label: 'PMI countries — 2020 award', detail: 'FSN Employee of the Year, U.S. President’s Malaria Initiative' },
   ],
@@ -20,19 +20,19 @@ export const IDENTITY: Record<Lang, { title: string; text: string; icon: string 
     { title: 'Rôle actuel', text: 'Senior Program Officer — Paludisme / Afrique francophone à la Fondation Gates.', icon: 'briefcase' },
     { title: 'Domaines de focus', text: 'Paludisme, santé publique, systèmes de santé, données pour la décision, santé numérique.', icon: 'target' },
     { title: 'Périmètre de travail', text: 'Basé en Afrique, interventions dans les pays africains anglophones et francophones.', icon: 'globe' },
-    { title: 'Langues', text: 'Français (natif), anglais (professionnel avancé), notions d’allemand et d’espagnol.', icon: 'languages' },
+    { title: 'Langues', text: 'Français (natif), anglais (professionnel de travail — publie, négocie et représente en anglais).', icon: 'languages' },
   ],
   en: [
     { title: 'Current role', text: 'Senior Program Officer — Malaria / Francophone Africa at the Gates Foundation.', icon: 'briefcase' },
     { title: 'Focus areas', text: 'Malaria, public health, health systems, data for decision-making, digital health.', icon: 'target' },
     { title: 'Scope of work', text: 'Based in Africa, working across anglophone and francophone African countries.', icon: 'globe' },
-    { title: 'Languages', text: 'French (native), English (advanced professional), some German and Spanish.', icon: 'languages' },
+    { title: 'Languages', text: 'French (native), English (professional working proficiency — publishes, negotiates and represents in English).', icon: 'languages' },
   ],
 };
 
 export const EXPERTISE: Record<Lang, { title: string; text: string; icon: string }[]> = {
   fr: [
-    { title: 'Lutte & élimination du paludisme', text: 'Surveillance, lutte antivectorielle, chimio-prévention saisonnière (CPS), distribution de MILDA et stratégies de mise en œuvre.', icon: 'shield' },
+    { title: 'Lutte contre le paludisme & élimination', text: 'Surveillance, lutte antivectorielle, chimio-prévention saisonnière (CPS), distribution de MILDA et stratégies de mise en œuvre.', icon: 'shield' },
     { title: 'Santé numérique & données', text: 'Digitalisation des campagnes, plateformes interopérables de données épidémiologiques et logistiques pour la prise de décision.', icon: 'database' },
     { title: 'Portefeuilles & subventions', text: 'Gestion de portefeuille, budgétisation, analyse financière, engagement des partenaires et coordination des bailleurs.', icon: 'layers' },
     { title: 'Suivi, évaluation & recherche', text: 'Recherche opérationnelle et de mise en œuvre, qualité des données épidémiologiques, performance des programmes nationaux.', icon: 'chart' },
@@ -81,7 +81,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
       },
     },
     {
-      role: 'Spécialiste gestion de programme / paludisme',
+      role: 'Program Management Specialist, Malaria',
       org: 'USAID Bénin — U.S. President\'s Malaria Initiative',
       period: 'nov. 2015 — nov. 2020',
       current: false,
@@ -106,7 +106,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
           { name: 'ENVISION (Manager)', scope: 'RTI', budget: '$10 000 000 (7 ans)' },
           { name: 'ACT END NTDs (Manager)', scope: 'FHI 360', budget: '$10 000 000 (5 ans)' },
         ],
-        achievement: 'Négociation d\'un contrat G2G avec le PNLP, économies allant jusqu’à 3 000 000 $ sur 5 ans pour le gouvernement américain.',
+        achievement: 'Négociation d\'un contrat G2G avec le PNLP du Bénin, générant 2 000 000 $ d\'économies pour le gouvernement américain.',
       },
     },
     {
@@ -123,7 +123,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
       },
     },
     {
-      role: 'Responsable suivi & évaluation',
+      role: 'Directeur Suivi & Évaluation (Monitoring & Evaluation Director)',
       org: 'MCDI / ARM3, Bénin',
       period: 'nov. 2012 — sept. 2015',
       current: false,
@@ -206,7 +206,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
       },
     },
     {
-      role: 'Program Management / Malaria Specialist',
+      role: 'Program Management Specialist, Malaria',
       org: 'USAID Benin — U.S. President\'s Malaria Initiative',
       period: 'Nov. 2015 — Nov. 2020',
       current: false,
@@ -231,7 +231,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
           { name: 'ENVISION (Manager)', scope: 'RTI', budget: '$10,000,000 (7 yrs)' },
           { name: 'ACT END NTDs (Manager)', scope: 'FHI 360', budget: '$10,000,000 (5 yrs)' },
         ],
-        achievement: 'Negotiated G2G contract with Benin NMCP, generating savings of up to $3,000,000 over 5 years for the U.S. government.',
+        achievement: 'Negotiated G2G contract with Benin NMCP, delivering US$2,000,000 in savings for the U.S. government.',
       },
     },
     {
@@ -248,7 +248,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
       },
     },
     {
-      role: 'Monitoring & Evaluation Lead',
+      role: 'Monitoring & Evaluation Director',
       org: 'MCDI / ARM3, Benin',
       period: 'Nov. 2012 — Sept. 2015',
       current: false,
@@ -304,13 +304,13 @@ export const ACHIEVEMENTS: Record<Lang, { metric: string; title: string; text: s
   fr: [
     { metric: '2020', title: 'PMI FSN Employee of the Year', text: 'Reconnu parmi 27 pays du U.S. President’s Malaria Initiative ; également employé local de l’année 2019 de l’Ambassade des États-Unis au Bénin et multiple lauréat de distinctions USAID / Ambassade.' },
     { metric: '35 % → 94 %', title: 'Complétude des données paludisme', text: 'Comme responsable S&E d’ARM3, hausse de la complétude du système d’information de routine et baisse du taux d’erreur national de 44 % à 5 % sur 1 114 centres de santé.' },
-    { metric: '$3 000 000', title: 'Économies gouvernementales majeures', text: 'À l’USAID/PMI Bénin, négociation d’un contrat de gouvernement à gouvernement avec le Programme national de lutte contre le paludisme du Bénin, générant des économies allant jusqu’à 3 000 000 $ sur 5 ans.' },
+    { metric: '$2 000 000', title: 'Économies gouvernementales majeures', text: 'À l’USAID/PMI Bénin, négociation d’un contrat de gouvernement à gouvernement avec le Programme national de lutte contre le paludisme du Bénin, générant 2 000 000 $ d’économies pour le gouvernement américain.' },
     { metric: '8+', title: 'Distinctions et prix', text: 'Découvrez la liste complète des prix, distinctions et honneurs reçus tout au long de la carrière du Dr. Dagnon.' },
   ],
   en: [
     { metric: '2020', title: 'PMI FSN Employee of the Year', text: 'Recognized across 27 countries of the U.S. President’s Malaria Initiative; also U.S. Embassy Benin local employee of the year 2019 and multiple USAID / Embassy awardee.' },
     { metric: '35% → 94%', title: 'Malaria data completeness', text: 'As M&E lead at ARM3, raised routine information system completeness and cut the national error rate from 44% to 5% across 1,114 health facilities.' },
-    { metric: '$3,000,000', title: 'Major government savings', text: 'At USAID/PMI Benin, negotiated a government-to-government contract with Benin’s National Malaria Control Program, generating savings of up to $3,000,000 over 5 years.' },
+    { metric: '$2,000,000', title: 'Major government savings', text: 'At USAID/PMI Benin, negotiated a government-to-government contract with Benin’s National Malaria Control Program, delivering US$2,000,000 in savings for the U.S. government.' },
     { metric: '8+', title: 'Awards & Honors', text: 'Discover the full list of awards, honors, and distinctions received throughout Dr. Dagnon\'s career.' },
   ],
 };
