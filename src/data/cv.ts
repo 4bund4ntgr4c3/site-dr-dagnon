@@ -10,7 +10,7 @@ export const CV_PROFILE: Record<Lang, string[]> = {
     'Médecin diplômé, titulaire d’un master en santé publique option lutte contre les maladies (Institut de Médecine Tropicale d’Anvers, Belgique).',
     'Excellente maîtrise du français (5/5, langue maternelle) et bon niveau professionnel d’anglais (4,5/5).',
     'Expérience significative au sein d’institutions internationales : Fondation Bill & Melinda Gates, U.S. President’s Malaria Initiative, MCDI, MSH et URC-CHS.',
-    'Dix-sept ans d’expérience dans la conception, la programmation, le suivi, la gestion, la mise en œuvre et l’évaluation de projets de développement et de recherche en maladies tropicales — paludisme, VIH/SIDA, maladies tropicales négligées, épidémies, santé maternelle, néonatale et infantile — au Bénin et en Afrique.',
+    'Vingt ans d’expérience dans la conception, la programmation, le suivi, la gestion, la mise en œuvre et l’évaluation de projets de développement et de recherche en maladies tropicales — paludisme, VIH/SIDA, maladies tropicales négligées, épidémies, santé maternelle, néonatale et infantile — au Bénin et en Afrique.',
     'Forte expérience de collaboration avec des organisations internationales (États-Unis, Europe, Asie) et des entités gouvernementales africaines dans des pays anglophones et francophones (Bénin, Burkina-Faso, Sénégal, Mali, Côte d’Ivoire, Niger, RDC, Tchad, Burundi, Rwanda, Cameroun, Sierra Leone, Liberia, Nigéria, Guinée, etc.).',
     'Déplacements professionnels d’au moins 40 % du temps de travail au cours des trois dernières années.',
     'Solides compétences en gestion de portefeuille et de projets, réseautage, mobilisation des donateurs, budgétisation et analyse financière.',
@@ -21,13 +21,13 @@ export const CV_PROFILE: Record<Lang, string[]> = {
     'Excellentes compétences en rédaction et évaluation de propositions.',
     'Maîtrise de Microsoft Office : Excel, Word, PowerPoint, Outlook.',
     'Relecteur pour des revues scientifiques à facteur d’impact élevé : PLOS ONE et BMC.',
-    '15 publications relues par les pairs dans des revues scientifiques à facteur d’impact élevé.',
+    '14 publications relues par les pairs dans des revues scientifiques à facteur d’impact élevé.',
   ],
   en: [
     'Medical doctor with master’s degree in public health option disease control (Institute of Tropical Medicine of Antwerp, BELGIUM).',
     'Excellent knowledge and full professional proficiency in French (5/5 native language), advanced knowledge of English (4.5/5).',
     'Relevant experience working for global institutions, including the Bill and Melinda Gates Foundation, the U.S. President’s Malaria Initiative, MCDI, MSH, and URC-CHS.',
-    'Seventeen years of relevant experience in designing, programming, overseeing, managing, implementing, monitoring, and evaluating development and research projects in tropical diseases in the areas of malaria, HIV/AIDS, neglected tropical diseases, outbreaks, and maternal, neonatal and child health in Benin and Africa.',
+    'Twenty years of relevant experience in designing, programming, overseeing, managing, implementing, monitoring, and evaluating development and research projects in tropical diseases in the areas of malaria, HIV/AIDS, neglected tropical diseases, outbreaks, and maternal, neonatal and child health in Benin and Africa.',
     'Strong experience in collaborating with global organizations in the USA, Europe, Asia, and African government entities in anglophone and francophone countries (Benin, Burkina Faso, Senegal, Mali, Côte d’Ivoire, Niger, DRC, Chad, Burundi, Rwanda, Cameroon, Sierra Leone, Liberia, Nigeria, Guinea, etc.).',
     'Traveled at least 40% of work time during the last three years.',
     'Strong capacities in portfolio and project management, networking, donor mobilization, budgeting, and financial analysis.',
@@ -38,7 +38,7 @@ export const CV_PROFILE: Record<Lang, string[]> = {
     'Excellent skills and experience in proposal writing and assessment.',
     'Mastery of Microsoft Office: Excel, Word, PowerPoint, Outlook.',
     'Reviewer for high-impact factor scientific journals, PLOS ONE and BMC.',
-    '15 peer-reviewed publications in high-impact factor scientific journals.',
+    '14 peer-reviewed publications in high-impact factor scientific journals.',
   ],
 };
 

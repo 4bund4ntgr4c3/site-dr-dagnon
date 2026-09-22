@@ -27,7 +27,7 @@ export const PUB_ITEMS: PubEntry[] = [
       en: 'From Malaria Control to Elimination: The Turn We Need to Make',
     },
     authors: { fr: 'Rose Leke, Seynudé Jean Fortune Dagnon', en: 'Rose Leke, Seynudé Jean Fortune Dagnon' },
-    journal: { fr: 'Africa Health Watch — Perspectives', en: 'Africa Health Watch — Perspectives' },
+    journal: { fr: 'Africa Health Watch & Le Soleil (Sénégal) — Perspectives', en: 'Africa Health Watch & Le Soleil (Senegal) — Perspectives' },
     description: { fr: 'Plaide pour un passage du contrôle à l\'élimination du paludisme en Afrique : viser l\'arrêt de la transmission, prioriser les zones frontalières mal desservies et renforcer le leadership des institutions locales.', en: 'Argues that African countries must move from malaria control to elimination: redefining success as ending transmission, prioritizing underserved border regions, and empowering local institutions to lead.' },
     url: 'https://africahealthwatch.com/from-malaria-control-to-elimination-the-turn-we-need-to-make/',
   },

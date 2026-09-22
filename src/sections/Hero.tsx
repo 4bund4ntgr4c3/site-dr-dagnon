@@ -14,10 +14,9 @@ export function Hero() {
   const { lang } = useLang();
   const t = UI[lang];
   const [showVideo, setShowVideo] = useState(false);
-  /* the peer-reviewed count shown next to the book icon — the op-eds live in
-     the tribunes, only true publications are counted, so the hero cannot
-     drift from the data */
-  const pubCount = PUB_ITEMS.filter((p) => p.type === 'publication').length;
+  /* the peer-reviewed count shown next to the book icon — 14 peer-reviewed
+     articles in international journals, matching the Executive CV and Stats section */
+  const pubCount = PUB_ITEMS.filter((p) => p.type === 'publication' && !p.journal.fr.includes('Preprint')).length;
 
   /* Escape closes the video overlay even while focus sits inside the
      YouTube player */
