@@ -18,13 +18,13 @@ export const STATS: Record<Lang, { value: number; suffix: string; label: string;
 export const IDENTITY: Record<Lang, { title: string; text: string; icon: string }[]> = {
   fr: [
     { title: 'Rôle actuel', text: 'Senior Program Officer — Paludisme / Afrique francophone à la Fondation Gates.', icon: 'briefcase' },
-    { title: 'Domaines de focus', text: 'Paludisme, santé publique, systèmes de santé, données pour la décision, santé numérique.', icon: 'target' },
+    { title: "Domaine d’expertise", text: 'Paludisme, santé publique, systèmes de santé, données pour la décision, santé numérique.', icon: 'target' },
     { title: 'Périmètre de travail', text: 'Basé en Afrique, interventions dans les pays africains anglophones et francophones.', icon: 'globe' },
     { title: 'Langues', text: 'Français (natif), anglais (professionnel de travail — publie, négocie et représente en anglais).', icon: 'languages' },
   ],
   en: [
     { title: 'Current role', text: 'Senior Program Officer — Malaria / Francophone Africa at the Gates Foundation.', icon: 'briefcase' },
-    { title: 'Focus areas', text: 'Malaria, public health, health systems, data for decision-making, digital health.', icon: 'target' },
+    { title: 'Area of expertise', text: 'Malaria, public health, health systems, data for decision-making, digital health.', icon: 'target' },
     { title: 'Scope of work', text: 'Based in Africa, working across anglophone and francophone African countries.', icon: 'globe' },
     { title: 'Languages', text: 'French (native), English (professional working proficiency — publishes, negotiates and represents in English).', icon: 'languages' },
   ],
@@ -370,13 +370,13 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
 
 export const ACHIEVEMENTS: Record<Lang, { metric: string; title: string; text: string }[]> = {
   fr: [
-    { metric: '2020', title: 'PMI FSN Employee of the Year', text: 'Reconnu parmi 27 pays du U.S. President’s Malaria Initiative ; également employé local de l’année 2019 de l’Ambassade des États-Unis au Bénin et multiple lauréat de distinctions USAID / Ambassade.' },
+    { metric: '30+', title: 'Lancement mondial de l’outil ACTwatch Lite', text: 'Conception et déploiement de l’outil ACTwatch Lite auprès de plus de 30 programmes nationaux de lutte contre le paludisme à travers l’Afrique subsaharienne, renforçant la surveillance des marchés antipaludiques et la prise de décision fondée sur les données.' },
     { metric: '35 % → 94 %', title: 'Complétude des données paludisme', text: 'Comme responsable S&E d’ARM3, hausse de la complétude du système d’information de routine et baisse du taux d’erreur national de 44 % à 5 % sur 1 114 centres de santé.' },
     { metric: '$2 000 000', title: 'Économies gouvernementales majeures', text: 'À l’USAID/PMI Bénin, négociation d’un contrat de gouvernement à gouvernement avec le Programme national de lutte contre le paludisme du Bénin, générant 2 000 000 $ d’économies pour le gouvernement américain.' },
     { metric: '8+', title: 'Distinctions et prix', text: 'Découvrez la liste complète des prix, distinctions et honneurs reçus tout au long de la carrière du Dr. Dagnon.' },
   ],
   en: [
-    { metric: '2020', title: 'PMI FSN Employee of the Year', text: 'Recognized across 27 countries of the U.S. President’s Malaria Initiative; also U.S. Embassy Benin local employee of the year 2019 and multiple USAID / Embassy awardee.' },
+    { metric: '30+', title: 'Global release of the ACTwatch Lite toolkit', text: 'Designed and globally released the ACTwatch Lite toolkit for 30+ national malaria programs across sub-Saharan Africa, strengthening antimalarial market surveillance and data-driven decision-making at country level.' },
     { metric: '35% → 94%', title: 'Malaria data completeness', text: 'As M&E lead at ARM3, raised routine information system completeness and cut the national error rate from 44% to 5% across 1,114 health facilities.' },
     { metric: '$2,000,000', title: 'Major government savings', text: 'At USAID/PMI Benin, negotiated a government-to-government contract with Benin’s National Malaria Control Program, delivering US$2,000,000 in savings for the U.S. government.' },
     { metric: '8+', title: 'Awards & Honors', text: 'Discover the full list of awards, honors, and distinctions received throughout Dr. Dagnon\'s career.' },
