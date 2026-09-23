@@ -1,4 +1,4 @@
-import { ShieldCheck, Database, Layers, LineChart, Handshake } from 'lucide-react';
+import { ShieldCheck, Database, Layers, LineChart, Handshake, Globe } from 'lucide-react';
 import { Link } from 'react-router';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
@@ -13,6 +13,7 @@ const ICONS: Record<string, typeof ShieldCheck> = {
   layers: Layers,
   chart: LineChart,
   handshake: Handshake,
+  globe: Globe,
 };
 
 export function Expertise() {

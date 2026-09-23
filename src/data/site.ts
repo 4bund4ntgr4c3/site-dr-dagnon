@@ -18,13 +18,13 @@ export const STATS: Record<Lang, { value: number; suffix: string; label: string;
 export const IDENTITY: Record<Lang, { title: string; text: string; icon: string }[]> = {
   fr: [
     { title: 'Rôle actuel', text: 'Senior Program Officer — Paludisme / Afrique francophone à la Fondation Gates.', icon: 'briefcase' },
-    { title: "Domaine d’expertise", text: 'Paludisme, santé publique, systèmes de santé, données pour la décision, santé numérique.', icon: 'target' },
+    { title: "Domaine d’expertise", text: 'Stratégie d’investissement, mobilisation des ressources, engagement gouvernemental, santé numérique & IA, leadership multi-crise.', icon: 'target' },
     { title: 'Périmètre de travail', text: 'Basé en Afrique, interventions dans les pays africains anglophones et francophones.', icon: 'globe' },
     { title: 'Langues', text: 'Français (natif), anglais (professionnel de travail — publie, négocie et représente en anglais).', icon: 'languages' },
   ],
   en: [
     { title: 'Current role', text: 'Senior Program Officer — Malaria / Francophone Africa at the Gates Foundation.', icon: 'briefcase' },
-    { title: 'Area of expertise', text: 'Malaria, public health, health systems, data for decision-making, digital health.', icon: 'target' },
+    { title: 'Area of expertise', text: 'Investment strategy, resource mobilization, government engagement, digital health & AI, crisis and multi-disease leadership.', icon: 'target' },
     { title: 'Scope of work', text: 'Based in Africa, working across anglophone and francophone African countries.', icon: 'globe' },
     { title: 'Languages', text: 'French (native), English (professional working proficiency — publishes, negotiates and represents in English).', icon: 'languages' },
   ],
@@ -32,18 +32,18 @@ export const IDENTITY: Record<Lang, { title: string; text: string; icon: string 
 
 export const EXPERTISE: Record<Lang, { title: string; text: string; icon: string }[]> = {
   fr: [
-    { title: 'Lutte contre le paludisme & élimination', text: 'Surveillance, lutte antivectorielle, chimio-prévention saisonnière (CPS), distribution de MILDA et stratégies de mise en œuvre.', icon: 'shield' },
-    { title: 'Santé numérique & données', text: 'Digitalisation des campagnes, plateformes interopérables de données épidémiologiques et logistiques pour la prise de décision.', icon: 'database' },
-    { title: 'Portefeuilles & subventions', text: 'Gestion de portefeuille, budgétisation, analyse financière, engagement des partenaires et coordination des bailleurs.', icon: 'layers' },
-    { title: 'Suivi, évaluation & recherche', text: 'Recherche opérationnelle et de mise en œuvre, qualité des données épidémiologiques, performance des programmes nationaux.', icon: 'chart' },
-    { title: 'Engagement — Afrique francophone', text: 'Collaboration avec gouvernements, programmes nationaux de lutte contre le paludisme, ONG, bailleurs, universités et partenaires techniques.', icon: 'handshake' },
+    { title: 'Stratégie d’investissement & pilotage de portefeuille', text: 'Gestion directe d’un portefeuille de 39,4 M$ et supervision technique de 122 M$ — structuration et pilotage d’accords complexes fondés sur la performance dans 15 pays.', icon: 'layers' },
+    { title: 'Mobilisation des ressources domestiques & bailleurs', text: 'Initiateur du triplement du financement national du paludisme au Bénin (2020–2025) ; plaidoyer interne pour l’expansion du portefeuille Afrique francophone à la Fondation Gates.', icon: 'handshake' },
+    { title: 'Engagement gouvernemental & multilatéral de haut niveau', text: 'Engagement régulier avec 12 ministres africains de la santé, les Premiers ministres du Rwanda et de la RDC, et le Président du Bénin — influence sans autorité formelle.', icon: 'globe' },
+    { title: 'Santé numérique & surveillance IA', text: 'Déploiement de RedRose et DIGITHCM (IA) pour la digitalisation de campagnes paludisme dans 6 pays ; toolkit ACTwatch Lite pour 30+ programmes nationaux.', icon: 'database' },
+    { title: 'Leadership en crise & programmes multi-maladies', text: 'Pilotage de la réponse d’urgence Ebola, fièvre de Lassa et COVID-19 au Bénin (USAID, 2015–2020) ; réponse active Ebola en RDC (2026) en coordination PNLP — Fonds mondial.', icon: 'shield' },
   ],
   en: [
-    { title: 'Malaria control & elimination', text: 'Surveillance, vector control, seasonal chemoprevention (SMC), LLIN distribution and implementation strategies.', icon: 'shield' },
-    { title: 'Digital health & data', text: 'Campaign digitalization, interoperable epidemiological and logistic data platforms for decision-making.', icon: 'database' },
-    { title: 'Portfolios & grants', text: 'Portfolio management, budgeting, financial analysis, partner engagement and funder coordination.', icon: 'layers' },
-    { title: 'Monitoring, evaluation & research', text: 'Operational and implementation research, epidemiological data quality, national program performance.', icon: 'chart' },
-    { title: 'Engagement — Francophone Africa', text: 'Collaboration with governments, national malaria control programs, NGOs, funders, universities and technical partners.', icon: 'handshake' },
+    { title: 'Investment Strategy & Portfolio Leadership', text: 'Directly managing a US$39.4M malaria portfolio with technical oversight of US$122M — structuring and steering performance-based agreements across 15 countries.', icon: 'layers' },
+    { title: 'Domestic & Donor Resource Mobilization', text: 'Supported the initiative that tripled Benin’s domestic malaria financing (2020–2025) and advocated internally for expanded Francophone Africa coverage at the Gates Foundation.', icon: 'handshake' },
+    { title: 'Government, Multilateral & Board-Level Engagement', text: 'Regular engagement with 12 African ministers of health, the Prime Ministers of Rwanda and DRC, and the President of Benin — exercising influence without formal authority.', icon: 'globe' },
+    { title: 'Digital Health & AI-Enabled Surveillance', text: 'Deployed RedRose and DIGITHCM (AI-enabled) for campaign digitalization in 6 countries; released the ACTwatch Lite toolkit to 30+ national malaria programs.', icon: 'database' },
+    { title: 'Crisis & Multi-Disease Program Leadership', text: 'Led Ebola, Lassa and COVID-19 emergency responses in Benin (USAID, 2015–2020); actively directing the 2026 DRC Ebola response coordinating NMCP, SANRU and the Global Fund.', icon: 'shield' },
   ],
 };
 

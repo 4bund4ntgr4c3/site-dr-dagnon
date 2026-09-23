@@ -1,0 +1,4626 @@
+{
+  "timestamp": "2026-09-06T17:49:07.404Z",
+  "protocolAndRedirects": {
+    "http://seynudedagnon.com/": {
+      "status": 308,
+      "location": "https://seynudedagnon.com/",
+      "success": true
+    },
+    "http://www.seynudedagnon.com/": {
+      "status": 308,
+      "location": "https://www.seynudedagnon.com/",
+      "success": false
+    },
+    "https://www.seynudedagnon.com/": {
+      "status": 308,
+      "location": "https://seynudedagnon.com/",
+      "success": true
+    }
+  },
+  "robotsTxt": {
+    "status": 200,
+    "size": 2422,
+    "hasSitemap": true,
+    "hasCloudflareManaged": true,
+    "allowsPerplexity": true,
+    "allowsOAI": true,
+    "disallowsOffline": false,
+    "fullText": "# As a condition of accessing this website, you agree to abide by the following\n# content signals:\n\n# (a)  If a Content-Signal = yes, you may collect content for the corresponding\n#      use.\n# (b)  If a Content-Signal = no, you may not collect content for the\n#      corresponding use.\n# (c)  If the website operator does not include a Content-Signal for a\n#      corresponding use, the website operator neither grants nor restricts\n#      permission via Content-Signal with respect to the corresponding use.\n\n# The content signals and their meanings are:\n\n# search:   building a search index and providing search results (e.g., returning\n#           hyperlinks and short excerpts from your website's contents). Search does not\n#           include providing AI-generated search summaries.\n# ai-input: inputting content into one or more AI models (e.g., retrieval\n#           augmented generation, grounding, or other real-time taking of content for\n#           generative AI search answers).\n# ai-train: training or fine-tuning AI models.\n# use:      how AI systems may consume the content (immediate, reference, or full).\n\n# ANY RESTRICTIONS EXPRESSED VIA CONTENT SIGNALS ARE EXPRESS RESERVATIONS OF\n# RIGHTS UNDER ARTICLE 4 OF THE EUROPEAN UNION DIRECTIVE 2019/790 ON COPYRIGHT\n# AND RELATED RIGHTS IN THE DIGITAL SINGLE MARKET.\n\n# BEGIN Cloudflare Managed content\n\nUser-agent: *\nContent-Signal: search=yes,ai-train=no,use=reference\nAllow: /\n\nUser-agent: Amazonbot\nDisallow: /\n\nUser-agent: Applebot-Extended\nDisallow: /\n\nUser-agent: Bytespider\nDisallow: /\n\nUser-agent: CCBot\nDisallow: /\n\nUser-agent: ClaudeBot\nDisallow: /\n\nUser-agent: CloudflareBrowserRenderingCrawler\nDisallow: /\n\nUser-agent: Google-Extended\nDisallow: /\n\nUser-agent: GPTBot\nDisallow: /\n\nUser-agent: meta-externalagent\nDisallow: /\n\n# END Cloudflare Managed Content\n\nUser-agent: *\nAllow: /\n\n# User-requested retrieval and AI search are allowed.\nUser-agent: OAI-SearchBot\nAllow: /\nUser-agent: GPTBot\nDisallow: /\nUser-agent: ChatGPT-User\nAllow: /\nUser-agent: ClaudeBot\nDisallow: /\nUser-agent: Anthropic-AI\nDisallow: /\nUser-agent: PerplexityBot\nAllow: /\nUser-agent: Google-Extended\nDisallow: /\nUser-agent: CCBot\nDisallow: /\n\nUser-agent: *\nDisallow: /api/\nDisallow: /admin\nDisallow: /fr/admin\nDisallow: /changelog\nDisallow: /fr/changelog\nDisallow: /newsletter/preferences\nDisallow: /fr/newsletter/preferences\n\nSitemap: https://seynudedagnon.com/sitemap.xml\n"
+  },
+  "llmsTxt": {
+    "status": 200,
+    "contentType": "text/plain; charset=utf-8",
+    "size": 5043,
+    "hasTitle": true,
+    "hasKeyLinks": true
+  },
+  "sitemap": {
+    "status": 200,
+    "contentType": "application/xml; charset=utf-8",
+    "totalUrls": 128,
+    "hasOffline": false,
+    "hasAdmin": false,
+    "hasChangelog": false
+  },
+  "securityHeaders": {
+    "hsts": "max-age=63072000; includeSubDomains; preload",
+    "xContentTypeOptions": "nosniff",
+    "xFrameOptions": "DENY",
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    "csp": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; media-src 'self' https://www.youtube-nocookie.com https://www.youtube.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self' https://www.google-analytics.com https://*.vercel-insights.com https://cloudflareinsights.com; base-uri 'self'; form-action 'self'",
+    "cacheControl": "public, max-age=0, must-revalidate",
+    "cfRay": "a36f4f557bff2f65-EWR",
+    "server": "cloudflare"
+  },
+  "errorHandling": {
+    "404": {
+      "status": 404,
+      "isReal404": true,
+      "title": "404 — Page not found | Seynudé Jean-Fortuné DAGNON, MD, MPH"
+    },
+    "/offline": {
+      "status": 200,
+      "robotsMeta": "noindex, follow",
+      "isNoindex": true
+    },
+    "/fr/offline": {
+      "status": 200,
+      "robotsMeta": "noindex, follow",
+      "isNoindex": true
+    },
+    "/admin": {
+      "status": 200,
+      "robotsMeta": "noindex, follow",
+      "isNoindex": true
+    },
+    "/fr/admin": {
+      "status": 200,
+      "robotsMeta": "noindex, follow",
+      "isNoindex": true
+    },
+    "/changelog": {
+      "status": 200,
+      "robotsMeta": "noindex, follow",
+      "isNoindex": true
+    },
+    "/fr/changelog": {
+      "status": 200,
+      "robotsMeta": "noindex, follow",
+      "isNoindex": true
+    }
+  },
+  "crawledPages": [
+    {
+      "url": "https://seynudedagnon.com/fr/media",
+      "status": 200,
+      "ttfb": 751,
+      "title": "Médias &amp; Conférences — Dr. Seynudé Dagnon",
+      "titleLength": 45,
+      "description": "Interviews, conférences, discours, presse et engagement communautaire du Dr. Seynudé Jean-Fortuné Dagnon sur le paludisme et la santé publique en Afrique.",
+      "descriptionLength": 154,
+      "canonical": "https://seynudedagnon.com/fr/media",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media",
+        "en": "https://seynudedagnon.com/media",
+        "x-default": "https://seynudedagnon.com/media"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Médias — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Graph"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/contact",
+      "status": 200,
+      "ttfb": 697,
+      "title": "Contact — Dr. Seynudé Jean-Fortuné DAGNON",
+      "titleLength": 41,
+      "description": "Contactez le Dr. Seynudé Jean-Fortuné Dagnon pour un partenariat, une conférence ou un conseil technique sur le paludisme et la santé publique.",
+      "descriptionLength": 143,
+      "canonical": "https://seynudedagnon.com/fr/contact",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/contact",
+        "en": "https://seynudedagnon.com/contact",
+        "x-default": "https://seynudedagnon.com/contact"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Contact — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ContactPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/conference",
+      "status": 200,
+      "ttfb": 840,
+      "title": "Conférences &amp; Présentations — Dr. Seynudé Dagnon",
+      "titleLength": 52,
+      "description": "Conférences et présentations du Dr. Seynudé Jean-Fortuné Dagnon lors d",
+      "descriptionLength": 70,
+      "canonical": "https://seynudedagnon.com/fr/media/conference",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/conference",
+        "en": "https://seynudedagnon.com/media/conference",
+        "x-default": "https://seynudedagnon.com/media/conference"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Présentations &amp; Conférences — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Graph"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/press",
+      "status": 200,
+      "ttfb": 1040,
+      "title": "Articles de Presse &amp; Médias — Dr. Seynudé Dagnon",
+      "titleLength": 52,
+      "description": "Articles de presse, tribunes et couvertures médiatiques mettant en avant le travail du Dr. Dagnon sur le paludisme et la santé publique en Afrique francophone.",
+      "descriptionLength": 159,
+      "canonical": "https://seynudedagnon.com/fr/media/press",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/press",
+        "en": "https://seynudedagnon.com/media/press",
+        "x-default": "https://seynudedagnon.com/media/press"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Presse — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Graph"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/cv",
+      "status": 200,
+      "ttfb": 832,
+      "title": "Curriculum Vitae — Dr. Seynudé Dagnon",
+      "titleLength": 37,
+      "description": "CV complet du Dr. Seynudé Dagnon : 17 ans dans les programmes paludisme, formation, enseignements, distinctions et publications. Imprimable en PDF.",
+      "descriptionLength": 147,
+      "canonical": "https://seynudedagnon.com/fr/cv",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/cv",
+        "en": "https://seynudedagnon.com/cv",
+        "x-default": "https://seynudedagnon.com/cv"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Curriculum Vitae — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ProfilePage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/interview",
+      "status": 200,
+      "ttfb": 797,
+      "title": "Interviews &amp; Interventions Médias — Dr. Seynudé Dagnon",
+      "titleLength": 58,
+      "description": "Interviews du Dr. Seynudé Jean-Fortuné Dagnon sur la lutte contre le paludisme et les systèmes de santé en Afrique francophone.",
+      "descriptionLength": 127,
+      "canonical": "https://seynudedagnon.com/fr/media/interview",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/interview",
+        "en": "https://seynudedagnon.com/media/interview",
+        "x-default": "https://seynudedagnon.com/media/interview"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Interviews — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Graph"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr",
+      "status": 200,
+      "ttfb": 888,
+      "title": "Dr. Seynudé Dagnon — Santé Publique &amp; Paludisme",
+      "titleLength": 51,
+      "description": "Site officiel du Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Leader en santé publique et lutte contre le paludisme en Afrique (Fondation Gates, USAID, PMI).",
+      "descriptionLength": 155,
+      "canonical": "https://seynudedagnon.com/fr",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr",
+        "en": "https://seynudedagnon.com/",
+        "x-default": "https://seynudedagnon.com/"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Dr. Seynudé Jean-Fortuné DAGNON — Leader en santé publique et élimination du paludisme en Afrique"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community",
+      "status": 200,
+      "ttfb": 485,
+      "title": "Engagement Communautaire &amp; Philanthropie — Dr. Dagnon",
+      "titleLength": 57,
+      "description": "Engagement communautaire et philanthropique du Dr. Dagnon : Nuit du Paludisme, fournitures scolaires, Génies en Herbe — actions de terrain au Bénin.",
+      "descriptionLength": 148,
+      "canonical": "https://seynudedagnon.com/fr/media/community",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community",
+        "en": "https://seynudedagnon.com/media/community",
+        "x-default": "https://seynudedagnon.com/media/community"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Engagement communautaire et philanthropique — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-1",
+      "status": 200,
+      "ttfb": 588,
+      "title": "Gala Icône 360, portrait officiel",
+      "titleLength": 33,
+      "description": "La Nuit du Paludisme — Gala Icône 360, portrait officiel — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 111,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-1",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-1",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-1",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-1"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "La Nuit du Paludisme — Gala Icône 360, portrait officiel"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-2",
+      "status": 200,
+      "ttfb": 494,
+      "title": "Gala Icône 360, avec invités — Dr. Dagnon",
+      "titleLength": 41,
+      "description": "La Nuit du Paludisme — Gala Icône 360, avec invités — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 106,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-2",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-2",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-2",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-2"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "La Nuit du Paludisme — Gala Icône 360, avec invités"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/speaking",
+      "status": 200,
+      "ttfb": 1377,
+      "title": "Discours Publics &amp; Allocutions — Dr. Seynudé Dagnon",
+      "titleLength": 55,
+      "description": "Discours du Dr. Seynudé Jean-Fortuné Dagnon lors de réunions de partenaires, lancements de campagnes antipaludiques et cérémonies officielles en Afrique.",
+      "descriptionLength": 153,
+      "canonical": "https://seynudedagnon.com/fr/media/speaking",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/speaking",
+        "en": "https://seynudedagnon.com/media/speaking",
+        "x-default": "https://seynudedagnon.com/media/speaking"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Discours publics — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Graph"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-4",
+      "status": 200,
+      "ttfb": 244,
+      "title": "La Nuit du Paludisme — Remise de prix Icône 360",
+      "titleLength": 47,
+      "description": "La Nuit du Paludisme — Remise de prix Icône 360 — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 102,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-4",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-4",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-4",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-4"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "La Nuit du Paludisme — Remise de prix Icône 360"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-3",
+      "status": 200,
+      "ttfb": 304,
+      "title": "La Nuit du Paludisme — Discours et animations",
+      "titleLength": 45,
+      "description": "La Nuit du Paludisme — Discours et animations — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 100,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-3",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-3",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-3",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-3"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "La Nuit du Paludisme — Discours et animations"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5",
+      "status": 200,
+      "ttfb": 266,
+      "title": "Attestation Icône 360 / Expertise France",
+      "titleLength": 40,
+      "description": "Parrain de la lutte contre le paludisme — Attestation Icône 360 / Expertise France — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 137,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Parrain de la lutte contre le paludisme — Attestation Icône 360 / Expertise France"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-6",
+      "status": 200,
+      "ttfb": 314,
+      "title": "Remise d'attestation à Dr. Cédric Gandondoudjro",
+      "titleLength": 47,
+      "description": "5e Nuit du Paludisme — Remise d",
+      "descriptionLength": 31,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-6",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-6",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-6",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-6"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5e Nuit du Paludisme — Remise d&#x27;attestation à Dr. Cédric Gandondoudjro"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-8",
+      "status": 200,
+      "ttfb": 254,
+      "title": "Photo de groupe des lauréats, soirée de gala",
+      "titleLength": 44,
+      "description": "5e Nuit du Paludisme — Photo de groupe des lauréats, soirée de gala — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 122,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-8",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-8",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-8",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-8"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5e Nuit du Paludisme — Photo de groupe des lauréats, soirée de gala"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-4",
+      "status": 200,
+      "ttfb": 502,
+      "title": "5e Nuit du Paludisme — Photo avec invitée",
+      "titleLength": 41,
+      "description": "5e Nuit du Paludisme — Photo avec invitée — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 96,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-4",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-4",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-4",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-4"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5e Nuit du Paludisme — Photo avec invitée"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-5",
+      "status": 200,
+      "ttfb": 487,
+      "title": "Remise d'attestation à Dr. Enagnon Ghislaine LOKO…",
+      "titleLength": 50,
+      "description": "5e Nuit du Paludisme — Remise d",
+      "descriptionLength": 31,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-5",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-5",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-5",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-5"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5e Nuit du Paludisme — Remise d&#x27;attestation à Dr. Enagnon Ghislaine LOKO Ep/se DJIDJOHO"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-2",
+      "status": 200,
+      "ttfb": 551,
+      "title": "Échange avec un invité d'honneur",
+      "titleLength": 32,
+      "description": "5e Nuit du Paludisme — Échange avec un invité d",
+      "descriptionLength": 47,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-2",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-2",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-2",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-2"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5e Nuit du Paludisme — Échange avec un invité d&#x27;honneur"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-7",
+      "status": 200,
+      "ttfb": 263,
+      "title": "Discours du parrain Dr. Dagnon",
+      "titleLength": 30,
+      "description": "5e Nuit du Paludisme — Discours du parrain Dr. Dagnon — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 108,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-7",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-7",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-7",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-7"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5e Nuit du Paludisme — Discours du parrain Dr. Dagnon"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-1",
+      "status": 200,
+      "ttfb": 571,
+      "title": "Portrait officiel du Dr. Dagnon",
+      "titleLength": 31,
+      "description": "5e Nuit du Paludisme — Portrait officiel du Dr. Dagnon — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 109,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-1",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-1",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-1",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-1"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5e Nuit du Paludisme — Portrait officiel du Dr. Dagnon"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-3",
+      "status": 200,
+      "ttfb": 501,
+      "title": "Photo avec partenaire Expertise France",
+      "titleLength": 38,
+      "description": "5e Nuit du Paludisme — Photo avec partenaire Expertise France — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 116,
+      "canonical": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-3",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-3",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-3",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-3"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5e Nuit du Paludisme — Photo avec partenaire Expertise France"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/philantropie-2",
+      "status": 200,
+      "ttfb": 257,
+      "title": "Aide aux enfants démunis — ONG Reel Concept &amp; Plus",
+      "titleLength": 54,
+      "description": "Aide aux enfants démunis — ONG Reel Concept &amp; Plus — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 109,
+      "canonical": "https://seynudedagnon.com/fr/media/community/philantropie-2",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-2",
+        "en": "https://seynudedagnon.com/media/community/philantropie-2",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-2"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Aide aux enfants démunis — ONG Reel Concept &amp; Plus"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/philantropie-3",
+      "status": 200,
+      "ttfb": 248,
+      "title": "Soutien scolaire communautaire — Dr. Dagnon",
+      "titleLength": 43,
+      "description": "Soutien scolaire communautaire — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 85,
+      "canonical": "https://seynudedagnon.com/fr/media/community/philantropie-3",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-3",
+        "en": "https://seynudedagnon.com/media/community/philantropie-3",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-3"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Soutien scolaire communautaire"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/philantropie-4",
+      "status": 200,
+      "ttfb": 243,
+      "title": "Distribution de livres et fournitures",
+      "titleLength": 37,
+      "description": "Distribution de livres et fournitures — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 92,
+      "canonical": "https://seynudedagnon.com/fr/media/community/philantropie-4",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-4",
+        "en": "https://seynudedagnon.com/media/community/philantropie-4",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-4"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Distribution de livres et fournitures"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/philantropie-1",
+      "status": 200,
+      "ttfb": 496,
+      "title": "Distribution de fournitures scolaires — ONG Reel…",
+      "titleLength": 49,
+      "description": "Distribution de fournitures scolaires — ONG Reel Concept &amp; Plus — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 122,
+      "canonical": "https://seynudedagnon.com/fr/media/community/philantropie-1",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-1",
+        "en": "https://seynudedagnon.com/media/community/philantropie-1",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-1"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Distribution de fournitures scolaires — ONG Reel Concept &amp; Plus"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/philantropie-6",
+      "status": 200,
+      "ttfb": 273,
+      "title": "Collaboration communautaire et solidarité",
+      "titleLength": 41,
+      "description": "Collaboration communautaire et solidarité — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 96,
+      "canonical": "https://seynudedagnon.com/fr/media/community/philantropie-6",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-6",
+        "en": "https://seynudedagnon.com/media/community/philantropie-6",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-6"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Collaboration communautaire et solidarité"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/philantropie-7",
+      "status": 200,
+      "ttfb": 261,
+      "title": "Enfants heureux avec leurs fournitures scolaires",
+      "titleLength": 48,
+      "description": "Enfants heureux avec leurs fournitures scolaires — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 103,
+      "canonical": "https://seynudedagnon.com/fr/media/community/philantropie-7",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-7",
+        "en": "https://seynudedagnon.com/media/community/philantropie-7",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-7"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Enfants heureux avec leurs fournitures scolaires"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/philantropie-5",
+      "status": 200,
+      "ttfb": 476,
+      "title": "Équipe ONG Reel Concept &amp; Plus et partenaires",
+      "titleLength": 49,
+      "description": "Équipe ONG Reel Concept &amp; Plus et partenaires — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 104,
+      "canonical": "https://seynudedagnon.com/fr/media/community/philantropie-5",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-5",
+        "en": "https://seynudedagnon.com/media/community/philantropie-5",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-5"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Équipe ONG Reel Concept &amp; Plus et partenaires"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/genies-1",
+      "status": 200,
+      "ttfb": 286,
+      "title": "Édition Dr. Seynudé Fortuné Dagnon, cérémonie de…",
+      "titleLength": 49,
+      "description": "Génies en Herbe — Édition Dr. Seynudé Fortuné Dagnon, cérémonie de remise des prix — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 137,
+      "canonical": "https://seynudedagnon.com/fr/media/community/genies-1",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/genies-1",
+        "en": "https://seynudedagnon.com/media/community/genies-1",
+        "x-default": "https://seynudedagnon.com/media/community/genies-1"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Génies en Herbe — Édition Dr. Seynudé Fortuné Dagnon, cérémonie de remise des prix"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/genies-5",
+      "status": 200,
+      "ttfb": 264,
+      "title": "Équipe participante et Dr. Dagnon",
+      "titleLength": 33,
+      "description": "Génies en Herbe — Équipe participante et Dr. Dagnon — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 106,
+      "canonical": "https://seynudedagnon.com/fr/media/community/genies-5",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/genies-5",
+        "en": "https://seynudedagnon.com/media/community/genies-5",
+        "x-default": "https://seynudedagnon.com/media/community/genies-5"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Génies en Herbe — Équipe participante et Dr. Dagnon"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/genies-6",
+      "status": 200,
+      "ttfb": 244,
+      "title": "Photo de groupe avec les étudiants",
+      "titleLength": 34,
+      "description": "Génies en Herbe — Photo de groupe avec les étudiants — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 107,
+      "canonical": "https://seynudedagnon.com/fr/media/community/genies-6",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/genies-6",
+        "en": "https://seynudedagnon.com/media/community/genies-6",
+        "x-default": "https://seynudedagnon.com/media/community/genies-6"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Génies en Herbe — Photo de groupe avec les étudiants"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/publications",
+      "status": 200,
+      "ttfb": 254,
+      "title": "Publications scientifiques — Dr. Seynudé Jean-Fortuné DAGNON",
+      "titleLength": 60,
+      "description": "Publications scientifiques du Dr. Seynudé Jean-Fortuné Dagnon dans Malaria Journal, Parasites &amp; Vectors et autres revues. Entomologie, lutte antipaludique.",
+      "descriptionLength": 159,
+      "canonical": "https://seynudedagnon.com/fr/publications",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/publications",
+        "en": "https://seynudedagnon.com/publications",
+        "x-default": "https://seynudedagnon.com/publications"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Publications — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [
+        {
+          "name": "citation_author",
+          "content": "Dagnon, Seynudé Jean-Fortuné"
+        },
+        {
+          "name": "citation_title",
+          "content": "Publications scientifiques — Dr. Seynudé Jean-Fortuné DAGNON"
+        },
+        {
+          "name": "citation_public_url",
+          "content": "https://seynudedagnon.com/fr/publications"
+        },
+        {
+          "name": "citation_publication_date",
+          "content": "2026/09/01"
+        },
+        {
+          "name": "citation_language",
+          "content": "fr"
+        }
+      ],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/genies-2",
+      "status": 200,
+      "ttfb": 266,
+      "title": "Prix du meilleur marqueur — Dr. Dagnon",
+      "titleLength": 38,
+      "description": "Génies en Herbe — Prix du meilleur marqueur — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 98,
+      "canonical": "https://seynudedagnon.com/fr/media/community/genies-2",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/genies-2",
+        "en": "https://seynudedagnon.com/media/community/genies-2",
+        "x-default": "https://seynudedagnon.com/media/community/genies-2"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Génies en Herbe — Prix du meilleur marqueur"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/tribunes",
+      "status": 200,
+      "ttfb": 250,
+      "title": "Tribunes &amp; Analyses — Dr. Dagnon",
+      "titleLength": 36,
+      "description": "Tribunes et analyses du Dr. Seynudé Jean-Fortuné Dagnon — textes hébergés, indexés et partageables sur le paludisme et la santé publique.",
+      "descriptionLength": 137,
+      "canonical": "https://seynudedagnon.com/fr/tribunes",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/tribunes",
+        "en": "https://seynudedagnon.com/tribunes",
+        "x-default": "https://seynudedagnon.com/tribunes"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Tribunes — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/genies-3",
+      "status": 200,
+      "ttfb": 504,
+      "title": "Dr. Dagnon avec les lauréats",
+      "titleLength": 28,
+      "description": "Génies en Herbe — Dr. Dagnon avec les lauréats — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 101,
+      "canonical": "https://seynudedagnon.com/fr/media/community/genies-3",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/genies-3",
+        "en": "https://seynudedagnon.com/media/community/genies-3",
+        "x-default": "https://seynudedagnon.com/media/community/genies-3"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Génies en Herbe — Dr. Dagnon avec les lauréats"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/tribunes/from-malaria-control-to-elimination",
+      "status": 200,
+      "ttfb": 264,
+      "title": "Du contrôle du paludisme à l'élimination — Dr. Dagnon",
+      "titleLength": 53,
+      "description": "Tribune de la Pr Rose Leke et du Dr Seynudé Dagnon : pourquoi le contrôle du paludisme ne suffit pas, et ce qu",
+      "descriptionLength": 110,
+      "canonical": "https://seynudedagnon.com/fr/tribunes/from-malaria-control-to-elimination",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/tribunes/from-malaria-control-to-elimination",
+        "en": "https://seynudedagnon.com/tribunes/from-malaria-control-to-elimination",
+        "x-default": "https://seynudedagnon.com/tribunes/from-malaria-control-to-elimination"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Du contrôle du paludisme à l&#x27;élimination : le virage à prendre"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [
+        {
+          "name": "citation_title",
+          "content": "Du contrôle du paludisme à l"
+        },
+        {
+          "name": "citation_author",
+          "content": "Dagnon, Seynudé Jean-Fortuné"
+        },
+        {
+          "name": "citation_publication_date",
+          "content": "2026/05/01"
+        },
+        {
+          "name": "citation_journal_title",
+          "content": "Africa Health Watch"
+        },
+        {
+          "name": "citation_public_url",
+          "content": "https://seynudedagnon.com/fr/tribunes/from-malaria-control-to-elimination"
+        }
+      ],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/media/community/genies-4",
+      "status": 200,
+      "ttfb": 541,
+      "title": "Remise du chèque de 100 000 FCFA",
+      "titleLength": 32,
+      "description": "Génies en Herbe — Remise du chèque de 100 000 FCFA — Galerie communautaire du Dr. Seynudé Dagnon — Bénin.",
+      "descriptionLength": 105,
+      "canonical": "https://seynudedagnon.com/fr/media/community/genies-4",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/genies-4",
+        "en": "https://seynudedagnon.com/media/community/genies-4",
+        "x-default": "https://seynudedagnon.com/media/community/genies-4"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Génies en Herbe — Remise du chèque de 100 000 FCFA"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/tribunes/financement-direct-g2g-souverainete-sanitaire",
+      "status": 200,
+      "ttfb": 257,
+      "title": "Financement direct G2G — Dr. Dagnon",
+      "titleLength": 35,
+      "description": "Tribune du Dr Seynudé Dagnon : comment le financement direct d’État à État (G2G) transforme l’autonomie des ministères de la santé en Afrique.",
+      "descriptionLength": 142,
+      "canonical": "https://seynudedagnon.com/fr/tribunes/financement-direct-g2g-souverainete-sanitaire",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/tribunes/financement-direct-g2g-souverainete-sanitaire",
+        "en": "https://seynudedagnon.com/tribunes/financement-direct-g2g-souverainete-sanitaire",
+        "x-default": "https://seynudedagnon.com/tribunes/financement-direct-g2g-souverainete-sanitaire"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Financement direct G2G : débloquer l’autonomie des ministères africains"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [
+        {
+          "name": "citation_title",
+          "content": "Financement direct G2G : débloquer l’autonomie des ministères africains"
+        },
+        {
+          "name": "citation_author",
+          "content": "Dagnon, Seynudé Jean-Fortuné"
+        },
+        {
+          "name": "citation_publication_date",
+          "content": "2026/08/28"
+        },
+        {
+          "name": "citation_journal_title",
+          "content": "Health Policy Africa"
+        },
+        {
+          "name": "citation_public_url",
+          "content": "https://seynudedagnon.com/fr/tribunes/financement-direct-g2g-souverainete-sanitaire"
+        }
+      ],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/projets/malariya-pi-burundi",
+      "status": 200,
+      "ttfb": 269,
+      "title": "L'entrepôt de données paludisme du Burundi — Dr. Dagnon",
+      "titleLength": 55,
+      "description": "Accompagnement du ministère de la Santé du Burundi pour structurer les données paludisme et éclairer les décisions nationales.",
+      "descriptionLength": 126,
+      "canonical": "https://seynudedagnon.com/fr/projets/malariya-pi-burundi",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/malariya-pi-burundi",
+        "en": "https://seynudedagnon.com/projets/malariya-pi-burundi",
+        "x-default": "https://seynudedagnon.com/projets/malariya-pi-burundi"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "L&#x27;entrepôt de données paludisme du Burundi"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/projets/irs-nord-benin",
+      "status": 200,
+      "ttfb": 296,
+      "title": "Pulvérisation intradomiciliaire au Bénin — Dr. Dagnon",
+      "titleLength": 53,
+      "description": "Pilotage des campagnes PMI de pulvérisation intradomiciliaire et constitution d",
+      "descriptionLength": 79,
+      "canonical": "https://seynudedagnon.com/fr/projets/irs-nord-benin",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/irs-nord-benin",
+        "en": "https://seynudedagnon.com/projets/irs-nord-benin",
+        "x-default": "https://seynudedagnon.com/projets/irs-nord-benin"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Pulvérisation intradomiciliaire au Bénin"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/projets/arm3-systeme-information-benin",
+      "status": 200,
+      "ttfb": 481,
+      "title": "Fiabiliser les données paludisme du Bénin — Dr. Dagnon",
+      "titleLength": 54,
+      "description": "Responsable suivi-évaluation d",
+      "descriptionLength": 30,
+      "canonical": "https://seynudedagnon.com/fr/projets/arm3-systeme-information-benin",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/arm3-systeme-information-benin",
+        "en": "https://seynudedagnon.com/projets/arm3-systeme-information-benin",
+        "x-default": "https://seynudedagnon.com/projets/arm3-systeme-information-benin"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Fiabiliser les données paludisme du Bénin"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/projets/digitalisation-milda-benin",
+      "status": 200,
+      "ttfb": 479,
+      "title": "Digitalisation des campagnes MILDA au Bénin — Dr. Dagnon",
+      "titleLength": 56,
+      "description": "Digitalisation des campagnes de moustiquaires imprégnées au Bénin : trois subventions structurantes pour des données fiables et des campagnes plus efficaces.",
+      "descriptionLength": 157,
+      "canonical": "https://seynudedagnon.com/fr/projets/digitalisation-milda-benin",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/digitalisation-milda-benin",
+        "en": "https://seynudedagnon.com/projets/digitalisation-milda-benin",
+        "x-default": "https://seynudedagnon.com/projets/digitalisation-milda-benin"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Digitalisation des campagnes MILDA au Bénin"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/projets/recherche-cps-smc",
+      "status": 200,
+      "ttfb": 518,
+      "title": "Élargir la chimioprévention du paludisme — Dr. Dagnon",
+      "titleLength": 53,
+      "description": "Un portefeuille de recherches et de partenariats pour élargir la chimioprévention du paludisme saisonnier en Afrique francophone.",
+      "descriptionLength": 129,
+      "canonical": "https://seynudedagnon.com/fr/projets/recherche-cps-smc",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/recherche-cps-smc",
+        "en": "https://seynudedagnon.com/projets/recherche-cps-smc",
+        "x-default": "https://seynudedagnon.com/projets/recherche-cps-smc"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Élargir la chimioprévention du paludisme"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/projets/contrat-g2g-pnlp-benin",
+      "status": 200,
+      "ttfb": 248,
+      "title": "Contrat G2G avec le PNLP du Bénin — Dr. Dagnon",
+      "titleLength": 46,
+      "description": "Négociation du contrat G2G entre l",
+      "descriptionLength": 34,
+      "canonical": "https://seynudedagnon.com/fr/projets/contrat-g2g-pnlp-benin",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/contrat-g2g-pnlp-benin",
+        "en": "https://seynudedagnon.com/projets/contrat-g2g-pnlp-benin",
+        "x-default": "https://seynudedagnon.com/projets/contrat-g2g-pnlp-benin"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Contrat G2G avec le PNLP du Bénin"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/projets/reponse-epidemies-benin",
+      "status": 200,
+      "ttfb": 487,
+      "title": "Préparation et réponse aux épidémies au Bénin — Dr. Dagnon",
+      "titleLength": 58,
+      "description": "Coordination de la réponse USAID aux épidémies émergentes (Ebola, Lassa, COVID-19) et maintien de la continuité des services antipaludiques.",
+      "descriptionLength": 140,
+      "canonical": "https://seynudedagnon.com/fr/projets/reponse-epidemies-benin",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/reponse-epidemies-benin",
+        "en": "https://seynudedagnon.com/projets/reponse-epidemies-benin",
+        "x-default": "https://seynudedagnon.com/projets/reponse-epidemies-benin"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Préparation et réponse aux épidémies au Bénin"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/presse",
+      "status": 200,
+      "ttfb": 259,
+      "title": "Kit de presse &amp; Bio — Dr. Seynudé Dagnon",
+      "titleLength": 44,
+      "description": "Kit de presse du Dr. Seynudé Jean-Fortuné Dagnon : biographie, chiffres clés, photo et contact pour les journalistes et les médias.",
+      "descriptionLength": 131,
+      "canonical": "https://seynudedagnon.com/fr/presse",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/presse",
+        "en": "https://seynudedagnon.com/presse",
+        "x-default": "https://seynudedagnon.com/presse"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Kit de presse"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage",
+        "FAQPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/inviter",
+      "status": 200,
+      "ttfb": 275,
+      "title": "Inviter le Dr. Dagnon — Conférences &amp; médias",
+      "titleLength": 48,
+      "description": "Invitez le Dr. Seynudé Dagnon : conférences, panels, formations et interviews sur le paludisme et la santé publique en Afrique francophone.",
+      "descriptionLength": 139,
+      "canonical": "https://seynudedagnon.com/fr/inviter",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/inviter",
+        "en": "https://seynudedagnon.com/inviter",
+        "x-default": "https://seynudedagnon.com/inviter"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Inviter le Dr. Dagnon"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "WebPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
+      "status": 200,
+      "ttfb": 268,
+      "title": "De la lutte à l’élimination — Dr. Dagnon",
+      "titleLength": 40,
+      "description": "Tribune du Dr Seynudé Dagnon dans Le Soleil (Sénégal) : l’adaptation infranationale comme pont entre lutte et élimination du paludisme.",
+      "descriptionLength": 135,
+      "canonical": "https://seynudedagnon.com/fr/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
+        "en": "https://seynudedagnon.com/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
+        "x-default": "https://seynudedagnon.com/tribunes/de-la-lutte-a-lelimination-afrique-francophone"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "De la lutte à l’élimination : pourquoi l’Afrique francophone doit adapter sa riposte au paludisme"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [
+        {
+          "name": "citation_title",
+          "content": "De la lutte à l’élimination : pourquoi l’Afrique francophone doit adapter sa riposte au paludisme"
+        },
+        {
+          "name": "citation_author",
+          "content": "Dagnon, Seynudé Jean-Fortuné"
+        },
+        {
+          "name": "citation_publication_date",
+          "content": "2026/08/21"
+        },
+        {
+          "name": "citation_journal_title",
+          "content": "Le Soleil"
+        },
+        {
+          "name": "citation_public_url",
+          "content": "https://seynudedagnon.com/fr/tribunes/de-la-lutte-a-lelimination-afrique-francophone"
+        }
+      ],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/newsletter",
+      "status": 200,
+      "ttfb": 300,
+      "title": "Newsletter &amp; Analyses — Dr. Seynudé Dagnon",
+      "titleLength": 46,
+      "description": "Archives de la newsletter du Dr. Seynudé Dagnon : analyses, dates clés et avancées de la lutte contre le paludisme en Afrique.",
+      "descriptionLength": 126,
+      "canonical": "https://seynudedagnon.com/fr/newsletter",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/newsletter",
+        "en": "https://seynudedagnon.com/newsletter",
+        "x-default": "https://seynudedagnon.com/newsletter"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Archives de la newsletter"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/collaborate",
+      "status": 200,
+      "ttfb": 394,
+      "title": "Collaborer — Recherche, programmes &amp; partenariats",
+      "titleLength": 53,
+      "description": "Collaborez avec le Dr. Seynudé Dagnon : recherche opérationnelle, programmes de santé publique, conseil technique et partenariats stratégiques en Afrique.",
+      "descriptionLength": 154,
+      "canonical": "https://seynudedagnon.com/fr/collaborate",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/collaborate",
+        "en": "https://seynudedagnon.com/collaborate",
+        "x-default": "https://seynudedagnon.com/collaborate"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Collaborer avec le Dr. Dagnon"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/impact",
+      "status": 200,
+      "ttfb": 271,
+      "title": "Impact &amp; Résultats — Dr. Seynudé Dagnon",
+      "titleLength": 43,
+      "description": "Résultats mesurables du Dr. Seynudé Dagnon : 1 114 centres de santé, complétude des données de 35 % à 94 %, économies de 3 M$ et portefeuille de 180 M$.",
+      "descriptionLength": 152,
+      "canonical": "https://seynudedagnon.com/fr/impact",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/impact",
+        "en": "https://seynudedagnon.com/impact",
+        "x-default": "https://seynudedagnon.com/impact"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Résultats mesurables, décisions fondées sur les données"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/projets",
+      "status": 200,
+      "ttfb": 1398,
+      "title": "Projets &amp; Études de cas — Dr. Dagnon",
+      "titleLength": 40,
+      "description": "Études de cas du Dr. Seynudé Dagnon : campagnes MILDA digitalisées, données paludisme au Burundi, CPS, IRS au nord du Bénin — avec résultats.",
+      "descriptionLength": 141,
+      "canonical": "https://seynudedagnon.com/fr/projets",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets",
+        "en": "https://seynudedagnon.com/projets",
+        "x-default": "https://seynudedagnon.com/projets"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Projets &amp; Études de cas — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/legal",
+      "status": 200,
+      "ttfb": 281,
+      "title": "Mentions légales &amp; RGPD — Dr. Dagnon",
+      "titleLength": 40,
+      "description": "Mentions légales, hébergement, données personnelles (RGPD), cookies et droits des visiteurs du site du Dr. Seynudé Dagnon.",
+      "descriptionLength": 122,
+      "canonical": "https://seynudedagnon.com/fr/legal",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/legal",
+        "en": "https://seynudedagnon.com/legal",
+        "x-default": "https://seynudedagnon.com/legal"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Mentions légales &amp; protection des données"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/accessibility",
+      "status": 200,
+      "ttfb": 524,
+      "title": "Accessibilité — Dr. Seynudé Dagnon",
+      "titleLength": 34,
+      "description": "Déclaration d",
+      "descriptionLength": 13,
+      "canonical": "https://seynudedagnon.com/fr/accessibility",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/accessibility",
+        "en": "https://seynudedagnon.com/accessibility",
+        "x-default": "https://seynudedagnon.com/accessibility"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Accessibilité de ce site"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/agenda",
+      "status": 200,
+      "ttfb": 284,
+      "title": "Agenda — Conférences &amp; engagements du Dr. Dagnon",
+      "titleLength": 52,
+      "description": "Conférences, prises de parole et engagements communautaires du Dr. Seynudé Jean-Fortuné Dagnon — dates clés en Afrique.",
+      "descriptionLength": 119,
+      "canonical": "https://seynudedagnon.com/fr/agenda",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/agenda",
+        "en": "https://seynudedagnon.com/agenda",
+        "x-default": "https://seynudedagnon.com/agenda"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Agenda — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/portfolio",
+      "status": 200,
+      "ttfb": 508,
+      "title": "Portfolio complet — Dr. Seynudé Dagnon",
+      "titleLength": 38,
+      "description": "Portfolio complet du Dr. Seynudé Dagnon : CV, projets, publications et distinctions en un seul document imprimable.",
+      "descriptionLength": 115,
+      "canonical": "https://seynudedagnon.com/fr/portfolio",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/portfolio",
+        "en": "https://seynudedagnon.com/portfolio",
+        "x-default": "https://seynudedagnon.com/portfolio"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Tout le portfolio en un document"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/publications-pdf",
+      "status": 200,
+      "ttfb": 265,
+      "title": "Publications (PDF) — Dr. Seynudé Dagnon",
+      "titleLength": 39,
+      "description": "Liste complète des publications scientifiques du Dr. Seynudé Dagnon, téléchargeable en PDF. ORCID, Google Scholar, citations.",
+      "descriptionLength": 125,
+      "canonical": "https://seynudedagnon.com/fr/publications-pdf",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/publications-pdf",
+        "en": "https://seynudedagnon.com/publications-pdf",
+        "x-default": "https://seynudedagnon.com/publications-pdf"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Publications (PDF) — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [
+        {
+          "name": "citation_author",
+          "content": "Dagnon, Seynudé Jean-Fortuné"
+        },
+        {
+          "name": "citation_title",
+          "content": "Publications scientifiques — Dr. Seynudé Jean-Fortuné DAGNON"
+        },
+        {
+          "name": "citation_public_url",
+          "content": "https://seynudedagnon.com/fr/publications-pdf"
+        },
+        {
+          "name": "citation_publication_date",
+          "content": "2026/09/01"
+        },
+        {
+          "name": "citation_language",
+          "content": "fr"
+        }
+      ],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/podcasts",
+      "status": 200,
+      "ttfb": 303,
+      "title": "Podcasts &amp; Audio — Dr. Seynudé Jean-Fortuné DAGNON",
+      "titleLength": 54,
+      "description": "Écoutez les podcasts et entretiens audio du Dr. Seynudé Jean-Fortuné Dagnon sur le paludisme, la santé publique et les systèmes de santé en Afrique.",
+      "descriptionLength": 148,
+      "canonical": "https://seynudedagnon.com/fr/podcasts",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/podcasts",
+        "en": "https://seynudedagnon.com/podcasts",
+        "x-default": "https://seynudedagnon.com/podcasts"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Podcasts &amp; Tribunes Audio — Dr. Seynudé Jean-Fortuné DAGNON"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "PodcastEpisode"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/connect",
+      "status": 200,
+      "ttfb": 260,
+      "title": "Carte de Visite Digitale &amp; Contact — Dr. Seynudé Dagnon",
+      "titleLength": 59,
+      "description": "Carte de visite digitale du Dr. Seynudé Jean-Fortuné Dagnon : coordonnées officielles, vCard (.vcf), QR Code et profil professionnel.",
+      "descriptionLength": 133,
+      "canonical": "https://seynudedagnon.com/fr/connect",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/connect",
+        "en": "https://seynudedagnon.com/connect",
+        "x-default": "https://seynudedagnon.com/connect"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Dr. Seynudé Jean-Fortuné DAGNON — Carte Digitale"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/toolkit",
+      "status": 200,
+      "ttfb": 274,
+      "title": "Boîte à Outils &amp; Protocoles — Dr. Seynudé Dagnon",
+      "titleLength": 52,
+      "description": "Guides méthodologiques et protocoles opérationnels du Dr. Seynudé Dagnon : digitalisation de campagnes MILDA, contrats G2G, audit DHIS2 et ciblage CPS.",
+      "descriptionLength": 151,
+      "canonical": "https://seynudedagnon.com/fr/toolkit",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/toolkit",
+        "en": "https://seynudedagnon.com/toolkit",
+        "x-default": "https://seynudedagnon.com/toolkit"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Boîte à Outils &amp; Protocoles pour Décideurs"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/bibliography",
+      "status": 200,
+      "ttfb": 530,
+      "title": "Bibliographie scientifique — Dr. Dagnon",
+      "titleLength": 39,
+      "description": "Publications de recherche du Dr. Seynudé Dagnon indexées par DOI : paludisme, moustiquaires imprégnées, pulvérisation intradomiciliaire.",
+      "descriptionLength": 136,
+      "canonical": "https://seynudedagnon.com/fr/bibliography",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/bibliography",
+        "en": "https://seynudedagnon.com/bibliography",
+        "x-default": "https://seynudedagnon.com/bibliography"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Bibliographie scientifique"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [
+        {
+          "name": "citation_author",
+          "content": "Dagnon, Seynudé Jean-Fortuné"
+        },
+        {
+          "name": "citation_title",
+          "content": "Publications scientifiques — Dr. Seynudé Jean-Fortuné DAGNON"
+        },
+        {
+          "name": "citation_public_url",
+          "content": "https://seynudedagnon.com/fr/bibliography"
+        },
+        {
+          "name": "citation_publication_date",
+          "content": "2026/09/01"
+        },
+        {
+          "name": "citation_language",
+          "content": "fr"
+        }
+      ],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media",
+      "status": 200,
+      "ttfb": 249,
+      "title": "Media &amp; Speeches — Dr. Seynudé Dagnon",
+      "titleLength": 41,
+      "description": "Interviews, conferences, speeches, press coverage and community engagement by Dr. Seynudé Jean-Fortuné Dagnon on malaria and public health in Africa.",
+      "descriptionLength": 149,
+      "canonical": "https://seynudedagnon.com/media",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media",
+        "en": "https://seynudedagnon.com/media",
+        "x-default": "https://seynudedagnon.com/media"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Media — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Graph"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/mentorat",
+      "status": 200,
+      "ttfb": 264,
+      "title": "Mentorat en Santé Mondiale — Dr. Seynudé Dagnon",
+      "titleLength": 47,
+      "description": "Guide de mentorat et carrières en santé mondiale du Dr. Seynudé Dagnon : recherche (PhD), programmes bilatéraux (USAID) et philanthropie (Gates Foundation).",
+      "descriptionLength": 156,
+      "canonical": "https://seynudedagnon.com/fr/mentorat",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/mentorat",
+        "en": "https://seynudedagnon.com/mentorat",
+        "x-default": "https://seynudedagnon.com/mentorat"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Boussole de Carrière en Santé Mondiale"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "WebPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/interview",
+      "status": 200,
+      "ttfb": 739,
+      "title": "Interviews &amp; Media Appearances — Dr. Seynudé Dagnon",
+      "titleLength": 55,
+      "description": "Interviews with Dr. Seynudé Jean-Fortuné Dagnon on malaria control, African health systems and malaria elimination in Francophone Africa.",
+      "descriptionLength": 137,
+      "canonical": "https://seynudedagnon.com/media/interview",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/interview",
+        "en": "https://seynudedagnon.com/media/interview",
+        "x-default": "https://seynudedagnon.com/media/interview"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Interviews — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Graph"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/speaking",
+      "status": 200,
+      "ttfb": 493,
+      "title": "Public Speaking &amp; Keynotes — Dr. Seynudé Dagnon",
+      "titleLength": 51,
+      "description": "Speeches by Dr. Seynudé Jean-Fortuné Dagnon at partner meetings, anti-malaria campaign launches and official ceremonies in Africa.",
+      "descriptionLength": 130,
+      "canonical": "https://seynudedagnon.com/media/speaking",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/speaking",
+        "en": "https://seynudedagnon.com/media/speaking",
+        "x-default": "https://seynudedagnon.com/media/speaking"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Public Speaking — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Graph"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/conference",
+      "status": 200,
+      "ttfb": 536,
+      "title": "Conferences &amp; Presentations — Dr. Seynudé Dagnon",
+      "titleLength": 52,
+      "description": "Conferences and presentations by Dr. Seynudé Jean-Fortuné Dagnon at international events on malaria, operational research and health policy.",
+      "descriptionLength": 140,
+      "canonical": "https://seynudedagnon.com/media/conference",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/conference",
+        "en": "https://seynudedagnon.com/media/conference",
+        "x-default": "https://seynudedagnon.com/media/conference"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Presentations &amp; Conferences — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Graph"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/",
+      "status": 200,
+      "ttfb": 466,
+      "title": "Dr. Seynudé Dagnon — Public Health &amp; Malaria Leader",
+      "titleLength": 55,
+      "description": "Official website of Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Public Health &amp; Malaria Leader in Africa (Gates Foundation, USAID, PMI).",
+      "descriptionLength": 139,
+      "canonical": "https://seynudedagnon.com/",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr",
+        "en": "https://seynudedagnon.com/",
+        "x-default": "https://seynudedagnon.com/"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Seynudé Jean-Fortuné DAGNON, MD, MPH — Public Health &amp; Malaria Program Leader in Africa"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-1",
+      "status": 200,
+      "ttfb": 277,
+      "title": "Icône 360 gala, official portrait",
+      "titleLength": 33,
+      "description": "Night Against Malaria — Icône 360 gala, official portrait — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 108,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-1",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-1",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-1",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-1"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Night Against Malaria — Icône 360 gala, official portrait"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community",
+      "status": 200,
+      "ttfb": 262,
+      "title": "Community Engagement &amp; Philanthropy — Dr. Dagnon",
+      "titleLength": 52,
+      "description": "Community and philanthropic engagement by Dr. Dagnon: Night Against Malaria, school kits, Génies en Herbe — field activities in Benin.",
+      "descriptionLength": 134,
+      "canonical": "https://seynudedagnon.com/media/community",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community",
+        "en": "https://seynudedagnon.com/media/community",
+        "x-default": "https://seynudedagnon.com/media/community"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Community and Philanthropic Engagement — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/cv",
+      "status": 200,
+      "ttfb": 952,
+      "title": "Resume — Dr. Seynudé Dagnon, malaria program leader",
+      "titleLength": 51,
+      "description": "Full resume of Dr. Seynudé Dagnon: 17+ years in malaria programs, education, teaching, awards and publications. Print-ready PDF version.",
+      "descriptionLength": 136,
+      "canonical": "https://seynudedagnon.com/cv",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/cv",
+        "en": "https://seynudedagnon.com/cv",
+        "x-default": "https://seynudedagnon.com/cv"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Curriculum Vitae — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ProfilePage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/press",
+      "status": 200,
+      "ttfb": 267,
+      "title": "Press Coverage &amp; Media Mentions — Dr. Seynudé Dagnon",
+      "titleLength": 56,
+      "description": "Press articles, op-eds and media coverage highlighting Dr. Dagnon",
+      "descriptionLength": 65,
+      "canonical": "https://seynudedagnon.com/media/press",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/press",
+        "en": "https://seynudedagnon.com/media/press",
+        "x-default": "https://seynudedagnon.com/media/press"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Press — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Graph"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-3",
+      "status": 200,
+      "ttfb": 250,
+      "title": "Night Against Malaria — Speeches and ceremonies",
+      "titleLength": 47,
+      "description": "Night Against Malaria — Speeches and ceremonies — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 98,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-3",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-3",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-3",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-3"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Night Against Malaria — Speeches and ceremonies"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/fr/parcours",
+      "status": 200,
+      "ttfb": 244,
+      "title": "Parcours — 17 ans en santé publique &amp; paludisme",
+      "titleLength": 51,
+      "description": "Frise interactive du parcours du Dr. Seynudé Dagnon : Fondation Gates, USAID/PMI, MCDI/ARM3 — 17 ans, 6 postes, distinctions et projets.",
+      "descriptionLength": 136,
+      "canonical": "https://seynudedagnon.com/fr/parcours",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/parcours",
+        "en": "https://seynudedagnon.com/parcours",
+        "x-default": "https://seynudedagnon.com/parcours"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "17 ans au service de la santé publique"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-2",
+      "status": 200,
+      "ttfb": 510,
+      "title": "Icône 360 gala, with guests — Dr. Dagnon",
+      "titleLength": 40,
+      "description": "Night Against Malaria — Icône 360 gala, with guests — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 102,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-2",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-2",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-2",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-2"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Night Against Malaria — Icône 360 gala, with guests"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-2",
+      "status": 200,
+      "ttfb": 239,
+      "title": "Conversation with a guest of honor",
+      "titleLength": 34,
+      "description": "5th Night Against Malaria — Conversation with a guest of honor — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 113,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-2",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-2",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-2",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-2"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5th Night Against Malaria — Conversation with a guest of honor"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-1",
+      "status": 200,
+      "ttfb": 248,
+      "title": "Dr. Dagnon official portrait",
+      "titleLength": 28,
+      "description": "5th Night Against Malaria — Dr. Dagnon official portrait — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 107,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-1",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-1",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-1",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-1"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5th Night Against Malaria — Dr. Dagnon official portrait"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-4",
+      "status": 200,
+      "ttfb": 492,
+      "title": "Icône 360 awards ceremony — Dr. Dagnon",
+      "titleLength": 38,
+      "description": "Night Against Malaria — Icône 360 awards ceremony — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 100,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-4",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-4",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-4",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-4"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Night Against Malaria — Icône 360 awards ceremony"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-3",
+      "status": 200,
+      "ttfb": 246,
+      "title": "Photo with Expertise France partner",
+      "titleLength": 35,
+      "description": "5th Night Against Malaria — Photo with Expertise France partner — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 114,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-3",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-3",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-3",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-3"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5th Night Against Malaria — Photo with Expertise France partner"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-5",
+      "status": 200,
+      "ttfb": 493,
+      "title": "Icône 360 / Expertise France attestation",
+      "titleLength": 40,
+      "description": "Malaria fight godfather — Icône 360 / Expertise France attestation — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 117,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-5",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Malaria fight godfather — Icône 360 / Expertise France attestation"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/contact",
+      "status": 200,
+      "ttfb": 1916,
+      "title": "Contact — Seynudé Jean-Fortuné DAGNON, MD, MPH",
+      "titleLength": 46,
+      "description": "Contact Dr. Seynudé Jean-Fortuné Dagnon for partnerships, conferences or technical advice on malaria and public health in Francophone Africa.",
+      "descriptionLength": 141,
+      "canonical": "https://seynudedagnon.com/contact",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/contact",
+        "en": "https://seynudedagnon.com/contact",
+        "x-default": "https://seynudedagnon.com/contact"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Contact — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ContactPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-5",
+      "status": 200,
+      "ttfb": 520,
+      "title": "Attestation presented to Dr. Enagnon Ghislaine LOKO…",
+      "titleLength": 52,
+      "description": "5th Night Against Malaria — Attestation presented to Dr. Enagnon Ghislaine LOKO Ep/se DJIDJOHO — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 145,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-5",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-5",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-5",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-5"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5th Night Against Malaria — Attestation presented to Dr. Enagnon Ghislaine LOKO Ep/se DJIDJOHO"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-8",
+      "status": 200,
+      "ttfb": 519,
+      "title": "Group photo of awardees, gala evening",
+      "titleLength": 37,
+      "description": "5th Night Against Malaria — Group photo of awardees, gala evening — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 116,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-8",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-8",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-8",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-8"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5th Night Against Malaria — Group photo of awardees, gala evening"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/philantropie-2",
+      "status": 200,
+      "ttfb": 589,
+      "title": "Support for underprivileged children — ONG Reel…",
+      "titleLength": 48,
+      "description": "Support for underprivileged children — ONG Reel Concept &amp; Plus — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 117,
+      "canonical": "https://seynudedagnon.com/media/community/philantropie-2",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-2",
+        "en": "https://seynudedagnon.com/media/community/philantropie-2",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-2"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Support for underprivileged children — ONG Reel Concept &amp; Plus"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/philantropie-3",
+      "status": 200,
+      "ttfb": 535,
+      "title": "Community education support — Dr. Dagnon",
+      "titleLength": 40,
+      "description": "Community education support — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 78,
+      "canonical": "https://seynudedagnon.com/media/community/philantropie-3",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-3",
+        "en": "https://seynudedagnon.com/media/community/philantropie-3",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-3"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Community education support"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-7",
+      "status": 200,
+      "ttfb": 483,
+      "title": "Speech by patron Dr. Dagnon",
+      "titleLength": 27,
+      "description": "5th Night Against Malaria — Speech by patron Dr. Dagnon — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 106,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-7",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-7",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-7",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-7"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5th Night Against Malaria — Speech by patron Dr. Dagnon"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/philantropie-4",
+      "status": 200,
+      "ttfb": 273,
+      "title": "Books and supplies distribution — Dr. Dagnon",
+      "titleLength": 44,
+      "description": "Books and supplies distribution — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 82,
+      "canonical": "https://seynudedagnon.com/media/community/philantropie-4",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-4",
+        "en": "https://seynudedagnon.com/media/community/philantropie-4",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-4"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Books and supplies distribution"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-4",
+      "status": 200,
+      "ttfb": 1112,
+      "title": "5th Night Against Malaria — Photo with guest",
+      "titleLength": 44,
+      "description": "5th Night Against Malaria — Photo with guest — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 95,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-4",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-4",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-4",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-4"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5th Night Against Malaria — Photo with guest"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/genies-1",
+      "status": 200,
+      "ttfb": 304,
+      "title": "Dr. Seynudé Fortuné Dagnon edition, awards ceremony",
+      "titleLength": 51,
+      "description": "Génies en Herbe — Dr. Seynudé Fortuné Dagnon edition, awards ceremony — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 120,
+      "canonical": "https://seynudedagnon.com/media/community/genies-1",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/genies-1",
+        "en": "https://seynudedagnon.com/media/community/genies-1",
+        "x-default": "https://seynudedagnon.com/media/community/genies-1"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Génies en Herbe — Dr. Seynudé Fortuné Dagnon edition, awards ceremony"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/genies-2",
+      "status": 200,
+      "ttfb": 252,
+      "title": "Génies en Herbe — Best scorer award",
+      "titleLength": 35,
+      "description": "Génies en Herbe — Best scorer award — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 86,
+      "canonical": "https://seynudedagnon.com/media/community/genies-2",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/genies-2",
+        "en": "https://seynudedagnon.com/media/community/genies-2",
+        "x-default": "https://seynudedagnon.com/media/community/genies-2"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Génies en Herbe — Best scorer award"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/philantropie-5",
+      "status": 200,
+      "ttfb": 507,
+      "title": "ONG Reel Concept &amp; Plus team and partners",
+      "titleLength": 45,
+      "description": "ONG Reel Concept &amp; Plus team and partners — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 96,
+      "canonical": "https://seynudedagnon.com/media/community/philantropie-5",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-5",
+        "en": "https://seynudedagnon.com/media/community/philantropie-5",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-5"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "ONG Reel Concept &amp; Plus team and partners"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/philantropie-7",
+      "status": 200,
+      "ttfb": 531,
+      "title": "Happy children with school supplies",
+      "titleLength": 35,
+      "description": "Happy children with school supplies — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 86,
+      "canonical": "https://seynudedagnon.com/media/community/philantropie-7",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-7",
+        "en": "https://seynudedagnon.com/media/community/philantropie-7",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-7"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Happy children with school supplies"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/philantropie-1",
+      "status": 200,
+      "ttfb": 1305,
+      "title": "School kits distribution — ONG Reel Concept &amp; Plus",
+      "titleLength": 54,
+      "description": "School kits distribution — ONG Reel Concept &amp; Plus — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 105,
+      "canonical": "https://seynudedagnon.com/media/community/philantropie-1",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-1",
+        "en": "https://seynudedagnon.com/media/community/philantropie-1",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-1"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "School kits distribution — ONG Reel Concept &amp; Plus"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/genies-6",
+      "status": 200,
+      "ttfb": 285,
+      "title": "Group photo with students — Dr. Dagnon",
+      "titleLength": 38,
+      "description": "Génies en Herbe — Group photo with students — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 94,
+      "canonical": "https://seynudedagnon.com/media/community/genies-6",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/genies-6",
+        "en": "https://seynudedagnon.com/media/community/genies-6",
+        "x-default": "https://seynudedagnon.com/media/community/genies-6"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Génies en Herbe — Group photo with students"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/genies-3",
+      "status": 200,
+      "ttfb": 252,
+      "title": "Génies en Herbe — Dr. Dagnon with winners",
+      "titleLength": 41,
+      "description": "Génies en Herbe — Dr. Dagnon with winners — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 92,
+      "canonical": "https://seynudedagnon.com/media/community/genies-3",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/genies-3",
+        "en": "https://seynudedagnon.com/media/community/genies-3",
+        "x-default": "https://seynudedagnon.com/media/community/genies-3"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Génies en Herbe — Dr. Dagnon with winners"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
+      "status": 200,
+      "ttfb": 268,
+      "title": "From control to elimination — Seynudé Dagnon",
+      "titleLength": 44,
+      "description": "Op-ed by Dr Seynudé Dagnon in Le Soleil (Senegal): subnational tailoring as the bridge from control to elimination, on World Mosquito Day.",
+      "descriptionLength": 138,
+      "canonical": "https://seynudedagnon.com/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
+        "en": "https://seynudedagnon.com/tribunes/de-la-lutte-a-lelimination-afrique-francophone",
+        "x-default": "https://seynudedagnon.com/tribunes/de-la-lutte-a-lelimination-afrique-francophone"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "From control to elimination: why Francophone Africa must adapt its malaria response"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [
+        {
+          "name": "citation_title",
+          "content": "From control to elimination: why Francophone Africa must adapt its malaria response"
+        },
+        {
+          "name": "citation_author",
+          "content": "Dagnon, Seynudé Jean-Fortuné"
+        },
+        {
+          "name": "citation_publication_date",
+          "content": "2026/08/21"
+        },
+        {
+          "name": "citation_journal_title",
+          "content": "Le Soleil"
+        },
+        {
+          "name": "citation_public_url",
+          "content": "https://seynudedagnon.com/tribunes/de-la-lutte-a-lelimination-afrique-francophone"
+        }
+      ],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/tribunes/from-malaria-control-to-elimination",
+      "status": 200,
+      "ttfb": 536,
+      "title": "From Malaria Control to Elimination — Seynudé Dagnon",
+      "titleLength": 52,
+      "description": "Op-ed by Professor Rose Leke and Dr. Seynudé Dagnon: why malaria control is not enough — and what country-led, community-centered elimination requires.",
+      "descriptionLength": 151,
+      "canonical": "https://seynudedagnon.com/tribunes/from-malaria-control-to-elimination",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/tribunes/from-malaria-control-to-elimination",
+        "en": "https://seynudedagnon.com/tribunes/from-malaria-control-to-elimination",
+        "x-default": "https://seynudedagnon.com/tribunes/from-malaria-control-to-elimination"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "From Malaria Control to Elimination: The Turn We Need to Make"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [
+        {
+          "name": "citation_title",
+          "content": "From Malaria Control to Elimination: The Turn We Need to Make"
+        },
+        {
+          "name": "citation_author",
+          "content": "Dagnon, Seynudé Jean-Fortuné"
+        },
+        {
+          "name": "citation_publication_date",
+          "content": "2026/05/01"
+        },
+        {
+          "name": "citation_journal_title",
+          "content": "Africa Health Watch"
+        },
+        {
+          "name": "citation_public_url",
+          "content": "https://seynudedagnon.com/tribunes/from-malaria-control-to-elimination"
+        }
+      ],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/publications",
+      "status": 200,
+      "ttfb": 512,
+      "title": "Scientific Publications — Seynudé Jean-Fortuné DAGNON",
+      "titleLength": 53,
+      "description": "Scientific publications by Seynudé Jean-Fortuné Dagnon in Malaria Journal, Parasites &amp; Vectors. Malaria control and elimination in Francophone Africa.",
+      "descriptionLength": 154,
+      "canonical": "https://seynudedagnon.com/publications",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/publications",
+        "en": "https://seynudedagnon.com/publications",
+        "x-default": "https://seynudedagnon.com/publications"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Publications — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [
+        {
+          "name": "citation_author",
+          "content": "Dagnon, Seynudé Jean-Fortuné"
+        },
+        {
+          "name": "citation_title",
+          "content": "Scientific Publications — Seynudé Jean-Fortuné DAGNON"
+        },
+        {
+          "name": "citation_public_url",
+          "content": "https://seynudedagnon.com/publications"
+        },
+        {
+          "name": "citation_publication_date",
+          "content": "2026/09/01"
+        },
+        {
+          "name": "citation_language",
+          "content": "en"
+        }
+      ],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/tribunes/financement-direct-g2g-souverainete-sanitaire",
+      "status": 200,
+      "ttfb": 276,
+      "title": "Direct G2G Financing — Seynudé Dagnon",
+      "titleLength": 37,
+      "description": "Op-ed by Dr Seynudé Dagnon: how direct Government-to-Government (G2G) funding transforms health ministry autonomy and fiduciary ownership across Africa.",
+      "descriptionLength": 152,
+      "canonical": "https://seynudedagnon.com/tribunes/financement-direct-g2g-souverainete-sanitaire",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/tribunes/financement-direct-g2g-souverainete-sanitaire",
+        "en": "https://seynudedagnon.com/tribunes/financement-direct-g2g-souverainete-sanitaire",
+        "x-default": "https://seynudedagnon.com/tribunes/financement-direct-g2g-souverainete-sanitaire"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Direct G2G Financing: Unlocking Autonomy for African Health Ministries"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [
+        {
+          "name": "citation_title",
+          "content": "Direct G2G Financing: Unlocking Autonomy for African Health Ministries"
+        },
+        {
+          "name": "citation_author",
+          "content": "Dagnon, Seynudé Jean-Fortuné"
+        },
+        {
+          "name": "citation_publication_date",
+          "content": "2026/08/28"
+        },
+        {
+          "name": "citation_journal_title",
+          "content": "Health Policy Africa"
+        },
+        {
+          "name": "citation_public_url",
+          "content": "https://seynudedagnon.com/tribunes/financement-direct-g2g-souverainete-sanitaire"
+        }
+      ],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/genies-5",
+      "status": 200,
+      "ttfb": 1095,
+      "title": "Participating team and Dr. Dagnon",
+      "titleLength": 33,
+      "description": "Génies en Herbe — Participating team and Dr. Dagnon — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 102,
+      "canonical": "https://seynudedagnon.com/media/community/genies-5",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/genies-5",
+        "en": "https://seynudedagnon.com/media/community/genies-5",
+        "x-default": "https://seynudedagnon.com/media/community/genies-5"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Génies en Herbe — Participating team and Dr. Dagnon"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/genies-4",
+      "status": 200,
+      "ttfb": 1107,
+      "title": "Presentation of 100,000 FCFA check",
+      "titleLength": 34,
+      "description": "Génies en Herbe — Presentation of 100,000 FCFA check — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 103,
+      "canonical": "https://seynudedagnon.com/media/community/genies-4",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/genies-4",
+        "en": "https://seynudedagnon.com/media/community/genies-4",
+        "x-default": "https://seynudedagnon.com/media/community/genies-4"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Génies en Herbe — Presentation of 100,000 FCFA check"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/projets",
+      "status": 200,
+      "ttfb": 291,
+      "title": "Projects &amp; Case Studies — Seynudé Dagnon",
+      "titleLength": 44,
+      "description": "Case studies by Dr. Seynudé Dagnon: digitalized LLIN campaigns, malaria data in Burundi, SMC scale-up, IRS in northern Benin — with measurable results.",
+      "descriptionLength": 151,
+      "canonical": "https://seynudedagnon.com/projets",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets",
+        "en": "https://seynudedagnon.com/projets",
+        "x-default": "https://seynudedagnon.com/projets"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Projects &amp; Case Studies — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/tribunes",
+      "status": 200,
+      "ttfb": 897,
+      "title": "Op-Eds &amp; Analyses — Seynudé Dagnon",
+      "titleLength": 38,
+      "description": "Op-eds and analyses by Dr. Seynudé Jean-Fortuné Dagnon — hosted, indexable and shareable texts on malaria and public health in Africa.",
+      "descriptionLength": 134,
+      "canonical": "https://seynudedagnon.com/tribunes",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/tribunes",
+        "en": "https://seynudedagnon.com/tribunes",
+        "x-default": "https://seynudedagnon.com/tribunes"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Op-Eds — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-6",
+      "status": 200,
+      "ttfb": 565,
+      "title": "Attestation presented to Dr. Cédric Gandondoudjro",
+      "titleLength": 49,
+      "description": "5th Night Against Malaria — Attestation presented to Dr. Cédric Gandondoudjro — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 128,
+      "canonical": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-6",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/nuit-paludisme-5e-6",
+        "en": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-6",
+        "x-default": "https://seynudedagnon.com/media/community/nuit-paludisme-5e-6"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "5th Night Against Malaria — Attestation presented to Dr. Cédric Gandondoudjro"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/projets/recherche-cps-smc",
+      "status": 200,
+      "ttfb": 300,
+      "title": "Scaling seasonal malaria chemoprevention — Seynudé Dagnon",
+      "titleLength": 57,
+      "description": "A portfolio of research and partnerships to scale seasonal malaria chemoprevention across Francophone Africa.",
+      "descriptionLength": 109,
+      "canonical": "https://seynudedagnon.com/projets/recherche-cps-smc",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/recherche-cps-smc",
+        "en": "https://seynudedagnon.com/projets/recherche-cps-smc",
+        "x-default": "https://seynudedagnon.com/projets/recherche-cps-smc"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Scaling seasonal malaria chemoprevention"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/projets/malariya-pi-burundi",
+      "status": 200,
+      "ttfb": 310,
+      "title": "Burundi's national malaria data warehouse — Seynudé Dagnon",
+      "titleLength": 58,
+      "description": "Supporting Burundi",
+      "descriptionLength": 18,
+      "canonical": "https://seynudedagnon.com/projets/malariya-pi-burundi",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/malariya-pi-burundi",
+        "en": "https://seynudedagnon.com/projets/malariya-pi-burundi",
+        "x-default": "https://seynudedagnon.com/projets/malariya-pi-burundi"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Burundi&#x27;s national malaria data warehouse"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/projets/arm3-systeme-information-benin",
+      "status": 200,
+      "ttfb": 305,
+      "title": "Making Benin's malaria data reliable — Seynudé Dagnon",
+      "titleLength": 53,
+      "description": "As ARM3 M&amp;E lead: raising routine health data completeness from 35% to 94% while dramatically reducing national error rates in Benin.",
+      "descriptionLength": 137,
+      "canonical": "https://seynudedagnon.com/projets/arm3-systeme-information-benin",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/arm3-systeme-information-benin",
+        "en": "https://seynudedagnon.com/projets/arm3-systeme-information-benin",
+        "x-default": "https://seynudedagnon.com/projets/arm3-systeme-information-benin"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Making Benin&#x27;s malaria data reliable"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/projets/digitalisation-milda-benin",
+      "status": 200,
+      "ttfb": 527,
+      "title": "Digitalizing LLIN campaigns in Benin — Seynudé Dagnon",
+      "titleLength": 53,
+      "description": "Digitizing Benin",
+      "descriptionLength": 16,
+      "canonical": "https://seynudedagnon.com/projets/digitalisation-milda-benin",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/digitalisation-milda-benin",
+        "en": "https://seynudedagnon.com/projets/digitalisation-milda-benin",
+        "x-default": "https://seynudedagnon.com/projets/digitalisation-milda-benin"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Digitalizing LLIN campaigns in Benin"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/projets/irs-nord-benin",
+      "status": 200,
+      "ttfb": 297,
+      "title": "Indoor residual spraying in northern Benin — Seynudé Dagnon",
+      "titleLength": 59,
+      "description": "Leading PMI indoor residual spraying campaigns and building an actionable entomological evidence base across high-burden zones in northern Benin.",
+      "descriptionLength": 145,
+      "canonical": "https://seynudedagnon.com/projets/irs-nord-benin",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/irs-nord-benin",
+        "en": "https://seynudedagnon.com/projets/irs-nord-benin",
+        "x-default": "https://seynudedagnon.com/projets/irs-nord-benin"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Indoor residual spraying in northern Benin"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/projets/reponse-epidemies-benin",
+      "status": 200,
+      "ttfb": 315,
+      "title": "Epidemic preparedness and response in Benin — Seynudé Dagnon",
+      "titleLength": 60,
+      "description": "Coordinating USAID response to emerging outbreaks (Ebola, Lassa, COVID-19) while safeguarding the continuity of malaria prevention services.",
+      "descriptionLength": 140,
+      "canonical": "https://seynudedagnon.com/projets/reponse-epidemies-benin",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/reponse-epidemies-benin",
+        "en": "https://seynudedagnon.com/projets/reponse-epidemies-benin",
+        "x-default": "https://seynudedagnon.com/projets/reponse-epidemies-benin"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Epidemic preparedness and response in Benin"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/media/community/philantropie-6",
+      "status": 200,
+      "ttfb": 1958,
+      "title": "Community collaboration and solidarity",
+      "titleLength": 38,
+      "description": "Community collaboration and solidarity — Community gallery of Dr. Seynudé Dagnon — Benin.",
+      "descriptionLength": 89,
+      "canonical": "https://seynudedagnon.com/media/community/philantropie-6",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/media/community/philantropie-6",
+        "en": "https://seynudedagnon.com/media/community/philantropie-6",
+        "x-default": "https://seynudedagnon.com/media/community/philantropie-6"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Community collaboration and solidarity"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "ImageObject"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/collaborate",
+      "status": 200,
+      "ttfb": 281,
+      "title": "Collaborate — Research, Programs &amp; Partnerships",
+      "titleLength": 51,
+      "description": "Collaborate with Dr. Seynudé Dagnon: operational research, public health programs, technical advisory and strategic partnerships across Africa.",
+      "descriptionLength": 143,
+      "canonical": "https://seynudedagnon.com/collaborate",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/collaborate",
+        "en": "https://seynudedagnon.com/collaborate",
+        "x-default": "https://seynudedagnon.com/collaborate"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Collaborate with Dr. Dagnon"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/agenda",
+      "status": 200,
+      "ttfb": 329,
+      "title": "Agenda — Conferences &amp; Engagements of Dr. Dagnon",
+      "titleLength": 52,
+      "description": "Conferences, speaking engagements and community commitments of Dr. Seynudé Jean-Fortuné Dagnon — key dates across Africa.",
+      "descriptionLength": 121,
+      "canonical": "https://seynudedagnon.com/agenda",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/agenda",
+        "en": "https://seynudedagnon.com/agenda",
+        "x-default": "https://seynudedagnon.com/agenda"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Agenda — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/presse",
+      "status": 200,
+      "ttfb": 301,
+      "title": "Press Kit &amp; Biography — Dr. Seynudé Dagnon",
+      "titleLength": 46,
+      "description": "Press kit for Dr. Seynudé Jean-Fortuné Dagnon: biography, key figures, photo and contact for journalists and media teams.",
+      "descriptionLength": 121,
+      "canonical": "https://seynudedagnon.com/presse",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/presse",
+        "en": "https://seynudedagnon.com/presse",
+        "x-default": "https://seynudedagnon.com/presse"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Press Kit"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage",
+        "FAQPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/inviter",
+      "status": 200,
+      "ttfb": 312,
+      "title": "Invite Dr. Dagnon — Conferences &amp; Media",
+      "titleLength": 43,
+      "description": "Invite Dr. Seynudé Dagnon: conferences, panels, workshops and interviews on malaria and public health across Francophone Africa.",
+      "descriptionLength": 128,
+      "canonical": "https://seynudedagnon.com/inviter",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/inviter",
+        "en": "https://seynudedagnon.com/inviter",
+        "x-default": "https://seynudedagnon.com/inviter"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Invite Dr. Dagnon"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "WebPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/newsletter",
+      "status": 200,
+      "ttfb": 275,
+      "title": "Newsletter &amp; Insights — Dr. Seynudé Dagnon",
+      "titleLength": 46,
+      "description": "Archive of Dr. Seynudé Dagnon",
+      "descriptionLength": 29,
+      "canonical": "https://seynudedagnon.com/newsletter",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/newsletter",
+        "en": "https://seynudedagnon.com/newsletter",
+        "x-default": "https://seynudedagnon.com/newsletter"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Newsletter archive"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/projets/contrat-g2g-pnlp-benin",
+      "status": 200,
+      "ttfb": 536,
+      "title": "A G2G contract with Benin's NMCP — Seynudé Dagnon",
+      "titleLength": 49,
+      "description": "Negotiating the G2G direct financing agreement between USAID and Benin",
+      "descriptionLength": 70,
+      "canonical": "https://seynudedagnon.com/projets/contrat-g2g-pnlp-benin",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/projets/contrat-g2g-pnlp-benin",
+        "en": "https://seynudedagnon.com/projets/contrat-g2g-pnlp-benin",
+        "x-default": "https://seynudedagnon.com/projets/contrat-g2g-pnlp-benin"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "A G2G contract with Benin&#x27;s NMCP"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/legal",
+      "status": 200,
+      "ttfb": 522,
+      "title": "Legal notice &amp; GDPR — Seynudé Dagnon",
+      "titleLength": 40,
+      "description": "Legal notice, hosting, personal data (GDPR), cookies and visitor rights on Dr. Seynudé Dagnon",
+      "descriptionLength": 93,
+      "canonical": "https://seynudedagnon.com/legal",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/legal",
+        "en": "https://seynudedagnon.com/legal",
+        "x-default": "https://seynudedagnon.com/legal"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Legal notice &amp; data protection"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/impact",
+      "status": 200,
+      "ttfb": 539,
+      "title": "Impact &amp; Results — Dr. Seynudé Dagnon",
+      "titleLength": 41,
+      "description": "Measurable results by Dr. Seynudé Dagnon: 1,114 health facilities, data completeness from 35% to 94%, $3M in savings and a $180M portfolio.",
+      "descriptionLength": 139,
+      "canonical": "https://seynudedagnon.com/impact",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/impact",
+        "en": "https://seynudedagnon.com/impact",
+        "x-default": "https://seynudedagnon.com/impact"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Measurable results, data-driven decisions"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/accessibility",
+      "status": 200,
+      "ttfb": 745,
+      "title": "Accessibility — Seynudé Dagnon",
+      "titleLength": 30,
+      "description": "Accessibility statement for Dr. Seynudé Dagnon",
+      "descriptionLength": 46,
+      "canonical": "https://seynudedagnon.com/accessibility",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/accessibility",
+        "en": "https://seynudedagnon.com/accessibility",
+        "x-default": "https://seynudedagnon.com/accessibility"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Site accessibility"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/portfolio",
+      "status": 200,
+      "ttfb": 731,
+      "title": "Full Portfolio — Seynudé Dagnon",
+      "titleLength": 31,
+      "description": "Full portfolio of Dr. Seynudé Dagnon: CV, projects, publications and awards in one print-ready document.",
+      "descriptionLength": 104,
+      "canonical": "https://seynudedagnon.com/portfolio",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/portfolio",
+        "en": "https://seynudedagnon.com/portfolio",
+        "x-default": "https://seynudedagnon.com/portfolio"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "The full portfolio as one document"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/toolkit",
+      "status": 200,
+      "ttfb": 523,
+      "title": "Public Health Toolkit &amp; Protocols — Dr. Seynudé Dagnon",
+      "titleLength": 58,
+      "description": "Field-tested operational guidelines by Dr. Seynudé Dagnon: mass campaign digitalization, G2G direct financing, DHIS2 audit, and SMC targeting.",
+      "descriptionLength": 142,
+      "canonical": "https://seynudedagnon.com/toolkit",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/toolkit",
+        "en": "https://seynudedagnon.com/toolkit",
+        "x-default": "https://seynudedagnon.com/toolkit"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Practical Guides &amp; Toolkits for Health Leaders"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/podcasts",
+      "status": 200,
+      "ttfb": 1049,
+      "title": "Podcasts &amp; Audio — Seynudé Jean-Fortuné DAGNON, MD, MPH",
+      "titleLength": 59,
+      "description": "Listen to podcast episodes and audio discussions by Dr. Seynudé Jean-Fortuné Dagnon on malaria elimination, public health, and health systems in Africa.",
+      "descriptionLength": 152,
+      "canonical": "https://seynudedagnon.com/podcasts",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/podcasts",
+        "en": "https://seynudedagnon.com/podcasts",
+        "x-default": "https://seynudedagnon.com/podcasts"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Podcasts &amp; Audio Op-eds — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "PodcastEpisode"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/mentorat",
+      "status": 200,
+      "ttfb": 518,
+      "title": "Global Health Mentorship &amp; Career — Dr. Seynudé Dagnon",
+      "titleLength": 58,
+      "description": "Global health mentorship by Dr. Seynudé Dagnon: academic research (PhD), bilateral leadership (USAID/PMI), and philanthropy (Gates Foundation).",
+      "descriptionLength": 143,
+      "canonical": "https://seynudedagnon.com/mentorat",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/mentorat",
+        "en": "https://seynudedagnon.com/mentorat",
+        "x-default": "https://seynudedagnon.com/mentorat"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Global Health Leadership Compass"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "WebPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/parcours",
+      "status": 200,
+      "ttfb": 1290,
+      "title": "Career — 17 years in public health &amp; malaria",
+      "titleLength": 48,
+      "description": "Interactive career timeline of Dr. Seynudé Dagnon: Gates Foundation, USAID/PMI, MCDI/ARM3 — 17 years, 6 roles, awards and projects.",
+      "descriptionLength": 131,
+      "canonical": "https://seynudedagnon.com/parcours",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/parcours",
+        "en": "https://seynudedagnon.com/parcours",
+        "x-default": "https://seynudedagnon.com/parcours"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "17 years in public health"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/connect",
+      "status": 200,
+      "ttfb": 1128,
+      "title": "Digital Business Card &amp; Contact — Dr. Seynudé Dagnon",
+      "titleLength": 56,
+      "description": "Official digital business card of Dr. Seynudé Jean-Fortuné Dagnon: official contact details, vCard (.vcf), QR Code and verified profile.",
+      "descriptionLength": 136,
+      "canonical": "https://seynudedagnon.com/connect",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/connect",
+        "en": "https://seynudedagnon.com/connect",
+        "x-default": "https://seynudedagnon.com/connect"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Seynudé Jean-Fortuné DAGNON, MD, MPH — Digital Card"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/bibliography",
+      "status": 200,
+      "ttfb": 1523,
+      "title": "Scientific bibliography — Seynudé Dagnon",
+      "titleLength": 40,
+      "description": "DOI-indexed research publications by Dr. Seynudé Dagnon: malaria, insecticide-treated nets, indoor residual spraying, insecticide resistance.",
+      "descriptionLength": 141,
+      "canonical": "https://seynudedagnon.com/bibliography",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/bibliography",
+        "en": "https://seynudedagnon.com/bibliography",
+        "x-default": "https://seynudedagnon.com/bibliography"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Scientific bibliography"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [
+        {
+          "name": "citation_author",
+          "content": "Dagnon, Seynudé Jean-Fortuné"
+        },
+        {
+          "name": "citation_title",
+          "content": "Scientific Publications — Seynudé Jean-Fortuné DAGNON"
+        },
+        {
+          "name": "citation_public_url",
+          "content": "https://seynudedagnon.com/bibliography"
+        },
+        {
+          "name": "citation_publication_date",
+          "content": "2026/09/01"
+        },
+        {
+          "name": "citation_language",
+          "content": "en"
+        }
+      ],
+      "issues": []
+    },
+    {
+      "url": "https://seynudedagnon.com/publications-pdf",
+      "status": 200,
+      "ttfb": 1571,
+      "title": "Publications (PDF) — Dr. Dagnon",
+      "titleLength": 31,
+      "description": "Complete list of scientific publications by Dr. Seynudé Dagnon, downloadable as PDF. ORCID, Google Scholar, citations.",
+      "descriptionLength": 118,
+      "canonical": "https://seynudedagnon.com/publications-pdf",
+      "canonicalMatches": true,
+      "hreflangs": {
+        "fr": "https://seynudedagnon.com/fr/publications-pdf",
+        "en": "https://seynudedagnon.com/publications-pdf",
+        "x-default": "https://seynudedagnon.com/publications-pdf"
+      },
+      "h1Count": 1,
+      "h1Text": [
+        "Publications (PDF) — Seynudé Jean-Fortuné DAGNON, MD, MPH"
+      ],
+      "emptyHeadings": [],
+      "imagesWithoutAlt": [],
+      "jsonLdTypes": [
+        [
+          "Person",
+          "Physician"
+        ],
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "highwireTags": [
+        {
+          "name": "citation_author",
+          "content": "Dagnon, Seynudé Jean-Fortuné"
+        },
+        {
+          "name": "citation_title",
+          "content": "Scientific Publications — Seynudé Jean-Fortuné DAGNON"
+        },
+        {
+          "name": "citation_public_url",
+          "content": "https://seynudedagnon.com/publications-pdf"
+        },
+        {
+          "name": "citation_publication_date",
+          "content": "2026/09/01"
+        },
+        {
+          "name": "citation_language",
+          "content": "en"
+        }
+      ],
+      "issues": []
+    }
+  ],
+  "issues": [],
+  "stats": {
+    "totalSitemapUrls": 128,
+    "crawledCount": 128,
+    "status200Count": 128,
+    "titleMissingCount": 0,
+    "descMissingCount": 0,
+    "h1MissingOrMultipleCount": 0,
+    "canonicalMismatchCount": 0,
+    "hreflangMissingCount": 0,
+    "emptyHeadingCount": 0,
+    "imagesMissingAltCount": 0,
+    "jsonLdErrorCount": 0
+  },
+  "mobileVitals": {
+    "/": {
+      "httpStatus": 200,
+      "totalLoadTimeMs": 5111,
+      "lcp": 4924,
+      "cls": 0,
+      "domContentLoaded": 5037,
+      "duration": 5097
+    },
+    "/fr": {
+      "httpStatus": 200,
+      "totalLoadTimeMs": 394,
+      "lcp": 836,
+      "cls": 0,
+      "domContentLoaded": 316,
+      "duration": 381
+    },
+    "/tribunes": {
+      "httpStatus": 200,
+      "totalLoadTimeMs": 481,
+      "lcp": 1912,
+      "cls": 0,
+      "domContentLoaded": 453,
+      "duration": 471
+    },
+    "/projets": {
+      "httpStatus": 200,
+      "totalLoadTimeMs": 286,
+      "lcp": 1468,
+      "cls": 0,
+      "domContentLoaded": 262,
+      "duration": 279
+    },
+    "/publications": {
+      "httpStatus": 200,
+      "totalLoadTimeMs": 316,
+      "lcp": 1764,
+      "cls": 0,
+      "domContentLoaded": 275,
+      "duration": 308
+    }
+  }
+}
