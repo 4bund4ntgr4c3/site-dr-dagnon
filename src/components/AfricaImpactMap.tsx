@@ -113,7 +113,7 @@ const COUNTRIES: CountryImpact[] = [
         'Supply chain optimization for SP+AQ treatments',
       ],
     },
-    partners: ['SMC Alliance', 'Fondation Gates', 'Université de Groningen'],
+    partners: ['SMC Alliance', 'Fondation Gates', 'MSH'],
     projectSlug: 'recherche-cps-smc',
   },
   {

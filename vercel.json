@@ -97,6 +97,16 @@
       "permanent": true
     },
     {
+      "source": "/cv",
+      "destination": "/parcours",
+      "permanent": true
+    },
+    {
+      "source": "/fr/cv",
+      "destination": "/fr/parcours",
+      "permanent": true
+    },
+    {
       "source": "/mentorship",
       "destination": "/mentorat",
       "permanent": true
@@ -371,10 +381,6 @@
       "destination": "/contact/index"
     },
     {
-      "source": "/cv",
-      "destination": "/cv/index"
-    },
-    {
       "source": "/media",
       "destination": "/media/index"
     },
@@ -525,10 +531,6 @@
     {
       "source": "/fr/contact",
       "destination": "/fr/contact/index"
-    },
-    {
-      "source": "/fr/cv",
-      "destination": "/fr/cv/index"
     },
     {
       "source": "/fr/media",

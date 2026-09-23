@@ -507,7 +507,7 @@ ${lang === 'fr' ? 'Démonstration : hypothèses à vérifier avant toute utilisa
         <div className="mt-8 pt-4 border-t-2 border-pine-900/20 flex justify-between items-end text-[10px] text-pine-700">
           <div>
             <p className="font-bold text-pine-950">{isFr ? 'Dr. Seynudé Jean-Fortuné DAGNON' : 'Seynudé Jean-Fortuné DAGNON, MD, MPH'}</p>
-            <p>{isFr ? 'Doctorant en économie de la santé · Université de Groningen' : 'PhD Candidate (Health Economics) · University of Groningen'}</p>
+            <p>{isFr ? 'Leader exécutif en santé mondiale · MD, MPH' : 'Global Health Executive Leader · MD, MPH'}</p>
             <p className="text-gold-800 font-mono mt-0.5">https://seynudedagnon.com/impact</p>
           </div>
           <div className="text-right">

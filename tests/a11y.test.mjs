@@ -189,12 +189,11 @@ test('axe: no violations on the contact page (form labels and honeypot)', async 
   }
 });
 
-/* CV page: the sticky action bar (print + share) only renders on screen and
-   carries its own buttons — audit the page with it visible. */
-test('axe: no violations on the CV page including the action bar', async () => {
+/* Career page: audit /parcours */
+test('axe: no violations on the career page', async () => {
   const page = await context.newPage();
   try {
-    const response = await page.goto(`http://localhost:${PORT}/cv`, { waitUntil: 'domcontentloaded' });
+    const response = await page.goto(`http://localhost:${PORT}/parcours`, { waitUntil: 'domcontentloaded' });
     assert.ok(response && response.ok());
     await page.waitForTimeout(200);
     const results = await new AxeBuilder({ page }).analyze();
@@ -202,7 +201,7 @@ test('axe: no violations on the CV page including the action bar', async () => {
     assert.deepEqual(
       bad.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`),
       [],
-      `cv: ${bad.length} critical/serious violations`,
+      `parcours: ${bad.length} critical/serious violations`,
     );
   } finally {
     await page.close();

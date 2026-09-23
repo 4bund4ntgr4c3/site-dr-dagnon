@@ -66,7 +66,7 @@ const PAGE_ROUTES: { labelKey: string; path: string }[] = [
   { labelKey: 'tribunes', path: '/tribunes' },
   { labelKey: 'projets', path: '/projets' },
   { labelKey: 'agenda', path: '/agenda' },
-  { labelKey: 'cvPage.badge', path: '/cv' },
+  { labelKey: 'nav.career', path: '/parcours' },
   { labelKey: 'pressePage.title', path: '/presse' },
   { labelKey: 'invitePage.title', path: '/inviter' },
   { labelKey: 'collab.title', path: '/collaborate' },

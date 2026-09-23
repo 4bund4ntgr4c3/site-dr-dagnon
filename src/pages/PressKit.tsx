@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { Newspaper, Download, Mail, FileText, Image as ImageIcon, Phone, ChevronDown } from 'lucide-react';
+import { Newspaper, Download, Mail, FileText, Image as ImageIcon, Phone, ChevronDown, Briefcase } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { FaqAssistant } from '@/components/FaqAssistant';
 import { useLang } from '@/i18n/useLang';
@@ -147,19 +147,19 @@ export default function PressKit() {
 
               <div className="rounded-2xl border border-pine-900/10 bg-white p-6 shadow-card">
                 <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-pine-950 text-gold-400">
-                  <FileText size={19} />
+                  <Briefcase size={19} />
                 </span>
-                <h3 className="mt-4 font-display text-[1.1rem] font-semibold text-pine-900">{t['cvPage.badge']}</h3>
+                <h3 className="mt-4 font-display text-[1.1rem] font-semibold text-pine-900">{lang === 'fr' ? 'Parcours professionnel' : 'Career Track Record'}</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-pine-900/70">
                   {lang === 'fr'
-                    ? 'Parcours complet, formations, distinctions et publications — imprimable en PDF.'
-                    : 'Full career, education, awards and publications — print-ready.'}
+                    ? '20 ans de leadership : postes, responsabilités, formations, distinctions et publications.'
+                    : '20 years of leadership: roles, responsibilities, training, awards and publications.'}
                 </p>
                 <Link
-                  to={localePath(lang, '/cv')}
+                  to={localePath(lang, '/parcours')}
                   className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-700 transition-colors hover:text-gold-500"
                 >
-                  <FileText size={13} />
+                  <Briefcase size={13} />
                   {t['pressePage.cvCta']}
                 </Link>
               </div>

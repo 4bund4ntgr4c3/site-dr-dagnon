@@ -1,4 +1,4 @@
-import { Download, FileText, Layers, BookOpen, Briefcase, Award } from 'lucide-react';
+import { Download, Layers, BookOpen, Briefcase, Award } from 'lucide-react';
 import { Link } from 'react-router';
 import { Reveal } from '@/components/Reveal';
 import { useLang } from '@/i18n/useLang';
@@ -29,14 +29,14 @@ export default function Portfolio() {
               {lang === 'fr' ? 'Tout le portfolio en un document' : 'The full portfolio as one document'}
             </h1>
             <p className="mt-4 max-w-2xl font-display text-lg italic text-pine-200/90">
-              {lang === 'fr' ? 'CV, projets, publications et distinctions — prêt à imprimer ou à partager.' : 'CV, projects, publications and awards — print-ready and shareable.'}
+              {lang === 'fr' ? 'Projets, réalisations, publications et distinctions — prêt à imprimer ou à partager.' : 'Projects, achievements, publications and awards — print-ready and shareable.'}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-2 rounded-full bg-gold-500 px-6 py-3 text-sm font-semibold text-pine-950 hover:bg-gold-400">
                 <Download size={16} /> {lang === 'fr' ? 'Imprimer / PDF' : 'Print / PDF'}
               </button>
-              <Link to={localePath(lang, '/cv')} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-pine-100 hover:bg-white/10">
-                <FileText size={16} /> CV
+              <Link to={localePath(lang, '/parcours')} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-pine-100 hover:bg-white/10">
+                <Briefcase size={16} /> {lang === 'fr' ? 'Parcours' : 'Career'}
               </Link>
               <Link to={localePath(lang, '/publications')} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-pine-100 hover:bg-white/10">
                 <BookOpen size={16} /> Publications

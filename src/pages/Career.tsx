@@ -41,10 +41,10 @@ export default function Career() {
               </span>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-semibold text-pine-950">
-                  {lang === 'fr' ? 'Distinction PMI 2020 — 27 pays' : 'PMI 2020 award — 27 countries'}
+                  {lang === 'fr' ? 'Portefeuille continental — 15+ pays' : 'Continental portfolio — 15+ countries'}
                 </p>
                 <p className="text-xs text-pine-900/70">
-                  {lang === 'fr' ? 'FSN Employee of the Year, U.S. President’s Malaria Initiative' : 'FSN Employee of the Year, U.S. President’s Malaria Initiative'}
+                  {lang === 'fr' ? 'Programmes et investissements à fort impact à travers l’Afrique subsaharienne' : 'High-impact programs and investments across Sub-Saharan Africa'}
                 </p>
               </div>
               <GraduationCap size={18} className="hidden text-gold-600 sm:block" />
@@ -59,11 +59,11 @@ export default function Career() {
 
           <Reveal>
             <div className="mt-10 flex flex-wrap justify-center gap-3">
-              <Link to={localePath(lang, '/cv')} className="inline-flex items-center gap-2 rounded-full bg-pine-950 px-6 py-3 text-sm font-semibold text-gold-400 hover:bg-pine-900">
-                {lang === 'fr' ? 'Voir le CV complet' : 'View full CV'}
-              </Link>
-              <Link to={localePath(lang, '/portfolio')} className="inline-flex items-center gap-2 rounded-full border border-pine-900/15 bg-white px-6 py-3 text-sm font-semibold text-pine-900 hover:border-gold-500/30">
+              <Link to={localePath(lang, '/portfolio')} className="inline-flex items-center gap-2 rounded-full bg-pine-950 px-6 py-3 text-sm font-semibold text-gold-400 hover:bg-pine-900">
                 Portfolio
+              </Link>
+              <Link to={localePath(lang, '/contact')} className="inline-flex items-center gap-2 rounded-full border border-pine-900/15 bg-white px-6 py-3 text-sm font-semibold text-pine-900 hover:border-gold-500/30">
+                {lang === 'fr' ? 'Me contacter' : 'Contact me'}
               </Link>
             </div>
           </Reveal>

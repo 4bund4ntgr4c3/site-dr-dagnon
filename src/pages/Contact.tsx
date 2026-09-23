@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Send, CheckCircle2, AlertCircle, Lock, ShieldCheck, Mic, Mic2, Handshake, Newspaper, FileText } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook, Send, CheckCircle2, AlertCircle, Lock, ShieldCheck, Mic, Mic2, Handshake, Newspaper, Briefcase } from 'lucide-react';
 import { Link } from 'react-router';
 import { Reveal } from '@/components/Reveal';
 import { NameHighlight } from '@/components/NameHighlight';
@@ -394,10 +394,10 @@ export default function Contact() {
                     </a>
                   )}
                   <Link
-                    to={localePath(lang, '/cv')}
+                    to={localePath(lang, '/parcours')}
                     className="inline-flex h-11 items-center gap-2 rounded-xl bg-pine-950 px-4 text-sm font-semibold text-gold-400 transition-all duration-300 hover:bg-pine-900"
                   >
-                    <FileText size={16} /> {t['cvPage.download']}
+                    <Briefcase size={16} /> {lang === 'fr' ? 'Parcours' : 'Career'}
                   </Link>
                 </div>
               </div>

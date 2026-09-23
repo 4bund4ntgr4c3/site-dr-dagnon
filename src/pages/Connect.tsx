@@ -9,7 +9,7 @@ import {
   Globe,
   Award,
   CheckCircle2,
-  FileText,
+  Briefcase,
   Copy,
 } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
@@ -79,7 +79,7 @@ export default function Connect() {
                 {isFr ? 'Dr. Seynudé Jean-Fortuné DAGNON — Carte Digitale' : 'Seynudé Jean-Fortuné DAGNON, MD, MPH — Digital Card'}
               </h1>
               <p className="text-xs font-semibold text-gold-400 mt-1">
-                MD, MPH · Ph.D. Candidate (Health Economics)
+                {isFr ? 'MD, MPH · Leader exécutif en santé mondiale & développement' : 'MD, MPH · Global Health & Development Executive Leader'}
               </p>
               <p className="text-xs leading-relaxed text-pine-200/80 mt-1.5">
                 {isFr
@@ -159,11 +159,11 @@ export default function Connect() {
             </a>
 
             <Link
-              to={localePath(lang, '/cv')}
+              to={localePath(lang, '/parcours')}
               className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-pine-900/60 p-3 text-xs font-medium text-pine-200 hover:border-gold-400/40 hover:text-pine-100 transition-colors"
             >
-              <FileText size={15} className="text-gold-400 shrink-0" />
-              <span className="truncate">{isFr ? 'Curriculum Vitae' : 'Full Resume'}</span>
+              <Briefcase size={15} className="text-gold-400 shrink-0" />
+              <span className="truncate">{isFr ? 'Parcours professionnel' : 'Career Track Record'}</span>
             </Link>
 
             <button

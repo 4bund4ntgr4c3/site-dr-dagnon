@@ -45,7 +45,7 @@ for (const lang of ['fr', 'en']) {
   test(`personJsonLd(${lang}) has the enriched professional graph`, () => {
     assert.equal(ld.worksFor['@type'], 'Organization');
     assert.ok(ld.worksFor.sameAs, 'worksFor sameAs');
-    assert.ok(Array.isArray(ld.alumniOf) && ld.alumniOf.length === 3, 'alumniOf');
+    assert.ok(Array.isArray(ld.alumniOf) && ld.alumniOf.length === 2, 'alumniOf');
     for (const u of ld.alumniOf) assert.equal(u['@type'], 'CollegeOrUniversity');
     assert.ok(Array.isArray(ld.hasOccupation) && ld.hasOccupation.length >= 2, 'hasOccupation');
     assert.ok(Array.isArray(ld.award) && ld.award.length >= 2, `award: ${ld.award}`);

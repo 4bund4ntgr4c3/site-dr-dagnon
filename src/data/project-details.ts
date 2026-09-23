@@ -138,18 +138,18 @@ export const PROJECT_DETAILS: Record<string, ProjectDetails> = {
         'Superviser la mise en œuvre des campagnes IRS (Abt Associates / AIRS).',
         'Coordonner la collecte de données entomologiques de référence avant et pendant les campagnes.',
         'Encadrer les études d\'efficacité (Actellic 300 CS) publiées dans Parasites & Vectors.',
-        'Conduire une thèse de doctorat sur le coût-efficacité de l\'IRS (Université de Groningen).',
+        'Conduire des études approfondies sur le coût-efficacité et l\'impact de l\'IRS au nord du Bénin.',
       ],
       en: [
         'Oversee IRS campaign implementation (Abt Associates / AIRS).',
         'Coordinate baseline and monitoring entomological data collection around the campaigns.',
         'Steer effectiveness studies (Actellic 300 CS) published in Parasites & Vectors.',
-        'Conduct a Ph.D. on the cost-effectiveness of IRS (University of Groningen).',
+        'Conduct in-depth studies on the cost-effectiveness and impact of IRS in northern Benin.',
       ],
     },
     results: [
       { value: '4+', label: { fr: 'publications entomologiques de référence (2018-2020)', en: 'reference entomological publications (2018-2020)' } },
-      { value: 'Ph.D. en cours', label: { fr: 'thèse de coût-efficacité de l\'IRS à Groningen', en: 'IRS cost-effectiveness thesis at Groningen' } },
+      { value: '10+ ans', label: { fr: 'de suivi entomologique et d\'impact de l\'IRS', en: 'of entomological and IRS impact monitoring' } },
       { value: '3', label: { fr: 'régions couvertes : Alibori, Donga, Atacora', en: 'regions covered: Alibori, Donga, Atacora' } },
     ],
     evidence: [

@@ -24,7 +24,6 @@ export const MORE_PAGES: NavPage[] = [
   { id: 'podcasts', path: '/podcasts', label: 'nav.podcasts' },
   { id: 'parcours', path: '/parcours', label: 'nav.career' },
   { id: 'portfolio', path: '/portfolio', label: 'nav.portfolio' },
-  { id: 'cv', path: '/cv', label: 'cvPage.badge' },
   { id: 'presse', path: '/presse', label: 'footer.linkPresse' },
   { id: 'inviter', path: '/inviter', label: 'footer.linkInviter' },
   { id: 'collaborate', path: '/collaborate', label: 'footer.linkCollaborer' },

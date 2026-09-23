@@ -5,13 +5,13 @@ export const STATS: Record<Lang, { value: number; suffix: string; label: string;
     { value: 20, suffix: '+', label: "années d'expérience", detail: 'Programmes paludisme, VIH/SIDA, NTN et santé MNI à travers l’Afrique' },
     { value: 14, suffix: '', label: 'publications scientifiques', detail: 'Revues à comité de lecture · Plus 2 préprints, 1 tribune et 1 présentation' },
     { value: 1114, suffix: '', label: 'centres de santé couverts', detail: 'Complétude du système d’information : 35 % → 94 %' },
-    { value: 27, suffix: '', label: 'pays PMI — distinction 2020', detail: 'FSN Employee of the Year, U.S. President’s Malaria Initiative' },
+    { value: 15, suffix: '+', label: 'pays d’intervention', detail: 'Programmes et investissements conduits à travers l’Afrique subsaharienne' },
   ],
   en: [
     { value: 20, suffix: '+', label: 'years of experience', detail: 'Malaria, HIV/AIDS, NTD and MNCH programs across Africa' },
     { value: 14, suffix: '', label: 'peer-reviewed publications', detail: 'Peer-reviewed articles · Plus 2 preprints, 1 op-ed and 1 presentation' },
     { value: 1114, suffix: '', label: 'health facilities covered', detail: 'Routine information system completeness: 35% → 94%' },
-    { value: 27, suffix: '', label: 'PMI countries — 2020 award', detail: 'FSN Employee of the Year, U.S. President’s Malaria Initiative' },
+    { value: 15, suffix: '+', label: 'countries reached', detail: 'Programs and investments led across Sub-Saharan Africa' },
   ],
 };
 
@@ -54,7 +54,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
       org: 'Fondation Gates',
       period: 'déc. 2020 — aujourd\'hui',
       current: true,
-      text: 'Gestion directe d\'un portefeuille de subventions de 39,4 M$ et supervision technique d\'investissements de 122 M$ (CHAI 74 M$, PATH MACEPA 48 M$) à travers 15 pays d\'Afrique subsaharienne. Élabore et pilote les stratégies de mise en œuvre du paludisme et des investissements fondés sur la performance ; instruit les subventions et contrats ; appuie la stratégie, la collaboration, la pérennité et l\'engagement des partenaires de terrain.',
+      text: 'Gestion directe d\'un portefeuille de subventions de 39,4 M$ et supervision technique d\'investissements de 122 M$ (CHAI 74 M$, EBOLA 48 M$) à travers 15 pays d\'Afrique subsaharienne. Élabore et pilote les stratégies de mise en œuvre du paludisme et des investissements fondés sur la performance ; instruit les subventions et contrats ; appuie la stratégie, la collaboration, la pérennité et l\'engagement des partenaires de terrain.',
       details: {
         responsibilities: [
           'Piloter la gestion directe d\'un portefeuille de 39,4 M$ et la supervision technique d\'investissements de 122 M$ dans 15 pays',
@@ -74,7 +74,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
           { name: 'Alliance Malaria Prevention', scope: 'Geneva', budget: '$12 969 000 (6 ans)' },
           { name: 'LSHTM — Efficacité CPS', scope: 'Burkina Faso', budget: '$1 600 000 (3 ans)' },
           { name: 'PSI — Marché paludisme', scope: 'Bénin, Nigéria, Cameroun', budget: '$4 000 000 (3 ans)' },
-          { name: 'PATH MACEPA', scope: 'RDC, Sénégal, Gambie, RCA', budget: '$48 000 000' },
+          { name: 'EBOLA', scope: 'RDC, Sénégal, Gambie, RCA', budget: '$48 000 000' },
           { name: 'CHAI Malaria Grant', scope: 'RDC, Cameroun, Bénin, Burkina Faso', budget: '$74 000 000' },
           { name: 'ENABEL', scope: 'Burundi, Niger', budget: '$11 000 000 (6 ans)' },
           { name: 'Harvard — Science of Defeating Malaria', scope: 'USA', budget: '$1 750 000 (1 an)' },
@@ -213,7 +213,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
       org: 'Gates Foundation',
       period: 'Dec. 2020 — present',
       current: true,
-      text: 'Direct management of a US$39.4M grant portfolio and technical oversight of US$122M in investments (CHAI $74M, PATH MACEPA $48M) across 15 Sub-Saharan African countries. Designs and leads malaria implementation strategies and performance-based investments; reviews grants and contracts; supports strategy, collaboration, sustainability and field partner engagement.',
+      text: 'Direct management of a US$39.4M grant portfolio and technical oversight of US$122M in investments (CHAI $74M, EBOLA $48M) across 15 Sub-Saharan African countries. Designs and leads malaria implementation strategies and performance-based investments; reviews grants and contracts; supports strategy, collaboration, sustainability and field partner engagement.',
       details: {
         responsibilities: [
           'Lead direct management of a US$39.4M portfolio and technical oversight of US$122M in investments across 15 countries',
@@ -233,7 +233,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
           { name: 'Alliance Malaria Prevention', scope: 'Geneva', budget: '$12,969,000 (6 yrs)' },
           { name: 'LSHTM — SMC Efficacy', scope: 'Burkina Faso', budget: '$1,600,000 (3 yrs)' },
           { name: 'PSI — Malaria Market', scope: 'Benin, Nigeria, Cameroon', budget: '$4,000,000 (3 yrs)' },
-          { name: 'PATH MACEPA', scope: 'DRC, Senegal, Gambia, CAR', budget: '$48,000,000' },
+          { name: 'EBOLA', scope: 'DRC, Senegal, Gambia, CAR', budget: '$48,000,000' },
           { name: 'CHAI Malaria Grant', scope: 'DRC, Cameroon, Benin, Burkina Faso', budget: '$74,000,000' },
           { name: 'ENABEL', scope: 'Burundi, Niger', budget: '$11,000,000 (6 yrs)' },
           { name: 'Harvard — Science of Defeating Malaria', scope: 'USA', budget: '$1,750,000 (1 yr)' },
@@ -420,22 +420,20 @@ export const AWARDS: Record<Lang, AwardEntry[]> = {
 };
 
 export const PORTFOLIO: Record<Lang, string[]> = {
-  fr: ['Campagnes MILDA digitalisées', 'Plateformes de campagnes intégrées', 'Surveillance du paludisme', 'Recherche CPS', 'Sites sentinelles — RDC', 'PATH MACEPA', 'Subventions CHAI paludisme', 'Assistance technique AMP', 'Renforcement des systèmes de santé'],
-  en: ['Digitalized LLIN campaigns', 'Integrated campaign platforms', 'Malaria surveillance', 'SMC research', 'Sentinel sites — DRC', 'PATH MACEPA', 'CHAI malaria grants', 'AMP technical assistance', 'Health systems strengthening'],
+  fr: ['Campagnes MILDA digitalisées', 'Plateformes de campagnes intégrées', 'Surveillance du paludisme', 'Recherche CPS', 'Sites sentinelles — RDC', 'EBOLA', 'Subventions CHAI paludisme', 'Assistance technique AMP', 'Renforcement des systèmes de santé'],
+  en: ['Digitalized LLIN campaigns', 'Integrated campaign platforms', 'Malaria surveillance', 'SMC research', 'Sentinel sites — DRC', 'EBOLA', 'CHAI malaria grants', 'AMP technical assistance', 'Health systems strengthening'],
 };
 
 export const EDUCATION: Record<Lang, { degree: string; school: string; detail: string; tag: string }[]> = {
   fr: [
-    { degree: 'Ph.D. en économie de la santé (en cours)', school: 'Université de Groningen, Pays-Bas', detail: 'Thèse : coût-efficacité de la pulvérisation intradomiciliaire d\u2019insecticide (IRS) au nord du Bénin.', tag: 'Doctorat' },
-    { degree: 'Master of Public Health (MPH)', school: 'Institut de Médecine Tropicale, Anvers, Belgique', detail: 'Santé publique en milieu tropical.', tag: 'Master' },
+    { degree: 'Master of Public Health (MPH)', school: 'Institut de Médecine Tropicale, Anvers, Belgique', detail: 'Santé publique en milieu tropical (option lutte contre les maladies).', tag: 'Master' },
     { degree: 'Doctorat en médecine générale (MD)', school: 'Université de Conakry, Guinée', detail: 'Formation médicale doctorale.', tag: 'Doctorat' },
     { degree: 'Enseignement', school: 'IRSP Ouidah, USAID, zones de santé…', detail: 'Cliquez pour voir la liste complète des formations et enseignements.', tag: 'Enseignement' },
     { degree: 'Éducation et autres formations', school: 'Harvard, USAID, Johns Hopkins, NIH…', detail: 'Cliquez pour voir la liste complète des formations et certificats.', tag: 'Formations' },
   ],
   en: [
-    { degree: 'Ph.D. in Health Economics (in progress)', school: 'University of Groningen, Netherlands', detail: 'Thesis: cost-effectiveness of indoor residual spraying (IRS) in northern Benin.', tag: 'Ph.D.' },
-    { degree: 'Master of Public Health (MPH)', school: 'Institute of Tropical Medicine, Antwerp, Belgium', detail: 'Public health in tropical settings.', tag: 'Master' },
-    { degree: 'Doctor of Medicine (MD)', school: 'University of Conakry, Guinea', detail: 'Doctoral medical training.', tag: 'Ph.D.' },
+    { degree: 'Master of Public Health (MPH)', school: 'Institute of Tropical Medicine, Antwerp, Belgium', detail: 'Public health in tropical settings (Disease Control option).', tag: 'Master' },
+    { degree: 'Doctor of Medicine (MD)', school: 'University of Conakry, Guinea', detail: 'Doctoral medical training.', tag: 'MD' },
     { degree: 'Teaching Experience', school: 'IRSP Ouidah, USAID, health zones…', detail: 'Click to see the full list of teaching and training activities.', tag: 'Teaching' },
     { degree: 'Education and other training', school: 'Harvard, USAID, Johns Hopkins, NIH…', detail: 'Click to see the full list of trainings and certificates.', tag: 'Training' },
   ],
@@ -465,7 +463,6 @@ export const TEACHING_LIST: Record<Lang, { date: string; institution: string; de
 export const TRAINING_LIST: Record<Lang, { date: string; institution: string; detail: string }[]> = {
   fr: [
     { date: 'Juin 2023', institution: 'Harvard T.H. Chan School of Public Health', detail: 'Certificat en Science of Defeating Malaria, cours de leadership.' },
-    { date: 'Octobre 2018 \u2013 maintenant', institution: 'Université de Groningen, Pays-Bas', detail: 'Ph.D. en économie de la santé (en cours), doctorant externe inscrit en programme à distance. Thèse : coût-efficacité de la pulvérisation intradomiciliaire dans la réduction du fardeau du paludisme au nord du Bénin.' },
     { date: 'Octobre 2020', institution: 'Centre Beninois de Langues Étrangères (CE.BE.LA.E. \u2013 UAC)', detail: 'Certificat de connaissance en anglais niveau B2 du CECR (TEFL B2).' },
     { date: 'Mars à mai 2020', institution: 'Harvard T.H. Chan School of Public Health', detail: 'Defeating Malaria from the Gene to the Globe.' },
     { date: 'Août 2019', institution: 'USAID University, Washington, D.C.', detail: 'Formation AOR/COR (Agreement/Contracting Officer Representative) renforcée.' },
@@ -487,7 +484,6 @@ export const TRAINING_LIST: Record<Lang, { date: string; institution: string; de
   ],
   en: [
     { date: 'June 2023', institution: 'Harvard T.H. Chan School of Public Health', detail: 'Certificate in Science of Defeating Malaria, a leadership course.' },
-    { date: 'From October 2018 to now', institution: 'University of Groningen, Netherlands', detail: 'Ph.D. in health economics (underway), external student enrolled in a distance program. Thesis: Cost-effectiveness of Indoor Residual Spraying in reducing the malaria burden in Northern Benin, West Africa.' },
     { date: 'October 2020', institution: 'University of Abomey-Calavi, Beninese Centre of Foreign Languages (CE.BE.LA.E. \u2013 UAC)', detail: 'Certificate of Knowledge in English Language level B2 of CECR (TEFL B2).' },
     { date: 'March to May 2020', institution: 'Harvard T.H. Chan School of Public Health', detail: 'Defeating Malaria from the Gene to the Globe.' },
     { date: 'August 2019', institution: 'USAID University, Washington, D.C.', detail: 'Enhanced Agreement/Contracting Officer Representative (AOR/COR) training.' },

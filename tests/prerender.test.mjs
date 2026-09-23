@@ -19,7 +19,6 @@ const LANGS = ['en', 'fr'];
 const ROUTES = [
   '/',
   '/contact',
-  '/cv',
   '/media',
   '/media/interview',
   '/media/conference',

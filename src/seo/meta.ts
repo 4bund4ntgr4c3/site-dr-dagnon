@@ -427,12 +427,12 @@ export const CV_SEO: Record<Lang, { title: string; description: string; keywords
   fr: {
     title: 'Curriculum Vitae — Dr. Seynudé Dagnon',
     description: 'CV complet du Dr. Seynudé Dagnon : 20 ans dans les programmes paludisme, formation, enseignements, distinctions et publications. Imprimable en PDF.',
-    keywords: 'CV Dr Dagnon, CV Seynude Dagnon, curriculum vitae santé publique, parcours paludisme, expérience Fondation Gates, Gates Foundation Senior Program Officer, USAID PMI Resident Advisor, formation Groningen doctorat, ITG Anvers MPH, médecin Cotonou Bénin, Fortuné Dagnon CV, Jean-Fortuné Dagnon CV, DAGNON parcours professionnel',
+    keywords: 'CV Dr Dagnon, CV Seynude Dagnon, curriculum vitae santé publique, parcours paludisme, expérience Fondation Gates, Gates Foundation Senior Program Officer, USAID PMI Resident Advisor, ITG Anvers MPH, médecin Cotonou Bénin, Fortuné Dagnon CV, Jean-Fortuné Dagnon CV, DAGNON parcours professionnel',
   },
   en: {
     title: 'Resume — Dr. Seynudé Dagnon, malaria program leader',
     description: 'Full resume of Dr. Seynudé Dagnon: 20 years in malaria programs, education, teaching, awards and publications. Print-ready PDF version.',
-    keywords: 'Dr Dagnon resume, Seynude Dagnon CV, public health resume, malaria career track record, Gates Foundation Senior Program Officer, USAID PMI Resident Advisor, Groningen PhD, ITG Antwerp MPH, medical doctor Benin, Fortune Dagnon resume, Jean-Fortune Dagnon CV, DAGNON professional profile',
+    keywords: 'Dr Dagnon resume, Seynude Dagnon CV, public health resume, malaria career track record, Gates Foundation Senior Program Officer, USAID PMI Resident Advisor, ITG Antwerp MPH, medical doctor Benin, Fortune Dagnon resume, Jean-Fortune Dagnon CV, DAGNON professional profile',
   },
 };
 
@@ -504,13 +504,13 @@ export const TOOLKIT_SEO: Record<Lang, { title: string; description: string; key
 export const MENTORSHIP_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Mentorat en Santé Mondiale — Dr. Seynudé Dagnon',
-    description: 'Guide de mentorat et carrières en santé mondiale du Dr. Seynudé Dagnon : recherche (PhD), programmes bilatéraux (USAID) et philanthropie (Gates Foundation).',
-    keywords: 'mentorat santé mondiale, carrières santé publique Afrique, PhD économie de la santé, USAID PMI carrières, Fondation Gates recrutement, Dr Dagnon mentorat, Fortuné Dagnon',
+    description: 'Guide de mentorat et carrières en santé mondiale du Dr Seynudé Dagnon : recherche, programmes bilatéraux (USAID) et philanthropie (Fondation Gates).',
+    keywords: 'mentorat santé mondiale, carrières santé publique Afrique, recherche économie de la santé, USAID PMI carrières, Fondation Gates recrutement, Dr Dagnon mentorat, Fortuné Dagnon',
   },
   en: {
     title: 'Global Health Mentorship & Career — Dr. Seynudé Dagnon',
-    description: 'Global health mentorship by Dr. Seynudé Dagnon: academic research (PhD), bilateral leadership (USAID/PMI), and philanthropy (Gates Foundation).',
-    keywords: 'global health mentorship, African public health careers, health economics PhD, USAID PMI careers, Gates Foundation careers, Dr Dagnon mentorship',
+    description: 'Global health mentorship by Dr. Seynudé Dagnon: academic research, bilateral leadership (USAID/PMI), and philanthropy (Gates Foundation).',
+    keywords: 'global health mentorship, African public health careers, health economics research, USAID PMI careers, Gates Foundation careers, Dr Dagnon mentorship',
   },
 };
 
@@ -647,12 +647,6 @@ export function personJsonLd(lang: Lang) {
         name: lang === 'fr' ? 'Institut de Médecine Tropicale d’Anvers' : 'Institute of Tropical Medicine, Antwerp',
         url: 'https://www.itg.be/',
         sameAs: 'https://en.wikipedia.org/wiki/Institute_of_Tropical_Medicine_Antwerp',
-      },
-      {
-        '@type': 'CollegeOrUniversity',
-        name: lang === 'fr' ? 'Université de Groningen' : 'University of Groningen',
-        url: 'https://www.rug.nl/',
-        sameAs: 'https://en.wikipedia.org/wiki/University_of_Groningen',
       },
       {
         '@type': 'CollegeOrUniversity',
@@ -796,7 +790,6 @@ export function personJsonLd(lang: Lang) {
     hasCredential: [
       { '@type': 'EducationalOccupationalCredential', credentialCategory: 'degree', name: 'MD — Doctor of Medicine' },
       { '@type': 'EducationalOccupationalCredential', credentialCategory: 'degree', name: 'MPH — Master of Public Health' },
-      { '@type': 'EducationalOccupationalCredential', credentialCategory: 'degree', name: 'PhD — Doctor of Philosophy in Health Economics (in progress)' },
     ],
     nationality: { '@type': 'Country', name: lang === 'fr' ? 'Bénin' : 'Benin' },
     address: { '@type': 'PostalAddress', addressLocality: 'Cotonou', addressCountry: 'BJ' },
@@ -1699,7 +1692,6 @@ export function pageMeta(lang: Lang, path: string): PageMeta {
 export const PRERENDER_ROUTES = [
   '/',
   '/contact',
-  '/cv',
   '/media',
   '/media/interview',
   '/media/conference',
@@ -1739,7 +1731,6 @@ export const ROUTE_PRIORITY: Record<string, { priority: string; changefreq: stri
   '/connect': { priority: '0.8', changefreq: 'monthly' },
   '/toolkit': { priority: '0.8', changefreq: 'monthly' },
   '/mentorat': { priority: '0.8', changefreq: 'monthly' },
-  '/cv': { priority: '0.7', changefreq: 'monthly' },
   '/media': { priority: '0.9', changefreq: 'weekly' },
   '/publications': { priority: '0.9', changefreq: 'weekly' },
   '/tribunes': { priority: '0.8', changefreq: 'weekly' },

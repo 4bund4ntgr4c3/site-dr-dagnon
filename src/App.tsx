@@ -1,5 +1,5 @@
 import { Suspense, type ComponentType } from 'react'
-import { Routes, Route } from 'react-router'
+import { Routes, Route, Navigate } from 'react-router'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/sections/Footer'
 import { ScrollToTop } from '@/components/ScrollToTop'
@@ -32,7 +32,7 @@ export interface AppPages {
   TribuneArticle: ComponentType
   Projects: ComponentType
   ProjectArticle: ComponentType
-  Cv: ComponentType
+  Cv?: ComponentType
   PressKit: ComponentType
   Invite: ComponentType
   Collaborate: ComponentType
@@ -93,7 +93,7 @@ const routesFor = (Pages: AppPages) => [
   <Route key="projets" path="projets" element={<Pages.Projects />} />,
   <Route key="project-article" path="projets/:slug" element={<Pages.ProjectArticle />} />,
   <Route key="agenda" path="agenda" element={<Pages.Agenda />} />,
-  <Route key="cv" path="cv" element={<Pages.Cv />} />,
+  <Route key="cv" path="cv" element={<Navigate to="../parcours" replace />} />,
   <Route key="presse" path="presse" element={<Pages.PressKit />} />,
   <Route key="inviter" path="inviter" element={<Pages.Invite />} />,
   <Route key="collaborate" path="collaborate" element={<Pages.Collaborate />} />,

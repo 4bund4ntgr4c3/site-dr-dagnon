@@ -52,7 +52,7 @@ export function Hero() {
               style={{ animationDelay: '0.08s' }}
             >
               <NameHighlight />
-              <span className="sr-only"> — {lang === 'fr' ? 'Leader en santé publique et élimination du paludisme en Afrique' : 'Public Health & Malaria Program Leader in Africa'}</span>
+              <span className="sr-only"> — {lang === 'fr' ? 'Leader exécutif en santé mondiale et développement en Afrique' : 'Global Health & Development Executive Leader in Africa'}</span>
             </h1>
 
             <p
@@ -174,7 +174,7 @@ export function Hero() {
               <p className="text-[9px] uppercase tracking-widest text-pine-100/70">{t['hero.exp']}</p>
             </div>
             <div className="hero-float-reverse absolute -bottom-5 -right-4 rounded-2xl border border-white/10 bg-pine-950/65 px-4 py-2.5 shadow-lg backdrop-blur-md">
-              <p className="font-display text-xl font-semibold text-gold-400">27</p>
+              <p className="font-display text-xl font-semibold text-gold-400">15+</p>
               <p className="text-[9px] uppercase tracking-widest text-pine-100/70">{t['hero.pmi']}</p>
             </div>
           </div>
