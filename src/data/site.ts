@@ -17,13 +17,13 @@ export const STATS: Record<Lang, { value: number; suffix: string; label: string;
 
 export const IDENTITY: Record<Lang, { title: string; text: string; icon: string }[]> = {
   fr: [
-    { title: 'Rôle actuel', text: 'Senior Program Officer — Paludisme / Afrique francophone à la Fondation Gates.', icon: 'briefcase' },
+    { title: 'Rôle actuel', text: 'Senior Program Officer à la Fondation Gates — portefeuille direct 39,4 M$, supervision 122 M$ sur 15 pays.', icon: 'briefcase' },
     { title: "Domaine d’expertise", text: 'Stratégie d’investissement, mobilisation des ressources, engagement gouvernemental, santé numérique & IA, leadership multi-crise.', icon: 'target' },
     { title: 'Périmètre de travail', text: 'Basé en Afrique, interventions dans les pays africains anglophones et francophones.', icon: 'globe' },
     { title: 'Langues', text: 'Français (natif), anglais (professionnel de travail — publie, négocie et représente en anglais).', icon: 'languages' },
   ],
   en: [
-    { title: 'Current role', text: 'Senior Program Officer — Malaria / Francophone Africa at the Gates Foundation.', icon: 'briefcase' },
+    { title: 'Current role', text: 'Senior Program Officer at the Gates Foundation — directly managing US$39.4M, overseeing US$122M across 15 countries.', icon: 'briefcase' },
     { title: 'Area of expertise', text: 'Investment strategy, resource mobilization, government engagement, digital health & AI, crisis and multi-disease leadership.', icon: 'target' },
     { title: 'Scope of work', text: 'Based in Africa, working across anglophone and francophone African countries.', icon: 'globe' },
     { title: 'Languages', text: 'French (native), English (professional working proficiency — publishes, negotiates and represents in English).', icon: 'languages' },

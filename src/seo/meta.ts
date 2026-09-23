@@ -27,17 +27,17 @@ const homeUrl = (lang: Lang) => absUrl(lang, '/');
    truncates the SERP snippet mid-word rather than at a sentence boundary. */
 export const SEO: Record<Lang, { title: string; description: string; keywords: string; ogLocale: string }> = {
   fr: {
-    title: 'Dr. Seynudé Dagnon — Santé Publique & Paludisme',
+    title: 'Dr. Seynudé Dagnon — Leader Exécutif, Santé Mondiale',
     description:
-      "Site officiel du Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Leader en santé publique et lutte contre le paludisme en Afrique (Fondation Gates, USAID, PMI).",
-    keywords: 'Dr. Seynudé Jean-Fortuné Dagnon, paludisme, santé publique, élimination du paludisme, Fondation Gates, USAID, PMI, Bénin, Afrique francophone',
+      "Site officiel du Dr. Seynudé Dagnon, MD, MPH — Leader exécutif en santé mondiale à la Fondation Gates, gérant 161 M$ dans 15 pays d'Afrique subsaharienne.",
+    keywords: 'Dr. Seynudé Jean-Fortuné Dagnon, leader exécutif santé mondiale, paludisme, investissement santé, Fondation Gates, USAID, PMI, Bénin, Afrique francophone, portefeuille santé',
     ogLocale: 'fr_FR',
   },
   en: {
-    title: 'Dr. Seynudé Dagnon — Public Health & Malaria Leader',
+    title: 'Dr. Seynudé Dagnon — Global Health Executive Leader',
     description:
-      'Official website of Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Public Health & Malaria Leader in Africa (Gates Foundation, USAID, PMI).',
-    keywords: 'Dr. Seynudé Jean-Fortuné Dagnon, malaria elimination, public health leader, Gates Foundation, USAID, PMI, Benin, Francophone Africa',
+      'Official website of Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Global health executive at the Gates Foundation, managing US$161M across 15 African countries.',
+    keywords: 'Dr. Seynudé Jean-Fortuné Dagnon, global health executive, malaria elimination, health investment, Gates Foundation, USAID, PMI, Benin, Francophone Africa, portfolio leadership',
     ogLocale: 'en_US',
   },
 };
@@ -627,7 +627,7 @@ export function personJsonLd(lang: Lang) {
       'Dagnon J.F.',
       'Dagnon, J.F.',
     ],
-    jobTitle: lang === 'fr' ? 'Senior Program Officer — Paludisme & Santé Publique (Afrique francophone)' : 'Senior Program Officer — Malaria & Public Health (Francophone Africa)',
+    jobTitle: lang === 'fr' ? 'Leader Exécutif en Santé Mondiale — Fondation Gates' : 'Global Health Executive Leader — Gates Foundation',
     description: SEO[lang].description,
     url: homeUrl(lang),
     image: `${SITE_URL}/og-image.jpg`,
@@ -824,7 +824,7 @@ export function contactPageJsonLd(lang: Lang) {
     mainEntity: {
       '@type': 'Person',
       name: fullName(lang),
-      jobTitle: lang === 'fr' ? 'Leader de programme en santé publique et paludisme' : 'Public Health & Malaria Program Leader',
+      jobTitle: lang === 'fr' ? 'Leader Exécutif en Santé Mondiale' : 'Global Health Executive',
       email: 'contact@seynudedagnon.com',
       address: { '@type': 'PostalAddress', addressLocality: 'Cotonou', addressCountry: 'BJ' },
     },

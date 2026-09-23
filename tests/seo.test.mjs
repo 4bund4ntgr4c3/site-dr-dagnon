@@ -63,8 +63,14 @@ for (const lang of ['fr', 'en']) {
   });
 
   test(`personJsonLd(${lang}) jobTitle is localised`, () => {
-    if (lang === 'fr') assert.ok(ld.jobTitle.includes('Paludisme'), `fr jobTitle: ${ld.jobTitle}`);
-    else assert.ok(ld.jobTitle.includes('Malaria') || ld.jobTitle.includes('Public Health'), `en jobTitle: ${ld.jobTitle}`);
+    if (lang === 'fr') assert.ok(
+      ld.jobTitle.includes('Ex\u00e9cutif') || ld.jobTitle.includes('Gates') || ld.jobTitle.includes('Sant\u00e9'),
+      `fr jobTitle: ${ld.jobTitle}`
+    );
+    else assert.ok(
+      ld.jobTitle.includes('Executive') || ld.jobTitle.includes('Gates') || ld.jobTitle.includes('Health'),
+      `en jobTitle: ${ld.jobTitle}`
+    );
   });
 }
 
