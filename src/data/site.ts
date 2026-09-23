@@ -3,13 +3,13 @@ import type { Lang } from '@/i18n/lang';
 export const STATS: Record<Lang, { value: number; suffix: string; label: string; detail: string }[]> = {
   fr: [
     { value: 20, suffix: '+', label: "années d'expérience", detail: 'Programmes paludisme, VIH/SIDA, NTN et santé MNI à travers l’Afrique' },
-    { value: 14, suffix: '', label: 'publications scientifiques', detail: 'Revues à comité de lecture · Plus 2 préprints, 1 tribune et 1 présentation' },
+    { value: 161, suffix: ' M$', label: 'portefeuille géré', detail: '39,4 M$ en gestion directe + 122 M$ en supervision technique' },
     { value: 1114, suffix: '', label: 'centres de santé couverts', detail: 'Complétude du système d’information : 35 % → 94 %' },
     { value: 15, suffix: '+', label: 'pays d’intervention', detail: 'Programmes et investissements conduits à travers l’Afrique subsaharienne' },
   ],
   en: [
     { value: 20, suffix: '+', label: 'years of experience', detail: 'Malaria, HIV/AIDS, NTD and MNCH programs across Africa' },
-    { value: 14, suffix: '', label: 'peer-reviewed publications', detail: 'Peer-reviewed articles · Plus 2 preprints, 1 op-ed and 1 presentation' },
+    { value: 161, suffix: ' M$', label: 'portfolio managed', detail: 'US$39.4M directly managed + US$122M technical oversight' },
     { value: 1114, suffix: '', label: 'health facilities covered', detail: 'Routine information system completeness: 35% → 94%' },
     { value: 15, suffix: '+', label: 'countries reached', detail: 'Programs and investments led across Sub-Saharan Africa' },
   ],
@@ -568,4 +568,4 @@ export function publicationsCount(lang: Lang, n: number): string {
     return `${n} publication${n > 1 ? 's' : ''} affichée${n > 1 ? 's' : ''}`;
   }
   return `${n} publication${n !== 1 ? 's' : ''} shown`;
-}
+}

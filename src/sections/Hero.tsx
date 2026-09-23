@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { Linkedin, Mail, ArrowDown, MapPin, Award, Play, X } from 'lucide-react';
+import { Linkedin, Mail, ArrowDown, MapPin, Award, Layers, Play, X } from 'lucide-react';
 import { LINKS } from '@/data/content';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -95,8 +95,8 @@ export function Hero() {
                 <Award size={14} className="text-gold-400" /> {t['hero.award']}
               </span>
               <span className="inline-flex items-center gap-2">
-                <Award size={14} className="text-gold-400" />{' '}
-                {lang === 'fr' ? 'Portefeuille US․35M+ · 15 pays' : 'US․35M+ portfolio · 15 countries'}
+                <Layers size={14} className="text-gold-400" />{' '}
+                {lang === 'fr' ? 'Portefeuille US$161M+ · 15 pays' : 'US$161M+ portfolio · 15 countries'}
               </span>
             </div>
           </div>
