@@ -45,26 +45,26 @@ export const SEO: Record<Lang, { title: string; description: string; keywords: s
 export const CONTACT_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Contact — Dr. Seynudé Jean-Fortuné DAGNON',
-    description: 'Contactez le Dr. Seynudé Jean-Fortuné Dagnon pour un partenariat, une conférence ou un conseil technique sur le paludisme et la santé publique.',
-    keywords: 'contact Dr Dagnon, contact Seynude Dagnon, email Seynudé Dagnon, email santé publique, partenariat paludisme, conférence Afrique, conseil technique Bénin, Cotonou, Dakar, Sénégal, Fortuné Dagnon contact, DAGNON contact',
+    description: 'Contactez le Dr. Seynudé Dagnon pour un partenariat, une intervention ou une collaboration en leadership en santé mondiale et investissement en santé.',
+    keywords: 'contact Dr Dagnon, contact Seynude Dagnon, email Seynudé Dagnon, partenariat santé mondiale, invitation conférence Afrique, leadership santé, Cotonou, Fortuné Dagnon contact',
   },
   en: {
     title: 'Contact — Seynudé Jean-Fortuné DAGNON, MD, MPH',
-    description: 'Contact Dr. Seynudé Jean-Fortuné Dagnon for partnerships, conferences or technical advice on malaria and public health in Francophone Africa.',
-    keywords: 'contact Dr Dagnon, contact Seynude Dagnon, email Seynudé Dagnon, public health email, malaria partnership, Africa conference, technical advice Benin, Cotonou, Dakar, Senegal, Fortune Dagnon contact, DAGNON contact',
+    description: 'Contact Dr. Seynudé Dagnon for partnerships, speaking invitations or collaborations in global health leadership, health investment and malaria elimination.',
+    keywords: 'contact Dr Dagnon, contact Seynude Dagnon, global health executive contact, health investment partnership, Africa conference speaking, Gates Foundation, Fortune Dagnon contact',
   },
 };
 
 export const MEDIA_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Médias & Conférences — Dr. Seynudé Dagnon',
-    description: 'Interviews, conférences, discours, presse et engagement communautaire du Dr. Seynudé Jean-Fortuné Dagnon sur le paludisme et la santé publique en Afrique.',
-    keywords: 'interviews Dr Dagnon, Seynude Dagnon interviews, conférences paludisme, discours santé publique, presse Bénin, engagements communautaires, Nuit du Paludisme, media malaria Africa, Fortuné Dagnon médias, DAGNON vidéo',
+    description: 'Keynotes, interviews et prises de parole du Dr. Seynudé Dagnon sur le leadership en santé mondiale, l\u2019investissement et l\u2019élimination du paludisme.',
+    keywords: 'interviews Dr Dagnon, Seynude Dagnon keynotes, leadership santé mondiale, conférences paludisme, discours Afrique, presse Bénin, Nuit du Paludisme, Fortuné Dagnon médias',
   },
   en: {
     title: 'Media & Speeches — Dr. Seynudé Dagnon',
-    description: 'Interviews, conferences, speeches, press coverage and community engagement by Dr. Seynudé Jean-Fortuné Dagnon on malaria and public health in Africa.',
-    keywords: 'Dr Dagnon interviews, Seynude Dagnon media, malaria conferences, public health speeches, press Benin, community engagement, Night Against Malaria, media malaria Africa, Fortune Dagnon video, DAGNON media',
+    description: 'Keynotes, interviews and speeches by Dr. Seynudé Dagnon on global health leadership, health investment and malaria elimination across Africa.',
+    keywords: 'Dr Dagnon keynotes, Seynude Dagnon media, global health leadership speeches, malaria elimination conferences, health investment Africa, Fortune Dagnon video, DAGNON media',
   },
 };
 
