@@ -53,7 +53,7 @@ export default function Impact() {
           {IMPACT_STATS[lang].map((s, i) => (
             <Reveal key={s.value} delay={i * 0.08}>
               <div className="flex h-full flex-col justify-center px-6 py-10 text-center lg:px-8">
-                <p className="font-display text-4xl font-semibold text-gold-400 gold-text lg:text-[2.75rem]">
+                <p className={`font-display font-semibold text-gold-400 gold-text ${s.value.length > 8 ? 'text-2xl sm:text-3xl lg:text-[2rem] leading-tight min-h-[2.75rem] flex items-center justify-center' : 'text-4xl lg:text-[2.75rem]'}`}>
                   {s.value}
                 </p>
                 <p className="mt-2 text-[12.5px] font-semibold uppercase tracking-wider text-pine-100/80">

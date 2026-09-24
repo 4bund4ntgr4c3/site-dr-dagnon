@@ -96,7 +96,7 @@ export function Hero() {
               </span>
               <span className="inline-flex items-center gap-2">
                 <Layers size={14} className="text-gold-400" />{' '}
-                {lang === 'fr' ? 'Portefeuille US$161M+ · 15 pays' : 'US$161M+ portfolio · 15 countries'}
+                {lang === 'fr' ? 'Plusieurs dizaines de M$ de portefeuille · 15 pays' : 'Tens of millions $ portfolio · 15 countries'}
               </span>
             </div>
           </div>

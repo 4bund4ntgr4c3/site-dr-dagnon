@@ -36,9 +36,15 @@ export function Stats() {
       <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-white/5 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
         {STATS[lang].map((s, i) => (
           <Reveal key={s.label} delay={i * 0.1} className="px-8 py-10 lg:py-12">
-            <p className="font-display text-4xl font-semibold text-gold-400 gold-text lg:text-[2.75rem]">
-              <Counter value={s.value} locale={locale} />
-              {s.suffix}
+            <p className={`font-display font-semibold text-gold-400 gold-text ${s.displayValue ? 'text-2xl sm:text-3xl lg:text-[2rem] leading-tight min-h-[2.75rem] flex items-center' : 'text-4xl lg:text-[2.75rem]'}`}>
+              {s.displayValue ? (
+                s.displayValue
+              ) : (
+                <>
+                  <Counter value={s.value ?? 0} locale={locale} />
+                  {s.suffix}
+                </>
+              )}
             </p>
             <p className="mt-2 text-sm font-semibold text-ivory">{s.label}</p>
             <p className="mt-1.5 text-[12.5px] leading-snug text-pine-100/55">{s.detail}</p>

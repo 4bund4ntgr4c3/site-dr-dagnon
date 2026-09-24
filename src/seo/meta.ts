@@ -29,14 +29,14 @@ export const SEO: Record<Lang, { title: string; description: string; keywords: s
   fr: {
     title: 'Dr. Seynudé Dagnon — Leader Exécutif, Santé Mondiale',
     description:
-      "Site officiel du Dr. Seynudé Dagnon, MD, MPH — Leader exécutif en santé mondiale à la Fondation Gates, gérant 161 M$ dans 15 pays d'Afrique subsaharienne.",
+      "Site officiel du Dr. Seynudé Dagnon, MD, MPH — Leader exécutif en santé mondiale à la Fondation Gates, gérant plusieurs dizaines de M$ dans 15 pays d'Afrique.",
     keywords: 'Dr. Seynudé Jean-Fortuné Dagnon, leader exécutif santé mondiale, paludisme, investissement santé, Fondation Gates, USAID, PMI, Bénin, Afrique francophone, portefeuille santé',
     ogLocale: 'fr_FR',
   },
   en: {
     title: 'Dr. Seynudé Dagnon — Global Health Executive Leader',
     description:
-      'Official website of Dr. Seynudé Jean-Fortuné Dagnon, MD, MPH — Global health executive at the Gates Foundation, managing US$161M across 15 African countries.',
+      'Official website of Dr. Seynudé Dagnon, MD, MPH — Global health executive at the Gates Foundation, managing tens of millions across 15 African countries.',
     keywords: 'Dr. Seynudé Jean-Fortuné Dagnon, global health executive, malaria elimination, health investment, Gates Foundation, USAID, PMI, Benin, Francophone Africa, portfolio leadership',
     ogLocale: 'en_US',
   },

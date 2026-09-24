@@ -115,8 +115,7 @@ export default function PressKit() {
               {STATS[lang].map((s, i) => (
                 <div key={i} className="rounded-2xl border border-gold-500/30 bg-gold-500/10 p-6">
                   <p className="font-display text-[1.9rem] leading-tight font-semibold text-gold-700">
-                    {s.value}
-                    {s.suffix}
+                    {s.displayValue ? s.displayValue : `${s.value}${s.suffix}`}
                   </p>
                   <p className="mt-1 text-[12.5px] font-semibold text-pine-900/80">{s.label}</p>
                   <p className="mt-1 text-[12px] leading-relaxed text-ink/70">{s.detail}</p>
