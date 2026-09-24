@@ -33,7 +33,7 @@ const COUNTRIES: CountryImpact[] = [
     stats: [
       { label: { fr: 'Centres de santé équipés', en: 'Health facilities equipped' }, value: '1 114' },
       { label: { fr: 'Moustiquaires distribuées', en: 'LLINs distributed' }, value: '3.2M' },
-      { label: { fr: 'Budget programmes géré', en: 'Program budget managed' }, value: '$180M' },
+      { label: { fr: 'Zones sanitaires couvertes', en: 'Health zones covered' }, value: '34 zones' },
     ],
     summary: {
       fr: 'Leader de la digitalisation des campagnes MILDA, mise en œuvre du contrat direct G2G USAID/PNLP et renforcement du DHIS2 national.',
@@ -42,12 +42,12 @@ const COUNTRIES: CountryImpact[] = [
     highlights: {
       fr: [
         'Complétude des données sanitaires portée de 35% à 94%',
-        'Supervision du contrat G2G direct PNLP Bénin / USAID (20M$)',
+        'Supervision du contrat G2G direct PNLP Bénin / USAID',
         'Campagnes de pulvérisation intradomiciliaire (PID) dans l’Atacora-Donga',
       ],
       en: [
         'Health data completeness raised from 35% to 94%',
-        'Supervised USAID direct G2G contract for Benin NMCP ($20M)',
+        'Supervised USAID direct G2G contract for Benin NMCP',
         'Indoor Residual Spraying (IRS) campaigns in Atacora-Donga',
       ],
     },
@@ -125,7 +125,7 @@ const COUNTRIES: CountryImpact[] = [
     coords: { x: 26, y: 43 },
     stats: [
       { label: { fr: 'Pays engagés dans le réseau', en: 'Countries engaged in network' }, value: '14' },
-      { label: { fr: 'Financements catalytiques mobilisés', en: 'Catalytic funding mobilized' }, value: '$250M+' },
+      { label: { fr: 'Partenariats & investissements', en: 'Partnerships & investments' }, value: 'Multi-pays' },
       { label: { fr: 'Tribunes & plaidoyers ministériels', en: 'Op-eds & ministerial advocacy' }, value: '12+' },
     ],
     summary: {

@@ -62,7 +62,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
       org: 'Fondation Gates',
       period: 'déc. 2020 — aujourd\'hui',
       current: true,
-      text: 'Gestion directe d\'un portefeuille de subventions de 39,4 M$ et supervision technique d\'investissements de 122 M$ (CHAI 74 M$, EBOLA 48 M$) à travers 15 pays d\'Afrique subsaharienne. Élabore et pilote les stratégies de mise en œuvre du paludisme et des investissements fondés sur la performance ; instruit les subventions et contrats ; appuie la stratégie, la collaboration, la pérennité et l\'engagement des partenaires de terrain.',
+      text: 'Gestion directe et supervision technique de portefeuilles de subventions de plusieurs dizaines de millions de dollars à travers 15 pays d\'Afrique subsaharienne. Élabore et pilote les stratégies de mise en œuvre du paludisme et des investissements fondés sur la performance ; instruit les subventions et contrats ; appuie la stratégie, la collaboration, la pérennité et l\'engagement des partenaires de terrain.',
       details: {
         responsibilities: [
           'Piloter la gestion et la supervision technique de portefeuilles de subventions de plusieurs dizaines de millions de dollars dans 15 pays',
@@ -99,7 +99,7 @@ export const EXPERIENCE: Record<Lang, { role: string; org: string; period: strin
       org: 'USAID Bénin — U.S. President\'s Malaria Initiative',
       period: 'nov. 2015 — nov. 2020',
       current: false,
-      text: 'Gestion d\'un portefeuille de plus de 65 M$ à travers 10 subventions et accords. Pilotage de la planification, de la mise en œuvre, de la coordination et du suivi des programmes paludisme ; appui à la préparation et à la réponse aux épidémies ; gestion des mécanismes G2G et partenaires.',
+      text: 'Gestion d\'un portefeuille multi-subventions de plusieurs dizaines de millions de dollars à travers 10 accords et projets. Pilotage de la planification, de la mise en œuvre, de la coordination et du suivi des programmes paludisme ; appui à la préparation et à la réponse aux épidémies ; gestion des mécanismes G2G et partenaires.',
       details: {
         responsibilities: [
           'Responsable de tous les aspects des programmes paludisme : planification, organisation, mise en œuvre, coordination et suivi pour les résultats',

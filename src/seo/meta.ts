@@ -277,12 +277,12 @@ export const NEWSLETTER_SEO: Record<Lang, { title: string; description: string; 
 export const IMPACT_SEO: Record<Lang, { title: string; description: string; keywords: string }> = {
   fr: {
     title: 'Impact & Résultats — Dr. Seynudé Dagnon',
-    description: "Résultats mesurables du Dr. Seynudé Dagnon : 1 114 centres de santé, complétude des données de 35 % à 94 %, économies de 3 M$ et portefeuille de 180 M$.",
+    description: "Résultats mesurables du Dr. Seynudé Dagnon : 1 114 centres de santé, complétude de 35 % à 94 % et portefeuilles de plusieurs dizaines de M$.",
     keywords: 'impact Dr Dagnon, impact Seynude Dagnon, résultats paludisme, données de santé Bénin, IRS nord Bénin, digitalisation MILDA, économies G2G, portfolio Fondation Gates, indicateurs santé publique Afrique, Fortuné Dagnon impact, DAGNON réalisations',
   },
   en: {
     title: 'Impact & Results — Dr. Seynudé Dagnon',
-    description: "Measurable results by Dr. Seynudé Dagnon: 1,114 health facilities, data completeness from 35% to 94%, $3M in savings and a $180M portfolio.",
+    description: "Measurable results by Dr. Seynudé Dagnon: 1,114 health facilities, data completeness 35% to 94%, and tens of millions in managed portfolios.",
     keywords: 'Dr Dagnon impact, Seynude Dagnon impact, malaria results, health data Benin, IRS northern Benin, LLIN digitization, G2G savings, Gates Foundation portfolio, public health metrics Africa, Fortune Dagnon results, DAGNON achievements',
   },
 };
