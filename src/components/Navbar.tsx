@@ -35,7 +35,7 @@ const sectionLabel = (lang: Lang, id: string): string =>
   NAV[lang].find((n) => n.id === id)?.label ?? id;
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(() => (typeof window !== 'undefined' ? window.scrollY > 40 : false));
   const [open, setOpen] = useState(false);
   const [homeOpen, setHomeOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
@@ -49,35 +49,15 @@ export function Navbar() {
   const searchCloseTimer = useRef<number | null>(null);
   const { lang } = useLang();
   const t = UI[lang];
-  const headerRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
   const drawerCloseRef = useRef<HTMLButtonElement>(null);
   const homeRef = useRef<HTMLDivElement>(null);
   const moreRef = useRef<HTMLDivElement>(null);
-  const logoNameRef = useRef<HTMLSpanElement>(null);
-  /* how many lines the logo name wraps onto — when the header is squeezed the
-     name grows, so the role line is dropped first, then the whole text */
-  const [logoLines, setLogoLines] = useState(1);
 
   /* the open mobile drawer is a dialog: Escape closes it, Tab stays inside,
      the page behind stops scrolling */
   useFocusTrap(drawerRef, toggleRef, open, () => setOpen(false));
-
-  useEffect(() => {
-    const el = logoNameRef.current;
-    if (!el) return;
-    const measure = () => {
-      const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || 20;
-      setLogoLines(Math.max(1, Math.round(el.offsetHeight / lineHeight)));
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    return () => ro.disconnect();
-    /* the span unmounts when the text is squeezed out; re-attach the observer
-       whenever it comes back so the logo can recover when space returns */
-  }, [lang, logoLines]);
 
   const openSearch = () => {
     /* a pending fade-out from a previous close is cancelled: the modal stays
@@ -213,42 +193,33 @@ export function Navbar() {
           <SearchModal key={searchSession} open={searchOpen} onClose={closeSearch} />
         </Suspense>
       )}
-      <header className="fixed inset-x-0 top-0 z-50 transition-all duration-500">
+      <header className="fixed inset-x-0 top-0 z-50">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-xl focus:bg-pine-950 focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-gold-300 focus:shadow-xl"
         >
           {t['a11y.skip']}
         </a>
-      <div ref={headerRef} className="mx-auto max-w-7xl px-3 pt-2 lg:px-4 lg:pt-3">
+      <div className="mx-auto max-w-7xl px-3 pt-2 lg:px-4 lg:pt-3">
         <div
-          className={`flex h-16 lg:h-[72px] items-center justify-between gap-4 px-4 lg:px-6 transition-all duration-500 ${
+          className={`flex h-16 lg:h-[72px] items-center justify-between gap-4 px-4 lg:px-6 transition-[background-color,border-color,box-shadow] duration-300 ${
             solid
               ? 'rounded-3xl border border-white/10 bg-pine-950/90 backdrop-blur-md shadow-lg shadow-pine-950/30'
               : 'rounded-3xl border border-transparent bg-pine-950/40 backdrop-blur-sm'
           }`}
         >
-          <Link to={localePath(lang, '/')} aria-label={`${t['name.short']} — ${t['nav.subtitle']}`} className="flex min-w-0 items-center gap-3 group">
+          <Link to={localePath(lang, '/')} aria-label={`${t['name.short']} — ${t['nav.subtitle']}`} className="flex shrink-0 min-w-0 items-center gap-3 group">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gold-500 font-display text-sm font-semibold text-pine-950 transition-transform group-hover:scale-105">
               SD
             </span>
-            {logoLines < 4 && (
-              <span className="hidden min-w-0 leading-tight sm:block">
-                <span ref={logoNameRef} className="block font-display text-[15px] font-medium text-ivory">
-                  {t['name.short']}
-                </span>
-                {logoLines < 2 && (
-                  <span className="block truncate text-[10px] uppercase tracking-[0.22em] text-gold-400">
-                    {t['nav.subtitle']}
-                  </span>
-                )}
+            <span className="hidden min-w-0 leading-tight sm:block">
+              <span className="block font-display text-[15px] font-medium text-ivory whitespace-nowrap">
+                {t['name.short']}
               </span>
-            )}
-            {logoLines >= 4 && (
-              /* the text is squeezed out, but the link keeps its meaning for
-                 assistive tech and crawlers */
-              <span className="sr-only">{t['name.short']} — {t['nav.subtitle']}</span>
-            )}
+              <span className="hidden 2xl:block truncate text-[10px] uppercase tracking-[0.22em] text-gold-400 max-w-[280px]">
+                {t['nav.subtitle']}
+              </span>
+            </span>
           </Link>
 
           <nav aria-label={t['nav.ariaLabel']} className="hidden lg:flex items-center gap-1 rounded-full border border-white/10 bg-white/5 py-1.5 px-1.5 backdrop-blur-sm">
@@ -384,7 +355,7 @@ export function Navbar() {
               target="_blank"
               rel="noreferrer"
               onClick={() => track('click', { event_category: 'outbound', event_label: 'linkedin' })}
-              className="hidden xl:flex items-center gap-2 rounded-full border border-gold-500/50 px-4 py-2 text-[13px] font-semibold text-gold-300 transition-all hover:bg-gold-500 hover:text-pine-950"
+              className="hidden xl:flex items-center gap-2 rounded-full border border-gold-500/50 bg-pine-950 px-4 py-2 text-[13px] font-semibold text-gold-300 transition-all hover:bg-gold-500 hover:text-pine-950"
             >
               <Linkedin size={15} /> {t['nav.linkedin']}
             </a>
