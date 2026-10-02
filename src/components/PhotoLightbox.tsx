@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router';
 import { X, ChevronLeft, ChevronRight, Play, Pause, ArrowUpRight } from 'lucide-react';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
@@ -28,11 +29,16 @@ export function PhotoLightbox({
 }: PhotoLightboxProps) {
   const [index, setIndex] = useState(initialIndex);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const goNext = useCallback(() => {
     if (photos.length === 0) return;
@@ -56,36 +62,60 @@ export function PhotoLightbox({
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowRight') { goNext(); setIsAutoPlaying(false); }
-      if (e.key === 'ArrowLeft') { goPrev(); setIsAutoPlaying(false); }
+      if (e.key === 'ArrowRight') {
+        goNext();
+        setIsAutoPlaying(false);
+      }
+      if (e.key === 'ArrowLeft') {
+        goPrev();
+        setIsAutoPlaying(false);
+      }
     },
     [goNext, goPrev, onClose],
   );
+
+  useEffect(() => {
+    const handleGlobalKeys = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') {
+        goNext();
+        setIsAutoPlaying(false);
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+        setIsAutoPlaying(false);
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeys);
+    return () => window.removeEventListener('keydown', handleGlobalKeys);
+  }, [goNext, goPrev]);
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
   }, []);
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    const dx = e.changedTouches[0].clientX - touchStartX.current;
-    const dy = e.changedTouches[0].clientY - touchStartY.current;
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > SWIPE_THRESHOLD) {
-      if (dx < 0) goNext();
-      else goPrev();
-      setIsAutoPlaying(false);
-    }
-  }, [goNext, goPrev]);
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      const dx = e.changedTouches[0].clientX - touchStartX.current;
+      const dy = e.changedTouches[0].clientY - touchStartY.current;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > SWIPE_THRESHOLD) {
+        if (dx < 0) goNext();
+        else goPrev();
+        setIsAutoPlaying(false);
+      }
+    },
+    [goNext, goPrev],
+  );
 
   useFocusTrap(modalRef, closeRef, true, onClose);
 
-  if (photos.length === 0) return null;
+  if (photos.length === 0 || !mounted || typeof document === 'undefined') return null;
 
   const current = photos[index];
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-pine-950/95 p-4 backdrop-blur-sm"
+      ref={modalRef}
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-between bg-pine-950/98 p-4 backdrop-blur-md"
       onClick={onClose}
       onKeyDown={handleKeyDown}
       role="dialog"
@@ -93,28 +123,30 @@ export function PhotoLightbox({
       aria-label={title}
       tabIndex={-1}
     >
-      {/* header */}
-      <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-4">
-        <div>
-          <h3 className="font-display text-lg font-semibold text-white">{title}</h3>
-          <p className="text-[13px] text-white/60">
+      {/* Top Header Bar */}
+      <div
+        className="w-full flex items-center justify-between px-4 sm:px-8 pt-3 sm:pt-4 pb-2 z-10"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="min-w-0 pr-4">
+          <h3 className="font-display text-base sm:text-lg font-semibold text-white truncate max-w-[65vw] sm:max-w-xl lg:max-w-2xl">
+            {title}
+          </h3>
+          <p className="text-xs sm:text-[13px] text-white/60">
             {index + 1} / {photos.length}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
           {photos.length > 1 && (
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsAutoPlaying(!isAutoPlaying);
-              }}
-              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${
+              onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+              className={`flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border transition-all ${
                 isAutoPlaying
                   ? 'border-gold-500 bg-gold-500 text-pine-950 shadow-lg shadow-gold-500/30'
                   : 'border-white/30 bg-white/10 text-white hover:bg-white/20'
               }`}
-              aria-label={isAutoPlaying ? 'Pause' : (lang === 'fr' ? 'Lecture' : 'Play')}
+              aria-label={isAutoPlaying ? 'Pause' : lang === 'fr' ? 'Lecture' : 'Play'}
               aria-pressed={isAutoPlaying}
             >
               {isAutoPlaying ? <Pause size={16} /> : <Play size={16} className="ml-0.5" />}
@@ -123,8 +155,8 @@ export function PhotoLightbox({
           <button
             ref={closeRef}
             type="button"
-            onClick={() => onClose()}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/10"
+            onClick={onClose}
+            className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/10"
             aria-label={closeLabel}
           >
             <X size={20} />
@@ -132,10 +164,9 @@ export function PhotoLightbox({
         </div>
       </div>
 
-      {/* slideshow content */}
+      {/* Slideshow Content */}
       <div
-        ref={modalRef}
-        className="relative flex w-full max-w-5xl items-center justify-center"
+        className="relative flex w-full max-w-5xl flex-1 items-center justify-center px-2 my-auto"
         onClick={(e) => e.stopPropagation()}
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
@@ -150,14 +181,14 @@ export function PhotoLightbox({
               goPrev();
               setIsAutoPlaying(false);
             }}
-            className="absolute -left-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-pine-950/60 text-white backdrop-blur-sm transition-all hover:bg-white/20 lg:-left-16"
+            className="absolute -left-2 sm:left-2 lg:-left-16 z-20 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/20 bg-pine-950/70 text-white backdrop-blur-sm transition-all hover:bg-white/20 hover:scale-105"
             aria-label={lang === 'fr' ? 'Précédent' : 'Previous'}
           >
             <ChevronLeft size={24} />
           </button>
         )}
 
-        <div className="relative h-[min(75vh,calc(100vh-130px))] w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+        <div className="relative h-[min(68vh,calc(100vh-210px))] w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
           {photos.map((photo, i) => {
             const last = photos.length - 1;
             const adjacent =
@@ -180,7 +211,7 @@ export function PhotoLightbox({
                   height={853}
                   loading={i === index ? 'eager' : 'lazy'}
                   decoding="async"
-                  className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-2xl"
+                  className="absolute inset-0 h-full w-full scale-110 object-cover opacity-50 blur-2xl"
                 />
                 <img
                   src={photo.src}
@@ -204,7 +235,7 @@ export function PhotoLightbox({
               goNext();
               setIsAutoPlaying(false);
             }}
-            className="absolute -right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-pine-950/60 text-white backdrop-blur-sm transition-all hover:bg-white/20 lg:-right-16"
+            className="absolute -right-2 sm:right-2 lg:-right-16 z-20 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/20 bg-pine-950/70 text-white backdrop-blur-sm transition-all hover:bg-white/20 hover:scale-105"
             aria-label={lang === 'fr' ? 'Suivant' : 'Next'}
           >
             <ChevronRight size={24} />
@@ -212,47 +243,53 @@ export function PhotoLightbox({
         )}
       </div>
 
-      {/* dots */}
-      {photos.length > 1 && (
-        <div className="mt-6 flex items-center gap-2">
-          {photos.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIndex(i);
-                setIsAutoPlaying(false);
-              }}
-              className={`flex h-6 w-6 items-center justify-center rounded-full transition-all ${
-                i === index ? '' : 'hover:bg-white/10'
-              }`}
-              aria-label={`${lang === 'fr' ? 'Photo' : 'Photo'} ${i + 1}${i === index ? (lang === 'fr' ? ', actuelle' : ', current') : ''}`}
-              aria-current={i === index ? 'true' : undefined}
-            >
-              <span
-                className={`block h-2 rounded-full transition-all ${
-                  i === index ? 'w-6 bg-gold-500' : 'w-2 bg-white/30'
+      {/* Bottom Bar: Dots & Caption */}
+      <div
+        className="w-full flex flex-col items-center pb-3 sm:pb-4 pt-1 z-10"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* dots */}
+        {photos.length > 1 && (
+          <div className="flex items-center gap-1.5 sm:gap-2 mb-2">
+            {photos.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => {
+                  setIndex(i);
+                  setIsAutoPlaying(false);
+                }}
+                className={`flex h-6 w-6 items-center justify-center rounded-full transition-all ${
+                  i === index ? '' : 'hover:bg-white/10'
                 }`}
-              />
-            </button>
-          ))}
-        </div>
-      )}
+                aria-label={`${lang === 'fr' ? 'Photo' : 'Photo'} ${i + 1}${i === index ? (lang === 'fr' ? ', actuelle' : ', current') : ''}`}
+                aria-current={i === index ? 'true' : undefined}
+              >
+                <span
+                  className={`block h-2 rounded-full transition-all ${
+                    i === index ? 'w-6 bg-gold-500' : 'w-2 bg-white/30'
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+        )}
 
-      {/* caption */}
-      <div className="mt-4 flex max-w-2xl flex-col items-center gap-2">
-        <p className="text-center text-[13px] text-white/60">
-          {current.title[lang]}
-        </p>
-        <Link
-          to={localePath(lang, `/media/community/${current.id}`)}
-          className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-400 transition-colors hover:text-gold-300"
-        >
-          {lang === 'fr' ? 'Ouvrir la photo dans sa page' : 'Open the photo on its own page'}
-          <ArrowUpRight size={13} />
-        </Link>
+        {/* caption */}
+        <div className="flex max-w-2xl flex-col items-center gap-1 px-4 text-center">
+          <p className="text-xs sm:text-[13px] text-white/80 line-clamp-2">
+            {current.title[lang]}
+          </p>
+          <Link
+            to={localePath(lang, `/media/community/${current.id}`)}
+            className="inline-flex items-center gap-1 text-xs font-semibold text-gold-400 transition-colors hover:text-gold-300"
+          >
+            {lang === 'fr' ? 'Ouvrir la photo dans sa page' : 'Open the photo on its own page'}
+            <ArrowUpRight size={12} />
+          </Link>
+        </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

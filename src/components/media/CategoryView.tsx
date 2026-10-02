@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useSearchParams } from 'react-router';
 import { X, ArrowLeft, Search } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
@@ -191,9 +192,9 @@ export function CategoryView({
           )}
 
           {/* modal */}
-          {active && (
+          {active && typeof document !== 'undefined' && createPortal(
             <div
-              className="fixed inset-0 z-[60] flex items-center justify-center bg-pine-950/90 p-4 backdrop-blur-sm"
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-pine-950/98 p-4 backdrop-blur-md"
               onClick={() => setActive(null)}
               role="dialog"
               aria-modal="true"
@@ -233,7 +234,8 @@ export function CategoryView({
                   />
                 )}
               </div>
-            </div>
+            </div>,
+            document.body,
           )}
         </>
       )}

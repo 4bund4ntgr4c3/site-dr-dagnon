@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useSearchParams } from 'react-router';
 import { FileText, ArrowUpRight, X, Star, Search, Quote, ExternalLink, Printer } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
@@ -275,11 +276,11 @@ export default function PublicationsPage() {
       {citing && <CitationModal p={citing} onClose={() => setCiting(null)} />}
 
       {/* expanded modal */}
-      {expanded && (() => {
+      {expanded && typeof document !== 'undefined' && (() => {
         const p = PUB_ITEMS.find((pp) => pp.id === expanded);
-        return p ? (
+        return p ? createPortal(
           <div
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-pine-950/90 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-pine-950/98 p-4 backdrop-blur-md"
             onClick={() => setExpanded(null)}
             role="dialog"
             aria-modal="true"
@@ -315,7 +316,8 @@ export default function PublicationsPage() {
                 </a>
               )}
             </div>
-          </div>
+          </div>,
+          document.body,
         ) : null;
       })()}
     </main>

@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { GraduationCap, X } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
@@ -112,9 +113,9 @@ export function Education() {
       </div>
 
       {/* shared popup */}
-      {isPopupOpen && (
+      {isPopupOpen && typeof document !== 'undefined' && createPortal(
         <div
-          className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-pine-950/80 p-4 pt-20 pb-20 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-pine-950/98 p-4 pt-20 pb-20 backdrop-blur-md"
           onClick={() => { setShowTraining(false); setShowTeaching(false); }}
           role="dialog"
           aria-modal="true"
@@ -178,7 +179,8 @@ export function Education() {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </section>
   );

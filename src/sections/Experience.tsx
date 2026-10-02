@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Briefcase, Target, Award, ChevronRight } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
@@ -90,9 +91,9 @@ export function Experience() {
       </div>
 
       {/* detail modal */}
-      {active && (
+      {active && typeof document !== 'undefined' && createPortal(
         <div
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-pine-950/80 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-pine-950/98 p-4 backdrop-blur-md"
           onClick={() => setActive(null)}
           role="dialog"
           aria-modal="true"
@@ -186,7 +187,8 @@ export function Experience() {
             )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </section>
   );

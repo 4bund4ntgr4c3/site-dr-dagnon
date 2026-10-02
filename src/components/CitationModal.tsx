@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Copy, Check, Quote } from 'lucide-react';
 import { useLang } from '@/i18n/useLang';
 import { UI } from '@/i18n/translations';
@@ -74,9 +75,11 @@ export function CitationModal({ p, onClose }: { p: PubEntry; onClose: () => void
     tabs[Math.max(0, next)]?.focus();
   };
 
-  return (
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-pine-950/90 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-pine-950/98 p-4 backdrop-blur-md"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -144,6 +147,7 @@ export function CitationModal({ p, onClose }: { p: PubEntry; onClose: () => void
           </span>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
