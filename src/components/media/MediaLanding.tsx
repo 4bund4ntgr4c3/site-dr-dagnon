@@ -93,7 +93,7 @@ export function MediaLanding({ lang, t }: { lang: 'fr' | 'en'; t: T }) {
                 return (
                   <Link
                     key={init.id}
-                    to={localePath(lang, '/media/community')}
+                    to={`${localePath(lang, '/media/community')}#${init.id}`}
                     className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-pine-900/70 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-400/50 hover:bg-pine-900/90"
                   >
                     {/* Thumbnail */}

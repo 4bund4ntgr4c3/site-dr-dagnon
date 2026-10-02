@@ -5,6 +5,15 @@ export interface PhilanthropicImpactMetric {
   label: Record<Lang, string>;
 }
 
+export interface PhilanthropicEdition {
+  id: string;
+  albumKey: string;
+  title: Record<Lang, string>;
+  description: Record<Lang, string>;
+  date: string;
+  photoIds: string[];
+}
+
 export interface PhilanthropicInitiative {
   id: string;
   albumKey: string;
@@ -22,21 +31,22 @@ export interface PhilanthropicInitiative {
   metrics: PhilanthropicImpactMetric[];
   featuredPhotoIds: string[];
   allPhotoIds: string[];
+  editions?: PhilanthropicEdition[];
 }
 
 export const PHILANTHROPIC_STATS: { value: string; label: Record<Lang, string> }[] = [
   {
     value: '5+',
     label: {
-      fr: 'Éditions de la Nuit du Paludisme parrainées',
-      en: 'Night Against Malaria editions sponsored',
+      fr: 'Éditions de la Nuit du Paludisme parrainées depuis 2021',
+      en: 'Night Against Malaria editions sponsored since 2021',
     },
   },
   {
     value: '100+',
     label: {
-      fr: 'Kits scolaires complets distribués',
-      en: 'Complete school kits distributed',
+      fr: 'Kits scolaires complets distribués aux enfants démunis',
+      en: 'Complete school kits distributed to underserved children',
     },
   },
   {
@@ -49,13 +59,138 @@ export const PHILANTHROPIC_STATS: { value: string; label: Record<Lang, string> }
   {
     value: '50+',
     label: {
-      fr: 'Acteurs de terrain & soignants honorés',
-      en: 'Frontline health workers & actors honored',
+      fr: 'Acteurs de terrain, chercheurs & soignants honorés',
+      en: 'Frontline health workers, researchers & actors honored',
     },
   },
 ];
 
 export const PHILANTHROPIC_INITIATIVES: PhilanthropicInitiative[] = [
+  {
+    id: 'nuit-paludisme',
+    albumKey: 'nuit-paludisme-5e',
+    title: {
+      fr: 'Santé Communautaire & Plaidoyer : La Nuit du Paludisme',
+      en: 'Community Health & Advocacy: The Night Against Malaria',
+    },
+    subtitle: {
+      fr: 'Parrain officiel et président d’honneur depuis la 1ère édition (2021) — Célébration des héros de la santé et mobilisation nationale contre le paludisme',
+      en: 'Official patron and honorary president since the 1st edition (2021) — Celebrating health heroes and national mobilization against malaria',
+    },
+    partner: {
+      name: 'ONG Icône 360° · Expertise France · Ministère de la Santé',
+      role: {
+        fr: 'Organisation citoyenne, coopération technique et autorité sanitaire',
+        en: 'Civic organization, technical cooperation, and health authority',
+      },
+    },
+    period: 'Depuis 2021 (Annuel)',
+    location: {
+      fr: 'Cotonou, Bénin',
+      en: 'Cotonou, Benin',
+    },
+    context: {
+      fr: "Créée en 2021 pour porter la voix des acteurs de première ligne et sensibiliser la nation à l'urgence de l'élimination du paludisme, La Nuit du Paludisme est le grand rendez-vous citoyen et institutionnel de santé publique au Bénin. Dès sa genèse, le Dr. Seynudé Dagnon en a accepté le parrainage exclusif et la présidence d'honneur, convaincu que la victoire contre la maladie exige de reconnaître les soignants et d'unir la société civile, les partenaires internationaux et le gouvernement.",
+      en: 'Founded in 2021 to amplify the voice of frontline health actors and rally the nation behind malaria elimination, The Night Against Malaria is Benin’s premier civic and institutional public health gala. From its inception, Dr. Seynudé Dagnon has served as its official patron and honorary president, driven by the conviction that defeating malaria requires honoring frontline clinicians and bridging civil society, international agencies, and government.',
+    },
+    mission: {
+      fr: "Présidence annuelle des cérémonies officielles, mobilisation de mécènes et de partenaires (Expertise France, Ministère de la Santé), remise solennelle de prix et d'attestations d'honneur aux médecins, chercheurs et agents de santé communautaire, et plaidoyer médiatique continu.",
+      en: 'Annual presidency of official ceremonies, mobilizing sponsors and partners (Expertise France, Ministry of Health), solemn presentation of awards and honorary citations to physicians, researchers, and community health workers, alongside ongoing media advocacy.',
+    },
+    quote: {
+      fr: 'Tant qu’un enfant ou une mère perdra la vie à cause du paludisme, notre mobilisation citoyenne ne faiblira pas. Être le parrain de cette grande œuvre depuis ses débuts est un engagement du cœur auprès de tous ceux qui luttent au quotidien.',
+      en: 'As long as a child or a mother loses their life to malaria, our civic mobilization will never waver. Serving as patron of this great initiative since the beginning is a heartfelt commitment to all those fighting every day on the frontlines.',
+    },
+    metrics: [
+      {
+        value: '5+',
+        label: {
+          fr: 'Éditions annuelles célébrées et pérennisées',
+          en: 'Annual editions celebrated and sustained',
+        },
+      },
+      {
+        value: '50+',
+        label: {
+          fr: 'Soignants et experts de terrain distingués',
+          en: 'Frontline clinicians and experts honored',
+        },
+      },
+      {
+        value: '13',
+        label: {
+          fr: 'Photographies documentant les galas et distinctions',
+          en: 'Photographs documenting galas and awards',
+        },
+      },
+    ],
+    featuredPhotoIds: [
+      'nuit-paludisme-5e-1',
+      'nuit-paludisme-5e-5',
+      'nuit-paludisme-1',
+      'nuit-paludisme-5e-8',
+    ],
+    allPhotoIds: [
+      'nuit-paludisme-5e-1',
+      'nuit-paludisme-5e-2',
+      'nuit-paludisme-5e-3',
+      'nuit-paludisme-5e-4',
+      'nuit-paludisme-5e-5',
+      'nuit-paludisme-5e-6',
+      'nuit-paludisme-5e-7',
+      'nuit-paludisme-5e-8',
+      'nuit-paludisme-1',
+      'nuit-paludisme-2',
+      'nuit-paludisme-3',
+      'nuit-paludisme-4',
+      'nuit-paludisme-5',
+    ],
+    editions: [
+      {
+        id: 'nuit-paludisme-5e',
+        albumKey: 'nuit-paludisme-5e',
+        title: {
+          fr: '5e Nuit du Paludisme (Juillet 2025) — Soirée de Gala & Célébration des Héros',
+          en: '5th Night Against Malaria (July 2025) — Gala Evening & Celebrating Health Heroes',
+        },
+        description: {
+          fr: 'Grand gala institutionnel réunissant Expertise France, le Ministère de la Santé et les partenaires techniques. Remise solennelle d’attestations d’honneur aux médecins et soignants de première ligne, allocution d’orientation stratégique du parrain Dr. Dagnon et photo de groupe des lauréats.',
+          en: 'High-level institutional gala convening Expertise France, the Ministry of Health, and technical partners. Solemn presentation of honor certificates to frontline clinicians, strategic address by patron Dr. Dagnon, and group portrait of laureates.',
+        },
+        date: '2025-07-15',
+        photoIds: [
+          'nuit-paludisme-5e-1',
+          'nuit-paludisme-5e-2',
+          'nuit-paludisme-5e-3',
+          'nuit-paludisme-5e-4',
+          'nuit-paludisme-5e-5',
+          'nuit-paludisme-5e-6',
+          'nuit-paludisme-5e-7',
+          'nuit-paludisme-5e-8',
+        ],
+      },
+      {
+        id: 'nuit-paludisme-fondation',
+        albumKey: 'malaria-night',
+        title: {
+          fr: 'Soirée de Gala & Parrainage Officiel — Hommage aux Acteurs de Terrain',
+          en: 'Gala Evening & Official Patronage — Tribute to Frontline Champions',
+        },
+        description: {
+          fr: 'Cérémonie officielle de remise de l’attestation de Parrain de la lutte contre le paludisme au Dr. Seynudé Dagnon par l’ONG Icône 360°, discours d’engagement civique, animations culturelles et hommages aux acteurs de terrain.',
+          en: 'Official ceremony presenting the Malaria Fight Patron certificate to Dr. Seynudé Dagnon by NGO Icône 360°, civic engagement addresses, cultural ceremonies, and tributes to frontline actors.',
+        },
+        date: '2025-06-01',
+        photoIds: [
+          'nuit-paludisme-1',
+          'nuit-paludisme-2',
+          'nuit-paludisme-3',
+          'nuit-paludisme-4',
+          'nuit-paludisme-5',
+        ],
+      },
+    ],
+  },
   {
     id: 'school-kits',
     albumKey: 'school-kits',
@@ -185,152 +320,5 @@ export const PHILANTHROPIC_INITIATIVES: PhilanthropicInitiative[] = [
     ],
     featuredPhotoIds: ['genies-1', 'genies-3', 'genies-4', 'genies-2'],
     allPhotoIds: ['genies-1', 'genies-2', 'genies-3', 'genies-4', 'genies-5', 'genies-6'],
-  },
-  {
-    id: 'nuit-paludisme-5e',
-    albumKey: 'nuit-paludisme-5e',
-    title: {
-      fr: '5e Nuit du Paludisme : Célébration des Héros de la Santé',
-      en: '5th Night Against Malaria: Honoring Frontline Health Heroes',
-    },
-    subtitle: {
-      fr: 'Soirée de gala et de plaidoyer de haut niveau avec l’ONG Icône 360°, Expertise France et le Ministère de la Santé',
-      en: 'High-level advocacy and gala evening with NGO Icône 360°, Expertise France, and Ministry of Health',
-    },
-    partner: {
-      name: 'ONG Icône 360° · Expertise France · Ministère de la Santé',
-      role: {
-        fr: 'Alliance tripartite de plaidoyer et d’action sanitaire',
-        en: 'Tripartite advocacy and healthcare alliance',
-      },
-    },
-    period: 'Juillet 2025',
-    location: {
-      fr: 'Cotonou, Bénin',
-      en: 'Cotonou, Benin',
-    },
-    context: {
-      fr: "Les soignants, chercheurs et relais communautaires mènent un combat quotidien contre le paludisme, souvent dans l'ombre. La 5e édition a marqué un tournant institutionnel en réunissant partenaires internationaux et autorités sanitaires pour consacrer leur engagement.",
-      en: 'Healthcare professionals, researchers, and community focal points lead a daily fight against malaria, often unheralded. The 5th edition marked a milestone gathering of international partners and health authorities to celebrate their dedication.',
-    },
-    mission: {
-      fr: 'Sous le haut parrainage du Dr. Seynudé Dagnon, remise solennelle d’attestations de reconnaissance aux médecins et acteurs de terrain méritants, discours d’orientation stratégique et renforcement des synergies multisectorielles.',
-      en: 'Under the high patronage of Dr. Seynudé Dagnon, solemn awarding of certificates of distinction to meritorious frontline doctors and actors, strategic addresses, and strengthening multisectoral synergies.',
-    },
-    quote: {
-      fr: 'L’éradication du paludisme n’est pas qu’un objectif technique : c’est un devoir humain porté par le dévouement exceptionnel de nos soignants de terrain.',
-      en: 'Malaria elimination is not solely a technical objective: it is a moral imperative carried by the outstanding dedication of our frontline healthcare workers.',
-    },
-    metrics: [
-      {
-        value: '5e',
-        label: {
-          fr: 'Édition anniversaire pérennisée avec succès',
-          en: 'Anniversary edition successfully sustained',
-        },
-      },
-      {
-        value: '10+',
-        label: {
-          fr: 'Soignants et experts de terrain distingués',
-          en: 'Frontline clinicians and experts awarded',
-        },
-      },
-      {
-        value: '3',
-        label: {
-          fr: 'Partenaires majeurs unis pour l’élimination',
-          en: 'Major partners united for malaria elimination',
-        },
-      },
-    ],
-    featuredPhotoIds: [
-      'nuit-paludisme-5e-1',
-      'nuit-paludisme-5e-5',
-      'nuit-paludisme-5e-6',
-      'nuit-paludisme-5e-8',
-    ],
-    allPhotoIds: [
-      'nuit-paludisme-5e-1',
-      'nuit-paludisme-5e-2',
-      'nuit-paludisme-5e-3',
-      'nuit-paludisme-5e-4',
-      'nuit-paludisme-5e-5',
-      'nuit-paludisme-5e-6',
-      'nuit-paludisme-5e-7',
-      'nuit-paludisme-5e-8',
-    ],
-  },
-  {
-    id: 'nuit-paludisme-fondation',
-    albumKey: 'malaria-night',
-    title: {
-      fr: 'La Nuit du Paludisme : Plaidoyer & Engagement Pérenne',
-      en: 'The Night Against Malaria: Grassroots Advocacy & Sustained Commitment',
-    },
-    subtitle: {
-      fr: 'Présidence d’honneur et parrainage continu de la grande initiative citoyenne de lutte antipaludique au Bénin',
-      en: 'Honorary presidency and ongoing patronage of Benin’s prominent anti-malaria civic initiative',
-    },
-    partner: {
-      name: 'ONG Icône 360°',
-      role: {
-        fr: 'Organisateur citoyen et mobilisation communautaire',
-        en: 'Civic organizer and grassroots mobilization',
-      },
-    },
-    period: 'Depuis 2021',
-    location: {
-      fr: 'Bénin',
-      en: 'Benin',
-    },
-    context: {
-      fr: "Créée pour sensibiliser la société civile, les décideurs et les citoyens à l'urgence d'accélérer l'élimination du paludisme, cette initiative repose sur la mobilisation communautaire, la philanthropie et le plaidoyer de proximité.",
-      en: 'Launched to mobilize civil society, policymakers, and citizens on the urgency of accelerating malaria elimination, this initiative relies on grassroots mobilization, philanthropy, and community advocacy.',
-    },
-    mission: {
-      fr: 'Présidence des cérémonies officielles, mobilisation d’acteurs influents et de mécènes, plaidoyer auprès des médias pour le maintien de la lutte contre le paludisme au sommet des priorités de santé publique.',
-      en: 'Chairing official galas, engaging influential partners and supporters, and advocating through media to keep malaria elimination at the top of the national public health agenda.',
-    },
-    quote: {
-      fr: 'Tant qu’un enfant perdra la vie à cause d’une piqûre de moustique évitable, notre mobilisation citoyenne et philanthropique ne faiblira pas.',
-      en: 'As long as a child loses their life to a preventable mosquito bite, our civic and philanthropic mobilization will never waver.',
-    },
-    metrics: [
-      {
-        value: '2021',
-        label: {
-          fr: 'Année de création sous le parrainage du Dr. Dagnon',
-          en: 'Founding year under Dr. Dagnon’s patronage',
-        },
-      },
-      {
-        value: '50+',
-        label: {
-          fr: 'Personnalités et soignants distingués au total',
-          en: 'Total health champions & dignitaries honored',
-        },
-      },
-      {
-        value: '100%',
-        label: {
-          fr: 'Engagement citoyen bénévole et philanthropique',
-          en: 'Voluntary civic and philanthropic commitment',
-        },
-      },
-    ],
-    featuredPhotoIds: [
-      'nuit-paludisme-1',
-      'nuit-paludisme-4',
-      'nuit-paludisme-5',
-      'nuit-paludisme-2',
-    ],
-    allPhotoIds: [
-      'nuit-paludisme-1',
-      'nuit-paludisme-2',
-      'nuit-paludisme-3',
-      'nuit-paludisme-4',
-      'nuit-paludisme-5',
-    ],
   },
 ];

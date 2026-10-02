@@ -9,6 +9,7 @@ import {
   Quote,
   BookOpen,
   Users,
+  Calendar,
 } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { PhotoLightbox } from '@/components/PhotoLightbox';
@@ -16,49 +17,50 @@ import { MEDIA_ITEMS, type MediaEntry } from '@/data/media';
 import { PHILANTHROPIC_INITIATIVES, PHILANTHROPIC_STATS } from '@/data/philanthropy';
 import { PHOTO_DIMS } from '@/seo/meta';
 import { localePath } from '@/i18n/routing';
-import { photoOrder, type T } from './helpers';
+import { type T } from './helpers';
 
-/* COMMUNITY & PHILANTHROPY HUB — Editorial deep-dives + Interactive photo galleries */
+/* COMMUNITY & PHILANTHROPY HUB — Editorial deep-dives + Grouped initiatives with distinguished events */
 
 export function CommunityView({ lang, t }: { lang: 'fr' | 'en'; t: T }) {
-  const [activeAlbumKey, setActiveAlbumKey] = useState<string | null>(null);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [lightboxState, setLightboxState] = useState<{
+    isOpen: boolean;
+    photos: MediaEntry[];
+    title: string;
+    initialIndex: number;
+  }>({
+    isOpen: false,
+    photos: [],
+    title: '',
+    initialIndex: 0,
+  });
 
-  // Map of photos by subtype
-  const photosBySubtype = useMemo(() => {
-    const map = new Map<string, MediaEntry[]>();
+  const photosById = useMemo(() => {
+    const map = new Map<string, MediaEntry>();
     for (const m of MEDIA_ITEMS) {
-      if (m.category !== 'community' || !m.subType) continue;
-      const list = map.get(m.subType) || [];
-      list.push(m);
-      map.set(m.subType, list);
-    }
-    // Sort photos within each subtype
-    for (const [key, list] of map.entries()) {
-      list.sort((a, b) => b.date.localeCompare(a.date) || photoOrder(b.id) - photoOrder(a.id));
-      map.set(key, list);
+      if (m.category === 'community') {
+        map.set(m.id, m);
+      }
     }
     return map;
   }, []);
 
-  const activePhotos = useMemo(() => {
-    if (!activeAlbumKey) return [];
-    return photosBySubtype.get(activeAlbumKey) || [];
-  }, [activeAlbumKey, photosBySubtype]);
-
-  const openAlbumLightbox = (albumKey: string, initialIdx = 0) => {
-    setActiveAlbumKey(albumKey);
-    setLightboxIndex(initialIdx);
+  const openLightbox = (photos: MediaEntry[], title: string, initialIndex = 0) => {
+    setLightboxState({
+      isOpen: true,
+      photos,
+      title,
+      initialIndex,
+    });
   };
 
-  const getPillarIcon = (index: number) => {
-    switch (index) {
-      case 0:
-        return BookOpen;
-      case 1:
-        return GraduationCap;
-      case 2:
+  const getPillarIcon = (id: string) => {
+    switch (id) {
+      case 'nuit-paludisme':
         return Award;
+      case 'school-kits':
+        return BookOpen;
+      case 'genies-en-herbe':
+        return GraduationCap;
       default:
         return Heart;
     }
@@ -104,32 +106,34 @@ export function CommunityView({ lang, t }: { lang: 'fr' | 'en'; t: T }) {
         </div>
       </Reveal>
 
-      {/* ── Quick navigation bar ──────────────────────────────────────── */}
+      {/* ── Quick navigation bar (The 3 Core Pillars) ──────────────────── */}
       <Reveal>
         <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 rounded-2xl border border-pine-900/10 bg-white p-3 shadow-card">
           <span className="px-3 text-xs font-semibold uppercase tracking-wider text-pine-950/60 hidden md:inline">
-            {lang === 'fr' ? 'Accès direct :' : 'Jump to:'}
+            {lang === 'fr' ? 'Les 3 Piliers :' : 'The 3 Pillars:'}
           </span>
           {PHILANTHROPIC_INITIATIVES.map((init, i) => (
             <a
               key={init.id}
               href={`#${init.id}`}
-              className="inline-flex items-center gap-1.5 rounded-full bg-pine-900/5 px-3.5 py-1.5 text-xs font-medium text-pine-950 transition-colors hover:bg-gold-500/15 hover:text-gold-800"
+              className="inline-flex items-center gap-1.5 rounded-full bg-pine-900/5 px-4 py-2 text-xs font-medium text-pine-950 transition-colors hover:bg-gold-500/15 hover:text-gold-800"
             >
               <span className="flex h-4 w-4 items-center justify-center rounded-full bg-pine-900/10 text-[10px] font-bold text-pine-900">
                 {i + 1}
               </span>
-              <span className="line-clamp-1">{init.title[lang].split(' : ')[0]}</span>
+              <span className="font-medium">{init.title[lang].split(' : ')[1] || init.title[lang]}</span>
             </a>
           ))}
         </div>
       </Reveal>
 
-      {/* ── Deep Dive: The 4 Philanthropic Initiatives ─────────────────── */}
+      {/* ── Deep Dive: The 3 Core Philanthropic Pillars ─────────────────── */}
       <div className="space-y-24">
         {PHILANTHROPIC_INITIATIVES.map((init, idx) => {
-          const Icon = getPillarIcon(idx);
-          const albumPhotos = photosBySubtype.get(init.albumKey) || [];
+          const Icon = getPillarIcon(init.id);
+          const allInitiativePhotos = init.allPhotoIds
+            .map((id) => photosById.get(id))
+            .filter(Boolean) as MediaEntry[];
 
           return (
             <section
@@ -183,7 +187,7 @@ export function CommunityView({ lang, t }: { lang: 'fr' | 'en'; t: T }) {
                   {/* Narrative Body */}
                   <div className="p-6 sm:p-8 lg:p-10">
                     <div className="grid gap-8 lg:grid-cols-12">
-                      {/* Context & Action (8 cols) */}
+                      {/* Context & Action (7 cols) */}
                       <div className="space-y-6 lg:col-span-7">
                         <div>
                           <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-pine-950/60">
@@ -247,81 +251,215 @@ export function CommunityView({ lang, t }: { lang: 'fr' | 'en'; t: T }) {
                       </div>
                     </div>
 
-                    {/* Visual Photo Gallery */}
-                    <div className="mt-10 pt-8 border-t border-pine-900/10">
-                      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-                        <div>
-                          <h4 className="font-display text-lg font-semibold text-pine-950">
-                            {t['communityHub.photosLabel']}
-                          </h4>
-                          <p className="text-xs text-ink/65 mt-0.5">
-                            {albumPhotos.length}{' '}
-                            {lang === 'fr'
-                              ? 'photographies documentées sur le terrain'
-                              : 'photographs documented in the field'}
-                          </p>
+                    {/* ── Visual Section: Sub-Editions (e.g. Night Against Malaria) or Standard Gallery ── */}
+                    {init.editions && init.editions.length > 0 ? (
+                      <div className="mt-12 pt-8 border-t border-pine-900/10 space-y-12">
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <div>
+                            <h4 className="font-display text-xl font-semibold text-pine-950">
+                              {t['communityHub.editionsTitle']}
+                            </h4>
+                            <p className="text-xs text-ink/65 mt-0.5">
+                              {lang === 'fr'
+                                ? 'Dr. Seynudé Dagnon parraine et préside La Nuit du Paludisme depuis son lancement en 2021.'
+                                : 'Dr. Seynudé Dagnon has sponsored and chaired The Night Against Malaria since its inception in 2021.'}
+                            </p>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              openLightbox(allInitiativePhotos, init.title[lang], 0)
+                            }
+                            className="inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-50 px-4 py-2 text-xs font-semibold text-pine-950 shadow-sm transition-all hover:bg-gold-500 hover:text-white"
+                          >
+                            <Camera size={14} className="text-gold-600" />
+                            <span>
+                              {t['communityHub.allNuitPhotos'].replace(
+                                '{count}',
+                                String(allInitiativePhotos.length),
+                              )}
+                            </span>
+                          </button>
                         </div>
 
-                        <button
-                          type="button"
-                          onClick={() => openAlbumLightbox(init.albumKey)}
-                          className="inline-flex items-center gap-2 rounded-full border border-pine-900/15 bg-white px-4 py-2 text-xs font-semibold text-pine-900 shadow-sm transition-all hover:border-gold-500/50 hover:bg-gold-50/50 hover:text-gold-900"
-                        >
-                          <Camera size={14} className="text-gold-600" />
-                          <span>
-                            {t['communityHub.viewAllPhotos'].replace(
-                              '{count}',
-                              String(albumPhotos.length),
-                            )}
-                          </span>
-                        </button>
-                      </div>
+                        {/* Distinguished Edition Blocks */}
+                        <div className="space-y-10">
+                          {init.editions.map((edition) => {
+                            const editionPhotos = edition.photoIds
+                              .map((id) => photosById.get(id))
+                              .filter(Boolean) as MediaEntry[];
 
-                      {/* Photo preview cards with real links */}
-                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 sm:gap-4">
-                        {albumPhotos.map((photo) => {
-                          const dims = PHOTO_DIMS[photo.id] || { width: 1280, height: 853 };
-                          const photoHref = localePath(lang, `/media/community/${photo.id}`);
+                            return (
+                              <div
+                                key={edition.id}
+                                className="rounded-2xl border border-pine-900/10 bg-ivory/60 p-5 sm:p-6"
+                              >
+                                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-pine-900/10 pb-4 mb-5">
+                                  <div className="max-w-2xl">
+                                    <div className="flex items-center gap-2">
+                                      <span className="inline-flex items-center gap-1 rounded-md bg-pine-950 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gold-400">
+                                        <Calendar size={11} />
+                                        {edition.date.slice(0, 4)}
+                                      </span>
+                                      <span className="text-xs font-medium text-ink/60">
+                                        {editionPhotos.length}{' '}
+                                        {editionPhotos.length > 1 ? 'photos' : 'photo'}
+                                      </span>
+                                    </div>
+                                    <h5 className="font-display text-base sm:text-lg font-semibold text-pine-950 mt-1">
+                                      {edition.title[lang]}
+                                    </h5>
+                                    <p className="mt-1 text-xs text-ink/75 leading-relaxed">
+                                      {edition.description[lang]}
+                                    </p>
+                                  </div>
 
-                          return (
-                            <Link
-                              key={photo.id}
-                              to={photoHref}
-                              aria-label={photo.title[lang]}
-                              className="group relative flex flex-col overflow-hidden rounded-xl border border-pine-900/10 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-card"
-                            >
-                              <div className="relative aspect-[4/3] overflow-hidden bg-pine-950">
-                                <img
-                                  src={photo.src}
-                                  alt={photo.title[lang]}
-                                  width={dims.width}
-                                  height={dims.height}
-                                  loading="lazy"
-                                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-pine-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      openLightbox(editionPhotos, edition.title[lang], 0)
+                                    }
+                                    className="inline-flex items-center gap-2 rounded-full border border-pine-900/15 bg-white px-3.5 py-1.5 text-xs font-semibold text-pine-900 shadow-sm transition-all hover:bg-gold-50 hover:text-gold-900"
+                                  >
+                                    <Camera size={13} className="text-gold-600" />
+                                    <span>
+                                      {t['communityHub.viewEditionPhotos'].replace(
+                                        '{count}',
+                                        String(editionPhotos.length),
+                                      )}
+                                    </span>
+                                  </button>
+                                </div>
 
-                                <span className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-lg bg-pine-950/70 text-white backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
-                                  <Camera size={12} />
-                                </span>
-                              </div>
+                                {/* Edition Photo Grid */}
+                                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 sm:gap-4">
+                                  {editionPhotos.map((photo) => {
+                                    const dims = PHOTO_DIMS[photo.id] || { width: 1280, height: 853 };
+                                    const photoHref = localePath(lang, `/media/community/${photo.id}`);
 
-                              <div className="flex flex-1 flex-col p-2.5 sm:p-3">
-                                <h5 className="font-display text-xs font-semibold text-pine-900 line-clamp-2 group-hover:text-gold-700 transition-colors">
-                                  {photo.title[lang]}
-                                </h5>
-                                <div className="mt-2 flex items-center justify-between text-[11px] text-ink/55 pt-1.5 border-t border-pine-900/5">
-                                  <span>{photo.date.slice(0, 7)}</span>
-                                  <span className="font-medium text-gold-700 group-hover:underline">
-                                    {t['communityHub.explorePhoto']}
-                                  </span>
+                                    return (
+                                      <Link
+                                        key={photo.id}
+                                        to={photoHref}
+                                        aria-label={photo.title[lang]}
+                                        className="group relative flex flex-col overflow-hidden rounded-xl border border-pine-900/10 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-card"
+                                      >
+                                        <div className="relative aspect-[4/3] overflow-hidden bg-pine-950">
+                                          <img
+                                            src={photo.src}
+                                            alt={photo.title[lang]}
+                                            width={dims.width}
+                                            height={dims.height}
+                                            loading="lazy"
+                                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                          />
+                                          <div className="absolute inset-0 bg-gradient-to-t from-pine-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+
+                                          <span className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-lg bg-pine-950/70 text-white backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
+                                            <Camera size={12} />
+                                          </span>
+                                        </div>
+
+                                        <div className="flex flex-1 flex-col p-2.5 sm:p-3">
+                                          <h6 className="font-display text-xs font-semibold text-pine-900 line-clamp-2 group-hover:text-gold-700 transition-colors">
+                                            {photo.title[lang]}
+                                          </h6>
+                                          <div className="mt-2 flex items-center justify-between text-[11px] text-ink/55 pt-1.5 border-t border-pine-900/5">
+                                            <span>{photo.date.slice(0, 7)}</span>
+                                            <span className="font-medium text-gold-700 group-hover:underline">
+                                              {t['communityHub.explorePhoto']}
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </Link>
+                                    );
+                                  })}
                                 </div>
                               </div>
-                            </Link>
-                          );
-                        })}
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      /* Standard Gallery for School Kits and Génies en Herbe */
+                      <div className="mt-10 pt-8 border-t border-pine-900/10">
+                        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+                          <div>
+                            <h4 className="font-display text-lg font-semibold text-pine-950">
+                              {t['communityHub.photosLabel']}
+                            </h4>
+                            <p className="text-xs text-ink/65 mt-0.5">
+                              {allInitiativePhotos.length}{' '}
+                              {lang === 'fr'
+                                ? 'photographies documentées sur le terrain'
+                                : 'photographs documented in the field'}
+                            </p>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              openLightbox(allInitiativePhotos, init.title[lang], 0)
+                            }
+                            className="inline-flex items-center gap-2 rounded-full border border-pine-900/15 bg-white px-4 py-2 text-xs font-semibold text-pine-900 shadow-sm transition-all hover:border-gold-500/50 hover:bg-gold-50/50 hover:text-gold-900"
+                          >
+                            <Camera size={14} className="text-gold-600" />
+                            <span>
+                              {t['communityHub.viewAllPhotos'].replace(
+                                '{count}',
+                                String(allInitiativePhotos.length),
+                              )}
+                            </span>
+                          </button>
+                        </div>
+
+                        {/* Photo preview cards with real links */}
+                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 sm:gap-4">
+                          {allInitiativePhotos.map((photo) => {
+                            const dims = PHOTO_DIMS[photo.id] || { width: 1280, height: 853 };
+                            const photoHref = localePath(lang, `/media/community/${photo.id}`);
+
+                            return (
+                              <Link
+                                key={photo.id}
+                                to={photoHref}
+                                aria-label={photo.title[lang]}
+                                className="group relative flex flex-col overflow-hidden rounded-xl border border-pine-900/10 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-card"
+                              >
+                                <div className="relative aspect-[4/3] overflow-hidden bg-pine-950">
+                                  <img
+                                    src={photo.src}
+                                    alt={photo.title[lang]}
+                                    width={dims.width}
+                                    height={dims.height}
+                                    loading="lazy"
+                                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-pine-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+
+                                  <span className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-lg bg-pine-950/70 text-white backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
+                                    <Camera size={12} />
+                                  </span>
+                                </div>
+
+                                <div className="flex flex-1 flex-col p-2.5 sm:p-3">
+                                  <h5 className="font-display text-xs font-semibold text-pine-900 line-clamp-2 group-hover:text-gold-700 transition-colors">
+                                    {photo.title[lang]}
+                                  </h5>
+                                  <div className="mt-2 flex items-center justify-between text-[11px] text-ink/55 pt-1.5 border-t border-pine-900/5">
+                                    <span>{photo.date.slice(0, 7)}</span>
+                                    <span className="font-medium text-gold-700 group-hover:underline">
+                                      {t['communityHub.explorePhoto']}
+                                    </span>
+                                  </div>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </Reveal>
@@ -413,17 +551,14 @@ export function CommunityView({ lang, t }: { lang: 'fr' | 'en'; t: T }) {
       </Reveal>
 
       {/* ── Lightbox Dialog Overlay ──────────────────────────────────── */}
-      {activeAlbumKey && activePhotos.length > 0 && (
+      {lightboxState.isOpen && lightboxState.photos.length > 0 && (
         <PhotoLightbox
-          photos={activePhotos}
-          initialIndex={lightboxIndex}
+          photos={lightboxState.photos}
+          initialIndex={lightboxState.initialIndex}
           lang={lang}
-          title={
-            PHILANTHROPIC_INITIATIVES.find((i) => i.albumKey === activeAlbumKey)?.title[lang] ||
-            t['communityHub.badge']
-          }
+          title={lightboxState.title || t['communityHub.badge']}
           closeLabel={t['media.close']}
-          onClose={() => setActiveAlbumKey(null)}
+          onClose={() => setLightboxState((prev) => ({ ...prev, isOpen: false }))}
         />
       )}
     </div>
