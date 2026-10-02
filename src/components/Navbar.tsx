@@ -214,6 +214,12 @@ export function Navbar() {
         </Suspense>
       )}
       <header className="fixed inset-x-0 top-0 z-50 transition-all duration-500">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-xl focus:bg-pine-950 focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-gold-300 focus:shadow-xl"
+        >
+          {t['a11y.skip']}
+        </a>
       <div ref={headerRef} className="mx-auto max-w-7xl px-3 pt-2 lg:px-4 lg:pt-3">
         <div
           className={`flex h-16 lg:h-[72px] items-center justify-between gap-4 px-4 lg:px-6 transition-all duration-500 ${
