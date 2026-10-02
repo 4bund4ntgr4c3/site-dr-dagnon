@@ -200,7 +200,7 @@ export function Navbar() {
         >
           {t['a11y.skip']}
         </a>
-      <div className="mx-auto max-w-7xl 2xl:max-w-[1440px] px-3 pt-2 lg:px-4 lg:pt-3">
+      <div className="mx-auto max-w-[1440px] px-3 pt-2 lg:px-4 lg:pt-3">
         <div
           className={`flex h-16 lg:h-[72px] items-center justify-between gap-2 xl:gap-4 px-3 sm:px-4 lg:px-6 transition-[background-color,border-color,box-shadow] duration-300 ${
             solid
@@ -219,7 +219,7 @@ export function Navbar() {
             </span>
           </Link>
 
-          <nav aria-label={t['nav.ariaLabel']} className="hidden lg:flex items-center gap-0.5 xl:gap-1 rounded-full border border-white/10 bg-white/5 py-1.5 px-1.5 backdrop-blur-sm shrink-0">
+          <nav aria-label={t['nav.ariaLabel']} className="hidden xl:flex items-center gap-0.5 2xl:gap-1 rounded-full border border-white/10 bg-white/5 py-1 px-1 2xl:py-1.5 2xl:px-1.5 backdrop-blur-sm shrink-0">
             {/* Home — one anchored link per home-page section */}
             <div
               ref={homeRef}
@@ -241,7 +241,7 @@ export function Navbar() {
                 }}
                 aria-expanded={homeOpen}
                 aria-controls="nav-home-menu"
-                className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 xl:px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
+                className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 2xl:px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
                   homeOpen ? 'bg-gold-500 text-pine-950' : 'text-ivory'
                 }`}
               >
@@ -277,7 +277,7 @@ export function Navbar() {
               <Link
                 key={item.id}
                 to={navHref(lang, item.id)}
-                className="whitespace-nowrap rounded-full px-3 xl:px-4 py-1.5 text-[13px] font-medium text-pine-100/85 transition-colors hover:bg-gold-500 hover:text-pine-950"
+                className="whitespace-nowrap rounded-full px-2.5 2xl:px-4 py-1.5 text-[13px] font-medium text-pine-100/85 transition-colors hover:bg-gold-500 hover:text-pine-950"
               >
                 {item.label}
               </Link>
@@ -304,7 +304,7 @@ export function Navbar() {
                 }}
                 aria-expanded={moreOpen}
                 aria-controls="nav-more-menu"
-                className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 xl:px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
+                className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 2xl:px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
                   moreOpen ? 'bg-gold-500 text-pine-950' : 'text-ivory'
                 }`}
               >
@@ -333,7 +333,7 @@ export function Navbar() {
             </div>
           </nav>
 
-          <div className="flex items-center gap-2 xl:gap-3 shrink-0">
+          <div className="flex items-center gap-1.5 2xl:gap-2.5 shrink-0">
             <button
               type="button"
               onClick={openSearch}
@@ -352,14 +352,17 @@ export function Navbar() {
               target="_blank"
               rel="noreferrer"
               onClick={() => track('click', { event_category: 'outbound', event_label: 'linkedin' })}
-              className="hidden xl:flex items-center gap-2 rounded-full border border-gold-500/50 bg-pine-950 px-4 py-2 text-[13px] font-semibold text-gold-300 transition-all hover:bg-gold-500 hover:text-pine-950"
+              aria-label={t['nav.linkedin']}
+              title={t['nav.linkedin']}
+              className="hidden xl:flex items-center justify-center h-9 w-9 2xl:w-auto 2xl:px-4 rounded-full border border-gold-500/50 bg-pine-950 text-gold-300 transition-all hover:bg-gold-500 hover:text-pine-950 gap-2 text-[13px] font-semibold shrink-0"
             >
-              <Linkedin size={15} /> {t['nav.linkedin']}
+              <Linkedin size={15} />
+              <span className="hidden 2xl:inline">{t['nav.linkedin']}</span>
             </a>
 
             <button
               ref={toggleRef}
-              className="lg:hidden text-ivory p-2 outline-none focus-visible:ring-1 focus-visible:ring-white/20 rounded-lg"
+              className="xl:hidden text-ivory p-2 outline-none focus-visible:ring-1 focus-visible:ring-white/20 rounded-lg"
               onClick={() => setOpen(!open)}
               aria-label={open ? t['nav.close'] : t['nav.toggle']}
               aria-expanded={open}
@@ -374,7 +377,7 @@ export function Navbar() {
       {/* ── mobile drawer ── always mounted for CSS transitions ── */}
       <div
         ref={drawerRef}
-        className={`fixed inset-0 z-[60] overflow-hidden lg:hidden ${
+        className={`fixed inset-0 z-[60] overflow-hidden xl:hidden ${
           open ? 'visible' : 'invisible pointer-events-none delay-500'
         }`}
         aria-hidden={!open}
