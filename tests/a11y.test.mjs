@@ -126,6 +126,7 @@ for (const route of ROUTES) {
       // not at an arbitrary intermediate opacity during React's first mount.
       await page.evaluate(async () => {
         await document.fonts.ready;
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
         await Promise.all(document.getAnimations()
           .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
           .map((animation) => animation.finished.catch(() => {})));
@@ -327,3 +328,29 @@ test('mobile header keeps the full name out of the action controls', async () =>
     await page.close();
   }
 });
+
+test('desktop header pill contains all action controls without horizontal overflow across screen sizes', async () => {
+  for (const route of ['/media', '/fr/media']) {
+    for (const width of [1024, 1280, 1440, 1600, 1920]) {
+      const page = await context.newPage();
+      await page.setViewportSize({ width, height: 900 });
+      try {
+        await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'domcontentloaded' });
+        const pill = page.locator('header > div > div').first();
+        await pill.waitFor({ state: 'visible' });
+        const actions = page.locator('header .flex.items-center.shrink-0').first();
+        const [pillBox, actionsBox] = await Promise.all([pill.boundingBox(), actions.boundingBox()]);
+        assert.ok(pillBox && actionsBox, `Boxes not found for ${route} at width ${width}`);
+        const pillRight = pillBox.x + pillBox.width;
+        const actionsRight = actionsBox.x + actionsBox.width;
+        assert.ok(
+          actionsRight <= pillRight + 1,
+          `Header actions overflow pill on ${route} by ${(actionsRight - pillRight).toFixed(1)}px at viewport ${width}px`,
+        );
+      } finally {
+        await page.close();
+      }
+    }
+  }
+});
+

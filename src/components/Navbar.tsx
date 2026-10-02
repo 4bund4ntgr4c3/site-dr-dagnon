@@ -200,12 +200,12 @@ export function Navbar() {
         >
           {t['a11y.skip']}
         </a>
-      <div className="mx-auto max-w-7xl px-3 pt-2 lg:px-4 lg:pt-3">
+      <div className="mx-auto max-w-7xl 2xl:max-w-[1440px] px-3 pt-2 lg:px-4 lg:pt-3">
         <div
-          className={`flex h-16 lg:h-[72px] items-center justify-between gap-4 px-4 lg:px-6 transition-[background-color,border-color,box-shadow] duration-300 ${
+          className={`flex h-16 lg:h-[72px] items-center justify-between gap-2 xl:gap-4 px-3 sm:px-4 lg:px-6 transition-[background-color,border-color,box-shadow] duration-300 ${
             solid
               ? 'rounded-3xl border border-white/10 bg-pine-950/90 backdrop-blur-md shadow-lg shadow-pine-950/30'
-              : 'rounded-3xl border border-transparent bg-pine-950/40 backdrop-blur-sm'
+              : 'rounded-3xl border border-white/10 bg-pine-950/85 backdrop-blur-md'
           }`}
         >
           <Link to={localePath(lang, '/')} aria-label={`${t['name.short']} — ${t['nav.subtitle']}`} className="flex shrink-0 min-w-0 items-center gap-3 group">
@@ -216,13 +216,10 @@ export function Navbar() {
               <span className="block font-display text-[15px] font-medium text-ivory whitespace-nowrap">
                 {t['name.short']}
               </span>
-              <span className="hidden 2xl:block truncate text-[10px] uppercase tracking-[0.22em] text-gold-400 max-w-[280px]">
-                {t['nav.subtitle']}
-              </span>
             </span>
           </Link>
 
-          <nav aria-label={t['nav.ariaLabel']} className="hidden lg:flex items-center gap-1 rounded-full border border-white/10 bg-white/5 py-1.5 px-1.5 backdrop-blur-sm">
+          <nav aria-label={t['nav.ariaLabel']} className="hidden lg:flex items-center gap-0.5 xl:gap-1 rounded-full border border-white/10 bg-white/5 py-1.5 px-1.5 backdrop-blur-sm shrink-0">
             {/* Home — one anchored link per home-page section */}
             <div
               ref={homeRef}
@@ -244,7 +241,7 @@ export function Navbar() {
                 }}
                 aria-expanded={homeOpen}
                 aria-controls="nav-home-menu"
-                className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
+                className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 xl:px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
                   homeOpen ? 'bg-gold-500 text-pine-950' : 'text-ivory'
                 }`}
               >
@@ -280,7 +277,7 @@ export function Navbar() {
               <Link
                 key={item.id}
                 to={navHref(lang, item.id)}
-                className="whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-medium text-pine-100/85 transition-colors hover:bg-gold-500 hover:text-pine-950"
+                className="whitespace-nowrap rounded-full px-3 xl:px-4 py-1.5 text-[13px] font-medium text-pine-100/85 transition-colors hover:bg-gold-500 hover:text-pine-950"
               >
                 {item.label}
               </Link>
@@ -307,7 +304,7 @@ export function Navbar() {
                 }}
                 aria-expanded={moreOpen}
                 aria-controls="nav-more-menu"
-                className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
+                className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 xl:px-4 py-1.5 text-[13px] font-medium transition-colors hover:bg-gold-500 hover:text-pine-950 ${
                   moreOpen ? 'bg-gold-500 text-pine-950' : 'text-ivory'
                 }`}
               >
@@ -336,7 +333,7 @@ export function Navbar() {
             </div>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 xl:gap-3 shrink-0">
             <button
               type="button"
               onClick={openSearch}
