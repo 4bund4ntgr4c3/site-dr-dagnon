@@ -280,7 +280,7 @@ export default function PublicationsPage() {
         const p = PUB_ITEMS.find((pp) => pp.id === expanded);
         return p ? createPortal(
           <div
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-pine-950/98 p-4 backdrop-blur-md"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-pine-950/90 p-4 backdrop-blur-sm"
             onClick={() => setExpanded(null)}
             role="dialog"
             aria-modal="true"

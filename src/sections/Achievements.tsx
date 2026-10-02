@@ -101,7 +101,7 @@ export function Achievements() {
       {/* awards modal */}
       {showAwards && typeof document !== 'undefined' && createPortal(
         <div
-          className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-pine-950/98 p-4 pt-20 pb-20 backdrop-blur-md"
+          className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-pine-950/90 p-4 pt-20 pb-20 backdrop-blur-sm"
           onClick={() => setShowAwards(false)}
           role="dialog"
           aria-modal="true"

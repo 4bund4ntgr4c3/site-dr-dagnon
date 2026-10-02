@@ -115,7 +115,7 @@ export function PhotoLightbox({
   return createPortal(
     <div
       ref={modalRef}
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-between bg-pine-950/98 p-4 backdrop-blur-md"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-between bg-pine-950 p-4"
       onClick={onClose}
       onKeyDown={handleKeyDown}
       role="dialog"
@@ -132,7 +132,7 @@ export function PhotoLightbox({
           <h3 className="font-display text-base sm:text-lg font-semibold text-white truncate max-w-[65vw] sm:max-w-xl lg:max-w-2xl">
             {title}
           </h3>
-          <p className="text-xs sm:text-[13px] text-white/60">
+          <p className="text-xs sm:text-[13px] font-medium text-gold-300">
             {index + 1} / {photos.length}
           </p>
         </div>
@@ -245,12 +245,12 @@ export function PhotoLightbox({
 
       {/* Bottom Bar: Dots & Caption */}
       <div
-        className="w-full flex flex-col items-center pb-3 sm:pb-4 pt-1 z-10"
+        className="w-full flex flex-col items-center pb-4 pt-2 z-10"
         onClick={(e) => e.stopPropagation()}
       >
         {/* dots */}
         {photos.length > 1 && (
-          <div className="flex items-center gap-1.5 sm:gap-2 mb-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 mb-2.5">
             {photos.map((_, i) => (
               <button
                 key={i}
@@ -260,14 +260,14 @@ export function PhotoLightbox({
                   setIsAutoPlaying(false);
                 }}
                 className={`flex h-6 w-6 items-center justify-center rounded-full transition-all ${
-                  i === index ? '' : 'hover:bg-white/10'
+                  i === index ? '' : 'hover:bg-white/20'
                 }`}
                 aria-label={`${lang === 'fr' ? 'Photo' : 'Photo'} ${i + 1}${i === index ? (lang === 'fr' ? ', actuelle' : ', current') : ''}`}
                 aria-current={i === index ? 'true' : undefined}
               >
                 <span
                   className={`block h-2 rounded-full transition-all ${
-                    i === index ? 'w-6 bg-gold-500' : 'w-2 bg-white/30'
+                    i === index ? 'w-6 bg-gold-400 shadow-sm' : 'w-2 bg-white/40'
                   }`}
                 />
               </button>
@@ -276,16 +276,16 @@ export function PhotoLightbox({
         )}
 
         {/* caption */}
-        <div className="flex max-w-2xl flex-col items-center gap-1 px-4 text-center">
-          <p className="text-xs sm:text-[13px] text-white/80 line-clamp-2">
+        <div className="flex max-w-3xl flex-col items-center gap-2 px-4 text-center">
+          <p className="font-display text-sm sm:text-base font-medium text-white leading-snug drop-shadow-sm">
             {current.title[lang]}
           </p>
           <Link
             to={localePath(lang, `/media/community/${current.id}`)}
-            className="inline-flex items-center gap-1 text-xs font-semibold text-gold-400 transition-colors hover:text-gold-300"
+            className="inline-flex items-center gap-1.5 rounded-full border border-gold-400/40 bg-gold-500/10 px-4 py-1.5 text-xs font-semibold text-gold-300 transition-all hover:bg-gold-500 hover:text-pine-950"
           >
-            {lang === 'fr' ? 'Ouvrir la photo dans sa page' : 'Open the photo on its own page'}
-            <ArrowUpRight size={12} />
+            <span>{lang === 'fr' ? 'Ouvrir la photo dans sa page' : 'Open the photo on its own page'}</span>
+            <ArrowUpRight size={13} />
           </Link>
         </div>
       </div>

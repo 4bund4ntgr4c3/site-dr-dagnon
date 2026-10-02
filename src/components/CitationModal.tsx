@@ -79,7 +79,7 @@ export function CitationModal({ p, onClose }: { p: PubEntry; onClose: () => void
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-pine-950/98 p-4 backdrop-blur-md"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-pine-950/90 p-4 backdrop-blur-sm"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
